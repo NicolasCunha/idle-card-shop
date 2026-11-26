@@ -28,7 +28,7 @@ Wait for his answer. Do not choose for him, even if one option looks obvious.
 3. Update the defaults so the merge step fills new fields.
 4. Keep import working: imported files run the same migration chain.
 
-**[PENDING tech stack]** Location of migrations and defaults.
+Migrations: `MIGRATIONS` in `js/save.js`. Defaults: `newState()` in `js/game.js`. Tests: `tests/tests.js`, Save section.
 
 ## 4. Test
 

@@ -29,7 +29,7 @@ Read these before any change. Each one is short.
 
 ## Open GDD questions
 
-These are unanswered (GDD section 12). Anything that depends on them is marked **[PENDING GDD Q#]** in the rules and skills. Do not settle them yourself; use the GDD's proposed default only where a rule says so, and flag it.
+These are unanswered (GDD section 12). v1 uses the GDD's proposed answer for each (see the SDD). Anything that depends on them is marked **[PENDING GDD Q#]** in rules and skills and `ASSUMPTION [GDD Q#]` in code. Do not settle them yourself; when Nicolas answers one, update the GDD, the SDD, the code and remove the marks.
 
 1. Base Set booster layout (commons/uncommons/rares, holo chance)
 2. Staff salaries (proposal: none)
@@ -41,4 +41,8 @@ These are unanswered (GDD section 12). Anything that depends on them is marked *
 
 ## Tech stack
 
-**[PENDING]** Not chosen yet. Constraints from the GDD: static files only (GitHub Pages), localStorage saves, Web Audio API for all sound (no audio files), no backend, no accounts.
+- Static site: vanilla JavaScript ES modules, no build step, no dependencies, no backend. Deploys to GitHub Pages from `main` root.
+- Run: `python -m http.server 8000` in the repo root, open `http://localhost:8000/`. (Node is not installed on Nicolas's machine.)
+- Tests: open `http://localhost:8000/tests/`; all checks must pass. Balancing targets are reported separately and do not fail the suite.
+- Rules live in `js/game.js` (no DOM; the same `tick` runs live and offline). Market in `js/market.js`, saves in `js/save.js`, UI in `js/ui.js`, player-facing copy in `js/strings.js` and `data/tutorial.json`.
+- Console handle for debugging: `window.idleCardShop.state`.

@@ -1,0 +1,14 @@
+{
+  "revision": 1,
+  "steps": [
+    { "id": "buy", "text": "Buy a booster.", "target": "[data-action='buy'][data-n='1']", "tab": "shop", "done": "boostersBought" },
+    { "id": "open", "text": "Open it.", "target": "[data-action='open'][data-n='1']", "tab": "shop", "done": "boostersOpened" },
+    { "id": "price", "text": "Price your cards.", "target": "[data-action='price']", "tab": "shop", "done": "cardsPriced" },
+    { "id": "list", "text": "List them in the showcase.", "target": "[data-action='list']", "tab": "shop", "done": "cardsListed" },
+    { "id": "sale", "text": "Customers buy on their own. Wait for your first sale.", "target": "#stage-list", "tab": "shop", "done": "cardsSold" },
+    { "id": "hire", "text": "Hire your first employee.", "target": "[data-action='hire']", "tab": "staff", "when": "staffUnlocked", "done": "hasStaff" },
+    { "id": "task", "text": "Pick a task for them.", "target": ".emp select", "tab": "staff", "when": "hasStaff", "done": "staffHasTask" },
+    { "id": "market", "text": "Prices change once a day. Check the Market.", "target": "[data-tab='market']", "when": "marketUnlocked", "done": "visitedMarket" },
+    { "id": "settings", "text": "Theme, volume and save are in Settings.", "target": "[data-tab='settings']", "when": "hasStaff", "done": "visitedSettings" }
+  ]
+}

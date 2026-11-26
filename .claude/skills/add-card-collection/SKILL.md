@@ -36,7 +36,7 @@ Check and report:
 - [ ] every `image` path exists; images are 5:7
 - [ ] no placeholder left that Nicolas expected to be filled (list them if any)
 
-**[PENDING tech stack]** Once the game exists, also load the game locally and open one booster of the new collection.
+Then serve the repo root (`python -m http.server 8000`), open `/tests/` (collection checks must pass) and the game itself, and open one booster of the new collection. The browser console lists any card the loader skipped.
 
 ## 4. Tutorial and summary
 

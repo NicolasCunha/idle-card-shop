@@ -25,7 +25,12 @@ Does it add, remove, rename or change the meaning of any saved field? If yes, st
 - New tabs or controls follow the progressive reveal rules (GDD section 11): once shown, never hidden.
 - Respect "Reduce motion" and color-independent rarity.
 
-**[PENDING tech stack]** Add stack-specific conventions (folders, test runner, build) once chosen.
+Stack conventions:
+
+- Rules and numbers go in `js/game.js` (no DOM). Add tunables as exported constants at the top.
+- UI goes in `js/ui.js`: each tab has `sig()` (re-render when it changes), `html()` and `vals()` (live values patched into `data-k`, `data-w`, `data-d`, `data-html` elements). Buttons use `data-action`, handled in `run()` in `js/main.js`.
+- Player-facing text goes in `js/strings.js` or `data/tutorial.json`.
+- Tests go in `tests/tests.js`; run them at `/tests/` on a local static server.
 
 ## 4. Update the tutorial
 

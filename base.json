@@ -1,0 +1,786 @@
+{
+  "id": "base",
+  "name": "Base Set",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "releaseYear": 1999,
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 6,
+        "rarity": "common"
+      },
+      {
+        "count": 2,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.67,
+          "holo": 0.33
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/102",
+      "name": "Card 001",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/102",
+      "name": "Card 002",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/102",
+      "name": "Card 003",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/102",
+      "name": "Card 004",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/102",
+      "name": "Card 005",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/102",
+      "name": "Card 006",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/102",
+      "name": "Card 007",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/102",
+      "name": "Card 008",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/102",
+      "name": "Card 009",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/102",
+      "name": "Card 010",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/102",
+      "name": "Card 011",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/102",
+      "name": "Card 012",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/102",
+      "name": "Card 013",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/102",
+      "name": "Card 014",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/102",
+      "name": "Card 015",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/102",
+      "name": "Card 016",
+      "rarity": "holo",
+      "foil": true
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/102",
+      "name": "Card 017",
+      "rarity": "rare"
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/102",
+      "name": "Card 018",
+      "rarity": "rare"
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/102",
+      "name": "Card 019",
+      "rarity": "rare"
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/102",
+      "name": "Card 020",
+      "rarity": "rare"
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/102",
+      "name": "Card 021",
+      "rarity": "rare"
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/102",
+      "name": "Card 022",
+      "rarity": "rare"
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/102",
+      "name": "Card 023",
+      "rarity": "rare"
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/102",
+      "name": "Card 024",
+      "rarity": "rare"
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/102",
+      "name": "Card 025",
+      "rarity": "rare"
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/102",
+      "name": "Card 026",
+      "rarity": "rare"
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/102",
+      "name": "Card 027",
+      "rarity": "rare"
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/102",
+      "name": "Card 028",
+      "rarity": "rare"
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/102",
+      "name": "Card 029",
+      "rarity": "rare"
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/102",
+      "name": "Card 030",
+      "rarity": "rare"
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/102",
+      "name": "Card 031",
+      "rarity": "rare"
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/102",
+      "name": "Card 032",
+      "rarity": "rare"
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/102",
+      "name": "Card 033",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/102",
+      "name": "Card 034",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/102",
+      "name": "Card 035",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/102",
+      "name": "Card 036",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/102",
+      "name": "Card 037",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/102",
+      "name": "Card 038",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/102",
+      "name": "Card 039",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/102",
+      "name": "Card 040",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/102",
+      "name": "Card 041",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/102",
+      "name": "Card 042",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/102",
+      "name": "Card 043",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/102",
+      "name": "Card 044",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/102",
+      "name": "Card 045",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/102",
+      "name": "Card 046",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/102",
+      "name": "Card 047",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/102",
+      "name": "Card 048",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/102",
+      "name": "Card 049",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/102",
+      "name": "Card 050",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/102",
+      "name": "Card 051",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/102",
+      "name": "Card 052",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/102",
+      "name": "Card 053",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/102",
+      "name": "Card 054",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/102",
+      "name": "Card 055",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/102",
+      "name": "Card 056",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/102",
+      "name": "Card 057",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/102",
+      "name": "Card 058",
+      "rarity": "uncommon"
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/102",
+      "name": "Card 059",
+      "rarity": "common"
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/102",
+      "name": "Card 060",
+      "rarity": "common"
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/102",
+      "name": "Card 061",
+      "rarity": "common"
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/102",
+      "name": "Card 062",
+      "rarity": "common"
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/102",
+      "name": "Card 063",
+      "rarity": "common"
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/102",
+      "name": "Card 064",
+      "rarity": "common"
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/102",
+      "name": "Card 065",
+      "rarity": "common"
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/102",
+      "name": "Card 066",
+      "rarity": "common"
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/102",
+      "name": "Card 067",
+      "rarity": "common"
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/102",
+      "name": "Card 068",
+      "rarity": "common"
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/102",
+      "name": "Card 069",
+      "rarity": "common"
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/102",
+      "name": "Card 070",
+      "rarity": "common"
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/102",
+      "name": "Card 071",
+      "rarity": "common"
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/102",
+      "name": "Card 072",
+      "rarity": "common"
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/102",
+      "name": "Card 073",
+      "rarity": "common"
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/102",
+      "name": "Card 074",
+      "rarity": "common"
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/102",
+      "name": "Card 075",
+      "rarity": "common"
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/102",
+      "name": "Card 076",
+      "rarity": "common"
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/102",
+      "name": "Card 077",
+      "rarity": "common"
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/102",
+      "name": "Card 078",
+      "rarity": "common"
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/102",
+      "name": "Card 079",
+      "rarity": "common"
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/102",
+      "name": "Card 080",
+      "rarity": "common"
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/102",
+      "name": "Card 081",
+      "rarity": "common"
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/102",
+      "name": "Card 082",
+      "rarity": "common"
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/102",
+      "name": "Card 083",
+      "rarity": "common"
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/102",
+      "name": "Card 084",
+      "rarity": "common"
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/102",
+      "name": "Card 085",
+      "rarity": "common"
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/102",
+      "name": "Card 086",
+      "rarity": "common"
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/102",
+      "name": "Card 087",
+      "rarity": "common"
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/102",
+      "name": "Card 088",
+      "rarity": "common"
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/102",
+      "name": "Card 089",
+      "rarity": "common"
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/102",
+      "name": "Card 090",
+      "rarity": "common"
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/102",
+      "name": "Card 091",
+      "rarity": "common"
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/102",
+      "name": "Card 092",
+      "rarity": "common"
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/102",
+      "name": "Card 093",
+      "rarity": "common"
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/102",
+      "name": "Card 094",
+      "rarity": "common"
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/102",
+      "name": "Card 095",
+      "rarity": "common"
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/102",
+      "name": "Card 096",
+      "rarity": "common"
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/102",
+      "name": "Card 097",
+      "rarity": "common"
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/102",
+      "name": "Card 098",
+      "rarity": "common"
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/102",
+      "name": "Card 099",
+      "rarity": "common"
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/102",
+      "name": "Card 100",
+      "rarity": "common"
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/102",
+      "name": "Card 101",
+      "rarity": "common"
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/102",
+      "name": "Card 102",
+      "rarity": "common"
+    }
+  ]
+}

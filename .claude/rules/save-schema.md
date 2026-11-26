@@ -12,6 +12,10 @@ Saves are versioned JSON. A player's save must never break.
 - Device preferences (theme, volumes) live in a separate localStorage key, never in the save.
 - Market prices are never saved; they are computed from the day (`.claude/rules/design-pillars.md`).
 
+## Where
+
+`js/save.js`: `SAVE_VERSION`, `MIGRATIONS`, `mergeDefaults`, `sanitize`. Defaults come from `newState()` in `js/game.js`. State keys starting with `_` are runtime caches and are never saved.
+
 ## Ask before changing
 
 **Any change that adds, removes, renames or changes the meaning of a field in `state` needs Nicolas's decision before it is implemented.** Ask him, in Portuguese, for each affected field: "o que acontece com esse campo em saves antigos?" and offer concrete options (default value, derive from other fields, drop it). Do not pick for him.
