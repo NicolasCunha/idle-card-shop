@@ -160,6 +160,8 @@ label.check { gap: .35rem; }
 .tr.th { background: none; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 .market-table .tr { grid-template-columns: 40px 1fr 80px 70px 70px 96px 110px; }
 .news { margin-bottom: .8rem; }
+.pager { display: flex; align-items: center; gap: .6rem; margin: .4rem 0 .6rem; font-variant-numeric: tabular-nums; }
+.pager button { min-width: 2rem; }
 .news li.up b { color: var(--up); }
 .news li.down b { color: var(--down); }
 
@@ -240,6 +242,21 @@ label.check { gap: .35rem; }
   display: inline-grid; place-items: center; min-width: 1.35rem; height: 1.35rem; padding: 0 .2rem;
   border-radius: 4px; font-size: .72rem; border: 1.5px solid var(--rc); color: var(--text);
 }
+/* Card with a scan: the image is the whole card; a small corner letter keeps
+   rarity readable without relying on the border color. */
+.card.has-img { border-width: 2px; background: var(--surface-2); }
+.card.has-img .card-art { position: absolute; inset: 0; }
+.card.has-img .card-art img { object-fit: cover; object-position: center; }
+.card.has-img .card-generic, .card.has-img .card-foot { display: none; }
+.rar-corner { display: none; }
+.card.has-img .rar-corner {
+  display: grid; place-items: center; position: absolute; left: 4px; bottom: 4px; z-index: 1;
+  min-width: 1.2rem; height: 1.2rem; padding: 0 .2rem; border-radius: 4px;
+  font-size: .68rem; font-weight: 750; background: var(--rc); color: #2a1f12;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+}
+.card.has-img.size-lg .rar-corner { font-size: 1rem; min-width: 1.8rem; height: 1.8rem; left: 10px; bottom: 10px; }
+.card.has-img.size-xs .rar-corner { display: none; }
 .card.unseen { filter: grayscale(1) brightness(.75); opacity: .45; }
 [data-theme="dark"] .card.unseen { filter: grayscale(1) brightness(.6); }
 .card.foil::after {

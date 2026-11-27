@@ -162,6 +162,7 @@ export const DEFAULT_PREFS = {
   muteMusic: false,
   muteEffects: false,
   reduceMotion: false,
+  marketPageSize: 25, // 0 = all
 };
 
 export function loadPrefs() {

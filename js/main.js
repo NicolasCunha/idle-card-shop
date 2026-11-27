@@ -114,7 +114,8 @@ async function runCatchUp(now, showOverlay) {
       if (bar) bar.style.width = `${(frac * 100).toFixed(1)}%`;
       if (label) label.textContent = `${fmtDuration(done)} / ${fmtDuration(seconds)}`;
     });
-    if (big && res) showOfflineSummary(res);
+    const quiet = res && !res.earned && !res.bought && !res.opened && !res.sold && !res.levels;
+    if (big && res && !quiet) showOfflineSummary(res);
     else if (big) closeOverlay();
   } finally {
     catchingUp = false;
@@ -228,6 +229,12 @@ function run(action, d) {
     case 'binder-set': UI.setUiOption('binderSet', d.value); break;
     case 'market-set': UI.setUiOption('marketSet', d.value); break;
     case 'market-sort': UI.setUiOption('marketSort', d.value); break;
+    case 'market-page': UI.setMarketPage(Number(d.page) || 0); document.getElementById('panel').scrollTop = 0; window.scrollTo(0, 0); break;
+    case 'market-page-size':
+      prefs.marketPageSize = Number(d.value) || 0;
+      Save.savePrefs(prefs);
+      UI.setMarketPage(0);
+      break;
     case 'card': {
       const { set, card } = find(d);
       if (!card) break;

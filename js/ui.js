@@ -13,7 +13,8 @@ import { GAME_VERSION } from './save.js';
 let S = null, SETS = null, ORDER = [], PREFS = null, A = null;
 let active = 'shop';
 let lastSig = null;
-let ui = { shopSet: null, binderSet: null, marketSet: null, marketSort: 'number' };
+let ui = { shopSet: null, binderSet: null, marketSet: null, marketSort: 'number', marketPage: 0 };
+export const PAGE_SIZES = [10, 25, 50, 100, 0];
 let shownMoney = null;
 
 export function initUI({ state, sets, order, prefs, actions }) {
@@ -67,6 +68,8 @@ function bindEvents() {
     const el = e.target.closest('[data-action]');
     if (!el || (el.tagName !== 'SELECT' && el.tagName !== 'INPUT')) return;
     const value = el.type === 'checkbox' ? el.checked : el.value;
+    // A changed select can be re-rendered right away; typing in inputs cannot.
+    if (el.tagName === 'SELECT') el.blur();
     A.run(el.dataset.action, { ...el.dataset, value, files: el.files });
   });
   document.addEventListener('input', e => {
@@ -84,7 +87,26 @@ export function switchTab(tab) {
   document.getElementById('panel').scrollTop = 0;
 }
 
-export function setUiOption(key, value) { ui[key] = value; lastSig = null; }
+export function setUiOption(key, value) {
+  ui[key] = value;
+  if (key === 'marketSet' || key === 'marketSort') ui.marketPage = 0;
+  lastSig = null;
+}
+
+export function setMarketPage(page) { ui.marketPage = page; lastSig = null; }
+
+function pager(page, pages, total, size) {
+  return `<div class="pager">
+    <label class="inline">Per page <select data-action="market-page-size">
+      ${PAGE_SIZES.map(n => `<option value="${n}" ${n === size ? 'selected' : ''}>${n || 'All'}</option>`).join('')}
+    </select></label>
+    <span class="grow"></span>
+    ${pages > 1 ? `
+    <button class="small" data-action="market-page" data-page="${page - 1}" ${page <= 0 ? 'disabled' : ''} aria-label="Previous page">‹</button>
+    <span class="muted">${page + 1} / ${pages}</span>
+    <button class="small" data-action="market-page" data-page="${page + 1}" ${page >= pages - 1 ? 'disabled' : ''} aria-label="Next page">›</button>` : `<span class="muted">${total} cards</span>`}
+  </div>`;
+}
 
 function tabVisible(tab) {
   if (tab === 'shop' || tab === 'settings') return true;
@@ -358,7 +380,7 @@ function sparkline(values, w = 90, h = 24) {
 }
 
 PANELS.market = {
-  sig: () => [S.day, ui.marketSet, ui.marketSort].join(),
+  sig: () => [S.day, ui.marketSet, ui.marketSort, ui.marketPage, PREFS.marketPageSize].join(),
   html() {
     const st = set(ui.marketSet);
     const day = S.day;
@@ -374,6 +396,11 @@ PANELS.market = {
       d7: (a, b) => b.d7 - a.d7,
     };
     rows.sort(sorters[ui.marketSort] || sorters.number);
+    const size = PAGE_SIZES.includes(PREFS.marketPageSize) ? PREFS.marketPageSize : 25;
+    const pages = size ? Math.max(1, Math.ceil(rows.length / size)) : 1;
+    ui.marketPage = Math.min(Math.max(0, ui.marketPage), pages - 1);
+    const shown = size ? rows.slice(ui.marketPage * size, (ui.marketPage + 1) * size) : rows;
+    const pagerHtml = pager(ui.marketPage, pages, rows.length, size);
     const news = [];
     for (const c of st.cards) news.push(...M.newsFor(st, c, day, 3));
     news.sort((a, b) => b.day - a.day);
@@ -391,9 +418,10 @@ PANELS.market = {
     </div>
     ${news.length ? `<section class="box news"><h3>News</h3><ul>${news.slice(0, 8).map(n =>
       `<li class="${n.kind}"><b>${esc(seen[n.card.id] ? n.card.name : n.card.number || n.card.name)}</b> ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day))}</span></li>`).join('')}</ul></section>` : ''}
+    ${pagerHtml}
     <div class="table market-table">
       <div class="tr th"><span></span><span>Card</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
-      ${rows.map(r => {
+      ${shown.map(r => {
         const cost = r.now * G.MARKET_BUY_RATE;
         return `<div class="tr">
           ${cardHtml(st, r.c, { size: 'xs', unseen: !seen[r.c.id] })}
@@ -405,7 +433,8 @@ PANELS.market = {
           <span><button class="small" data-action="buy-single" data-s="${esc(st.id)}" data-c="${esc(r.c.id)}" data-cost="${cost}" title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button></span>
         </div>`;
       }).join('')}
-    </div>`;
+    </div>
+    ${pages > 1 ? pagerHtml : ''}`;
   },
 };
 

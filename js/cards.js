@@ -9,11 +9,16 @@ export function cardHtml(set, card, { size = 'md', unseen = false, badge = '', e
   if (card.foil) cls.push('foil');
   if (unseen) cls.push('unseen');
   if (extraClass) cls.push(extraClass);
-  const art = card.image
-    ? `<img src="${esc(card.image)}" alt="" loading="lazy" draggable="false" onerror="this.remove()">`
+  // A card image is a full card scan, so it fills the whole card and our own
+  // name strip is hidden. If it fails to load, the generic card comes back.
+  const showImg = card.image && !unseen;
+  if (showImg) cls.push('has-img');
+  const art = showImg
+    ? `<img src="${esc(card.image)}" alt="" loading="lazy" draggable="false" onerror="this.closest('.card')?.classList.remove('has-img');this.remove()">`
     : '';
   return `<div class="${cls.join(' ')}" style="--rc:${esc(r.color)}" title="${esc(unseen ? '???' : `${card.name} · ${r.name}`)}">
-    <div class="card-art"><span class="card-generic">${esc(r.short)}</span>${unseen ? '' : art}</div>
+    <div class="card-art"><span class="card-generic">${esc(r.short)}</span>${art}</div>
+    <b class="rar-corner" aria-hidden="true">${esc(r.short)}</b>
     <div class="card-foot">
       <span class="card-name">${esc(unseen ? '???' : card.name)}</span>
       <span class="card-meta"><b class="rar" aria-label="${esc(r.name)}">${esc(r.short)}</b>${esc(card.number || '')}</span>
