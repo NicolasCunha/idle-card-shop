@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-floor",
+      "date": "2026-11-27",
+      "version": "1.5.0",
+      "title": "Shop floor",
+      "text": "See your customers walk in, check the showcase and tell you what they think of your prices. The showcase fills up as you list cards, and the shop gets new decor as your Fame grows."
+    },
+    {
       "id": "2026-11-27-fame",
       "date": "2026-11-27",
       "version": "1.4.0",

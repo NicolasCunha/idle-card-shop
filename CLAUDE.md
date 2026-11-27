@@ -4,7 +4,7 @@ A calm, menu-based (Cookie Clicker style) idle browser game about running a trad
 
 ## Current phase
 
-**v1 built (2026-11-26) and live on GitHub Pages.** Nicolas told us to build the game with the GDD as written, using the GDD's proposed answers to the open questions as assumptions. Implementation notes, assumptions and open balancing items: [docs/sdd/v1-implementation.md](docs/sdd/v1-implementation.md). For new features, use the `develop-feature` skill. Booster supply, the release calendar and News: [docs/sdd/booster-supply.md](docs/sdd/booster-supply.md). 10-minute market days, Fame and new-set customers: [docs/sdd/fast-days-fame.md](docs/sdd/fast-days-fame.md).
+**v1 built (2026-11-26) and live on GitHub Pages.** Nicolas told us to build the game with the GDD as written, using the GDD's proposed answers to the open questions as assumptions. Implementation notes, assumptions and open balancing items: [docs/sdd/v1-implementation.md](docs/sdd/v1-implementation.md). For new features, use the `develop-feature` skill. Booster supply, the release calendar and News: [docs/sdd/booster-supply.md](docs/sdd/booster-supply.md). 10-minute market days, Fame and new-set customers: [docs/sdd/fast-days-fame.md](docs/sdd/fast-days-fame.md). Shop floor scene and sprite format: [docs/sdd/shop-floor.md](docs/sdd/shop-floor.md).
 
 ## Owner
 

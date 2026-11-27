@@ -1,14 +1,16 @@
 // Service worker: lets the game install as an app and run offline.
 // Game files: network first (updates show up on the next load), cache as
 // fallback. Card images: cache first, kept across versions.
-const VERSION = 'v2';
+const VERSION = 'v3';
 const SHELL = `shell-${VERSION}`;
 const IMAGES = 'images-v1';
 const CORE = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest',
   'js/audio.js', 'js/cards.js', 'js/data.js', 'js/format.js', 'js/game.js', 'js/main.js',
-  'js/market.js', 'js/opening.js', 'js/save.js', 'js/strings.js', 'js/supply.js', 'js/tutorial.js', 'js/ui.js',
+  'js/market.js', 'js/opening.js', 'js/save.js', 'js/scene.js', 'js/strings.js', 'js/supply.js', 'js/tutorial.js', 'js/ui.js',
   'data/tutorial.json', 'data/news.json', 'collections.json', 'icons/icon-192.png', 'icons/icon-512.png',
+  'images/sprites/customer-1.png', 'images/sprites/customer-2.png', 'images/sprites/customer-3.png',
+  'images/sprites/customer-4.png', 'images/sprites/customer-5.png',
 ];
 
 self.addEventListener('install', event => {
@@ -35,7 +37,8 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   const url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== location.origin || url.pathname.includes('/tests/')) return;
-  if (url.pathname.includes('/images/')) event.respondWith(cacheFirst(req));
+  // Card images never change; sprites may be replaced, so they go network first.
+  if (url.pathname.includes('/images/') && !url.pathname.includes('/images/sprites/')) event.respondWith(cacheFirst(req));
   else event.respondWith(networkFirst(req));
 });
 

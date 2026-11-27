@@ -4,6 +4,7 @@ import * as G from './game.js';
 import * as UI from './ui.js';
 import * as Save from './save.js';
 import * as Audio from './audio.js';
+import * as Scene from './scene.js';
 import { loadCollections } from './data.js';
 import { loadTutorial, skipTutorial, restartTutorial } from './tutorial.js';
 import { initOpening, playOpening, showBulkResult, closeOverlay } from './opening.js';
@@ -50,7 +51,11 @@ async function boot() {
     onOpenAnother: set => openOne(set),
     onClose: () => UI.frame(),
   });
+  Scene.initScene({ getState: () => state, sets });
+  Scene.setCapacity(st => G.showcaseCapacity(st));
   UI.initUI({ state, sets, order, prefs, news, actions: { run, click: () => Audio.sfx.click() } });
+
+  G.onCustomer(ev => Scene.customer(ev));
 
   G.onSale(v => {
     Audio.sfx.sale();

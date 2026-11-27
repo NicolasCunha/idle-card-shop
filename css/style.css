@@ -212,6 +212,8 @@ label.check { gap: .35rem; }
   display: flex; gap: 1rem; align-items: center; z-index: 20; max-width: calc(100% - 2rem);
 }
 .tip[hidden] { display: none; }
+.floor { margin-bottom: .8rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; line-height: 0; background: #c9a77c; }
+.floor-canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
 .customers { margin-top: .8rem; }
 .feel-sum { display: flex; gap: .7rem; flex-wrap: wrap; font-size: .85rem; }
 .feel { white-space: nowrap; font-variant-numeric: tabular-nums; }

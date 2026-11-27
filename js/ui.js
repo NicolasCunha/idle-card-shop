@@ -11,6 +11,7 @@ import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS, FEELING_TEXT } from './s
 import { currentStep } from './tutorial.js';
 import { cardFilter } from './data.js';
 import { GAME_VERSION } from './save.js';
+import { mount as mountScene } from './scene.js';
 
 let S = null, SETS = null, ORDER = [], PREFS = null, A = null, NEWS = [];
 let active = 'shop';
@@ -155,6 +156,7 @@ export function frame(force = false) {
     if (!focused || force) {
       panel.innerHTML = tab.html();
       lastSig = sig;
+      mountScene(document.getElementById('floor'));
     }
   }
   patch(panel, tab.vals ? tab.vals() : {});
@@ -319,6 +321,7 @@ PANELS.shop = {
     const sel = released().length > 1 ? `<select data-action="shop-set">${setOptions(sid)}</select>` : '';
     const next = G.nextRelease(S, SETS);
     return `
+    <div class="floor" id="floor"></div>
     <div class="stages">
       <section class="stage" id="stage-buy">
         <h3>Distributor</h3>${sel}

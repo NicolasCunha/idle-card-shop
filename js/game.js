@@ -690,6 +690,10 @@ export function feedbackSummary(state) {
 
 let saleListener = null;
 export function onSale(fn) { saleListener = fn; }
+// The shop floor scene listens to visits (live play only, never offline).
+let customerListener = null;
+export function onCustomer(fn) { customerListener = fn; }
+const tellScene = ev => { if (customerListener && !quiet) customerListener(ev); };
 let quiet = false; // true during offline catch-up: no sounds or floating text
 
 // A customer arrives with a budget and looks at up to CUSTOMER_LOOKS cards
@@ -697,14 +701,16 @@ let quiet = false; // true during offline catch-up: no sounds or floating text
 // price). Each look buys with the chance of the tag's price band (BUY_BANDS).
 function customerVisit(state, sets) {
   state.stats.customers++;
-  if (!state.showcase.length) return;
+  if (!state.showcase.length) { tellScene({ looks: [], empty: true }); return; }
   // Some customers come for the newest collection only.
   const want = wantedSet(state, sets);
   const only = want && rng() < want.share ? want.set.id : null;
   if (only && !state.showcase.some(it => it.s === only)) {
     rememberMiss(state, only);
+    tellScene({ looks: [], miss: only });
     return;
   }
+  const looks = [];
   let budget = customerBudget(state);
   const looked = new Set();
   for (let i = 0; i < CUSTOMER_LOOKS && state.showcase.length; i++) {
@@ -725,7 +731,9 @@ function customerVisit(state, sets) {
     const set = sets[it.s], card = set.byId[it.c];
     const mv = marketValue(state, set, card);
     const bought = rng() < buyChance(it.p, mv);
-    remember(state, it, feeling(it.p, mv), bought);
+    const f = feeling(it.p, mv);
+    remember(state, it, f, bought);
+    looks.push({ s: it.s, c: it.c, p: it.p, f, b: bought });
     if (!bought) continue;
     state.showcase.splice(pick, 1);
     budget -= it.p;
@@ -734,6 +742,7 @@ function customerVisit(state, sets) {
     state.stats.cardsSold++;
     if (saleListener && !quiet) saleListener(paid);
   }
+  tellScene({ looks });
 }
 
 // ---------- Progressive reveal (GDD section 11) ----------
