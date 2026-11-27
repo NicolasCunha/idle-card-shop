@@ -5,7 +5,7 @@ description: Take an IdleCardShop feature from the GDD/SDD to a finished change 
 
 # Develop a feature
 
-**Phase gate:** game code waits for GDD approval. If `docs/GDD.md` is still marked as a draft, stop and tell Nicolas.
+The game is past v1; work from the GDD and the SDDs in `docs/sdd/`.
 
 ## 1. Anchor in the design
 
