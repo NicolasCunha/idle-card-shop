@@ -24,8 +24,9 @@ export const UPGRADE_TEXT = {
 export const TIPS = {
   buy: 'Sealed boosters from the distributor. Less supply left, higher price.',
   supply: 'Boosters left at the distributor, out of all ever printed. Rival shops buy every day; reprints add more.',
-  marketBuy: 'Buy a sealed booster from rival shops at 110% of the booster price.',
-  marketSell: 'Sell a sealed booster at 90% of the booster price. It goes back to the supply.',
+  boosterMarket: 'Second-hand value. Follows supply more than the distributor and swings day to day.',
+  marketBuy: 'Buy a sealed booster from rival shops at 110% of market value.',
+  marketSell: 'Sell a sealed booster to rival shops at 90% of market value.',
   search: 'Name, number or both. Example: Alakazam 1',
   open: 'Opened cards go to your binder.',
   price: 'Tags binder copies, priciest first, and puts them in the showcase.',

@@ -53,7 +53,7 @@ const rand = (...parts) => hash(SEED + '|' + parts.join('|')) / 9007199254740992
 export const hashRand = rand;
 const smoothstep = t => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 
-function smoothNoise(key, day, period, amp) {
+export function smoothNoise(key, day, period, amp) {
   const i = Math.floor(day / period), t = day / period - i;
   const a = rand(key, period, i) * 2 - 1, b = rand(key, period, i + 1) * 2 - 1;
   return amp * (a + (b - a) * smoothstep(t));

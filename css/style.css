@@ -159,7 +159,7 @@ label.check { gap: .35rem; }
 }
 .tr.th { background: none; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 .market-table .tr { grid-template-columns: 48px 64px 1fr 80px 70px 70px 96px 110px; }
-.booster-table .tr { grid-template-columns: 1fr 80px 70px 150px 60px 250px; }
+.booster-table .tr { grid-template-columns: 1fr 90px 80px 70px 150px 60px 250px; }
 .btns.tight { gap: .3rem; flex-wrap: nowrap; justify-content: flex-end; }
 .boosters { margin-bottom: .8rem; }
 .boosters h3 { margin-top: 0; }
@@ -345,8 +345,8 @@ label.check { gap: .35rem; }
   .market-table .tr { grid-template-columns: 36px 1fr 70px auto; }
   .market-table .tr > :nth-child(2), .market-table .tr > :nth-child(5), .market-table .tr > :nth-child(6), .market-table .tr > :nth-child(7) { display: none; }
   .booster-table .tr { grid-template-columns: 1fr 70px 200px; }
-  .booster-table .tr > :nth-child(3), .booster-table .tr > :nth-child(4), .booster-table .tr > :nth-child(5) { display: none; }
-  .booster-table .tr > :nth-child(6) { display: flex; }
+  .booster-table .tr > :nth-child(2), .booster-table .tr > :nth-child(4), .booster-table .tr > :nth-child(5), .booster-table .tr > :nth-child(6) { display: none; }
+  .booster-table .tr > :nth-child(7) { display: flex; }
   .market-search { min-width: 0; flex: 1 1 10rem; }
   .skill { grid-template-columns: 3rem 2.6rem 1fr 6.5rem; }
   .sk-time { display: none; }

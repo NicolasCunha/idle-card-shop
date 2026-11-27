@@ -184,6 +184,13 @@ async function run() {
     ok(ma.left === mb.left && ma.printed === mb.printed && ma.held === mb.held, 'day by day and one jump give the same supply', `${ma.left} left`);
     ok(ma.left < ma.run && G.boosterPrice(a, base) > p0, 'rival shops buy, so supply drops and the price rises', `${fmtMoney(G.boosterPrice(a, base))} after 120 days`);
     ok(ma.left >= ma.printed * SU.PLAYER_MARGIN - 1, 'rivals always leave a share for the player');
+    const dRise = G.boosterPrice(a, base) / p0 - 1;
+    const scarce = ma.printed / ma.left;
+    ok(Math.abs(dRise - (Math.pow(scarce, SU.DISTRIBUTOR_EXPONENT) - 1)) < 1e-6 && SU.DISTRIBUTOR_EXPONENT < SU.MARKET_EXPONENT,
+      'the distributor rises with scarcity, less than the Market', `distributor ${fmtMoney(G.boosterPrice(a, base))}, market ${fmtMoney(G.marketBoosterValue(a, base))}`);
+    let maxSwing = 0;
+    for (let d = 0; d < 400; d++) maxSwing = Math.max(maxSwing, Math.abs(SU.marketValueOf(base, ma, 20000 + d) / SU.marketValueOf(base, ma, 20000 + d - 1) - 1));
+    ok(maxSwing > 0 && maxSwing < 0.07, 'the Market booster value swings day to day, under 7%', `max ${(maxSwing * 100).toFixed(1)}%`);
     // A long run reaches the reprint zone at some point; reprints raise supply.
     const c = fresh(sets, order);
     let reprinted = false, minFrac = 1, maxP = 0;
@@ -206,8 +213,17 @@ async function run() {
     const cost = G.marketBoosterBuyPrice(t, base);
     const m0 = t.money;
     ok(held > 0 && G.buyMarketBooster(t, base) && Math.abs(m0 - t.money - cost) < 1e-9 && t.market.base.held === held - 1, 'Market boosters cost 110% and come from rival stock');
-    const left = t.market.base.left, sell = G.marketBoosterSellPrice(t, base), m1 = t.money, n = t.stock.base;
-    ok(G.sellMarketBooster(t, base) && Math.abs(t.money - m1 - sell) < 1e-9 && t.stock.base === n - 1 && t.market.base.left === left + 1, 'selling a booster pays 90% and returns it to the supply');
+    const left = t.market.base.left, held2 = t.market.base.held, sell = G.marketBoosterSellPrice(t, base), m1 = t.money, n = t.stock.base;
+    ok(G.sellMarketBooster(t, base) && Math.abs(t.money - m1 - sell) < 1e-9 && t.stock.base === n - 1 && t.market.base.held === held2 + 1 && t.market.base.left === left,
+      'selling a booster pays 90% and it goes to rival stock, not back to the distributor');
+    { // Buy at the distributor and flip on the Market, over and over: it must run out.
+      const f = fresh(sets, order);
+      f.money = 1e9;
+      f.market.base.left = 1000;
+      let loops = 0;
+      while (loops < 5000 && G.buyBooster(f, base)) { G.sellMarketBooster(f, base); loops++; }
+      ok(loops <= 1000 && G.soldOut(f, base), 'buy-and-flip stops when the distributor runs out', `${loops} flips`);
+    }
     t.market.base.left = 0;
     ok(G.soldOut(t, base) && !G.buyBooster(t, base), 'a sold-out distributor sells nothing');
   }

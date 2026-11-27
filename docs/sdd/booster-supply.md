@@ -16,8 +16,9 @@ All tunables are constants at the top of `js/supply.js`.
 | `BASE_PRINT_RUN` | 1,000,000 | First collection's print run |
 | `PRINT_GROWTH` / `PRINT_CAP` | 1.25 / 2 | Each newer set prints 25% more, up to 2x the first |
 | `PLAYER_MARGIN` | 0.10 | Rivals never take the supply below 10% of all printed |
-| `PRICE_EXPONENT` | 0.5 | price = wholesale x (printed / left)^0.5 |
-| `MIN_LEFT_FRAC` | 0.02 | Price stops rising below 2% left (about 7x) |
+| `DISTRIBUTOR_EXPONENT` | 0.25 | distributor price = wholesale x (printed / left)^0.25 |
+| `MARKET_EXPONENT` / `MARKET_SWING` | 0.5 / 0.06 | Market value = wholesale x (printed / left)^0.5 x daily swing (5- and 13-day waves, about ±12%) |
+| `MIN_LEFT_FRAC` | 0.02 | Prices stop rising below 2% left (distributor ~2.7x, Market ~7x) |
 | `MARKET_BUY_RATE` / `MARKET_SELL_RATE` | 1.1 / 0.9 | Sealed boosters on the Market |
 | `RIVALS` | 8 appetites, 0.04% to 0.6% of the run per day | Rival shops |
 | Rival buy chance | 60% per rival per day | Demand fades from 100% to 20% (`HYPE_DAYS` 30) |
@@ -27,8 +28,10 @@ All tunables are constants at the top of `js/supply.js`.
 Pools per collection (`state.market[setId]`): `left` (at the distributor), `held` (rival shops' stock, which the Market sells from), `printed` (run plus reprints).
 
 - Distributor buy: `left - 1`, pays the booster price.
-- Market buy: `held - 1`, pays 110%. Works when the distributor is sold out.
-- Market sell: `left + 1`, earns 90%. Selling a lot lowers the price.
+- Market buy: `held - 1`, pays 110% of Market value. Works when the distributor is sold out.
+- Market sell: `held + 1`, earns 90% of Market value. Sold boosters go to rival stock, not back to the distributor, so buying at the distributor and flipping on the Market is possible (Nicolas wants manipulation) but finite: every distributor buy uses up supply and raises the price (tested).
+
+The distributor rises with scarcity too, but less than the Market, which also swings day to day (Nicolas, 2026-11-27: the second-hand market is more volatile). `hist` keeps the daily scarcity (printed / left) so the Market 7-day change can be recomputed.
 - The pricing staff and the buyer use the distributor; the buyer shows `sold out` when `left < 1`.
 
 Daily dice come from `hashRand('supply', setId, daysSinceRelease, ...)` with the global market seed, so the world is the same for everyone who makes the same choices. The player's trades change the pools, so the pools are saved. This is an approved exception to "nothing about the market is stored in the save"; card prices are still computed from the day only.
@@ -57,6 +60,5 @@ Revision 3 -> 4. New steps `supply` (Market booster table, done on the first boo
 
 ## Open questions
 
-- Distributor price follows supply from day one (no fixed retail price). An alternative is a fixed distributor price with only the Market floating; ask Nicolas if the arbitrage feels too weak.
 - Storage caps sealed boosters at 20 + 10 per level (max 220), which limits speculation. Maybe a bigger storage upgrade later.
 - Customers still do not buy sealed boosters [PENDING GDD Q4].

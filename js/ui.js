@@ -504,11 +504,12 @@ PANELS.market = {
     <section class="box boosters">
       <h3>Boosters</h3>
       <div class="table booster-table">
-        <div class="tr th"><span>Collection</span><span class="num">Price</span><span class="num">7d</span><span class="num" title="${esc(TIPS.supply)}">Supply</span><span class="num">Yours</span><span></span></div>
+        <div class="tr th"><span>Collection</span><span class="num" title="${esc(TIPS.buy)}">Distributor</span><span class="num" title="${esc(TIPS.boosterMarket)}">Market</span><span class="num">7d</span><span class="num" title="${esc(TIPS.supply)}">Supply</span><span class="num">Yours</span><span></span></div>
         ${shownSets.map(st => {
           const id = esc(st.id);
           return `<div class="tr">
           <span>${esc(st.name)}</span>
+          <span class="num muted" data-k="bd-${id}"></span>
           <span class="num" data-k="bp-${id}"></span>
           <span class="num" data-html="b7-${id}"></span>
           <span class="num" data-k="bs-${id}" title="${esc(TIPS.supply)}"></span>
@@ -549,9 +550,9 @@ PANELS.market = {
     for (const id of released()) {
       if (ui.marketSet !== 'all' && ui.marketSet !== id) continue;
       const st = set(id), m = G.supply(S, st);
-      const p = G.boosterPrice(S, st);
-      const h = m.hist, old = h.length >= 8 ? h[h.length - 8] : h[0];
-      const ch = old ? p / old - 1 : 0;
+      const p = G.marketBoosterValue(S, st);
+      const ch = p / SU.marketValueAgo(st, m, S.day, 7) - 1;
+      v[`bd-${id}`] = G.soldOut(S, st) ? 'sold out' : fmtMoney(G.boosterPrice(S, st));
       v[`bp-${id}`] = fmtMoney(p);
       v[`b7-${id}`] = `<span class="${ch >= 0 ? 'up' : 'down'}">${fmtPct(ch)}</span>`;
       v[`bs-${id}`] = G.soldOut(S, st) ? 'sold out' : `${fmtCount(m.left)} / ${fmtCount(m.printed)}`;

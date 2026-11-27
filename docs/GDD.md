@@ -95,9 +95,9 @@ Os três limites (depósito, vitrine e demanda) são exatamente o que as melhori
 
 | Ação | Onde | Efeito | Custo ou ganho |
 | --- | --- | --- | --- |
-| Buy booster (1 ou 5) | Shop | +1 booster lacrado, −1 na oferta | Preço base × (tiragem ÷ oferta restante)^0,5 |
-| Buy booster | Market | +1 booster lacrado, comprado das lojas rivais | 110% do preço do booster |
-| Sell booster (1 ou 10) | Market | −1 booster lacrado, +1 na oferta | Ganha 90% do preço do booster |
+| Buy booster (1 ou 5) | Shop | +1 booster lacrado, −1 na oferta | Preço base × (total impresso ÷ oferta restante)^0,25 |
+| Buy booster | Market | +1 booster lacrado, comprado das lojas rivais | 110% do valor de mercado do booster |
+| Sell booster (1 ou 10) | Market | −1 booster lacrado, vai para o estoque das rivais | Ganha 90% do valor de mercado do booster |
 | Open 1 / 10 / 100 / all | Shop | Cartas vão para o fichário | — |
 | Price (1 / 10 / 100 / all, nível de preço, Keep 0 ou 1) | Shop | As cópias mais valiosas do fichário vão para a vitrine | — |
 | Bulk | Shop | Vende as cópias abaixo do valor mínimo | Ganha 30% do mercado |
@@ -341,7 +341,9 @@ Os boosters não são infinitos. Cada coleção tem uma tiragem, e o preço do b
 **Tiragem**
 
 - O Base Set tem 1.000.000 de boosters. Cada coleção nova imprime 25% a mais que a anterior, até o teto de 2× o Base Set (Jungle 1,25M, Fossil 1,56M, Base Set 2 1,95M, Team Rocket 2M).
-- Preço do booster = preço base da coleção × (total impresso ÷ oferta restante)^0,5. Começa no preço base; com metade da oferta vale ~1,4×; com 10% vale ~3,2×. Abaixo de 2% de oferta o preço para de subir (~7×).
+- Preço na distribuidora = preço base × (total impresso ÷ oferta restante)^0,25. Começa no preço base; com metade da oferta vale ~1,19×; com 10% vale ~1,8×.
+- Valor no Market (mercado de segunda mão) = preço base × (total impresso ÷ oferta restante)^0,5 × oscilação diária (ondas de 5 e 13 dias, ~±12%). Com metade da oferta vale ~1,4×; com 10% vale ~3,2×. O Market é mais volátil que a distribuidora (Nicolas, 2026-11-27).
+- Abaixo de 2% de oferta os preços param de subir.
 
 **Eventos diários** (por coleção, calculados a cada dia de mercado; os dados vêm de um hash de semente, coleção e dias desde o lançamento)
 
@@ -351,12 +353,13 @@ Os boosters não são infinitos. Cada coleção tem uma tiragem, e o preço do b
 | Devolução | 12% de chance por dia: uma loja devolve até 0,4% da tiragem à oferta. |
 | Reimpressão | Quando a oferta fica abaixo de 35% do total impresso: 2% de chance por dia de imprimir mais 40% a 80% da tiragem original. O preço cai. Vira notícia. |
 
-Resultado medido: o Base Set sai de $4,00 para ~$6 em 120 dias; a oferta mais baixa vista antes da primeira reimpressão foi ~25%.
+Resultado medido: em 120 dias o Base Set vai de $4,00 para ~$4,90 na distribuidora e ~$5,90 no Market; a oferta mais baixa vista antes da primeira reimpressão foi ~25%.
 
 **O que o jogador pode fazer**
 
 - Comprar da distribuidora enquanto houver oferta; cada compra tira 1 da oferta e sobe o preço um pouco.
-- No Market: comprar boosters lacrados das lojas rivais por 110% (funciona mesmo com a distribuidora esgotada) e vender por 90%. Booster vendido volta para a oferta, então vender muito derruba o preço.
+- No Market: comprar boosters lacrados das lojas rivais por 110% do valor de mercado (funciona mesmo com a distribuidora esgotada) e vender por 90%. O booster vendido vai para o estoque das rivais.
+- Comprar na distribuidora e revender no Market dá lucro quando a oferta está baixa, mas isso esgota a distribuidora e sobe o preço dela, então não é infinito.
 - Guardar boosters no depósito esperando o preço subir. Nada garante o lucro, porque devoluções e reimpressões são aleatórias.
 
 **Determinismo:** o mundo (rivais, devoluções, reimpressões) é igual para todos que fizerem as mesmas escolhas, mas as compras e vendas do jogador mudam a oferta, então a oferta de cada coleção fica salva no save. Isso é uma exceção aprovada à regra "nada do mercado vai no save"; os preços das cartas avulsas continuam 100% calculados do dia.

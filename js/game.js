@@ -164,8 +164,11 @@ export function marketValue(state, set, card) {
 // Distributor price: set by the supply left (supply.js).
 export const supply = (state, set) => SU.supplyOf(state, set);
 export const boosterPrice = (state, set) => SU.priceOf(set, supply(state, set));
-export const marketBoosterBuyPrice = (state, set) => boosterPrice(state, set) * SU.MARKET_BUY_RATE;
-export const marketBoosterSellPrice = (state, set) => boosterPrice(state, set) * SU.MARKET_SELL_RATE;
+// Second-hand value of a sealed booster: more scarcity-driven than the
+// distributor, plus a daily swing.
+export const marketBoosterValue = (state, set) => SU.marketValueOf(set, supply(state, set), state.day);
+export const marketBoosterBuyPrice = (state, set) => marketBoosterValue(state, set) * SU.MARKET_BUY_RATE;
+export const marketBoosterSellPrice = (state, set) => marketBoosterValue(state, set) * SU.MARKET_SELL_RATE;
 
 // ---------- Helpers ----------
 function log(state, kind, text) {
@@ -241,9 +244,10 @@ export function buyBooster(state, set, reserve = 0) {
   return true;
 }
 
-// Market (sealed): buy from what rival shops hold at 110%, even when the
-// distributor is sold out; sell back at 90%. Sold boosters return to the
-// supply, so selling a lot lowers the price.
+// Market (sealed): buy from what rival shops hold at 110% of market value,
+// even when the distributor is sold out; sell at 90%. Sold boosters go to the
+// rivals' stock, not back to the distributor, so buy-and-flip cannot loop
+// forever: each distributor buy uses up supply and raises its price.
 export function canBuyMarketBooster(state, set) {
   return setUnlocked(state, set) && supply(state, set).held >= 1 && totalStock(state) < stockCapacity(state)
     && state.money >= marketBoosterBuyPrice(state, set) - 1e-9;
@@ -261,7 +265,7 @@ export function buyMarketBooster(state, set) {
 export function sellMarketBooster(state, set) {
   if (!(state.stock[set.id] > 0) || !setUnlocked(state, set)) return false;
   earn(state, marketBoosterSellPrice(state, set));
-  supply(state, set).left++;
+  supply(state, set).held++;
   state.stock[set.id]--;
   state.stats.boostersSold++;
   return true;

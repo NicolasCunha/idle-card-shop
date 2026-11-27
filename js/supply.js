@@ -9,7 +9,7 @@
 // player buys and sells changes the supply, so the supply lives in the save
 // (state.market). No DOM here: the same code runs live and offline.
 
-import { hashRand } from './market.js';
+import { hashRand, smoothNoise } from './market.js';
 
 // ---------- Tunables ----------
 export const RELEASE_EVERY_DAYS = 7;      // a new collection every 7 market days
@@ -17,10 +17,14 @@ export const BASE_PRINT_RUN = 1000000;    // first collection's print run
 export const PRINT_GROWTH = 1.25;         // each newer collection prints 25% more...
 export const PRINT_CAP = 2;               // ...up to 2x the first one
 export const PLAYER_MARGIN = 0.1;         // rivals stop buying at 10% of the print left
-export const PRICE_EXPONENT = 0.5;        // price = base x (printed / left)^0.5
-export const MIN_LEFT_FRAC = 0.02;        // price stops rising below 2% left (about 7x)
-export const MARKET_BUY_RATE = 1.1;       // buy sealed on the Market at 110%
-export const MARKET_SELL_RATE = 0.9;      // sell sealed to the Market at 90%
+// Distributor and second-hand market both follow scarcity, the market much
+// more, plus a daily swing (Nicolas, 2026-11-27).
+export const DISTRIBUTOR_EXPONENT = 0.25; // distributor = base x (printed / left)^0.25
+export const MARKET_EXPONENT = 0.5;       // market value = base x (printed / left)^0.5 x swing
+export const MARKET_SWING = 0.06;         // ~±6% waves of 5 and 13 days, ~±12% together
+export const MIN_LEFT_FRAC = 0.02;        // prices stop rising below 2% left (about 2.7x / 7x)
+export const MARKET_BUY_RATE = 1.1;       // buy sealed on the Market at 110% of market value
+export const MARKET_SELL_RATE = 0.9;      // sell sealed to the Market at 90% of market value
 export const HISTORY_DAYS = 30;
 
 // Rival shops: share of the first print run each one wants on a busy day.
@@ -53,22 +57,37 @@ export function printRun(set) {
 //   out: the release was announced;
 //   run: first print run; printed: run + reprints; left: at the distributor;
 //   held: boosters rival shops hold (the Market sells from these);
-//   age: days since release simulated; hist: last HISTORY_DAYS daily prices.
+//   age: days since release simulated; hist: last HISTORY_DAYS daily scarcity
+//   values (printed / left).
 export function supplyOf(state, set) {
   let m = state.market[set.id];
   if (!m) {
     const run = printRun(set);
     m = state.market[set.id] = { run, printed: run, left: run, held: 0, reprints: 0, age: 0, hist: [], out: false };
-    m.hist.push(round2(priceOf(set, m)));
+    m.hist.push(scarcity(m));
   }
   return m;
 }
 
-const round2 = v => Math.round(v * 100) / 100;
+// printed / left, capped. hist keeps one value per day (close).
+const scarcity = m => Math.round(1 / Math.max(MIN_LEFT_FRAC, m.left / m.printed) * 10000) / 10000;
 
 export function priceOf(set, m) {
-  const frac = Math.max(MIN_LEFT_FRAC, m.left / m.printed);
-  return set.booster.wholesalePrice * Math.pow(1 / frac, PRICE_EXPONENT);
+  return set.booster.wholesalePrice * Math.pow(scarcity(m), DISTRIBUTOR_EXPONENT);
+}
+
+const swing = (set, day) => Math.exp(smoothNoise('booster:' + set.id, day, 5, MARKET_SWING) + smoothNoise('booster:' + set.id, day, 13, MARKET_SWING));
+const marketAt = (set, s, day) => set.booster.wholesalePrice * Math.pow(s, MARKET_EXPONENT) * swing(set, day);
+
+// Second-hand value of a sealed booster today.
+export const marketValueOf = (set, m, day) => marketAt(set, scarcity(m), day);
+
+// Market value `back` days ago, from the daily history.
+export function marketValueAgo(set, m, day, back) {
+  const h = m.hist;
+  if (!h.length) return marketValueOf(set, m, day);
+  const i = Math.max(0, h.length - 1 - back);
+  return marketAt(set, h[i], day - (h.length - 1 - i));
 }
 
 // One market day for one collection. Returns news items [{kind, text}].
@@ -96,7 +115,7 @@ export function stepDay(set, m) {
     m.printed += n; m.left += n; m.reprints++;
     news.push({ kind: 'reprint', n });
   }
-  m.hist.push(round2(priceOf(set, m)));
+  m.hist.push(scarcity(m));
   if (m.hist.length > HISTORY_DAYS) m.hist.splice(0, m.hist.length - HISTORY_DAYS);
   return news;
 }
