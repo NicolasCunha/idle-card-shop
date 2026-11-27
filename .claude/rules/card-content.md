@@ -21,4 +21,6 @@ If data is missing, leave the field out (the game draws a generic card when `ima
 
 When a collection file changes, check: unique `id`s, every `rarity` is a key of `rarities`, `index` is unique and sequential, every `reprintOf` points to an existing card, every `image` path exists. Use the `add-card-collection` skill.
 
-**[PENDING GDD Q1]** Base Set `booster.slots` (6C / 2U / 1R with holo chance is provisional).
+Base Set booster (decided 2026-11-27): 7 common, 3 uncommon, 1 rare slot (33% holo). Basic energies count as common.
+
+Nicolas's crawler (`C:\DEV\pkmn-crawler`, his own tool that he runs himself) emits collection JSON in this format. Nicolas confirmed on 2026-11-27 that its output counts as data supplied by him. Agents still never run bulk crawls or download art themselves.
