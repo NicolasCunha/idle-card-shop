@@ -46,11 +46,13 @@ export function initScene(opts) {
   window.addEventListener('resize', () => resize());
 }
 
-// Called after every Shop panel render with the host element (or null).
+// Called after every panel render with the Shop floor host element, or null
+// on other tabs. The floor keeps going while another tab is open, so the
+// customers are still there when the player comes back; only drawing stops.
 export function mount(el) {
   host = el;
-  if (!host || !canvas) { running = false; people.length = 0; return; }
-  if (canvas.parentNode !== host) host.appendChild(canvas);
+  if (!canvas) return;
+  if (host && canvas.parentNode !== host) host.appendChild(canvas);
   resize();
   if (!running) { running = true; last = performance.now(); requestAnimationFrame(loop); }
 }
@@ -71,10 +73,13 @@ function resize() {
 }
 
 const reduced = () => document.documentElement.classList.contains('reduce-motion');
-const visible = () => running && host && host.isConnected && !document.hidden;
+// The floor is live while the page is open, on any tab; it is drawn only on
+// the Shop tab.
+const visible = () => running && !document.hidden;
+const onScreen = () => host && host.isConnected;
 
-// True while the floor is on screen: sales then show over the buyer instead
-// of the header (main.js).
+// True while the floor is live: sales then play when the buyer reacts
+// instead of at the sale (main.js).
 export const showing = () => visible();
 
 // One customer visit from the rules: { looks: [{ s, c, p, f, b, paid }], miss, empty }.
@@ -122,13 +127,12 @@ export function customer(ev) {
 
 // ---------- Loop ----------
 function loop(now) {
-  if (!visible()) { running = host?.isConnected ? running : false; if (running) requestAnimationFrame(loop); return; }
   const dt = Math.min(0.5, (now - last) / 1000);
   last = now;
-  resize();
+  if (!visible()) { requestAnimationFrame(loop); return; }
   for (const p of people) step(p, dt);
   for (let i = people.length - 1; i >= 0; i--) if (people[i].phase === 'gone') people.splice(i, 1);
-  draw();
+  if (onScreen()) { resize(); draw(); }
   requestAnimationFrame(loop);
 }
 
