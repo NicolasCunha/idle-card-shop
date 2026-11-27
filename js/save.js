@@ -10,7 +10,7 @@ import { newState, SKILL_KEYS } from './game.js';
 
 export const GAME_ID = 'idlecardshop';
 export const SAVE_VERSION = 4;
-export const GAME_VERSION = '1.5.5';
+export const GAME_VERSION = '1.5.6';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 

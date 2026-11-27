@@ -3,9 +3,9 @@
     {
       "id": "2026-11-27-floor-everywhere",
       "date": "2026-11-27",
-      "version": "1.5.5",
+      "version": "1.5.6",
       "title": "The shop stays busy",
-      "text": "Customers keep coming while you are on another tab, so the shop is still busy when you return to it."
+      "text": "Customers keep coming while you are on another tab or the browser is minimized, so the shop is still busy when you return to it."
     },
     {
       "id": "2026-11-27-floor-crowd",

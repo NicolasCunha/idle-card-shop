@@ -54,7 +54,13 @@ export function mount(el) {
   if (!canvas) return;
   if (host && canvas.parentNode !== host) host.appendChild(canvas);
   resize();
-  if (!running) { running = true; last = performance.now(); requestAnimationFrame(loop); }
+  if (!running) {
+    running = true; last = performance.now();
+    requestAnimationFrame(loop);
+    // Animation frames stop in a hidden or minimized browser tab; timers
+    // still fire (throttled), so they keep the customers moving.
+    setInterval(() => { if (document.hidden) advance(performance.now()); }, 250);
+  }
 }
 
 // Whole-number scale for crisp pixels; the native width stretches to fill the
@@ -73,9 +79,9 @@ function resize() {
 }
 
 const reduced = () => document.documentElement.classList.contains('reduce-motion');
-// The floor is live while the page is open, on any tab; it is drawn only on
-// the Shop tab.
-const visible = () => running && !document.hidden;
+// The floor is live while the page is open, on any game tab and with the
+// browser tab hidden or minimized; it is drawn only on the Shop tab.
+const visible = () => running;
 const onScreen = () => host && host.isConnected;
 
 // True while the floor is live: sales then play when the buyer reacts
@@ -127,13 +133,24 @@ export function customer(ev) {
 
 // ---------- Loop ----------
 function loop(now) {
-  const dt = Math.min(0.5, (now - last) / 1000);
-  last = now;
-  if (!visible()) { requestAnimationFrame(loop); return; }
-  for (const p of people) step(p, dt);
-  for (let i = people.length - 1; i >= 0; i--) if (people[i].phase === 'gone') people.splice(i, 1);
-  if (onScreen()) { resize(); draw(); }
+  advance(now);
+  if (onScreen() && !document.hidden) { resize(); draw(); }
   requestAnimationFrame(loop);
+}
+
+// Moves everyone forward to `now` in small steps, so a long gap (throttled
+// timers in a hidden tab) plays out the same as live frames. Gaps over a
+// minute are cut short; the rules catch up on their own.
+function advance(now) {
+  let dt = Math.min(60, Math.max(0, (now - last) / 1000));
+  last = now;
+  while (dt > 0) {
+    const s = Math.min(0.1, dt);
+    dt -= s;
+    for (const p of people) step(p, s);
+    for (let i = people.length - 1; i >= 0; i--) if (people[i].phase === 'gone') people.splice(i, 1);
+    if (!people.length) break;
+  }
 }
 
 // A spot along the case away from where others stand or are heading:

@@ -4,7 +4,7 @@ Requested by Nicolas on 2026-11-27. Purely visual: no rule, number or save chang
 
 ## What it shows
 
-A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libraries). The floor keeps running while another tab is open (Nicolas, 2026-11-27): customers keep walking in, browsing and leaving, and only the drawing stops, so the shop is not empty when the player comes back. It pauses only while the browser tab is hidden.
+A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libraries). The floor keeps running while another tab is open (Nicolas, 2026-11-27): customers keep walking in, browsing and leaving, and only the drawing stops, so the shop is not empty when the player comes back. It also keeps running with the browser tab hidden or minimized: animation frames stop there, so a 250 ms timer (throttled by the browser) moves everyone forward in 0.1 s steps, at most 60 s per call. Gaps the rules handle through offline catch-up send no customers to the floor.
 
 - Room: wall, door on the left, window, register on the right, wooden floor.
 - Showcase: a glass case whose width grows with the Bigger showcase upgrade (3 shelves from level 4). Mini cards fill it in proportion to showcase use, colored by the rarity of the listed cards.
@@ -20,7 +20,7 @@ A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libra
 | `Nothing here...` | Empty showcase |
 | `No <set>?` | Wanted the newest collection and found none |
 
-At most 5 customers on the floor in a narrow room, up to 8 in a wide one (native width / 48). A buyer is always drawn: when the floor is full, the oldest non-buyer leaves to make room; non-buyers past the limit are not drawn. The money is credited by the rules when the visit happens; while the floor is on screen the sale sound and the header `+$` play when the buyer reacts (`onPaid`), otherwise on the sale itself (`G.onSale`). Offline catch-up and hidden tabs draw nothing. "Reduce motion": customers appear at the case, show the bubble and emote without walking or bouncing, then vanish.
+At most 5 customers on the floor in a narrow room, up to 8 in a wide one (native width / 48). A buyer is always drawn: when the floor is full, the oldest non-buyer leaves to make room; non-buyers past the limit are not drawn. The money is credited by the rules when the visit happens; while the floor is on screen the sale sound and the header `+$` play when the buyer reacts (`onPaid`), otherwise on the sale itself (`G.onSale`). Offline catch-up sends nothing to the floor. "Reduce motion": customers appear at the case, show the bubble and emote without walking or bouncing, then vanish.
 
 ## Size
 
