@@ -107,7 +107,7 @@ async function loop() {
   } else if (dt > 0) {
     G.tick(state, sets, dt, now);
   }
-  UI.frame();
+  UI.frame(false, true);
 }
 
 // ---------- Offline catch-up ----------

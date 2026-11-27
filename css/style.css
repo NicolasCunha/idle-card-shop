@@ -495,3 +495,8 @@ button, select, .tab, .binder-slot, .thumb { -webkit-tap-highlight-color: transp
 .dbg-row { display: grid; grid-template-columns: 150px 50px auto auto auto; justify-content: start; gap: .4rem; align-items: center; padding: .15rem 0; }
 .debug > .dbg-row:first-of-type { grid-template-columns: auto auto 1fr; }
 #dbg-money, #dbg-n { width: 7rem; }
+
+/* Long lists: skip layout and paint for what is off screen. */
+.binder-slot { content-visibility: auto; contain-intrinsic-size: auto 140px; }
+.showcase-table .tr:not(.th), .market-table .tr:not(.th) { content-visibility: auto; contain-intrinsic-size: auto 44px; }
+.badge-count[hidden] { display: none; }

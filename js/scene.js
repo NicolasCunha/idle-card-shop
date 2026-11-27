@@ -132,9 +132,12 @@ export function customer(ev) {
 }
 
 // ---------- Loop ----------
+// Drawn at most 30 times a second: plenty for pixel art, half the work of a
+// 60 Hz screen.
+let lastDraw = 0;
 function loop(now) {
   advance(now);
-  if (onScreen() && !document.hidden) { resize(); draw(); }
+  if (onScreen() && !document.hidden && now - lastDraw >= 32) { lastDraw = now; resize(); draw(); }
   requestAnimationFrame(loop);
 }
 

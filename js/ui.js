@@ -141,7 +141,10 @@ export function toast(key) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
 }
 
-export function frame(force = false) {
+// `idle` is the main loop's own refresh: heavy panels (minRenderMs) then
+// rebuild at most that often; their live numbers are still patched.
+let lastRenderAt = 0;
+export function frame(force = false, idle = false) {
   updateHeader();
   for (const b of document.querySelectorAll('#tabs .tab')) {
     const vis = tabVisible(b.dataset.tab);
@@ -152,15 +155,18 @@ export function frame(force = false) {
   const tab = PANELS[active];
   const sig = active + '|' + tab.sig();
   const panel = document.getElementById('panel');
-  if (force || sig !== lastSig) {
+  const due = !idle || !tab.minRenderMs || performance.now() - lastRenderAt >= tab.minRenderMs;
+  if (force || (sig !== lastSig && due)) {
     const focused = panel.contains(document.activeElement) && document.activeElement.matches('input, select');
     if (!focused || force) {
       panel.innerHTML = tab.html();
       lastSig = sig;
+      lastRenderAt = performance.now();
       mountScene(document.getElementById('floor'));
     }
   }
   patch(panel, tab.vals ? tab.vals() : {});
+  if (tab.live) tab.live(panel);
   updateTutorial();
 }
 
@@ -412,8 +418,21 @@ PANELS.binder = {
   sig() {
     const st = set(ui.binderSet = releasedOr(ui.binderSet));
     const seen = G.collectionProgress(S, st).seen;
-    const copies = Object.values(S.binder[st.id] || {}).reduce((a, b) => a + b, 0);
-    return [ui.binderSet, seen, copies, lockSig()].join();
+    // Copies change all the time under automation; live() patches them, so
+    // only a newly seen card rebuilds the grid.
+    return [ui.binderSet, seen, lockSig()].join();
+  },
+  live(panel) {
+    const binder = S.binder[ui.binderSet] || {};
+    const seen = S.seen[ui.binderSet] || {};
+    for (const el of panel.querySelectorAll('[data-bn]')) {
+      const n = binder[el.dataset.bn] || 0;
+      if (el._n === n) continue;
+      el._n = n;
+      el.textContent = `×${n}`;
+      el.hidden = !n;
+      el.closest('.card')?.classList.toggle('not-owned', !!seen[el.dataset.bn] && !n);
+    }
   },
   html() {
     const st = set(ui.binderSet);
@@ -432,7 +451,7 @@ PANELS.binder = {
     <div class="binder-grid">${st.cards.map(c => {
       const n = binder[c.id] || 0;
       return `<button class="binder-slot" data-action="card" data-s="${esc(st.id)}" data-c="${esc(c.id)}" ${seen[c.id] ? '' : 'disabled'}>
-        ${cardHtml(st, c, { size: 'sm', unseen: !seen[c.id], extraClass: seen[c.id] && !n ? 'not-owned' : '', badge: n ? `<span class="badge-count">×${n}</span>` : '' })}
+        ${cardHtml(st, c, { size: 'sm', unseen: !seen[c.id], extraClass: seen[c.id] && !n ? 'not-owned' : '', badge: seen[c.id] ? `<span class="badge-count" data-bn="${esc(c.id)}" ${n ? '' : 'hidden'}>×${n}</span>` : '' })}
       </button>`;
     }).join('')}</div>`;
   },
@@ -440,6 +459,7 @@ PANELS.binder = {
 
 PANELS.showcase = {
   sig: () => [S.showcase.length, S.day, S.showcase[0]?.c].join(),
+  minRenderMs: 2000, // sales change it every second at full speed
   html() {
     const groups = new Map();
     for (const it of S.showcase) {

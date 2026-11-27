@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-perf",
+      "date": "2026-11-27",
+      "version": "1.6.1",
+      "title": "Smoother big shops",
+      "text": "The Binder and Showcase stay smooth with a fully automated shop."
+    },
+    {
       "id": "2026-11-27-floor-everywhere",
       "date": "2026-11-27",
       "version": "1.5.6",

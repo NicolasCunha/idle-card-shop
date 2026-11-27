@@ -70,3 +70,12 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 - **No stuck-shop rescue**: removed 2026-11-27 by Nicolas. A shop with no cash and nothing to sell stays stuck; the player can start a new save. The `stats.rescues` field stays in the save (always 0) to avoid a schema change.
 - **XP curve**: the GDD formula `25 x level^2.3` gives about 3,900 XP for level 9 to 10; the GDD text says about 4,400. The code follows the formula.
 - **Pacing**: first sale about 15 s and first employee about 3.5 min hit the targets. Full automation (4 staff) takes about 2 h for the test bot, against the 45 to 90 min target. Demand (one customer every 6 s) caps income near $20/min early on, and 4 staff plus 3 Staff room levels cost about $2,140. Fixing it is a balancing choice (cheaper Staff room, more customers early, or a longer target). Nicolas, 2026-11-27: leave as is for now.
+
+## Rendering performance (1.6.1)
+
+With full automation the state changes several times a second. Panels follow these rules:
+
+- A panel rebuilds (`html()`) only when its `sig()` changes; numbers that change all the time are patched (`vals()`, or `live(panel)` for per-item values such as Binder copy counts).
+- A panel can set `minRenderMs` to limit rebuilds from the main loop (Showcase: 2 s). Player actions and tab switches still rebuild at once.
+- Long lists use `content-visibility: auto` (binder slots, showcase and market rows).
+- The shop floor draws at most 30 times a second.
