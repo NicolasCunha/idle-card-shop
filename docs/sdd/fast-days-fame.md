@@ -6,7 +6,7 @@ Requested by Nicolas on 2026-11-27. Save v4 (all older saves start over, his cal
 
 - One global clock: `day = floor(now / DAY_MS)`, `DAY_MS` = 10 minutes (`js/market.js`). Same day, same prices for every player. Time zones are gone (setup and Settings).
 - The header shows `Day N` counted from the save's first day, and a countdown to the next day.
-- Releases every 12 days (2 real hours). Rival buying, returns and reprints were scaled so a collection gets scarce after about 2-3 real days (see booster-supply.md).
+- Releases every 12 days (2 real hours). 20 rival shops buy every day: a new collection drops below 30% left in about 5 real hours, and reprints refill it in cycles (see booster-supply.md).
 - Offline is still simulated in full with no cap: one real day away is 144 market days.
 
 ## Fame upgrade

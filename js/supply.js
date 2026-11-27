@@ -28,17 +28,18 @@ export const MARKET_SELL_RATE = 0.9;      // sell sealed to the Market at 90% of
 export const HISTORY_DAYS = 30;
 
 // Rival shops: share of the first print run each one wants on a busy day.
-// Tuned for 10-minute days (Nicolas, 2026-11-27): a collection gets scarce
-// after about 3 real days (~430 market days).
-export const RIVALS = [0.0027, 0.0018, 0.00135, 0.0011, 0.0009, 0.00068, 0.00027, 0.00018];
+// 20 rivals, big chains to corner stores (Nicolas, 2026-11-27: many shops
+// compete for supply; scarcity should swing).
+export const RIVALS = [0.006, 0.005, 0.0045, 0.004, 0.0035, 0.003, 0.003, 0.0025, 0.0025, 0.002,
+  0.002, 0.0018, 0.0015, 0.0015, 0.0012, 0.001, 0.001, 0.0008, 0.0006, 0.0005];
 const RIVAL_BUY_CHANCE = 0.6;
 const HYPE_DAYS = 66;                     // demand fades from 100% to 20%
 const RETURN_CHANCE = 0.12;               // a rival returns some boosters
-const RETURN_MAX = 0.0018;                // up to 0.18% of the print run
+const RETURN_MAX = 0.008;                 // up to 0.8% of the print run
 const REPRINT_BELOW = 0.35;               // reprints only happen below 35% left
-const REPRINT_CHANCE = 0.005;             // per day, when below
+const REPRINT_CHANCE = 0.03;              // per day, when below
 const REPRINT_MIN = 0.4, REPRINT_MAX = 0.8; // size, share of the first print run
-const BIG_BUY = 0.01;                     // a rival buy above 1% of the run makes news
+const BIG_BUY = 0.006;                    // a rival buy above 0.6% of the run makes news
 
 // ---------- Calendar ----------
 // set.releaseIndex is the collection's place in collections.json (data.js).
