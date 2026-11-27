@@ -1,0 +1,1734 @@
+{
+  "id": "base-set-2",
+  "name": "Base Set 2",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.67,
+          "holo": 0.33
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/130",
+      "name": "Alakazam",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.001.alakazam.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 65
+      },
+      "reprintOf": "base:001"
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/130",
+      "name": "Blastoise",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.002.blastoise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 9
+      },
+      "reprintOf": "base:002"
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/130",
+      "name": "Chansey",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.003.chansey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 113
+      },
+      "reprintOf": "base:003"
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/130",
+      "name": "Charizard",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.004.charizard.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      },
+      "reprintOf": "base:004"
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/130",
+      "name": "Clefable",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.005.clefable.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 36
+      },
+      "reprintOf": "jungle:001"
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/130",
+      "name": "Clefairy",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.006.clefairy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 35
+      },
+      "reprintOf": "base:005"
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/130",
+      "name": "Gyarados",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.007.gyarados.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 130
+      },
+      "reprintOf": "base:006"
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/130",
+      "name": "Hitmonchan",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.008.hitmonchan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 107
+      },
+      "reprintOf": "base:007"
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/130",
+      "name": "Magneton",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.009.magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      },
+      "reprintOf": "base:009"
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/130",
+      "name": "Mewtwo",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.010.mewtwo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 150
+      },
+      "reprintOf": "base:010"
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/130",
+      "name": "Nidoking",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.011.nidoking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 34
+      },
+      "reprintOf": "base:011"
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/130",
+      "name": "Nidoqueen",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.012.nidoqueen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 31
+      },
+      "reprintOf": "jungle:007"
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/130",
+      "name": "Ninetales",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.013.ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      },
+      "reprintOf": "base:012"
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/130",
+      "name": "Pidgeot",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.014.pidgeot.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 18
+      },
+      "reprintOf": "jungle:008"
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/130",
+      "name": "Poliwrath",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.015.poliwrath.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 62
+      },
+      "reprintOf": "base:013"
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/130",
+      "name": "Raichu",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.016.raichu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 26
+      },
+      "reprintOf": "base:014"
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/130",
+      "name": "Scyther",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.017.scyther.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 123
+      },
+      "reprintOf": "jungle:010"
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/130",
+      "name": "Venusaur",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.018.venusaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 3
+      },
+      "reprintOf": "base:015"
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/130",
+      "name": "Wigglytuff",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.019.wigglytuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 40
+      },
+      "reprintOf": "jungle:016"
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/130",
+      "name": "Zapdos",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/base-set-2/b2.020.zapdos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 145
+      },
+      "reprintOf": "base:016"
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/130",
+      "name": "Beedrill",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.021.beedrill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 15
+      },
+      "reprintOf": "base:017"
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/130",
+      "name": "Dragonair",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.022.dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      },
+      "reprintOf": "base:018"
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/130",
+      "name": "Dugtrio",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.023.dugtrio.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 51
+      },
+      "reprintOf": "base:019"
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/130",
+      "name": "Electabuzz",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.024.electabuzz.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 125
+      },
+      "reprintOf": "base:020"
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/130",
+      "name": "Electrode",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.025.electrode.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 101
+      },
+      "reprintOf": "base:021"
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/130",
+      "name": "Kangaskhan",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.026.kangaskhan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 115
+      },
+      "reprintOf": "jungle:021"
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/130",
+      "name": "Mr. Mime",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.027.mr_mime.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 122
+      },
+      "reprintOf": "jungle:022"
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/130",
+      "name": "Pidgeotto",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.028.pidgeotto.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 17
+      },
+      "reprintOf": "base:022"
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/130",
+      "name": "Pinsir",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.029.pinsir.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 127
+      },
+      "reprintOf": "jungle:025"
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/130",
+      "name": "Snorlax",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.030.snorlax.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 143
+      },
+      "reprintOf": "jungle:027"
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/130",
+      "name": "Venomoth",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.031.venomoth.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 49
+      },
+      "reprintOf": "jungle:029"
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/130",
+      "name": "Victreebel",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.032.victreebel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 71
+      },
+      "reprintOf": "jungle:030"
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/130",
+      "name": "Arcanine",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.033.arcanine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 59
+      },
+      "reprintOf": "base:023"
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/130",
+      "name": "Butterfree",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.034.butterfree.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 12
+      },
+      "reprintOf": "jungle:033"
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/130",
+      "name": "Charmeleon",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.035.charmeleon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 5
+      },
+      "reprintOf": "base:024"
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/130",
+      "name": "Dewgong",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.036.dewgong.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 87
+      },
+      "reprintOf": "base:025"
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/130",
+      "name": "Dodrio",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.037.dodrio.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 85
+      },
+      "reprintOf": "jungle:034"
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/130",
+      "name": "Dratini",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.038.dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      },
+      "reprintOf": "base:026"
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/130",
+      "name": "Exeggutor",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.039.exeggutor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 103
+      },
+      "reprintOf": "jungle:035"
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/130",
+      "name": "Farfetch’d",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.040.farfetchd.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 83
+      },
+      "reprintOf": "base:027"
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/130",
+      "name": "Fearow",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.041.fearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 22
+      },
+      "reprintOf": "jungle:036"
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/130",
+      "name": "Growlithe",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.042.growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      },
+      "reprintOf": "base:028"
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/130",
+      "name": "Haunter",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.043.haunter.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 93
+      },
+      "reprintOf": "base:029"
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/130",
+      "name": "Ivysaur",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.044.ivysaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 2
+      },
+      "reprintOf": "base:030"
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/130",
+      "name": "Jynx",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.045.jynx_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 124
+      },
+      "reprintOf": "base:031"
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/130",
+      "name": "Kadabra",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.046.kadabra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 64
+      },
+      "reprintOf": "base:032"
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/130",
+      "name": "Kakuna",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.047.kakuna.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 14
+      },
+      "reprintOf": "base:033"
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/130",
+      "name": "Lickitung",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.048.lickitung.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 108
+      },
+      "reprintOf": "jungle:038"
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/130",
+      "name": "Machoke",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.049.machoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 67
+      },
+      "reprintOf": "base:034"
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/130",
+      "name": "Magikarp",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.050.magikarp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 129
+      },
+      "reprintOf": "base:035"
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/130",
+      "name": "Magmar",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.051.magmar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 126
+      },
+      "reprintOf": "base:036"
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/130",
+      "name": "Marowak",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.052.marowak.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 105
+      },
+      "reprintOf": "jungle:039"
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/130",
+      "name": "Nidorina",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.053.nidorina.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 30
+      },
+      "reprintOf": "jungle:040"
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/130",
+      "name": "Nidorino",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.054.nidorino.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 33
+      },
+      "reprintOf": "base:037"
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/130",
+      "name": "Parasect",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.055.parasect.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 47
+      },
+      "reprintOf": "jungle:041"
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/130",
+      "name": "Persian",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.056.persian.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 53
+      },
+      "reprintOf": "jungle:042"
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/130",
+      "name": "Poliwhirl",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.057.poliwhirl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 61
+      },
+      "reprintOf": "base:038"
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/130",
+      "name": "Raticate",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.058.raticate.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 20
+      },
+      "reprintOf": "base:040"
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/130",
+      "name": "Rhydon",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.059.rhydon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 112
+      },
+      "reprintOf": "jungle:045"
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/130",
+      "name": "Seaking",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.060.seaking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 119
+      },
+      "reprintOf": "jungle:046"
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/130",
+      "name": "Seel",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.061.seel_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 86
+      },
+      "reprintOf": "base:041"
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/130",
+      "name": "Tauros",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.062.tauros.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 128
+      },
+      "reprintOf": "jungle:047"
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/130",
+      "name": "Wartortle",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.063.wartortle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 8
+      },
+      "reprintOf": "base:042"
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/130",
+      "name": "Weepinbell",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.064.weepinbell.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 70
+      },
+      "reprintOf": "jungle:048"
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/130",
+      "name": "Abra",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.065.abra_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 63
+      },
+      "reprintOf": "base:043"
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/130",
+      "name": "Bellsprout",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.066.bellsprout.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 69
+      },
+      "reprintOf": "jungle:049"
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/130",
+      "name": "Bulbasaur",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.067.bulbasaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 1
+      },
+      "reprintOf": "base:044"
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/130",
+      "name": "Caterpie",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.068.caterpie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 10
+      },
+      "reprintOf": "base:045"
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/130",
+      "name": "Charmander",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.069.charmander.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 4
+      },
+      "reprintOf": "base:046"
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/130",
+      "name": "Cubone",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.070.cubone.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 104
+      },
+      "reprintOf": "jungle:050"
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/130",
+      "name": "Diglett",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.071.diglett.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 50
+      },
+      "reprintOf": "base:047"
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/130",
+      "name": "Doduo",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.072.doduo_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 84
+      },
+      "reprintOf": "base:048"
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/130",
+      "name": "Drowzee",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.073.drowzee.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 96
+      },
+      "reprintOf": "base:049"
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/130",
+      "name": "Exeggcute",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.074.exeggcute.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 102
+      },
+      "reprintOf": "jungle:052"
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/130",
+      "name": "Gastly",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.075.gastly.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 92
+      },
+      "reprintOf": "base:050"
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/130",
+      "name": "Goldeen",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.076.goldeen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 118
+      },
+      "reprintOf": "jungle:053"
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/130",
+      "name": "Jigglypuff",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.077.jigglypuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 39
+      },
+      "reprintOf": "jungle:054"
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/130",
+      "name": "Machop",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.078.machop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 66
+      },
+      "reprintOf": "base:052"
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/130",
+      "name": "Magnemite",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.079.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      },
+      "reprintOf": "base:053"
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/130",
+      "name": "Meowth",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.080.meowth.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 52
+      },
+      "reprintOf": "jungle:056"
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/130",
+      "name": "Metapod",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.081.metapod.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 11
+      },
+      "reprintOf": "base:054"
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/130",
+      "name": "Nidoran Female",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.082.nidoran_female.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 29
+      },
+      "reprintOf": "jungle:057"
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/130",
+      "name": "Nidoran Male",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.083.nidoran_male.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 32
+      },
+      "reprintOf": "base:055"
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/130",
+      "name": "Onix",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.084.onix_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 95
+      },
+      "reprintOf": "base:056"
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/130",
+      "name": "Paras",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.085.paras_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 46
+      },
+      "reprintOf": "jungle:059"
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/130",
+      "name": "Pidgey",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.086.pidgey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 16
+      },
+      "reprintOf": "base:057"
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/130",
+      "name": "Pikachu",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.087.pikachu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 25
+      },
+      "reprintOf": "base:058"
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/130",
+      "name": "Poliwag",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.088.poliwag.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 60
+      },
+      "reprintOf": "base:059"
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/130",
+      "name": "Rattata",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.089.rattata.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 19
+      },
+      "reprintOf": "base:061"
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/130",
+      "name": "Rhyhorn",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.090.rhyhorn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 111
+      },
+      "reprintOf": "jungle:061"
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/130",
+      "name": "Sandshrew",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.091.sandshrew.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 27
+      },
+      "reprintOf": "base:062"
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/130",
+      "name": "Spearow",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.092.spearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 21
+      },
+      "reprintOf": "jungle:062"
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/130",
+      "name": "Squirtle",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.093.squirtle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 7
+      },
+      "reprintOf": "base:063"
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/130",
+      "name": "Starmie",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.094.starmie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 121
+      },
+      "reprintOf": "base:064"
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/130",
+      "name": "Staryu",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.095.staryu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 120
+      },
+      "reprintOf": "base:065"
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/130",
+      "name": "Tangela",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.096.tangela.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 114
+      },
+      "reprintOf": "base:066"
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/130",
+      "name": "Venonat",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.097.venonat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 48
+      },
+      "reprintOf": "jungle:063"
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/130",
+      "name": "Voltorb",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.098.voltorb.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 100
+      },
+      "reprintOf": "base:067"
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/130",
+      "name": "Vulpix",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.099.vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      },
+      "reprintOf": "base:068"
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/130",
+      "name": "Weedle",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.100.weedle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 13
+      },
+      "reprintOf": "base:069"
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/130",
+      "name": "Computer Search",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.101.computer_search.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:071"
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/130",
+      "name": "Imposter Professor Oak",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.102.imposter_professor_oak.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 103,
+      "id": "103",
+      "number": "103/130",
+      "name": "Item Finder",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.103.item_finder.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:074"
+    },
+    {
+      "index": 104,
+      "id": "104",
+      "number": "104/130",
+      "name": "Lass",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.104.lass_.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:075"
+    },
+    {
+      "index": 105,
+      "id": "105",
+      "number": "105/130",
+      "name": "Pokémon Breeder",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.105.pokemon_breeder.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:076"
+    },
+    {
+      "index": 106,
+      "id": "106",
+      "number": "106/130",
+      "name": "Pokémon Trader",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.106.pokemon_trader.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:077"
+    },
+    {
+      "index": 107,
+      "id": "107",
+      "number": "107/130",
+      "name": "Scoop Up",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.107.scoop_up.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:078"
+    },
+    {
+      "index": 108,
+      "id": "108",
+      "number": "108/130",
+      "name": "Super Energy Removal",
+      "rarity": "rare",
+      "image": "images/base-set-2/b2.108.super_energy_removal.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:079"
+    },
+    {
+      "index": 109,
+      "id": "109",
+      "number": "109/130",
+      "name": "Defender",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.109.defender.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:080"
+    },
+    {
+      "index": 110,
+      "id": "110",
+      "number": "110/130",
+      "name": "Energy Retrieval",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.110.energy_retrieval.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:081"
+    },
+    {
+      "index": 111,
+      "id": "111",
+      "number": "111/130",
+      "name": "Full Heal",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.111.full_heal.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:082"
+    },
+    {
+      "index": 112,
+      "id": "112",
+      "number": "112/130",
+      "name": "Maintenance",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.112.maintenance.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:083"
+    },
+    {
+      "index": 113,
+      "id": "113",
+      "number": "113/130",
+      "name": "PlusPower",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.113.pluspower.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:084"
+    },
+    {
+      "index": 114,
+      "id": "114",
+      "number": "114/130",
+      "name": "Pokémon Center",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.114.pokemon_center.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:085"
+    },
+    {
+      "index": 115,
+      "id": "115",
+      "number": "115/130",
+      "name": "Pokédex",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.115.pokedex.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:087"
+    },
+    {
+      "index": 116,
+      "id": "116",
+      "number": "116/130",
+      "name": "Professor Oak",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.116.professor_oak.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:088"
+    },
+    {
+      "index": 117,
+      "id": "117",
+      "number": "117/130",
+      "name": "Super Potion",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.117.super_potion.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:090"
+    },
+    {
+      "index": 118,
+      "id": "118",
+      "number": "118/130",
+      "name": "Bill",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.118.bill_.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:091"
+    },
+    {
+      "index": 119,
+      "id": "119",
+      "number": "119/130",
+      "name": "Energy Removal",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.119.energy_removal.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:092"
+    },
+    {
+      "index": 120,
+      "id": "120",
+      "number": "120/130",
+      "name": "Gust of Wind",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.120.gust_of_wind.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:093"
+    },
+    {
+      "index": 121,
+      "id": "121",
+      "number": "121/130",
+      "name": "Poké Ball",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.121.poke_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "jungle:064"
+    },
+    {
+      "index": 122,
+      "id": "122",
+      "number": "122/130",
+      "name": "Potion",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.122.potion.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:094"
+    },
+    {
+      "index": 123,
+      "id": "123",
+      "number": "123/130",
+      "name": "Switch",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.123.switch.jpg",
+      "extra": {
+        "type": "Trainer"
+      },
+      "reprintOf": "base:095"
+    },
+    {
+      "index": 124,
+      "id": "124",
+      "number": "124/130",
+      "name": "Double Colorless Energy",
+      "rarity": "uncommon",
+      "image": "images/base-set-2/b2.124.double_colorless_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:096"
+    },
+    {
+      "index": 125,
+      "id": "125",
+      "number": "125/130",
+      "name": "Fighting Energy",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.125.fighting_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:097"
+    },
+    {
+      "index": 126,
+      "id": "126",
+      "number": "126/130",
+      "name": "Fire Energy",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.126.fire_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:098"
+    },
+    {
+      "index": 127,
+      "id": "127",
+      "number": "127/130",
+      "name": "Grass Energy",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.127.grass_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:099"
+    },
+    {
+      "index": 128,
+      "id": "128",
+      "number": "128/130",
+      "name": "Lightning Energy",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.128.lightning_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:100"
+    },
+    {
+      "index": 129,
+      "id": "129",
+      "number": "129/130",
+      "name": "Psychic Energy",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.129.psychic_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:101"
+    },
+    {
+      "index": 130,
+      "id": "130",
+      "number": "130/130",
+      "name": "Water Energy",
+      "rarity": "common",
+      "image": "images/base-set-2/b2.130.water_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      },
+      "reprintOf": "base:102"
+    }
+  ]
+}

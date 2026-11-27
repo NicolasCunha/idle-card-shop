@@ -1,5 +1,9 @@
 {
   "collections": [
-    "base.json"
+    "base.json",
+    "jungle.json",
+    "fossil.json",
+    "base-set-2.json",
+    "team-rocket.json"
   ]
 }

@@ -49,6 +49,9 @@ async function run() {
   ok(base.booster.slots.reduce((a, s) => a + s.count, 0) === 11, 'booster has 11 cards (7C 3U 1R)');
   const count = r => base.cards.filter(c => c.rarity === r).length;
   ok(count('common') === 38 && count('uncommon') === 32 && count('rare') === 16 && count('holo') === 16, 'Base Set rarities: 38C 32U 16R 16H');
+  ok(order.join() === 'base,jungle,fossil,base-set-2,team-rocket', 'collections load in release order', order.join());
+  ok(order.every(id => sets[id].cards.length && sets[id].cards.every(c => sets[id].rarities[c.rarity])), 'every collection has cards with known rarities', order.map(id => sets[id].cards.length).join('/'));
+  ok(sets['base-set-2'].cards.filter(c => c.reprintOf).every(c => c.value < sets[c.reprintOf.split(':')[0]].byId[c.reprintOf.split(':')[1]].value + 1e-9), 'Base Set 2 reprints point to existing originals');
   const reprintSet = normalizeSet({ id: 'x', name: 'X', booster: { wholesalePrice: 1, slots: [] }, rarities: { c: { value: 1 } }, cards: [{ index: 1, id: 'a', name: 'A', rarity: 'c' }, { index: 2, id: 'b', name: 'B', rarity: 'nope' }] });
   ok(reprintSet.cards.length === 1, 'cards with unknown rarity are skipped');
 

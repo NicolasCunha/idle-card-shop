@@ -36,6 +36,7 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 - **Opening** applies the result to the state before the animation plays, so closing the scene never loses cards.
 - **Device preferences** (theme, volumes, mutes, reduce motion) live in `idlecardshop.prefs`, never in the save.
 - **Collection unlock** (Nicolas, 2026-11-27): collections unlock in `collections.json` order. `G.setUnlocked(state, set)` is true for the first one, and for the others once the previous one is `UNLOCK_AT` (90%) discovered (`state.seen`, the same measure as the Binder progress). Locked collections sell no boosters or singles; a Buyer set to one shows `locked`. `data.js` links each set to `prev` / `nextId`. Derived from existing data, so no save change. The unlock is announced in Recent and by tutorial step `nextset` (rev 2).
+- **Collections** (2026-11-27): Base Set, Jungle, Fossil, Base Set 2, Team Rocket, from Nicolas's crawler. Same booster layout and $4 wholesale for all (assumption, to confirm). Base Set 2 reprints link by name and rarity to Base Set or Jungle; Dark Raichu (secret rare) counts as holo.
 - **Binder selling**: Sell 1 / 5 / 10, Keep 1 (all but one), Sell all; selling the last copy asks first. Discovered cards with no copy are dimmed.
 - **Debug handle**: `window.idleCardShop` exposes the live state in the console.
 

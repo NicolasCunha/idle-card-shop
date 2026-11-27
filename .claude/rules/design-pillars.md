@@ -9,4 +9,4 @@ From GDD sections 1 and 2. A feature that breaks one of these needs Nicolas's ex
 - **In-game rewards only.** No real money, ads, nagging notifications, or punishment for leaving.
 - **Accessible.** Rarity never by color alone; "Reduce motion" honored everywhere; readable contrast in both themes.
 
-Out of v1 scope unless Nicolas says otherwise: scenery graphics, multiplayer, online accounts, monetization, Magic and any collection beyond Base Set, prestige (**[PENDING GDD Q6]**), customers buying sealed boosters (**[PENDING GDD Q4]**). Collection milestones are proposed but not approved (**[PENDING GDD Q5]**).
+Out of v1 scope unless Nicolas says otherwise: scenery graphics, multiplayer, online accounts, monetization, Magic and Pokémon collections Nicolas has not asked for (shipped: Base Set, Jungle, Fossil, Base Set 2, Team Rocket), prestige (**[PENDING GDD Q6]**), customers buying sealed boosters (**[PENDING GDD Q4]**). Collection milestones are proposed but not approved (**[PENDING GDD Q5]**).
