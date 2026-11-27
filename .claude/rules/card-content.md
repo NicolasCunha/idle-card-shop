@@ -23,7 +23,7 @@ When a collection file changes, check: unique `id`s, every `rarity` is a key of 
 
 Base Set booster (decided 2026-11-27): 7 common, 3 uncommon, 1 rare slot (33% holo). Basic energies count as common.
 
-Jungle, Fossil, Base Set 2 and Team Rocket (added 2026-11-27, crawled at Nicolas's direct request) use the same booster layout and $4 wholesale price until he says otherwise. Base Set 2 cards carry `reprintOf` to the Base Set or Jungle card with the same name and rarity (Imposter Professor Oak has none). Team Rocket's secret rare Dark Raichu (83/82) is mapped to `holo`.
+Jungle, Fossil, Base Set 2 and Team Rocket (added 2026-11-27, crawled at Nicolas's direct request) use the same booster layout and $4 wholesale price until he says otherwise. Base Set 2 cards carry `reprintOf` to the Base Set or Jungle card with the same name and rarity (Imposter Professor Oak has none). Rarities follow the crawler's source rarity: Team Rocket's Dark Raichu (83/82, "Rare Secret") has its own `secret` rarity, rarer than holo (2% of the rare slot; Nicolas, 2026-11-27). The crawler maps "Rare Secret" to `secret`.
 
 Collections are released in `collections.json` order, one every 7 market days from the save's first day (Nicolas, 2026-11-27; replaces the earlier 90% discovery unlock). Each newer collection gets a bigger print run (`js/supply.js`). Append new collections in release order, and add a patch note to `data/news.json` when one ships.
 

@@ -76,7 +76,7 @@ function bindEvents() {
     A.run(el.dataset.action, { ...el.dataset, value, files: el.files });
   });
   document.addEventListener('input', e => {
-    if (e.target.matches?.('[data-pf="price"]')) { pfInput(e.target); return; }
+    if (e.target.matches?.('[data-lf]')) { lfInput(e.target); return; }
     if (e.target.matches?.('[data-market-search]')) { marketSearch(e.target); return; }
     const el = e.target.closest('input[type="range"][data-action]');
     if (el) A.run(el.dataset.action, { ...el.dataset, value: el.value });
@@ -307,7 +307,7 @@ PANELS.shop = {
         <div class="stat-big" title="${esc(TIPS.buy)}"><span data-k="bprice"></span><small> each</small></div>
         <div class="kv" title="${esc(TIPS.supply)}"><span>Supply</span><b data-k="left"></b></div>
         <div class="kv"><span>Sealed</span><b data-k="stock"></b></div>
-        ${next ? `<div class="kv muted"><span>${esc(next.name)}</span><span data-k="nextin"></span></div>` : ''}
+        ${next ? `<div class="kv muted"><span>Next set: ${esc(next.name)}</span><span data-k="nextin"></span></div>` : ''}
         <div class="btns">
           <button data-action="buy" data-n="1" data-d="buy1">Buy booster</button>
           <button data-action="buy" data-n="5" data-d="buy5">Buy 5</button>
@@ -366,7 +366,7 @@ PANELS.shop = {
     return {
       bprice: fmtMoney(price),
       left: out ? 'sold out' : fmtCount(sup.left),
-      nextin: days > 1 ? `in ${days} days` : days === 1 ? 'tomorrow' : 'soon',
+      nextin: days > 1 ? `${days} days` : days === 1 ? 'tomorrow' : 'soon',
       stock: `${fmtNum(G.totalStock(S))} / ${fmtNum(G.stockCapacity(S))}`,
       sealed: fmtNum(S.stock[st.id] || 0),
       avail: fmtNum(avail),
@@ -724,34 +724,45 @@ export function timeZoneOptions(sel) {
 }
 
 // ---------- Card detail ----------
-// Pricing form inside the card detail. `pf` keeps the choice while the
-// detail is redrawn; it resets when another card is opened.
-const pf = { key: '', n: '1', price: 0 };
+// List form: `lf` keeps the chosen quantity and price while the form is
+// redrawn; it resets when another card is opened.
+const lf = { key: '', n: 1, price: 0 };
 
-export function pfQty(n) { pf.n = n; }
-export function pfLevel(st, c, level) { pf.price = G.tagPrice(G.marketValue(S, st, c), Number(level)); }
-export function pfState() { return pf; }
-
-function pfCount(have) {
-  if (pf.n === 'all') return have;
-  if (pf.n === 'keep1') return have - 1;
-  return Math.min(have, Number(pf.n) || 1);
+export function lfState() { return lf; }
+function lfMax(st, c) { return Math.min(S.binder[st.id]?.[c.id] || 0, G.freeSlots(S)); }
+function lfReset(st, c) {
+  const key = `${st.id}:${c.id}`;
+  if (lf.key !== key) { lf.key = key; lf.n = 1; lf.price = G.tagPrice(G.marketValue(S, st, c), 0); }
+}
+export function lfSet(st, c, what) {
+  lfReset(st, c);
+  const max = lfMax(st, c);
+  if (what === 'minus') lf.n = lf.n - 1;
+  else if (what === 'plus') lf.n = lf.n + 1;
+  else if (what === 'max') lf.n = max;
+  else if (what === 'market') lf.price = G.tagPrice(G.marketValue(S, st, c), 0);
+  lf.n = Math.max(1, Math.min(lf.n, max || 1));
 }
 
-// Live update while the price is typed: % against market and the button label.
-export function pfInput(input) {
-  const v = Math.round(Number(input.value) * 100) / 100;
-  pf.price = v > 0 ? v : 0;
-  const root = input.closest('.detail');
-  const mv = Number(input.dataset.mv);
-  const off = root.querySelector('.pf-off');
-  if (off) {
-    off.textContent = pf.price ? (Math.abs(pf.price / mv - 1) < 0.005 ? 'market' : fmtPct(pf.price / mv - 1)) : '';
-    off.className = `pf-off ${pf.price > mv * 1.1 ? 'warn' : 'muted'}`;
+// Live update while quantity or price is typed.
+export function lfInput(input) {
+  const root = input.closest('.list-form');
+  const max = Number(root.dataset.max);
+  const mv = Number(root.dataset.mv);
+  if (input.dataset.lf === 'n') {
+    const v = Math.floor(Number(input.value));
+    lf.n = v > 0 ? Math.min(v, max) : 0;
+  } else {
+    const v = Math.round(Number(input.value) * 100) / 100;
+    lf.price = v > 0 ? v : 0;
   }
-  for (const b of root.querySelectorAll('[data-pf-level]')) b.classList.toggle('on', pf.price === G.tagPrice(mv, Number(b.dataset.pfLevel)));
+  const off = root.querySelector('.pf-off');
+  off.textContent = lf.price ? (lf.price === G.tagPrice(mv, 0) ? 'market' : fmtPct(lf.price / mv - 1)) : '';
+  off.className = `pf-off ${lf.price > mv * 1.1 ? 'warn' : 'muted'}`;
+  root.querySelector('[data-k="lf-total"]').textContent = fmtMoney(lf.n * lf.price);
   const btn = root.querySelector('[data-action="list-card"]');
-  if (btn) btn.disabled = !pf.price || Number(btn.dataset.max) < 1;
+  btn.disabled = !(lf.n > 0 && lf.price > 0);
+  btn.textContent = `List ${lf.n || 0}`;
 }
 
 export function cardDetailHtml(st, c) {
@@ -762,13 +773,7 @@ export function cardDetailHtml(st, c) {
   const cost = now * G.MARKET_BUY_RATE;
   const open = G.setUnlocked(S, st);
   const ref = `data-s="${esc(st.id)}" data-c="${esc(c.id)}"`;
-  const key = `${st.id}:${c.id}`;
-  if (pf.key !== key) { pf.key = key; pf.n = '1'; pf.price = G.tagPrice(now, 0); }
-  if (pf.n === 'keep1' && have < 2) pf.n = '1';
-  const k = Math.min(Math.max(0, pfCount(have)), G.freeSlots(S));
-  const qty = (n, label, ok) => `<button class="small ${pf.n === n ? 'on' : ''}" data-action="pf-qty" ${ref} data-n="${n}" ${ok ? '' : 'disabled'}${n === 'keep1' ? ` title="${esc(TIPS.keepOne)}"` : ''}>${label}</button>`;
-  const lvl = l => `<button class="small ${pf.price === G.tagPrice(now, l) ? 'on' : ''}" data-action="pf-level" ${ref} data-level="${l}" data-pf-level="${l}">${fmtLevel(l)}</button>`;
-  const off = pf.price / now - 1;
+  const canList = have && S.unlocked.priceList;
   return `
   <div class="modal detail">
     ${cardHtml(st, c, { size: 'lg' })}
@@ -779,23 +784,54 @@ export function cardDetailHtml(st, c) {
       <div class="kv"><span>7 days</span><b class="${now >= hist[hist.length - 8] ? 'up' : 'down'}">${fmtPct(now / hist[hist.length - 8] - 1)}</b></div>
       ${sparkline(hist, 240, 60)}
       <div class="kv"><span>In binder</span><b>${have}</b></div>
-      ${have && S.unlocked.priceList ? `
-      <div class="price-form">
-        <div class="seg">${qty('1', '1', have >= 1)}${qty('5', '5', have >= 5)}${qty('10', '10', have >= 10)}${qty('keep1', 'Keep 1', have >= 2)}${qty('all', 'All', have >= 1)}</div>
-        <div class="seg">${G.PRICE_LEVELS.map(lvl).join('')}</div>
-        <div class="pf-price">
-          <label>Price <input type="number" min="0.01" step="0.01" inputmode="decimal" data-pf="price" data-mv="${now}" value="${pf.price.toFixed(2)}"></label>
-          <span class="pf-off ${pf.price > now * 1.1 ? 'warn' : 'muted'}" title="${esc(TIPS.customers)}">${Math.abs(off) < 0.005 ? 'market' : fmtPct(off)}</span>
-          <span class="grow"></span>
-          ${G.freeSlots(S) ? `<button class="primary" data-action="list-card" ${ref} data-max="${k}" ${k > 0 && pf.price > 0 ? '' : 'disabled'} title="${esc(TIPS.price)}">List ${k}</button>` : '<span class="muted">showcase full</span>'}
-        </div>
-      </div>` : ''}
       <div class="btns">
+        ${canList ? (G.freeSlots(S) ? `<button class="primary" data-action="list" ${ref} title="${esc(TIPS.list)}">List</button>` : '<span class="muted">showcase full</span>') : ''}
         ${open
           ? `<button data-action="buy-single" ${ref} ${S.money >= cost ? '' : 'disabled'} title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button>`
           : `<span class="muted" title="${esc(TIPS.locked)}">locked</span>`}
         <span class="grow"></span>
         <button data-action="close">Done</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+export function listFormHtml(st, c) {
+  lfReset(st, c);
+  const now = G.marketValue(S, st, c);
+  const have = S.binder[st.id]?.[c.id] || 0;
+  const max = lfMax(st, c);
+  lf.n = Math.max(1, Math.min(lf.n, max || 1));
+  const ref = `data-s="${esc(st.id)}" data-c="${esc(c.id)}"`;
+  const off = lf.price / now - 1;
+  const ok = max > 0 && lf.price > 0;
+  return `
+  <div class="modal detail list-form" data-max="${max}" data-mv="${now}">
+    ${cardHtml(st, c, { size: 'lg' })}
+    <div class="detail-info">
+      <h2>${esc(c.name)}</h2>
+      <div class="kv"><span>Market</span><b>${fmtMoney(now)}</b></div>
+      <div class="kv"><span>In binder</span><b>${have}</b></div>
+      <div class="lf-row">
+        <label for="lf-n">Quantity</label>
+        <span class="grow"></span>
+        <button class="small" data-action="lf" data-what="minus" ${ref} aria-label="One less">&minus;</button>
+        <input id="lf-n" type="number" min="1" max="${max}" step="1" inputmode="numeric" data-lf="n" value="${lf.n}">
+        <button class="small" data-action="lf" data-what="plus" ${ref} aria-label="One more">+</button>
+        <button class="small" data-action="lf" data-what="max" ${ref}>Max</button>
+      </div>
+      <div class="lf-row">
+        <label for="lf-p">Price</label>
+        <span class="grow"></span>
+        <span class="pf-off ${lf.price > now * 1.1 ? 'warn' : 'muted'}" title="${esc(TIPS.customers)}">${lf.price === G.tagPrice(now, 0) ? 'market' : fmtPct(off)}</span>
+        <input id="lf-p" type="number" min="0.01" step="0.01" inputmode="decimal" data-lf="price" value="${lf.price.toFixed(2)}">
+        <button class="small" data-action="lf" data-what="market" ${ref}>Market</button>
+      </div>
+      <div class="kv"><span>Total</span><b data-k="lf-total">${fmtMoney(lf.n * lf.price)}</b></div>
+      <div class="btns">
+        <button data-action="card" ${ref}>Back</button>
+        <span class="grow"></span>
+        <button class="primary" data-action="list-card" ${ref} ${ok ? '' : 'disabled'}>List ${lf.n}</button>
       </div>
     </div>
   </div>`;

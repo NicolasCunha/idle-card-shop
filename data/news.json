@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-list",
+      "date": "2026-11-27",
+      "version": "1.2.1",
+      "title": "Easier listing",
+      "text": "Price now lists every card, cheap ones too. In the binder, open a card and tap List to pick quantity and price. Team Rocket's Dark Raichu is now a Secret Rare, rarer than a holo."
+    },
+    {
       "id": "2026-11-27-supply",
       "date": "2026-11-27",
       "version": "1.2.0",

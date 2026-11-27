@@ -17,8 +17,9 @@
       {
         "count": 1,
         "weights": {
-          "rare": 0.67,
-          "holo": 0.33
+          "rare": 0.66,
+          "holo": 0.32,
+          "secret": 0.02
         }
       }
     ]
@@ -47,6 +48,12 @@
       "short": "H",
       "value": 12,
       "color": "#d9a53f"
+    },
+    "secret": {
+      "name": "Secret Rare",
+      "short": "S",
+      "value": 40,
+      "color": "#b36fd1"
     }
   },
   "reprintFactor": 0.5,
@@ -1042,7 +1049,7 @@
       "id": "083",
       "number": "83/82",
       "name": "Dark Raichu",
-      "rarity": "holo",
+      "rarity": "secret",
       "image": "images/team-rocket/ro.083.dark_raichu.jpg",
       "extra": {
         "type": "Pokémon",

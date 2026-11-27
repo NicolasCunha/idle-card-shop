@@ -393,13 +393,12 @@ export function spares(state, sets, keep) {
 }
 
 // Manual batch: prices up to n copies, priciest first, keeping `keep` copies
-// of each card, at market x (1 + level). Cards worth less than the bulk
-// threshold are left for the bulk buyer.
+// of each card, at market x (1 + level). Every card can be listed by hand,
+// cheap ones included; only the staff pricer sends cheap copies to bulk.
 export function priceSpares(state, sets, n, level = 0, keep = 0) {
   let left = Math.min(n, freeSlots(state)), k = 0;
   for (const sp of spares(state, sets, keep)) {
     if (left <= 0) break;
-    if (sp.mv < state.rules.bulkBelow) continue;
     const m = listCard(state, sp.set, sp.card, Math.min(left, sp.n), tagPrice(sp.mv, level));
     left -= m; k += m;
   }

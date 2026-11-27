@@ -408,12 +408,9 @@ label.check { gap: .35rem; }
 /* ---------- Pricing ---------- */
 .price-opts { display: flex; gap: .35rem; flex-wrap: wrap; }
 .price-opts select { flex: 1 1 4.5rem; min-width: 0; }
-.price-form { display: grid; gap: .45rem; border-top: 1px solid var(--border); padding-top: .6rem; }
-.seg { display: flex; flex-wrap: wrap; gap: .3rem; }
-.seg button.on { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-.pf-price { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
-.pf-price input { width: 6.5rem; }
-.pf-off { font-variant-numeric: tabular-nums; min-width: 3.5rem; }
+.lf-row { display: flex; align-items: center; gap: .4rem; border-top: 1px solid var(--border); padding-top: .55rem; }
+.lf-row input { width: 6.5rem; text-align: right; }
+.pf-off { font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: right; }
 
 /* ---------- Phones ---------- */
 html { -webkit-text-size-adjust: 100%; }
@@ -459,7 +456,7 @@ button, select, .tab, .binder-slot, .thumb { -webkit-tap-highlight-color: transp
   .detail-info { width: 100%; }
   .result-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: .5rem; }
   .bar-head { flex-wrap: wrap; gap: .5rem; }
-  .pf-price input { width: 6rem; }
+  .lf-row input { width: 5rem; }
   .tip { left: .5rem; right: .5rem; bottom: calc(4rem + env(safe-area-inset-bottom)); max-width: none; transform: none; border-radius: 14px; z-index: 21; }
 }
 @media (display-mode: standalone) {

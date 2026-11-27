@@ -282,12 +282,12 @@ function run(action, d) {
       }
       break;
     }
-    case 'pf-qty':
-    case 'pf-level': {
+    case 'list':
+    case 'lf': {
       const { set, card } = find(d);
       if (!card) break;
-      if (action === 'pf-qty') UI.pfQty(d.n); else UI.pfLevel(set, card, d.level);
-      overlayEl().innerHTML = UI.cardDetailHtml(set, card);
+      if (action === 'lf') UI.lfSet(set, card, d.what);
+      overlayEl().innerHTML = UI.listFormHtml(set, card);
       return;
     }
     case 'list-card':
@@ -295,16 +295,16 @@ function run(action, d) {
       const { set, card } = find(d);
       if (!card) break;
       const have = state.binder[set.id]?.[card.id] || 0;
-      const pf = UI.pfState();
-      const n = action === 'list-card' ? Math.min(Number(d.max) || 0, have) : Number(d.n);
-      const price = action === 'list-card' ? pf.price : Number(d.price);
+      const lf = UI.lfState();
+      const n = action === 'list-card' ? Math.min(lf.n, have, G.freeSlots(state)) : Number(d.n);
+      const price = action === 'list-card' ? lf.price : Number(d.price);
       if (!(n > 0) || !(price > 0)) break;
       if (action === 'list-card' && n >= have) {
         overlayEl().innerHTML = UI.confirmLastHtml(set, card, n, price);
         return;
       }
       if (G.listCard(state, set, card, n, price)) { Audio.sfx.click(); overlayEl().innerHTML = UI.cardDetailHtml(set, card); }
-      break;
+      return;
     }
     case 'close': closeOverlay(); break;
     case 'hire': if (G.hire(state)) Audio.sfx.coin(); break;

@@ -35,7 +35,7 @@ export const TIPS = {
   bulk: 'Sells binder copies worth less than the bulk threshold at 30% of market.',
   recall: 'Brings showcase cards back to the binder.',
   single: 'Buy one copy for your binder at 110% of market.',
-  keepOne: 'Every copy but one.',
+  list: 'Put copies in the showcase at your price.',
   locked: 'Not out yet.',
   stockTarget: 'Buyer stops when the shop holds this many sealed boosters.',
   cashReserve: 'Buyer never spends below this.',
