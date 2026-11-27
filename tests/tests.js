@@ -186,10 +186,12 @@ async function run() {
     money: 5, binder: { base: { '001': 1 } },
     unpriced: [{ s: 'base', c: '001' }, { s: 'base', c: '002' }], priced: [{ s: 'base', c: '002', p: 3 }],
     rules: { keepFirst: true, stockTarget: 7 },
+    staff: [{ id: 1, name: 'Ada', task: 'list', skills: { buy: { lvl: 2, xp: 0 }, list: { lvl: 5, xp: 3 } }, training: { skill: 'list', left: 9, total: 20 } }],
   } };
   const m2 = Save.restore(v1, sets, order);
   ok(m2.binder.base['001'] === 2 && m2.binder.base['002'] === 2 && !('unpriced' in m2) && !('priced' in m2), 'v1 saves: unpriced and priced cards go back to the binder');
   ok(m2.rules.keepCopies === 1 && m2.rules.stockTarget === 7 && !('keepFirst' in m2.rules), 'v1 saves: keepFirst becomes Keep copies 1');
+  ok(m2.staff[0].task === 'price' && !m2.staff[0].training && !('list' in m2.staff[0].skills) && m2.staff[0].skills.buy.lvl === 2, 'v1 saves: List staff move to Price');
   let threw = false;
   try { Save.restore({ game: 'idlecardshop', saveVersion: 999, state: {} }, sets, order); } catch { threw = true; }
   ok(threw, 'a save from a newer version is refused');

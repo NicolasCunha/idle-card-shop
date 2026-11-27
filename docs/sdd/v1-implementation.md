@@ -50,7 +50,7 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 | Version | Change | Old saves |
 | --- | --- | --- |
 | 1 | First schema | — |
-| 2 (2026-11-27) | Opened cards live in the binder; `unpriced` and `priced` removed; `rules.keepFirst` replaced by `rules.keepCopies` (default 1) and `rules.priceLevel` (default 0) | Unpriced and priced cards go back to the binder (Nicolas). keepCopies starts at 1 |
+| 2 (2026-11-27) | Opened cards live in the binder; `unpriced` and `priced` removed; `rules.keepFirst` replaced by `rules.keepCopies` (default 1) and `rules.priceLevel` (default 0) | Unpriced and priced cards go back to the binder; keepCopies starts at 1; staff on List move to Price (all Nicolas) |
 
 ## Assumptions taken from GDD proposals (open questions)
 

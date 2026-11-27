@@ -19,7 +19,7 @@ export const MIGRATIONS = {
   // v2 (2026-11-27): opened cards live in the binder and pricing lists them
   // straight in the showcase. The unpriced pile and the priced queue go back to
   // the binder, and keepFirst becomes rules.keepCopies (default 1, from
-  // newState). Both decided by Nicolas.
+  // newState), and List staff move to Price. All decided by Nicolas.
   1: state => {
     const binder = (state.binder && typeof state.binder === 'object') ? state.binder : (state.binder = {});
     for (const it of [...(state.unpriced || []), ...(state.priced || [])]) {
@@ -30,6 +30,13 @@ export const MIGRATIONS = {
     delete state.unpriced;
     delete state.priced;
     if (state.rules) delete state.rules.keepFirst;
+    // The List task is gone: staff on it move to Price (Nicolas).
+    for (const e of state.staff || []) {
+      if (!e || typeof e !== 'object') continue;
+      if (e.task === 'list') e.task = 'price';
+      if (e.training?.skill === 'list') e.training = null;
+      if (e.skills) delete e.skills.list;
+    }
     return state;
   },
 };
