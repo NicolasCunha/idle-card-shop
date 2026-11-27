@@ -148,6 +148,7 @@ Cada coleção é um arquivo JSON na raiz do projeto, e `collections.json` lista
 - A ordem das chaves em `rarities` define a ordem de revelação na abertura (comuns primeiro).
 - Imagens em proporção 5:7 (ex.: 500×700), PNG, JPG ou WEBP. Pasta sugerida: `images/<id da coleção>/`.
 - A v1 vem com um modelo do Base Set (102 cartas com nomes provisórios) para o Nicolas preencher.
+- **Desbloqueio em sequência (decidido 2026-11-27):** as coleções seguem a ordem de `collections.json`. Boosters e cartas avulsas de uma coleção só podem ser comprados quando o jogador já descobriu pelo menos 90% da coleção anterior. A primeira coleção começa liberada. Vender cópias não tira o desbloqueio, porque a descoberta fica.
 
 ## 5. Abertura de boosters
 
@@ -401,6 +402,7 @@ O tutorial ensina o loop na primeira partida, passo a passo, e é atualizado jun
 | Saldo chega a $40 | Aba Upgrades |
 | Saldo chega a $50 | Aba Staff (passo do tutorial "Hire") |
 | Primeiro dia de mercado novo, ou primeira carta acima de $5 | Aba Market (passo do tutorial "Market") |
+| 90% da coleção anterior descoberta | Boosters da próxima coleção na distribuidora (passo do tutorial "nextset") |
 
 Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
 
@@ -416,6 +418,7 @@ Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
 8. Pick a task for them.
 9. Check the Market tab: prices change once a day.
 10. Settings: theme, volume, save.
+11. A new collection is open. Pick it at the distributor (quando a próxima coleção libera).
 
 **Regra de atualização:** o tutorial tem um número de revisão. Toda mudança de mecânica atualiza o tutorial e sobe esse número; jogadores com revisão antiga veem só os passos novos. Nenhuma entrega é considerada pronta sem o tutorial atualizado.
 

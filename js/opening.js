@@ -158,13 +158,10 @@ export function showBulkResult(set, result) {
   const el = show(`
     <div class="modal bulk-result">
       <h2>${packs} boosters · ${result.length} cards${newCount ? ` · ${newCount} new` : ''}</h2>
-      <div class="result-list">${rows.map(g => `
-        <div class="result-row">
-          ${cardHtml(set, g.card, { size: 'xs' })}
-          ${rarityTag(set, g.card)}
-          <span class="grow">${esc(g.card.name)}${g.isNew ? ' <span class="badge-new inline">NEW</span>' : ''}</span>
-          <span class="muted">×${g.n}</span>
-          <span class="num">${fmtMoney(G.marketValue(ctx.state, set, g.card) * g.n)}</span>
+      <div class="result-grid">${rows.map(g => `
+        <div class="result-cell">
+          ${cardHtml(set, g.card, { size: 'sm', badge: (g.isNew ? '<span class="badge-new">NEW</span>' : '') + (g.n > 1 ? `<span class="badge-count">×${g.n}</span>` : '') })}
+          <span class="result-meta"><span>${rarityTag(set, g.card)}</span><span class="num">${fmtMoney(G.marketValue(ctx.state, set, g.card) * g.n)}</span></span>
         </div>`).join('')}</div>
       <div class="summary-foot">
         <span>Value <b>${fmtMoney(total)}</b></span>

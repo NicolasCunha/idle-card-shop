@@ -175,10 +175,25 @@ export function milestoneBonus(state, set) {
   return b;
 }
 
-// Refresh cached milestone bonuses (called when discoveries change).
-function refreshBonus(state, sets, setId) {
+// A collection's boosters and singles can be bought once the collection before
+// it (collections.json order) is UNLOCK_AT discovered. The first one is always open.
+export const UNLOCK_AT = 0.9;
+
+export function setUnlocked(state, set) {
+  return !set.prev || collectionProgress(state, set.prev).frac >= UNLOCK_AT - 1e-9;
+}
+
+// Refresh cached milestone bonuses (called when discoveries change). Announces
+// the next collection the moment this one crosses UNLOCK_AT.
+function refreshBonus(state, sets, setId, announce = true) {
   state._bonus = state._bonus || {};
   state._bonus[setId] = milestoneBonus(state, sets[setId]);
+  const next = sets[sets[setId].nextId];
+  if (!next) return;
+  state._open = state._open || {};
+  const open = setUnlocked(state, next);
+  if (announce && open && state._open[next.id] === false) log(state, 'unlock', `${next.name} boosters available`);
+  state._open[next.id] = open;
 }
 
 function saleMultiplier(state, setId) {
@@ -187,7 +202,7 @@ function saleMultiplier(state, setId) {
 
 // ---------- Actions: buy ----------
 export function canBuyBooster(state, set, reserve = 0) {
-  return totalStock(state) < stockCapacity(state) && state.money - boosterPrice(state, set) >= reserve - 1e-9;
+  return setUnlocked(state, set) && totalStock(state) < stockCapacity(state) && state.money - boosterPrice(state, set) >= reserve - 1e-9;
 }
 
 export function buyBooster(state, set, reserve = 0) {
@@ -336,7 +351,7 @@ export function singlePrice(state, set, card) {
 
 export function buySingle(state, sets, set, card) {
   const cost = singlePrice(state, set, card);
-  if (state.money < cost) return false;
+  if (!setUnlocked(state, set) || state.money < cost) return false;
   spend(state, cost);
   const binder = (state.binder[set.id] ||= {});
   binder[card.id] = (binder[card.id] || 0) + 1;
@@ -345,13 +360,16 @@ export function buySingle(state, sets, set, card) {
   return true;
 }
 
-export function sellFromBinder(state, set, card) {
+// Moves up to n copies to the unpriced pile. Returns how many moved.
+export function sellFromBinder(state, set, card, n = 1) {
   const binder = state.binder[set.id];
-  if (!binder || !(binder[card.id] > 0)) return false;
-  binder[card.id]--;
+  const have = binder?.[card.id] || 0;
+  const k = Math.max(0, Math.min(have, Math.floor(n)));
+  if (!k) return 0;
+  binder[card.id] = have - k;
   if (!binder[card.id]) delete binder[card.id];
-  state.unpriced.push({ s: set.id, c: card.id });
-  return true;
+  for (let i = 0; i < k; i++) state.unpriced.push({ s: set.id, c: card.id });
+  return k;
 }
 
 // ---------- Upgrades ----------
@@ -426,6 +444,7 @@ function doTask(state, sets, emp) {
     case 'buy': {
       const set = sets[state.rules.buySet];
       if (!set) { emp.status = 'no collection'; return false; }
+      if (!setUnlocked(state, set)) { emp.status = 'locked'; return false; }
       if ((state.stock[set.id] || 0) >= state.rules.stockTarget) { emp.status = 'stock target'; return false; }
       if (totalStock(state) >= stockCapacity(state)) { emp.status = 'storage full'; return false; }
       if (!buyBooster(state, set, state.rules.cashReserve)) { emp.status = 'cash reserve'; return false; }
@@ -561,7 +580,8 @@ export function tick(state, sets, dt, nowMs) {
 function rescueIfStuck(state, sets) {
   if (state.unpriced.length || state.priced.length || state.showcase.length) return;
   if (totalStock(state) > 0) return;
-  const set = sets[state.rules.buySet] || Object.values(sets)[0];
+  let set = sets[state.rules.buySet];
+  if (!set || !setUnlocked(state, set)) set = Object.values(sets).find(s => !s.prev);
   if (!set || state.money >= boosterPrice(state, set)) return;
   for (const cards of Object.values(state.binder)) for (const n of Object.values(cards)) if (n > 0) return;
   state.stock[set.id] = 1;
@@ -572,7 +592,8 @@ function rescueIfStuck(state, sets) {
 // Recomputes derived caches after load.
 export function prepare(state, sets) {
   state._bonus = {};
-  for (const id of Object.keys(sets)) refreshBonus(state, sets, id);
+  state._open = {};
+  for (const id of Object.keys(sets)) refreshBonus(state, sets, id, false);
 }
 
 // Replays the time since the last tick in full, in chunks, so the page stays

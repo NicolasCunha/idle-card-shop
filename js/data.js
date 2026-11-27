@@ -17,7 +17,16 @@ export async function loadCollections(base = '') {
     }
   }
   resolveReprints(sets);
+  linkOrder(sets, order);
   return { sets, order };
+}
+
+// Collections unlock in collections.json order: each one needs the one before it.
+export function linkOrder(sets, order) {
+  order.forEach((id, i) => {
+    sets[id].prev = i > 0 ? sets[order[i - 1]] : null;
+    sets[id].nextId = order[i + 1] || null;
+  });
 }
 
 async function fetchJson(url) {

@@ -228,7 +228,12 @@ function updateTutorial() {
 
 // ---------- Helpers ----------
 const set = id => SETS[id];
-const setOptions = (sel) => ORDER.map(id => `<option value="${esc(id)}" ${id === sel ? 'selected' : ''}>${esc(SETS[id].name)}</option>`).join('');
+// withLock: mark collections whose boosters are still locked.
+const setOptions = (sel, withLock = false) => ORDER.map(id => {
+  const lock = withLock && !G.setUnlocked(S, SETS[id]);
+  return `<option value="${esc(id)}" ${id === sel ? 'selected' : ''}>${esc(SETS[id].name)}${lock ? ' · locked' : ''}</option>`;
+}).join('');
+const lockSig = () => ORDER.map(id => (G.setUnlocked(S, SETS[id]) ? 1 : 0)).join('');
 
 function staffOn(task) {
   return S.staff.filter(e => e.task === task && !e.training);
@@ -247,16 +252,23 @@ function logHtml() {
 const PANELS = {};
 
 PANELS.shop = {
-  sig: () => [S.unlocked.priceList, S.staff.length, ui.shopSet, ORDER.length].join(),
+  sig: () => [S.unlocked.priceList, S.staff.length, ui.shopSet, ORDER.length, lockSig()].join(),
   html() {
     const sid = ui.shopSet;
+    const st = set(sid);
     const multi = ORDER.length > 1;
-    const sel = multi ? `<select data-action="shop-set">${setOptions(sid)}</select>` : '';
+    const sel = multi ? `<select data-action="shop-set">${setOptions(sid, true)}</select>` : '';
+    const locked = !G.setUnlocked(S, st);
     return `
     <div class="stages">
       <section class="stage" id="stage-buy">
         <h3>Distributor</h3>${sel}
         <div class="stat-big" title="${esc(TIPS.buy)}"><span data-k="bprice"></span><small> each</small></div>
+        ${locked ? `<div class="lock-line" title="${esc(TIPS.locked)}">
+          <span>${esc(st.prev.name)}</span>
+          <div class="progress"><i data-w="lockw"></i></div>
+          <b data-k="lockp"></b>
+        </div>` : ''}
         <div class="kv"><span>Sealed</span><b data-k="stock"></b></div>
         <div class="btns">
           <button data-action="buy" data-n="1" data-d="buy1">Buy booster</button>
@@ -303,7 +315,8 @@ PANELS.shop = {
   vals() {
     const st = set(ui.shopSet);
     const price = G.boosterPrice(S, st);
-    const full = G.totalStock(S) >= G.stockCapacity(S);
+    const full = G.totalStock(S) >= G.stockCapacity(S) || !G.setUnlocked(S, st);
+    const prevFrac = st.prev ? G.collectionProgress(S, st.prev).frac : 1;
     let bulk = 0;
     if (S.unlocked.priceList && S.unpriced.length < 5000) {
       for (const it of S.unpriced) {
@@ -319,6 +332,8 @@ PANELS.shop = {
       priced: fmtNum(S.priced.length),
       showcase: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
       bulkv: S.unpriced.length ? fmtMoney(bulk) : '',
+      lockw: prevFrac / G.UNLOCK_AT,
+      lockp: `${Math.floor(prevFrac * 100)}% / ${Math.round(G.UNLOCK_AT * 100)}%`,
       'd:buy1': full || S.money < price,
       'd:buy5': full || S.money < price,
       'd:open': !(S.stock[st.id] > 0),
@@ -356,7 +371,7 @@ PANELS.binder = {
     <div class="binder-grid">${st.cards.map(c => {
       const n = binder[c.id] || 0;
       return `<button class="binder-slot" data-action="card" data-s="${esc(st.id)}" data-c="${esc(c.id)}" ${seen[c.id] ? '' : 'disabled'}>
-        ${cardHtml(st, c, { size: 'sm', unseen: !seen[c.id], badge: n ? `<span class="badge-count">×${n}</span>` : '' })}
+        ${cardHtml(st, c, { size: 'sm', unseen: !seen[c.id], extraClass: seen[c.id] && !n ? 'not-owned' : '', badge: n ? `<span class="badge-count">×${n}</span>` : '' })}
       </button>`;
     }).join('')}</div>`;
   },
@@ -408,7 +423,7 @@ function sparkline(values, w = 90, h = 24) {
 }
 
 PANELS.market = {
-  sig: () => [S.day, ui.marketSet, ui.marketSort, ui.marketPage, PREFS.marketPageSize].join(),
+  sig: () => [S.day, ui.marketSet, ui.marketSort, ui.marketPage, PREFS.marketPageSize, lockSig()].join(),
   html() {
     const st = set(ui.marketSet);
     const day = S.day;
@@ -434,10 +449,10 @@ PANELS.market = {
     news.sort((a, b) => b.day - a.day);
     const bp = G.boosterPrice(S, st);
     const bp7 = st.booster.wholesalePrice * M.boosterMultiplier(st, day - 7);
-    const seen = S.seen[st.id] || {};
+    const open = G.setUnlocked(S, st);
     return `
     <div class="bar-head">
-      ${ORDER.length > 1 ? `<select data-action="market-set">${setOptions(st.id)}</select>` : `<h2>${esc(st.name)}</h2>`}
+      ${ORDER.length > 1 ? `<select data-action="market-set">${setOptions(st.id, true)}</select>` : `<h2>${esc(st.name)}</h2>`}
       <span class="muted">Booster ${fmtMoney(bp)} <span class="${bp >= bp7 ? 'up' : 'down'}">${fmtPct(bp / bp7 - 1)}</span></span>
       <span class="grow"></span>
       <label class="inline">Sort <select data-action="market-sort">
@@ -452,13 +467,15 @@ PANELS.market = {
       ${shown.map(r => {
         const cost = r.now * G.MARKET_BUY_RATE;
         return `<div class="tr">
-          ${cardHtml(st, r.c, { size: 'xs' })}
+          <button class="thumb" data-action="card" data-s="${esc(st.id)}" data-c="${esc(r.c.id)}" aria-label="${esc(r.c.name)}">${cardHtml(st, r.c, { size: 'xs' })}</button>
           <span>${rarityTag(st, r.c)} ${esc(r.c.name)}</span>
           <span class="num">${fmtMoney(r.now)}</span>
           <span class="num ${r.d1 >= 0 ? 'up' : 'down'}">${fmtPct(r.d1)}</span>
           <span class="num ${r.d7 >= 0 ? 'up' : 'down'}">${fmtPct(r.d7)}</span>
           <span>${sparkline(r.hist)}</span>
-          <span><button class="small" data-action="buy-single" data-s="${esc(st.id)}" data-c="${esc(r.c.id)}" data-cost="${cost}" title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button></span>
+          <span>${open
+            ? `<button class="small" data-action="buy-single" data-s="${esc(st.id)}" data-c="${esc(r.c.id)}" data-cost="${cost}" title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button>`
+            : `<span class="muted" title="${esc(TIPS.locked)}">locked</span>`}</span>
         </div>`;
       }).join('')}
     </div>
@@ -467,7 +484,7 @@ PANELS.market = {
 };
 
 PANELS.staff = {
-  sig: () => [S.staff.length, G.maxStaff(S), ORDER.length,
+  sig: () => [S.staff.length, G.maxStaff(S), ORDER.length, lockSig(),
     ...S.staff.map(e => `${e.task}/${e.training ? e.training.skill : ''}/${G.SKILL_KEYS.map(k => e.skills[k].lvl).join('.')}`)].join('|'),
   html() {
     const cost = G.hireCost(S.staff.length);
@@ -509,7 +526,7 @@ PANELS.staff = {
       <h3>Shop rules</h3>
       <div class="rules-grid">
         ${ORDER.length > 1 ? `
-        <label>Buyer collection <select data-action="rule" data-rule="buySet">${setOptions(r.buySet)}</select></label>
+        <label>Buyer collection <select data-action="rule" data-rule="buySet">${setOptions(r.buySet, true)}</select></label>
         <label>Opener collection <select data-action="rule" data-rule="openSet">${setOptions(r.openSet)}</select></label>` : ''}
         <label title="${esc(TIPS.stockTarget)}">Stock target <input type="number" min="0" step="1" data-action="rule" data-rule="stockTarget" value="${r.stockTarget}"></label>
         <label title="${esc(TIPS.cashReserve)}">Cash reserve <input type="number" min="0" step="1" data-action="rule" data-rule="cashReserve" value="${r.cashReserve}"></label>
@@ -617,6 +634,9 @@ export function cardDetailHtml(st, c) {
   const now = hist[hist.length - 1];
   const copies = S.binder[st.id]?.[c.id] || 0;
   const cost = now * G.MARKET_BUY_RATE;
+  const open = G.setUnlocked(S, st);
+  const ref = `data-s="${esc(st.id)}" data-c="${esc(c.id)}"`;
+  const sell = (n, label, ok) => `<button class="small" data-action="sell-binder" ${ref} data-n="${n}" ${ok ? '' : 'disabled'} title="${esc(n === 'keep1' ? TIPS.keepOne : TIPS.sellBinder)}">${label}</button>`;
   return `
   <div class="modal detail">
     ${cardHtml(st, c, { size: 'lg' })}
@@ -627,12 +647,32 @@ export function cardDetailHtml(st, c) {
       <div class="kv"><span>7 days</span><b class="${now >= hist[hist.length - 8] ? 'up' : 'down'}">${fmtPct(now / hist[hist.length - 8] - 1)}</b></div>
       ${sparkline(hist, 240, 60)}
       <div class="kv"><span>In binder</span><b>${copies}</b></div>
+      <div class="btns sell-btns">
+        ${sell('1', 'Sell 1', copies >= 1)}
+        ${sell('5', 'Sell 5', copies >= 5)}
+        ${sell('10', 'Sell 10', copies >= 10)}
+        ${sell('keep1', 'Keep 1', copies >= 2)}
+        ${sell('all', 'Sell all', copies >= 1)}
+      </div>
       <div class="btns">
-        <button data-action="sell-binder" data-s="${esc(st.id)}" data-c="${esc(c.id)}" ${copies ? '' : 'disabled'} title="${esc(TIPS.sellBinder)}">Sell 1</button>
-        <button data-action="buy-single" data-s="${esc(st.id)}" data-c="${esc(c.id)}" ${S.money >= cost ? '' : 'disabled'} title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button>
+        ${open
+          ? `<button data-action="buy-single" ${ref} ${S.money >= cost ? '' : 'disabled'} title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button>`
+          : `<span class="muted" title="${esc(TIPS.locked)}">locked</span>`}
         <span class="grow"></span>
         <button class="primary" data-action="close">Done</button>
       </div>
+    </div>
+  </div>`;
+}
+
+export function confirmSellHtml(st, c, n) {
+  const ref = `data-s="${esc(st.id)}" data-c="${esc(c.id)}"`;
+  return `
+  <div class="modal confirm">
+    <p>Sell your last ${esc(c.name)}?</p>
+    <div class="btns end">
+      <button data-action="card" ${ref}>Cancel</button>
+      <button class="primary" data-action="sell-binder-ok" ${ref} data-n="${n}">Sell</button>
     </div>
   </div>`;
 }

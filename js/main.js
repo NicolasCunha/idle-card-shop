@@ -252,9 +252,17 @@ function run(action, d) {
       }
       break;
     }
-    case 'sell-binder': {
+    case 'sell-binder':
+    case 'sell-binder-ok': {
       const { set, card } = find(d);
-      if (card && G.sellFromBinder(state, set, card)) overlayEl().innerHTML = UI.cardDetailHtml(set, card);
+      if (!card) break;
+      const have = state.binder[set.id]?.[card.id] || 0;
+      const n = d.n === 'all' ? have : d.n === 'keep1' ? have - 1 : Number(d.n) || 1;
+      if (action === 'sell-binder' && n >= have) {
+        overlayEl().innerHTML = UI.confirmSellHtml(set, card, n);
+        return;
+      }
+      if (G.sellFromBinder(state, set, card, n)) overlayEl().innerHTML = UI.cardDetailHtml(set, card);
       break;
     }
     case 'close': closeOverlay(); break;

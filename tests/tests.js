@@ -2,7 +2,7 @@
 import * as G from '../js/game.js';
 import * as M from '../js/market.js';
 import * as Save from '../js/save.js';
-import { loadCollections, normalizeSet } from '../js/data.js';
+import { loadCollections, normalizeSet, linkOrder } from '../js/data.js';
 import { setTutorialData, currentStep, skipTutorial, restartTutorial } from '../js/tutorial.js';
 
 const out = document.getElementById('out');
@@ -126,6 +126,28 @@ async function run() {
   s.money = 25;
   G.tick(s, sets, 20, T0 + 45000);
   ok(s.money >= s.rules.cashReserve - 1e-9 && emp.status === 'cash reserve', 'buyer respects the cash reserve');
+
+  // ---------- Collection unlock ----------
+  section('Collection unlock');
+  {
+    const mk = id => normalizeSet({ id, name: id.toUpperCase(), booster: { wholesalePrice: 1, slots: [{ count: 1, rarity: 'c' }] }, rarities: { c: { value: 1 } },
+      cards: Array.from({ length: 10 }, (_, i) => ({ index: i + 1, id: `${i + 1}`, name: `Card ${i + 1}`, rarity: 'c' })) });
+    const two = { a: mk('a'), b: mk('b') };
+    linkOrder(two, ['a', 'b']);
+    const u = fresh(two, ['a', 'b']);
+    u.money = 1000;
+    ok(G.setUnlocked(u, two.a) && !G.setUnlocked(u, two.b), 'only the first collection starts unlocked');
+    ok(!G.buyBooster(u, two.b) && !G.buySingle(u, two, two.b, two.b.cards[0]), 'a locked collection sells no boosters or singles');
+    for (let i = 0; i < 8; i++) G.buySingle(u, two, two.a, two.a.cards[i]);
+    ok(!G.setUnlocked(u, two.b), '80% of the previous collection is not enough');
+    G.buySingle(u, two, two.a, two.a.cards[8]);
+    ok(G.setUnlocked(u, two.b) && G.buyBooster(u, two.b), '90% of the previous collection unlocks the next', `${G.collectionProgress(u, two.a).seen}/10`);
+    ok(u.log.some(l => l.kind === 'unlock'), 'the unlock shows in Recent');
+    u.binder.a['1'] = 12;
+    ok(G.sellFromBinder(u, two.a, two.a.cards[0], 5) === 5 && u.binder.a['1'] === 7, 'binder sells 5 at once');
+    ok(G.sellFromBinder(u, two.a, two.a.cards[0], 6) === 6 && u.binder.a['1'] === 1, 'binder sells all but one');
+    ok(G.sellFromBinder(u, two.a, two.a.cards[0], 99) === 1 && !u.binder.a['1'] && G.setUnlocked(u, two.b), 'selling every copy keeps the discovery and the unlock');
+  }
 
   // ---------- Save ----------
   section('Save');
