@@ -165,7 +165,9 @@ label.check { gap: .35rem; }
 .boosters h3 { margin-top: 0; }
 .market-search { min-width: 12rem; flex: 0 1 18rem; }
 .news-btn { position: relative; align-self: center; }
-.news-count { margin-left: .4rem; background: var(--accent); color: var(--bg); border-radius: 99px; padding: 0 .45rem; font-size: .75rem; font-weight: 700; }
+.news-btn { display: inline-flex; align-items: center; }
+.news-count { display: inline-flex; align-items: center; justify-content: center; min-width: 1.15rem; height: 1.15rem; margin-left: .4rem; background: var(--accent); color: var(--bg); border-radius: 99px; padding: 0 .35rem; font-size: .72rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.news-count[hidden] { display: none; }
 .modal.news-panel { width: min(640px, 100%); max-height: 88vh; overflow: auto; display: grid; gap: .8rem; }
 .news-panel h3 { margin: .2rem 0 .4rem; }
 .notices { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; font-size: .9rem; }
