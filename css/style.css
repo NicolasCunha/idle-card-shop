@@ -154,7 +154,7 @@ label.check { gap: .35rem; }
 .table { display: grid; gap: 2px; }
 .tr {
   display: grid; align-items: center; gap: .7rem;
-  grid-template-columns: 40px 1fr 90px 90px 90px;
+  grid-template-columns: 40px 1fr 90px 90px 120px;
   background: var(--surface); padding: .35rem .7rem; border-radius: 8px;
 }
 .tr.th { background: none; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
@@ -210,6 +210,14 @@ label.check { gap: .35rem; }
   display: flex; gap: 1rem; align-items: center; z-index: 20; max-width: calc(100% - 2rem);
 }
 .tip[hidden] { display: none; }
+.customers { margin-top: .8rem; }
+.feel-sum { display: flex; gap: .7rem; flex-wrap: wrap; font-size: .85rem; }
+.feel { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.feel-cheap { color: var(--up); }
+.feel-fair { color: var(--muted); }
+.feel-pricey, .feel-steep { color: var(--accent); }
+.feel-steep { color: var(--down); }
+.feel-log li { display: flex; gap: .5rem; align-items: baseline; flex-wrap: wrap; }
 .toast {
   position: fixed; left: 50%; bottom: 4.6rem; transform: translate(-50%, .5rem);
   background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
@@ -360,6 +368,9 @@ label.check { gap: .35rem; }
   .sk-time { display: none; }
   .tr { grid-template-columns: 36px 1fr 70px 70px; }
   .tr > :nth-child(5) { display: none; }
+  .showcase-table .tr { grid-template-columns: 36px 1fr 64px auto; }
+  .showcase-table .tr > :nth-child(5) { display: block; }
+  .showcase-table .tr > :nth-child(4) { display: none; }
 }
 
 /* ---------- Opening scene ---------- */

@@ -42,6 +42,7 @@ export const TIPS = {
   bulkBelow: 'Copies worth less go to the bulk buyer at 30%.',
   keepCopies: 'The pricer leaves this many copies of each card in the binder.',
   skillSpeed: 'Each level is 22% faster. Practice gives XP; training costs money and time.',
+  feelings: 'What customers think of the tags they looked at.',
   customers: 'Each customer has a budget. At market price they buy half the time; cheaper sells more often, pricier much less. Twice the market almost never sells.',
   milestone: 'Discovery bonus on sale price for this collection.',
   timeZone: 'Market day changes at midnight in this time zone.',
@@ -56,6 +57,8 @@ export const STATUS = {
   idle: 'idle',
   training: 'training',
 };
+
+export const FEELING_TEXT = { cheap: 'cheap', fair: 'fair', pricey: 'pricey', steep: 'too pricey' };
 
 export const TOASTS = {
   showcaseFull: 'Showcase full',

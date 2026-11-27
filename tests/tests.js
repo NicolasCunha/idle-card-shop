@@ -114,6 +114,10 @@ async function run() {
   ok(G.buyChance(1.04, 1) < 0.5 && G.buyChance(1.2, 1) < G.buyChance(1.08, 1) && G.buyChance(2, 1) <= 0.005, 'the chance drops above market; 2x almost never sells');
   for (let i = 0; i < 400 && s.showcase.length; i++) G.tick(s, sets, 1, T0 + i * 1000);
   ok(s.showcase.length === 0 && s.stats.cardsSold > 0, 'customers buy from the showcase');
+  ok(G.feeling(0.8, 1) === 'cheap' && G.feeling(1, 1) === 'fair' && G.feeling(1.2, 1) === 'pricey' && G.feeling(2, 1) === 'steep', 'customers feel cheap, fair, pricey or too pricey by tag / market');
+  const fb = G.feedbackSummary(s);
+  ok(fb.total.looks > 0 && fb.total.bought === s.stats.cardsSold && fb.total.looks <= G.FEEDBACK_SIZE, 'every customer look is remembered with its feeling', `${fb.total.looks} looks, ${fb.total.bought} bought`);
+  ok(!('_feedback' in Save.serialize(s).state), 'customer feedback is never saved');
   s.showcase.push({ s: 'base', c: base.cards[0].id, p: 9999 });
   for (let i = 0; i < 300; i++) G.tick(s, sets, 1, T0 + 500000 + i * 1000);
   ok(s.showcase.length === 1, 'customers never pay above their budget');

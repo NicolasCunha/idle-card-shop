@@ -7,7 +7,7 @@ import * as M from './market.js';
 import * as SU from './supply.js';
 import { cardHtml, rarityTag } from './cards.js';
 import { fmtMoney, fmtNum, fmtPct, fmtSec, fmtDuration, fmtClock, esc } from './format.js';
-import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS } from './strings.js';
+import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS, FEELING_TEXT } from './strings.js';
 import { currentStep } from './tutorial.js';
 import { cardFilter } from './data.js';
 import { GAME_VERSION } from './save.js';
@@ -449,8 +449,8 @@ PANELS.showcase = {
       <span class="grow"></span>
       <button data-action="recall" ${S.showcase.length ? '' : 'disabled'} title="${esc(TIPS.recall)}">Recall all</button>
     </div>
-    <div class="table">
-      <div class="tr th"><span></span><span>Card</span><span class="num">Tag</span><span class="num">Market</span><span></span></div>
+    <div class="table showcase-table">
+      <div class="tr th"><span></span><span>Card</span><span class="num">Tag</span><span class="num">Market</span><span class="num">Customers</span></div>
       ${rows.map(({ it, n }) => {
         const st = SETS[it.s], c = st.byId[it.c];
         const mv = G.marketValue(S, st, c);
@@ -460,13 +460,38 @@ PANELS.showcase = {
           <span>${rarityTag(st, c)} ${esc(c.name)} ${n > 1 ? `<span class="muted">×${n}</span>` : ''}</span>
           <span class="num">${fmtMoney(it.p)}</span>
           <span class="num muted">${fmtMoney(mv)}</span>
-          <span class="num ${off > 0.10 ? 'warn' : 'muted'}" title="${esc(TIPS.customers)}">${Math.abs(off) < 0.005 ? '=' : fmtPct(off)}</span>
+          ${feelingTag(G.feeling(it.p, mv), Math.abs(off) < 0.005 ? 'market' : fmtPct(off))}
         </div>`;
       }).join('') || '<div class="empty muted">Empty</div>'}
-    </div>`;
+    </div>
+    <section class="box customers" id="customers">
+      <div class="bar-head"><h3 title="${esc(TIPS.feelings)}">Customers</h3><span class="grow"></span><span class="feel-sum" data-html="feelsum"></span></div>
+      <ul class="log feel-log" data-html="feellog"></ul>
+    </section>`;
   },
-  vals: () => ({ count: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}` }),
+  vals() {
+    const { total } = G.feedbackSummary(S);
+    const pct = k => (total.looks ? Math.round((total[k] / total.looks) * 100) : 0);
+    const recent = (S._feedback || []).slice(-12).reverse();
+    return {
+      count: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
+      feelsum: total.looks
+        ? G.FEELINGS.map(f => `<span class="feel feel-${f.key}">${esc(FEELING_TEXT[f.key])} ${pct(f.key)}%</span>`).join('')
+        : '',
+      feellog: recent.map(e => {
+        const st = SETS[e.s], c = st?.byId[e.c];
+        if (!c) return '';
+        return `<li>${rarityTag(st, c)} ${esc(c.name)} <span class="num">${fmtMoney(e.p)}</span> ${feelingTag(e.f)} <span class="muted">${e.b ? 'bought' : 'passed'}</span></li>`;
+      }).join('') || '<li class="muted">no customers yet</li>',
+    };
+  },
 };
+
+// Feeling as a word plus a symbol, never color alone.
+const FEEL_ICON = { cheap: '▼', fair: '●', pricey: '▲', steep: '▲▲' };
+function feelingTag(f, title = '') {
+  return `<span class="feel feel-${f}" ${title ? `title="${esc(title)}"` : ''}>${FEEL_ICON[f]} ${esc(FEELING_TEXT[f])}</span>`;
+}
 
 function sparkline(values, w = 90, h = 24) {
   const min = Math.min(...values), max = Math.max(...values);

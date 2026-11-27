@@ -30,6 +30,16 @@ export const BUY_BANDS = [
   { upTo: 2 - 1e-9, chance: 0.01 },
   { upTo: Infinity, chance: 0.005 },
 ];
+// How a customer feels about a tag, by tag / market. First band whose `upTo`
+// covers the ratio wins. Same edges as BUY_BANDS: cheap sells 60-70%, fair
+// 35-50%, pricey 8-20%, too pricey 3% or less.
+export const FEELINGS = [
+  { key: 'cheap', upTo: 0.995 },
+  { key: 'fair', upTo: 1.05 },
+  { key: 'pricey', upTo: 1.25 },
+  { key: 'steep', upTo: Infinity },
+];
+export const FEEDBACK_SIZE = 200;         // customer looks kept for the Customers panel (runtime only)
 export const CUSTOMER_LOOKS = 3;          // cards a customer looks at per visit
 export const BUDGET_MIN = 2;              // customer budget, log-uniform
 export const BUDGET_MAX = 120;
@@ -608,6 +618,37 @@ function tickEmployee(state, sets, emp, dt) {
 }
 
 // ---------- Customers ----------
+export function feeling(tag, mv) {
+  const r = tag / mv;
+  for (const f of FEELINGS) if (r <= f.upTo) return f.key;
+  return FEELINGS[FEELINGS.length - 1].key;
+}
+
+// Recent customer looks, newest last: { s, c, p, f (feeling), b (bought), day }.
+// A runtime cache (never saved); offline catch-up refills it like live play.
+function remember(state, it, f, bought) {
+  const fb = (state._feedback ||= []);
+  fb.push({ s: it.s, c: it.c, p: it.p, f, b: bought, day: state.day });
+  if (fb.length > FEEDBACK_SIZE) fb.splice(0, fb.length - FEEDBACK_SIZE);
+  state._feedbackVer = (state._feedbackVer || 0) + 1;
+}
+
+// Counts per feeling over the kept looks, and per showcase card.
+export function feedbackSummary(state) {
+  const total = { looks: 0, bought: 0 };
+  for (const f of FEELINGS) total[f.key] = 0;
+  const byCard = {};
+  for (const e of state._feedback || []) {
+    total.looks++; total[e.f]++;
+    if (e.b) total.bought++;
+    const k = `${e.s}:${e.c}`;
+    const g = (byCard[k] ||= { looks: 0, bought: 0 });
+    g.looks++;
+    if (e.b) g.bought++;
+  }
+  return { total, byCard };
+}
+
 let saleListener = null;
 export function onSale(fn) { saleListener = fn; }
 let quiet = false; // true during offline catch-up: no sounds or floating text
@@ -636,7 +677,10 @@ function customerVisit(state, sets) {
     const it = state.showcase[pick];
     looked.add(it);
     const set = sets[it.s], card = set.byId[it.c];
-    if (rng() >= buyChance(it.p, marketValue(state, set, card))) continue;
+    const mv = marketValue(state, set, card);
+    const bought = rng() < buyChance(it.p, mv);
+    remember(state, it, feeling(it.p, mv), bought);
+    if (!bought) continue;
     state.showcase.splice(pick, 1);
     budget -= it.p;
     const paid = it.p * saleMultiplier(state, it.s);

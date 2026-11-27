@@ -1,10 +1,11 @@
 {
-  "revision": 4,
+  "revision": 5,
   "steps": [
     { "id": "buy", "text": "Buy a booster.", "target": "[data-action='buy'][data-n='1']", "tab": "shop", "done": "boostersBought" },
     { "id": "open", "text": "Open it.", "target": "[data-action='open'][data-n='1']", "tab": "shop", "done": "boostersOpened" },
     { "id": "price-showcase", "text": "Your cards are in the binder. Price them for the showcase.", "target": "[data-action='price']", "tab": "shop", "done": "cardsPriced" },
     { "id": "sale", "text": "Customers buy on their own. Cheaper tags sell faster.", "target": "#stage-price", "tab": "shop", "done": "cardsSold" },
+    { "id": "customers", "text": "Customers tell you what they think of your prices. See them in the Showcase.", "target": "[data-tab='showcase']", "when": "showcaseUnlocked", "done": "visitedShowcase" },
     { "id": "hire", "text": "Hire your first employee.", "target": "[data-action='hire']", "tab": "staff", "when": "staffUnlocked", "done": "hasStaff" },
     { "id": "task", "text": "Pick a task for them.", "target": ".emp select", "tab": "staff", "when": "hasStaff", "done": "staffHasTask" },
     { "id": "market", "text": "Card prices change once a day. Check the Market.", "target": "[data-tab='market']", "when": "marketUnlocked", "done": "visitedMarket" },

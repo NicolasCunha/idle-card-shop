@@ -24,6 +24,8 @@ const COND = {
   cardsSold: s => grew(s, 'cardsSold'),
   staffUnlocked: s => s.unlocked.staff,
   marketUnlocked: s => s.unlocked.market,
+  showcaseUnlocked: s => s.unlocked.showcase,
+  visitedShowcase: s => !!s.flags.visited.showcase,
   hasStaff: s => s.staff.length > 0,
   staffHasTask: s => s.staff.some(e => e.task),
   visitedMarket: s => !!s.flags.visited.market,

@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-customers",
+      "date": "2026-11-27",
+      "version": "1.3.0",
+      "title": "What customers think",
+      "text": "The Showcase now shows how customers feel about each tag: cheap, fair, pricey or too pricey. The Customers box lists who looked at what, and whether they bought."
+    },
+    {
       "id": "2026-11-27-list",
       "date": "2026-11-27",
       "version": "1.2.1",
