@@ -4,7 +4,7 @@ Requested by Nicolas on 2026-11-27. Purely visual: no rule, number or save chang
 
 ## What it shows
 
-A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libraries).
+A pixel-art view between the tab bar and the panel, shown on every tab (Nicolas, 2026-11-27), so customers keep coming while the player works elsewhere (`js/scene.js`, `<canvas>`, no libraries). It is mounted once in the page shell (`ui.js` `buildShell`).
 
 - Room: wall, door on the left, window, register on the right, wooden floor.
 - Showcase: a glass case whose width grows with the Bigger showcase upgrade (3 shelves from level 4). Mini cards fill it in proportion to showcase use, colored by the rarity of the listed cards.

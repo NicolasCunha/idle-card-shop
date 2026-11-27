@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-floor-everywhere",
+      "date": "2026-11-27",
+      "version": "1.5.4",
+      "title": "Shop floor on every tab",
+      "text": "The shop floor now stays on screen on every tab, so you can watch your customers while you trade or sort your binder."
+    },
+    {
       "id": "2026-11-27-floor-crowd",
       "date": "2026-11-27",
       "version": "1.5.3",

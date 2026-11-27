@@ -24,6 +24,7 @@ export function initUI({ state, sets, order, prefs, actions, news }) {
   S = state; SETS = sets; ORDER = order; PREFS = prefs; A = actions; NEWS = news || [];
   ui.shopSet = ui.binderSet = order[0];
   buildShell();
+  mountScene(document.getElementById('floor'));
   bindEvents();
   applyTheme();
   frame(true);
@@ -46,6 +47,7 @@ function buildShell() {
     </header>
     <nav class="tabs" id="tabs">${Object.entries(TABS).map(([k, v]) =>
       `<button class="tab" data-tab="${k}" ${k === 'shop' || k === 'settings' ? '' : 'hidden'}>${v}</button>`).join('')}</nav>
+    <div class="floor" id="floor"></div>
     <main id="panel" class="panel"></main>
     <div id="tip" class="tip" hidden></div>
     <div id="floaters" class="floaters" aria-hidden="true"></div>`;
@@ -156,7 +158,6 @@ export function frame(force = false) {
     if (!focused || force) {
       panel.innerHTML = tab.html();
       lastSig = sig;
-      mountScene(document.getElementById('floor'));
     }
   }
   patch(panel, tab.vals ? tab.vals() : {});
@@ -321,7 +322,6 @@ PANELS.shop = {
     const sel = released().length > 1 ? `<select data-action="shop-set">${setOptions(sid)}</select>` : '';
     const next = G.nextRelease(S, SETS);
     return `
-    <div class="floor" id="floor"></div>
     <div class="stages">
       <section class="stage" id="stage-buy">
         <h3>Distributor</h3>${sel}
