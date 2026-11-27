@@ -67,6 +67,7 @@ export const FEELING_TEXT = { cheap: 'cheap', fair: 'fair', pricey: 'pricey', st
 
 export const TOASTS = {
   showcaseFull: 'Showcase full',
+  badCode: 'Wrong code',
 };
 
 export const OFFLINE = {

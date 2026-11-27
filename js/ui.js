@@ -12,6 +12,7 @@ import { currentStep } from './tutorial.js';
 import { cardFilter } from './data.js';
 import { GAME_VERSION } from './save.js';
 import { mount as mountScene } from './scene.js';
+import * as Clock from './clock.js';
 
 let S = null, SETS = null, ORDER = [], PREFS = null, A = null, NEWS = [];
 let active = 'shop';
@@ -221,7 +222,7 @@ function animateMoney(target) {
 function updateHeader() {
   animateMoney(S.money);
   document.getElementById('day-label').textContent = S.day ? M.dayLabel(S.day, S.firstDay) : '';
-  document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay());
+  document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay(Clock.now()));
   const n = unreadCount();
   const badge = document.getElementById('news-count');
   badge.hidden = !n;
@@ -722,7 +723,8 @@ PANELS.upgrades = {
 };
 
 PANELS.settings = {
-  sig: () => [PREFS.theme, PREFS.reduceMotion, PREFS.muteMaster, PREFS.muteMusic, PREFS.muteEffects, S.tutorial.done.length === 0].join(),
+  sig: () => [PREFS.theme, PREFS.reduceMotion, PREFS.muteMaster, PREFS.muteMusic, PREFS.muteEffects, S.tutorial.done.length === 0,
+    PREFS.debug, S.staff.length, released().length].join(),
   html() {
     const vol = (key, label) => `
       <label class="vol">${label}
@@ -743,9 +745,6 @@ PANELS.settings = {
         ${vol('master', 'Master')}${vol('music', 'Music')}${vol('effects', 'Effects')}
       </section>
       <section class="box">
-        <h3>Market</h3>
-      </section>
-      <section class="box">
         <h3>Tutorial</h3>
         <button data-action="restart-tutorial">Restart tutorial</button>
       </section>
@@ -759,11 +758,57 @@ PANELS.settings = {
         </div>
         <div class="muted small" data-k="saved"></div>
       </section>
+      ${debugHtml()}
       <p class="muted small foot">IdleCardShop ${GAME_VERSION} · Free fan game. Not affiliated with any card game publisher.</p>
     </div>`;
   },
-  vals: () => ({ saved: lastSavedText() }),
+  vals() {
+    const v = { saved: lastSavedText() };
+    if (PREFS.debug) {
+      v['dbg-clock'] = Clock.getOffset() ? `+${fmtDuration(Clock.getOffset() / 1000)}` : 'real time';
+      v['dbg-day'] = M.dayLabel(S.day, S.firstDay);
+      for (const k of Object.keys(G.UPGRADES)) v[`dbg-up-${k}`] = `Lv ${S.upgrades[k] + (G.UPGRADES[k].start || 0)}`;
+    }
+    return v;
+  },
 };
+
+// Debug menu: a code field until unlocked on this device (debug.js).
+function debugHtml() {
+  if (!PREFS.debug) return `
+      <section class="box">
+        <h3>Code</h3>
+        <div class="lf-row"><input type="text" id="dbg-code" autocomplete="off" spellcheck="false" aria-label="Code"><button data-action="dbg-code">Enter</button></div>
+      </section>`;
+  const sets = released().map(set);
+  const setSel = `<select id="dbg-set" aria-label="Collection">${sets.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select>`;
+  const ups = Object.keys(G.UPGRADES).map(k => `
+        <div class="dbg-row"><span>${esc(UPGRADE_TEXT[k]?.name || k)}</span><b data-k="dbg-up-${k}"></b>
+          <button class="small" data-action="dbg-up" data-key="${k}" data-n="-1">−</button>
+          <button class="small" data-action="dbg-up" data-key="${k}" data-n="1">+</button>
+          <button class="small" data-action="dbg-up" data-key="${k}" data-n="max">Max</button></div>`).join('');
+  return `
+      <section class="box debug">
+        <h3>Debug</h3>
+        <div class="dbg-row"><span>Day</span><b data-k="dbg-day"></b><span class="muted" data-k="dbg-clock"></span></div>
+        <div class="btns">
+          <button data-action="dbg-skip" data-n="1">Skip 1 day</button>
+          <button data-action="dbg-skip" data-n="6">Skip 6 days</button>
+          <button data-action="dbg-skip" data-n="next">Skip to next set</button>
+        </div>
+        <div class="lf-row"><input type="number" id="dbg-money" min="0" step="1" value="${Math.floor(S.money)}" aria-label="Money"><button data-action="dbg-money">Set money</button></div>
+        <div class="lf-row">${setSel}<input type="number" id="dbg-n" min="1" step="1" value="10" aria-label="Amount">
+          <button data-action="dbg-boosters">Add boosters</button><button data-action="dbg-cards">Open free</button></div>
+        <h4>Upgrades</h4>${ups}
+        <h4>Staff</h4>
+        <div class="btns">
+          <button data-action="dbg-hire">Hire free</button>
+          <button data-action="dbg-skills">Max skills</button>
+          <button data-action="dbg-unlock">Unlock all</button>
+          <button data-action="dbg-lock">Hide debug</button>
+        </div>
+      </section>`;
+}
 
 let lastSavedAt = 0;
 export function markSaved(t) { lastSavedAt = t; }

@@ -10,6 +10,8 @@ import { loadTutorial, skipTutorial, restartTutorial } from './tutorial.js';
 import { initOpening, playOpening, showBulkResult, closeOverlay } from './opening.js';
 import { fmtMoney, fmtNum, fmtDuration, esc } from './format.js';
 import { OFFLINE } from './strings.js';
+import * as Clock from './clock.js';
+import * as Debug from './debug.js';
 
 const TICK_MS = 250;
 const AUTOSAVE_MS = 10000;
@@ -29,6 +31,7 @@ let pendingSale = 0, saleTimer = null;
 
 async function boot() {
   prefs = Save.loadPrefs();
+  Clock.setOffset(prefs.clockOffset);
   Audio.setPrefs(prefs);
   try {
     ({ sets, order } = await loadCollections());
@@ -78,7 +81,7 @@ async function boot() {
   window.idleCardShop = { get state() { return state; }, sets, order, G, frame: () => UI.frame(true) };
 
   if (!state.setupDone) showSetup();
-  else await runCatchUp(Date.now(), true);
+  else await runCatchUp(Clock.now(), true);
 
   setInterval(loop, TICK_MS);
   setInterval(save, AUTOSAVE_MS);
@@ -97,7 +100,7 @@ function save() {
 
 async function loop() {
   if (!state || catchingUp || !state.setupDone) { if (state) UI.frame(); return; }
-  const now = Date.now();
+  const now = Clock.now();
   const dt = (now - state.lastTick) / 1000;
   if (dt > LIVE_MAX_DT) {
     await runCatchUp(now, dt > 60);
@@ -173,7 +176,7 @@ function showSetup() {
     Audio.unlock();
     Audio.sfx.click();
     state.setupDone = true;
-    const now = Date.now();
+    const now = Clock.now();
     state.lastTick = now;
     state.createdAt = now;
     G.tick(state, sets, 0, now);
@@ -342,12 +345,49 @@ function run(action, d) {
     case 'pref-vol': prefs[d.key] = Number(d.value); Audio.setPrefs(prefs); Save.savePrefs(prefs); break;
     case 'pref-mute': prefs[d.key] = !!d.value; Audio.setPrefs(prefs); Save.savePrefs(prefs); break;
     case 'save-now': save(); break;
+    case 'dbg-code': {
+      const input = document.getElementById('dbg-code');
+      Debug.checkCode(input?.value).then(ok => {
+        if (ok) { prefs.debug = true; Save.savePrefs(prefs); UI.frame(true); }
+        else if (input) { input.value = ''; UI.toast('badCode'); }
+      });
+      return;
+    }
+    case 'dbg-lock': prefs.debug = false; Save.savePrefs(prefs); break;
+    case 'dbg-skip': {
+      if (catchingUp) return;
+      const ms = d.n === 'next' ? Debug.msToNextSet(state, sets, Clock.now()) : Number(d.n) * Debug.DAY_MS;
+      if (!ms) return;
+      Clock.setOffset(Clock.getOffset() + ms);
+      prefs.clockOffset = Clock.getOffset();
+      Save.savePrefs(prefs);
+      loop();
+      return;
+    }
+    case 'dbg-money': Debug.setMoney(state, document.getElementById('dbg-money')?.value); break;
+    case 'dbg-boosters':
+    case 'dbg-cards': {
+      const set = sets[document.getElementById('dbg-set')?.value];
+      const n = document.getElementById('dbg-n')?.value;
+      if (!set) break;
+      if (action === 'dbg-boosters') Debug.addBoosters(state, set, n);
+      else showBulkResult(set, Debug.addCards(state, sets, set, n));
+      break;
+    }
+    case 'dbg-up': {
+      const cur = state.upgrades[d.key] || 0;
+      Debug.setUpgrade(state, d.key, d.n === 'max' ? Infinity : cur + Number(d.n));
+      break;
+    }
+    case 'dbg-hire': Debug.hireFree(state); break;
+    case 'dbg-skills': Debug.maxSkills(state); break;
+    case 'dbg-unlock': Debug.unlockAll(state); break;
     case 'export': save(); Save.exportFile(state); break;
     case 'import': importFile(d.files?.[0]); break;
     case 'reset':
       confirmBox('Erase this save and start over?', 'Reset', () => {
         Save.clearLocal();
-        state = G.newState(sets, order);
+        state = G.newState(sets, order, Clock.now());
         G.prepare(state, sets);
         UI.setState(state);
         showSetup();
@@ -366,7 +406,7 @@ async function importFile(file) {
     G.prepare(next, sets);
     state = next;
     UI.setState(state);
-    await runCatchUp(Date.now(), true);
+    await runCatchUp(Clock.now(), true);
     if (overlayEl().hidden) message('Save imported.');
   } catch (err) {
     console.error(err);

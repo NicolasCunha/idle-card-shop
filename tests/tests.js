@@ -6,6 +6,8 @@ import * as SU from '../js/supply.js';
 import { loadCollections, normalizeSet, linkOrder, cardFilter } from '../js/data.js';
 import { fmtMoney } from '../js/format.js';
 import { setTutorialData, currentStep, skipTutorial, restartTutorial } from '../js/tutorial.js';
+import * as Debug from '../js/debug.js';
+import * as Clock from '../js/clock.js';
 
 const out = document.getElementById('out');
 let passed = 0, failed = 0;
@@ -347,6 +349,22 @@ async function run() {
   const secs = (performance.now() - t1) / 1000;
   ok(secs < 60, 'one week away simulates in under a minute', `${secs.toFixed(1)}s`);
   ok(week.day === off.day + 7 * 86400000 / M.DAY_MS, 'market days advance during catch-up', `${week.day - off.day} days`);
+
+  // ---------- Debug ----------
+  section('Debug');
+  ok(await Debug.checkCode('cunha2026'), 'the debug code unlocks the menu');
+  ok(await Debug.checkCode(' Cunha 2026 '), 'the code ignores case and spaces');
+  ok(!(await Debug.checkCode('cunha2025')) && !(await Debug.checkCode('')), 'other codes do not unlock it');
+  Clock.setOffset(5000);
+  ok(Clock.now() - Date.now() >= 4990, 'the debug clock runs ahead by its offset');
+  Clock.setOffset(0);
+  const dbg = fresh(sets, order);
+  dbg.firstDay = dbg.day = M.dayNumber(T0);
+  const nextSet = G.nextRelease(dbg, sets);
+  const skip = Debug.msToNextSet(dbg, sets, T0);
+  ok(nextSet && M.dayNumber(T0 + skip) === SU.releaseDay(dbg, nextSet), 'skip to next set lands on its release day', `${skip / M.DAY_MS} days`);
+  Debug.setUpgrade(dbg, 'fame', 99);
+  ok(dbg.upgrades.fame === G.UPGRADES.fame.max, 'debug upgrade levels stay within the max');
 
   // ---------- Pacing ----------
   section('Pacing (GDD targets)');

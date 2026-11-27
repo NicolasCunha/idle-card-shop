@@ -487,3 +487,11 @@ button, select, .tab, .binder-slot, .thumb { -webkit-tap-highlight-color: transp
 @media (display-mode: standalone) {
   body { overscroll-behavior-y: none; }
 }
+
+/* Debug menu (Settings) */
+.settings .debug { grid-column: 1 / -1; }
+.debug h4 { margin: .8rem 0 .3rem; font-size: .85rem; }
+.debug .btns, .debug .lf-row { margin: .4rem 0; flex-wrap: wrap; }
+.dbg-row { display: grid; grid-template-columns: 150px 50px auto auto auto; justify-content: start; gap: .4rem; align-items: center; padding: .15rem 0; }
+.debug > .dbg-row:first-of-type { grid-template-columns: auto auto 1fr; }
+#dbg-money, #dbg-n { width: 7rem; }

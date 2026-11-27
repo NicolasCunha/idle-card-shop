@@ -1,13 +1,13 @@
 // Service worker: lets the game install as an app and run offline.
 // Game files: network first (updates show up on the next load), cache as
 // fallback. Card images: cache first, kept across versions.
-const VERSION = 'v3';
+const VERSION = 'v4';
 const SHELL = `shell-${VERSION}`;
 const IMAGES = 'images-v1';
 const CORE = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest',
   'js/audio.js', 'js/cards.js', 'js/data.js', 'js/format.js', 'js/game.js', 'js/main.js',
-  'js/market.js', 'js/opening.js', 'js/save.js', 'js/scene.js', 'js/strings.js', 'js/supply.js', 'js/tutorial.js', 'js/ui.js',
+  'js/clock.js', 'js/debug.js', 'js/market.js', 'js/opening.js', 'js/save.js', 'js/scene.js', 'js/strings.js', 'js/supply.js', 'js/tutorial.js', 'js/ui.js',
   'data/tutorial.json', 'data/news.json', 'collections.json', 'icons/icon-192.png', 'icons/icon-512.png',
   'images/sprites/customer-1.png', 'images/sprites/customer-2.png', 'images/sprites/customer-3.png',
   'images/sprites/customer-4.png', 'images/sprites/customer-5.png',
