@@ -1,5 +1,5 @@
 {
-  "revision": 3,
+  "revision": 4,
   "steps": [
     { "id": "buy", "text": "Buy a booster.", "target": "[data-action='buy'][data-n='1']", "tab": "shop", "done": "boostersBought" },
     { "id": "open", "text": "Open it.", "target": "[data-action='open'][data-n='1']", "tab": "shop", "done": "boostersOpened" },
@@ -7,8 +7,10 @@
     { "id": "sale", "text": "Customers buy on their own. Cheaper tags sell faster.", "target": "#stage-price", "tab": "shop", "done": "cardsSold" },
     { "id": "hire", "text": "Hire your first employee.", "target": "[data-action='hire']", "tab": "staff", "when": "staffUnlocked", "done": "hasStaff" },
     { "id": "task", "text": "Pick a task for them.", "target": ".emp select", "tab": "staff", "when": "hasStaff", "done": "staffHasTask" },
-    { "id": "market", "text": "Prices change once a day. Check the Market.", "target": "[data-tab='market']", "when": "marketUnlocked", "done": "visitedMarket" },
+    { "id": "market", "text": "Card prices change once a day. Check the Market.", "target": "[data-tab='market']", "when": "marketUnlocked", "done": "visitedMarket" },
+    { "id": "supply", "text": "Boosters have a limited supply. Less supply, higher price. Buy and sell them here.", "target": ".boosters", "tab": "market", "when": "visitedMarket", "done": "tradedBooster" },
     { "id": "settings", "text": "Theme, volume and save are in Settings.", "target": "[data-tab='settings']", "when": "hasStaff", "done": "visitedSettings" },
-    { "id": "nextset", "text": "A new collection is open. Pick it at the distributor.", "target": "[data-action='shop-set']", "tab": "shop", "when": "nextSetOpen", "done": "boughtNextSet" }
+    { "id": "news", "text": "New collections, reprints and updates show up in News.", "target": "#news-btn", "when": "hasStaff", "done": "visitedNews" },
+    { "id": "nextset", "text": "A new collection is out. Pick it at the distributor.", "target": "[data-action='shop-set']", "tab": "shop", "when": "nextSetOpen", "done": "boughtNextSet" }
   ]
 }

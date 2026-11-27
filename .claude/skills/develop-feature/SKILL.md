@@ -21,7 +21,7 @@ Does it add, remove, rename or change the meaning of any saved field? If yes, st
 
 - Player-facing text in English, following `.claude/rules/ui-copy.md`.
 - Game logic goes through the single tick function so offline simulation behaves exactly like live play.
-- Market logic stays deterministic and is never stored in the save.
+- Market logic stays deterministic. Card prices are never stored in the save; booster supply is the only saved market state.
 - New tabs or controls follow the progressive reveal rules (GDD section 11): once shown, never hidden.
 - Respect "Reduce motion" and color-independent rarity.
 

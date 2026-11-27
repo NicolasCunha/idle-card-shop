@@ -4,22 +4,24 @@
 
 import * as G from './game.js';
 import * as M from './market.js';
+import * as SU from './supply.js';
 import { cardHtml, rarityTag } from './cards.js';
 import { fmtMoney, fmtNum, fmtPct, fmtSec, fmtDuration, fmtClock, esc } from './format.js';
 import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS } from './strings.js';
 import { currentStep } from './tutorial.js';
+import { cardFilter } from './data.js';
 import { GAME_VERSION } from './save.js';
 
-let S = null, SETS = null, ORDER = [], PREFS = null, A = null;
+let S = null, SETS = null, ORDER = [], PREFS = null, A = null, NEWS = [];
 let active = 'shop';
 let lastSig = null;
-let ui = { shopSet: null, binderSet: null, marketSet: null, marketSort: 'number', marketPage: 0, priceQty: '10', priceLevel: '0', priceKeep: '0' };
+let ui = { shopSet: null, binderSet: null, marketSet: 'all', marketSort: 'number', marketPage: 0, marketQuery: '', priceQty: '10', priceLevel: '0', priceKeep: '0' };
 export const PAGE_SIZES = [10, 25, 50, 100, 0];
 let shownMoney = null;
 
-export function initUI({ state, sets, order, prefs, actions }) {
-  S = state; SETS = sets; ORDER = order; PREFS = prefs; A = actions;
-  ui.shopSet = ui.binderSet = ui.marketSet = order[0];
+export function initUI({ state, sets, order, prefs, actions, news }) {
+  S = state; SETS = sets; ORDER = order; PREFS = prefs; A = actions; NEWS = news || [];
+  ui.shopSet = ui.binderSet = order[0];
   buildShell();
   bindEvents();
   applyTheme();
@@ -38,6 +40,7 @@ function buildShell() {
       <div class="top-stats">
         <span class="money" id="money" title="Cash">$0.00</span>
         <span class="day" title="${esc(TIPS.timeZone)}"><span id="day-label"></span> · next <span id="day-next"></span></span>
+        <button class="small news-btn" id="news-btn" data-action="news">News<span class="news-count" id="news-count" hidden></span></button>
       </div>
     </header>
     <nav class="tabs" id="tabs">${Object.entries(TABS).map(([k, v]) =>
@@ -74,6 +77,7 @@ function bindEvents() {
   });
   document.addEventListener('input', e => {
     if (e.target.matches?.('[data-pf="price"]')) { pfInput(e.target); return; }
+    if (e.target.matches?.('[data-market-search]')) { marketSearch(e.target); return; }
     const el = e.target.closest('input[type="range"][data-action]');
     if (el) A.run(el.dataset.action, { ...el.dataset, value: el.value });
   });
@@ -198,6 +202,39 @@ function updateHeader() {
   animateMoney(S.money);
   document.getElementById('day-label').textContent = S.day ? M.dayLabel(S.day) : '';
   document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay(S.timeZone));
+  const n = unreadCount();
+  const badge = document.getElementById('news-count');
+  badge.hidden = !n;
+  if (badge.textContent !== String(n)) badge.textContent = n;
+}
+
+// ---------- News (patch notes + game notices) ----------
+// Patch notes with `requires` show once that collection is out.
+const visibleNotes = () => NEWS.filter(n => !n.requires || (SETS[n.requires] && G.setUnlocked(S, SETS[n.requires])));
+export const unreadCount = () => G.unreadNotices(S) + visibleNotes().filter(n => !S.newsSeen.includes(n.id)).length;
+
+export function newsHtml() {
+  const unread = new Set(visibleNotes().filter(n => !S.newsSeen.includes(n.id)).map(n => n.id));
+  const notes = visibleNotes().slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const notices = S.inbox.slice(0, 30);
+  return `
+  <div class="modal news-panel">
+    <h2>News</h2>
+    ${notices.length ? `<section><h3>Shop</h3><ul class="notices">${notices.map(n =>
+      `<li class="${n.id > S.inboxRead ? 'unread' : ''} log-${esc(n.kind)}"><span>${esc(n.text)}</span> <span class="muted">${n.day ? esc(M.dayLabel(n.day)) : ''}</span></li>`).join('')}</ul></section>` : ''}
+    <section><h3>Updates</h3>${notes.map(n => `
+      <article class="note ${unread.has(n.id) ? 'unread' : ''}">
+        <div class="note-head"><b>${esc(n.title)}</b><span class="muted">${esc(n.version ? `${n.version} · ` : '')}${esc(n.date || '')}</span></div>
+        <p>${esc(n.text)}</p>
+      </article>`).join('') || '<div class="muted">—</div>'}</section>
+    <div class="btns end"><button class="primary" data-action="close">Done</button></div>
+  </div>`;
+}
+
+export function markNewsRead() {
+  G.markNoticesRead(S);
+  for (const n of visibleNotes()) if (!S.newsSeen.includes(n.id)) S.newsSeen.push(n.id);
+  S.flags.visited.news = true;
 }
 
 export function floatMoney(v) {
@@ -231,14 +268,15 @@ function updateTutorial() {
 
 // ---------- Helpers ----------
 const set = id => SETS[id];
-// withLock: mark collections whose boosters are still locked.
-const setOptions = (sel, withLock = false) => ORDER.map(id => {
-  const lock = withLock && !G.setUnlocked(S, SETS[id]);
-  return `<option value="${esc(id)}" ${id === sel ? 'selected' : ''}>${esc(SETS[id].name)}${lock ? ' · locked' : ''}</option>`;
-}).join('');
+// Only collections that are out are shown anywhere.
+const released = () => ORDER.filter(id => G.setUnlocked(S, SETS[id]));
+const releasedOr = id => (SETS[id] && G.setUnlocked(S, SETS[id]) ? id : ORDER[0]);
+const setOptions = sel => released().map(id =>
+  `<option value="${esc(id)}" ${id === sel ? 'selected' : ''}>${esc(SETS[id].name)}</option>`).join('');
 const fmtLevel = l => (Number(l) ? `${Number(l) > 0 ? '+' : '−'}${Math.round(Math.abs(Number(l)) * 100)}%` : 'Market');
 const levelOptions = sel => G.PRICE_LEVELS.map(l => `<option value="${l}" ${String(l) === String(sel) ? 'selected' : ''}>${fmtLevel(l)}</option>`).join('');
-const lockSig = () => ORDER.map(id => (G.setUnlocked(S, SETS[id]) ? 1 : 0)).join('');
+const lockSig = () => released().length;
+const fmtCount = n => (n >= 995000 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e4 ? `${(n / 1e3).toFixed(0)}K` : fmtNum(Math.floor(n)));
 
 function staffOn(task) {
   return S.staff.filter(e => e.task === task && !e.training);
@@ -259,22 +297,17 @@ const PANELS = {};
 PANELS.shop = {
   sig: () => [S.unlocked.priceList, S.staff.length, ui.shopSet, ORDER.length, lockSig()].join(),
   html() {
-    const sid = ui.shopSet;
-    const st = set(sid);
-    const multi = ORDER.length > 1;
-    const sel = multi ? `<select data-action="shop-set">${setOptions(sid, true)}</select>` : '';
-    const locked = !G.setUnlocked(S, st);
+    const sid = ui.shopSet = releasedOr(ui.shopSet);
+    const sel = released().length > 1 ? `<select data-action="shop-set">${setOptions(sid)}</select>` : '';
+    const next = G.nextRelease(S, SETS);
     return `
     <div class="stages">
       <section class="stage" id="stage-buy">
         <h3>Distributor</h3>${sel}
         <div class="stat-big" title="${esc(TIPS.buy)}"><span data-k="bprice"></span><small> each</small></div>
-        ${locked ? `<div class="lock-line" title="${esc(TIPS.locked)}">
-          <span>${esc(st.prev.name)}</span>
-          <div class="progress"><i data-w="lockw"></i></div>
-          <b data-k="lockp"></b>
-        </div>` : ''}
+        <div class="kv" title="${esc(TIPS.supply)}"><span>Supply</span><b data-k="left"></b></div>
         <div class="kv"><span>Sealed</span><b data-k="stock"></b></div>
+        ${next ? `<div class="kv muted"><span>${esc(next.name)}</span><span data-k="nextin"></span></div>` : ''}
         <div class="btns">
           <button data-action="buy" data-n="1" data-d="buy1">Buy booster</button>
           <button data-action="buy" data-n="5" data-d="buy5">Buy 5</button>
@@ -319,23 +352,26 @@ PANELS.shop = {
     </div>`;
   },
   vals() {
-    const st = set(ui.shopSet);
+    const st = set(releasedOr(ui.shopSet));
     const price = G.boosterPrice(S, st);
-    const full = G.totalStock(S) >= G.stockCapacity(S) || !G.setUnlocked(S, st);
-    const prevFrac = st.prev ? G.collectionProgress(S, st.prev).frac : 1;
+    const sup = G.supply(S, st);
+    const out = G.soldOut(S, st);
+    const full = G.totalStock(S) >= G.stockCapacity(S) || !G.setUnlocked(S, st) || out;
+    const next = G.nextRelease(S, SETS);
+    const days = next ? SU.releaseDay(S, next) - S.day : 0;
     const keep = Number(ui.priceKeep) || 0;
     let avail = 0;
     for (const cards of Object.values(S.binder)) for (const n of Object.values(cards)) if (n > keep) avail += n - keep;
     const bulk = S.unlocked.priceList ? G.bulkSpares(S, SETS, keep) : { n: 0, total: 0 };
     return {
       bprice: fmtMoney(price),
+      left: out ? 'sold out' : fmtCount(sup.left),
+      nextin: days > 1 ? `in ${days} days` : days === 1 ? 'tomorrow' : 'soon',
       stock: `${fmtNum(G.totalStock(S))} / ${fmtNum(G.stockCapacity(S))}`,
       sealed: fmtNum(S.stock[st.id] || 0),
       avail: fmtNum(avail),
       showcase: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
       bulkv: bulk.n ? fmtMoney(bulk.total) : '',
-      lockw: prevFrac / G.UNLOCK_AT,
-      lockp: `${Math.floor(prevFrac * 100)}% / ${Math.round(G.UNLOCK_AT * 100)}%`,
       'd:buy1': full || S.money < price,
       'd:buy5': full || S.money < price,
       'd:open': !(S.stock[st.id] > 0),
@@ -350,10 +386,10 @@ PANELS.shop = {
 
 PANELS.binder = {
   sig() {
-    const st = set(ui.binderSet);
+    const st = set(ui.binderSet = releasedOr(ui.binderSet));
     const seen = G.collectionProgress(S, st).seen;
     const copies = Object.values(S.binder[st.id] || {}).reduce((a, b) => a + b, 0);
-    return [ui.binderSet, seen, copies].join();
+    return [ui.binderSet, seen, copies, lockSig()].join();
   },
   html() {
     const st = set(ui.binderSet);
@@ -364,7 +400,7 @@ PANELS.binder = {
     const next = G.MILESTONES.find(m => prog.frac < m.at);
     return `
     <div class="bar-head">
-      ${ORDER.length > 1 ? `<select data-action="binder-set">${setOptions(st.id)}</select>` : `<h2>${esc(st.name)}</h2>`}
+      ${released().length > 1 ? `<select data-action="binder-set">${setOptions(st.id)}</select>` : `<h2>${esc(st.name)}</h2>`}
       <span class="grow"></span>
       <span title="${esc(TIPS.milestone)}">${bonus ? `+${Math.round(bonus * 100)}% sale price` : ''}${next ? ` <span class="muted">· next at ${Math.round(next.at * 100)}%</span>` : ''}</span>
     </div>
@@ -423,17 +459,24 @@ function sparkline(values, w = 90, h = 24) {
 }
 
 PANELS.market = {
-  sig: () => [S.day, ui.marketSet, ui.marketSort, ui.marketPage, PREFS.marketPageSize, lockSig()].join(),
+  sig: () => [S.day, ui.marketSet, ui.marketSort, ui.marketPage, ui.marketQuery, PREFS.marketPageSize, lockSig()].join(),
   html() {
-    const st = set(ui.marketSet);
+    const ids = released();
+    if (ui.marketSet !== 'all' && !ids.includes(ui.marketSet)) ui.marketSet = 'all';
+    const shownSets = (ui.marketSet === 'all' ? ids : [ui.marketSet]).map(set);
     const day = S.day;
-    const rows = st.cards.map(c => {
-      const hist = M.history(st, c, day, 30);
-      const now = hist[hist.length - 1];
-      return { c, now, d1: now / hist[hist.length - 2] - 1, d7: now / hist[hist.length - 8] - 1, hist };
-    });
+    const match = cardFilter(ui.marketQuery);
+    const rows = [];
+    for (const st of shownSets) {
+      for (const c of st.cards) {
+        if (!match(c)) continue;
+        const hist = M.history(st, c, day, 30);
+        const now = hist[hist.length - 1];
+        rows.push({ st, c, now, d1: now / hist[hist.length - 2] - 1, d7: now / hist[hist.length - 8] - 1, hist });
+      }
+    }
     const sorters = {
-      number: (a, b) => a.c.index - b.c.index,
+      number: (a, b) => a.st.releaseIndex - b.st.releaseIndex || a.c.index - b.c.index,
       price: (a, b) => b.now - a.now,
       d1: (a, b) => b.d1 - a.d1,
       d7: (a, b) => b.d7 - a.d7,
@@ -445,44 +488,95 @@ PANELS.market = {
     const shown = size ? rows.slice(ui.marketPage * size, (ui.marketPage + 1) * size) : rows;
     const pagerHtml = pager(ui.marketPage, pages, rows.length, size);
     const news = [];
-    for (const c of st.cards) news.push(...M.newsFor(st, c, day, 3));
+    for (const st of shownSets) for (const c of st.cards) news.push(...M.newsFor(st, c, day, 3));
     news.sort((a, b) => b.day - a.day);
-    const bp = G.boosterPrice(S, st);
-    const bp7 = st.booster.wholesalePrice * M.boosterMultiplier(st, day - 7);
-    const open = G.setUnlocked(S, st);
+    const many = shownSets.length > 1;
     return `
-    <div class="bar-head">
-      ${ORDER.length > 1 ? `<select data-action="market-set">${setOptions(st.id, true)}</select>` : `<h2>${esc(st.name)}</h2>`}
-      <span class="muted">Booster ${fmtMoney(bp)} <span class="${bp >= bp7 ? 'up' : 'down'}">${fmtPct(bp / bp7 - 1)}</span></span>
+    <div class="bar-head market-filters">
+      ${ids.length > 1 ? `<select data-action="market-set" aria-label="Collection">
+        <option value="all" ${ui.marketSet === 'all' ? 'selected' : ''}>All collections</option>${setOptions(ui.marketSet)}</select>` : `<h2>${esc(set(ids[0]).name)}</h2>`}
+      <input type="search" class="market-search" data-market-search placeholder="Search" aria-label="Search" title="${esc(TIPS.search)}" value="${esc(ui.marketQuery)}">
       <span class="grow"></span>
       <label class="inline">Sort <select data-action="market-sort">
         ${[['number', 'Number'], ['price', 'Price'], ['d1', '1 day'], ['d7', '7 days']].map(([k, v]) => `<option value="${k}" ${ui.marketSort === k ? 'selected' : ''}>${v}</option>`).join('')}
       </select></label>
     </div>
-    ${news.length ? `<section class="box news"><h3>News</h3><ul>${news.slice(0, 8).map(n =>
-      `<li class="${n.kind}"><b>${esc(n.card.name)}</b> ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day))}</span></li>`).join('')}</ul></section>` : ''}
+    <section class="box boosters">
+      <h3>Boosters</h3>
+      <div class="table booster-table">
+        <div class="tr th"><span>Collection</span><span class="num">Price</span><span class="num">7d</span><span class="num" title="${esc(TIPS.supply)}">Supply</span><span class="num">Yours</span><span></span></div>
+        ${shownSets.map(st => {
+          const id = esc(st.id);
+          return `<div class="tr">
+          <span>${esc(st.name)}</span>
+          <span class="num" data-k="bp-${id}"></span>
+          <span class="num" data-html="b7-${id}"></span>
+          <span class="num" data-k="bs-${id}" title="${esc(TIPS.supply)}"></span>
+          <span class="num" data-k="by-${id}"></span>
+          <span class="btns tight">
+            <button class="small" data-action="buy-market-booster" data-set="${id}" data-d="bb-${id}" title="${esc(TIPS.marketBuy)}">Buy <span data-k="bbp-${id}"></span></button>
+            <button class="small" data-action="sell-booster" data-set="${id}" data-n="1" data-d="bl-${id}" title="${esc(TIPS.marketSell)}">Sell <span data-k="blp-${id}"></span></button>
+            <button class="small" data-action="sell-booster" data-set="${id}" data-n="10" data-d="bl-${id}" title="${esc(TIPS.marketSell)}">Sell 10</button>
+          </span>
+        </div>`;
+        }).join('')}
+      </div>
+    </section>
+    ${news.length ? `<section class="box news"><h3>Card news</h3><ul>${news.slice(0, 8).map(n =>
+      `<li class="${n.kind}"><b>${esc(n.card.name)}</b>${many ? ` <span class="muted">${esc(n.set.name)}</span>` : ''} ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day))}</span></li>`).join('')}</ul></section>` : ''}
     ${pagerHtml}
     <div class="table market-table">
-      <div class="tr th"><span></span><span>Card</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
+      <div class="tr th"><span></span><span class="num">#</span><span>Card</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
       ${shown.map(r => {
         const cost = r.now * G.MARKET_BUY_RATE;
+        const ref = `data-s="${esc(r.st.id)}" data-c="${esc(r.c.id)}"`;
         return `<div class="tr">
-          <button class="thumb" data-action="card" data-s="${esc(st.id)}" data-c="${esc(r.c.id)}" aria-label="${esc(r.c.name)}">${cardHtml(st, r.c, { size: 'xs' })}</button>
-          <span>${rarityTag(st, r.c)} ${esc(r.c.name)}</span>
+          <button class="thumb" data-action="card" ${ref} aria-label="${esc(r.c.name)}">${cardHtml(r.st, r.c, { size: 'xs' })}</button>
+          <span class="num muted">${esc(r.c.number || String(r.c.index))}</span>
+          <span>${rarityTag(r.st, r.c)} ${esc(r.c.name)}${many ? ` <span class="muted small">${esc(r.st.name)}</span>` : ''}</span>
           <span class="num">${fmtMoney(r.now)}</span>
           <span class="num ${r.d1 >= 0 ? 'up' : 'down'}">${fmtPct(r.d1)}</span>
           <span class="num ${r.d7 >= 0 ? 'up' : 'down'}">${fmtPct(r.d7)}</span>
           <span>${sparkline(r.hist)}</span>
-          <span>${open
-            ? `<button class="small" data-action="buy-single" data-s="${esc(st.id)}" data-c="${esc(r.c.id)}" data-cost="${cost}" title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button>`
-            : `<span class="muted" title="${esc(TIPS.locked)}">locked</span>`}</span>
+          <span><button class="small" data-action="buy-single" ${ref} data-cost="${cost}" title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button></span>
         </div>`;
-      }).join('')}
+      }).join('') || '<div class="empty muted">No cards</div>'}
     </div>
     ${pages > 1 ? pagerHtml : ''}`;
   },
+  vals() {
+    const v = {};
+    for (const id of released()) {
+      if (ui.marketSet !== 'all' && ui.marketSet !== id) continue;
+      const st = set(id), m = G.supply(S, st);
+      const p = G.boosterPrice(S, st);
+      const h = m.hist, old = h.length >= 8 ? h[h.length - 8] : h[0];
+      const ch = old ? p / old - 1 : 0;
+      v[`bp-${id}`] = fmtMoney(p);
+      v[`b7-${id}`] = `<span class="${ch >= 0 ? 'up' : 'down'}">${fmtPct(ch)}</span>`;
+      v[`bs-${id}`] = G.soldOut(S, st) ? 'sold out' : `${fmtCount(m.left)} / ${fmtCount(m.printed)}`;
+      v[`by-${id}`] = fmtNum(S.stock[id] || 0);
+      v[`bbp-${id}`] = fmtMoney(G.marketBoosterBuyPrice(S, st));
+      v[`blp-${id}`] = fmtMoney(G.marketBoosterSellPrice(S, st));
+      v[`d:bb-${id}`] = !G.canBuyMarketBooster(S, st);
+      v[`d:bl-${id}`] = !(S.stock[id] > 0);
+    }
+    return v;
+  },
 };
 
+// Search box: redraw the Market as the player types, keeping focus and caret.
+let searchTimer = null;
+function marketSearch(input) {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    ui.marketQuery = input.value;
+    ui.marketPage = 0;
+    frame(true);
+    const box = document.querySelector('[data-market-search]');
+    if (box) { box.focus(); const n = box.value.length; box.setSelectionRange(n, n); }
+  }, 150);
+}
 PANELS.staff = {
   sig: () => [S.staff.length, G.maxStaff(S), ORDER.length, lockSig(),
     ...S.staff.map(e => `${e.task}/${e.training ? e.training.skill : ''}/${G.SKILL_KEYS.map(k => e.skills[k].lvl).join('.')}`)].join('|'),
@@ -525,8 +619,8 @@ PANELS.staff = {
     <section class="box rules">
       <h3>Shop rules</h3>
       <div class="rules-grid">
-        ${ORDER.length > 1 ? `
-        <label>Buyer collection <select data-action="rule" data-rule="buySet">${setOptions(r.buySet, true)}</select></label>
+        ${released().length > 1 ? `
+        <label>Buyer collection <select data-action="rule" data-rule="buySet">${setOptions(r.buySet)}</select></label>
         <label>Opener collection <select data-action="rule" data-rule="openSet">${setOptions(r.openSet)}</select></label>` : ''}
         <label title="${esc(TIPS.stockTarget)}">Stock target <input type="number" min="0" step="1" data-action="rule" data-rule="stockTarget" value="${r.stockTarget}"></label>
         <label title="${esc(TIPS.cashReserve)}">Cash reserve <input type="number" min="0" step="1" data-action="rule" data-rule="cashReserve" value="${r.cashReserve}"></label>

@@ -15,7 +15,15 @@ const TICK_MS = 250;
 const AUTOSAVE_MS = 10000;
 const LIVE_MAX_DT = 2; // longer gaps (paused tab) go through catch-up
 
-let state, sets, order, prefs;
+let state, sets, order, prefs, news = [];
+
+// Patch notes for the News panel. Missing or broken file: no notes.
+async function loadNews() {
+  try {
+    const res = await fetch('data/news.json', { cache: 'no-cache' });
+    return res.ok ? ((await res.json()).items || []).filter(n => n && n.id && n.title) : [];
+  } catch { return []; }
+}
 let catchingUp = false;
 let pendingSale = 0, saleTimer = null;
 
@@ -25,6 +33,7 @@ async function boot() {
   try {
     ({ sets, order } = await loadCollections());
     await loadTutorial();
+    news = await loadNews();
   } catch (err) {
     document.getElementById('app').innerHTML = `<p class="fatal">Could not load game data.</p>`;
     console.error(err);
@@ -42,7 +51,7 @@ async function boot() {
     onOpenAnother: set => openOne(set),
     onClose: () => UI.frame(),
   });
-  UI.initUI({ state, sets, order, prefs, actions: { run, click: () => Audio.sfx.click() } });
+  UI.initUI({ state, sets, order, prefs, news, actions: { run, click: () => Audio.sfx.click() } });
 
   G.onSale(v => {
     Audio.sfx.sale();
@@ -221,6 +230,23 @@ function run(action, d) {
       const q = UI.uiOption('priceQty');
       if (G.priceSpares(state, sets, q === 'all' ? Infinity : Number(q) || 1, Number(UI.uiOption('priceLevel')) || 0, Number(UI.uiOption('priceKeep')) || 0)) Audio.sfx.click();
       break;
+    }
+    case 'buy-market-booster': {
+      if (sets[d.set] && G.buyMarketBooster(state, sets[d.set])) Audio.sfx.coin();
+      break;
+    }
+    case 'sell-booster': {
+      if (sets[d.set] && G.repeat(G.sellMarketBooster, state, sets[d.set], Number(d.n) || 1)) Audio.sfx.coin();
+      break;
+    }
+    case 'news': {
+      const el = overlayEl();
+      el.className = 'overlay';
+      el.innerHTML = UI.newsHtml();
+      el.hidden = false;
+      UI.markNewsRead();
+      UI.frame();
+      return;
     }
     case 'ui-opt': UI.setUiOption(d.opt, d.value); break;
     case 'bulk': {

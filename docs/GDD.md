@@ -56,7 +56,7 @@ Buy → Open (binder) → Price (showcase) → Customers buy → (money back to 
 
 Os três limites (depósito, vitrine e demanda) são exatamente o que as melhorias aumentam.
 
-1. **Comprar** boosters lacrados na distribuidora (preço do dia). Ficam no depósito, que tem capacidade limitada.
+1. **Comprar** boosters lacrados na distribuidora (preço pela oferta restante, seção 8.1). Ficam no depósito, que tem capacidade limitada.
 2. **Abrir** boosters. Todas as cartas vão para o fichário (decidido 2026-11-27), e o jogador decide depois o que fazer com cada cópia.
 3. **Precificar** cartas do fichário: o jogador escolhe quantas e o preço (mercado do dia, ±5% ou ±10%, ou um valor digitado). Precificar já põe a carta na vitrine, que tem número limitado de lugares. Cartas abaixo de um valor mínimo podem ir para o *bulk*, vendidas ao atacadista por 30% do valor.
 4. **Clientes** chegam sozinhos, cada um com um orçamento, e compram da vitrine com uma chance que depende do preço (seção 7). O dinheiro volta para o passo 1.
@@ -77,8 +77,9 @@ Os três limites (depósito, vitrine e demanda) são exatamente o que as melhori
 | Segundos | Clientes compram, funcionários agem | Ver o dinheiro entrar |
 | Minutos | Treinos terminam, dá para contratar ou comprar melhoria | Gastar o que juntou |
 | Horas | Pilhas e estoque se esgotam, níveis sobem com a prática | Reabastecer e ajustar regras |
-| Dias | Novo dia de mercado | Ver preços e notícias |
-| Semanas | Eventos de interesse sobem, fazem platô e caem | Vender no pico, comprar na baixa |
+| Dias | Novo dia de mercado; lojas rivais compram boosters | Ver preços, oferta e notícias |
+| Semanas | Coleção nova a cada 7 dias; eventos de interesse sobem, fazem platô e caem | Abrir a coleção nova, vender no pico, comprar na baixa |
+| Meses | A oferta de boosters cai e às vezes vem uma reimpressão | Especular com boosters lacrados |
 
 **Metas de ritmo** (alvos para balanceamento; conferidos por simulação antes de cada versão)
 
@@ -94,7 +95,9 @@ Os três limites (depósito, vitrine e demanda) são exatamente o que as melhori
 
 | Ação | Onde | Efeito | Custo ou ganho |
 | --- | --- | --- | --- |
-| Buy booster (1 ou 5) | Shop | +1 booster lacrado | Preço base × tendência do dia da coleção |
+| Buy booster (1 ou 5) | Shop | +1 booster lacrado, −1 na oferta | Preço base × (tiragem ÷ oferta restante)^0,5 |
+| Buy booster | Market | +1 booster lacrado, comprado das lojas rivais | 110% do preço do booster |
+| Sell booster (1 ou 10) | Market | −1 booster lacrado, +1 na oferta | Ganha 90% do preço do booster |
 | Open 1 / 10 / 100 / all | Shop | Cartas vão para o fichário | — |
 | Price (1 / 10 / 100 / all, nível de preço, Keep 0 ou 1) | Shop | As cópias mais valiosas do fichário vão para a vitrine | — |
 | Bulk | Shop | Vende as cópias abaixo do valor mínimo | Ganha 30% do mercado |
@@ -323,6 +326,46 @@ Os preços mudam uma vez por dia real, à meia-noite no fuso do jogador, por um 
 - A aba Market lista cada carta com preço de hoje, variação de 1 e 7 dias e gráfico de 30 dias, mais as notícias dos últimos 3 dias.
 - O jogador especula com as ações da seção 3: comprar avulsas ou boosters em alta, segurar no fichário, recolher a vitrine para reprecificar.
 - O preço etiquetado não muda sozinho: cartas antigas na vitrine ficam baratas quando o mercado sobe e encalham quando ele cai.
+- A tabela de cartas mostra o número da carta na coleção (ex.: 1/102). Uma busca filtra por nome, por número ou pelos dois ("Alakazam 1" acha só o Alakazam 1/102), em uma coleção ou em todas ("All collections").
+
+### 8.1 Tiragem de boosters e calendário (Nicolas, 2026-11-27)
+
+Os boosters não são infinitos. Cada coleção tem uma tiragem, e o preço do booster sobe conforme a oferta acaba, como na vida real.
+
+**Calendário de lançamentos**
+
+- O jogo começa só com o Base Set (fichário, mercado, distribuidora). Cada coleção seguinte sai 7 dias de mercado depois da anterior, na ordem do `collections.json`: Jungle, Fossil, Base Set 2, Team Rocket.
+- Uma coleção que ainda não saiu não aparece em lugar nenhum. A regra antiga de 90% da coleção anterior foi removida.
+- Os 7 dias são um parâmetro (`RELEASE_EVERY_DAYS`) e podem diminuir depois.
+
+**Tiragem**
+
+- O Base Set tem 1.000.000 de boosters. Cada coleção nova imprime 25% a mais que a anterior, até o teto de 2× o Base Set (Jungle 1,25M, Fossil 1,56M, Base Set 2 1,95M, Team Rocket 2M).
+- Preço do booster = preço base da coleção × (total impresso ÷ oferta restante)^0,5. Começa no preço base; com metade da oferta vale ~1,4×; com 10% vale ~3,2×. Abaixo de 2% de oferta o preço para de subir (~7×).
+
+**Eventos diários** (por coleção, calculados a cada dia de mercado; os dados vêm de um hash de semente, coleção e dias desde o lançamento)
+
+| Evento | Regra |
+| --- | --- |
+| Lojas rivais compram | 8 lojas simuladas de tamanhos diferentes. Cada uma compra em 60% dos dias; a procura começa alta e cai para 20% em alguns meses. Sempre deixam 10% da tiragem para o jogador. Compras grandes viram notícia. |
+| Devolução | 12% de chance por dia: uma loja devolve até 0,4% da tiragem à oferta. |
+| Reimpressão | Quando a oferta fica abaixo de 35% do total impresso: 2% de chance por dia de imprimir mais 40% a 80% da tiragem original. O preço cai. Vira notícia. |
+
+Resultado medido: o Base Set sai de $4,00 para ~$6 em 120 dias; a oferta mais baixa vista antes da primeira reimpressão foi ~25%.
+
+**O que o jogador pode fazer**
+
+- Comprar da distribuidora enquanto houver oferta; cada compra tira 1 da oferta e sobe o preço um pouco.
+- No Market: comprar boosters lacrados das lojas rivais por 110% (funciona mesmo com a distribuidora esgotada) e vender por 90%. Booster vendido volta para a oferta, então vender muito derruba o preço.
+- Guardar boosters no depósito esperando o preço subir. Nada garante o lucro, porque devoluções e reimpressões são aleatórias.
+
+**Determinismo:** o mundo (rivais, devoluções, reimpressões) é igual para todos que fizerem as mesmas escolhas, mas as compras e vendas do jogador mudam a oferta, então a oferta de cada coleção fica salva no save. Isso é uma exceção aprovada à regra "nada do mercado vai no save"; os preços das cartas avulsas continuam 100% calculados do dia.
+
+### 8.2 Central de notícias (News)
+
+- Botão News no topo, com o número de itens não lidos.
+- Duas partes: avisos do jogo (coleção nova lançada, reimpressões, compras grandes de rivais) e notas de atualização do jogo (patch notes), que ficam em `data/news.json`.
+- Uma nota pode exigir que uma coleção já tenha saído (`requires`), para avisos como "agora você também pode completar a coleção X".
 
 ## 9. Progresso offline e save
 
@@ -415,7 +458,9 @@ O tutorial ensina o loop na primeira partida, passo a passo, e é atualizado jun
 | Saldo chega a $40 | Aba Upgrades |
 | Saldo chega a $50 | Aba Staff (passo do tutorial "Hire") |
 | Primeiro dia de mercado novo, ou primeira carta acima de $5 | Aba Market (passo do tutorial "Market") |
-| 90% da coleção anterior descoberta | Boosters da próxima coleção na distribuidora (passo do tutorial "nextset") |
+| Primeira visita ao Market | Passo "supply": boosters têm oferta limitada, comprar e vender aqui |
+| Primeiro funcionário | Passo "news": botão News |
+| 7 dias de mercado depois da coleção anterior | Próxima coleção em todo o jogo (passo do tutorial "nextset") |
 
 Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
 
@@ -428,9 +473,11 @@ Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
 5. Customers buy on their own. Cheaper tags sell faster.
 7. Hire your first employee (quando tiver dinheiro).
 8. Pick a task for them.
-9. Check the Market tab: prices change once a day.
-10. Settings: theme, volume, save.
-11. A new collection is open. Pick it at the distributor (quando a próxima coleção libera).
+9. Card prices change once a day. Check the Market.
+10. Boosters have a limited supply. Less supply, higher price. Buy and sell them here.
+11. Settings: theme, volume, save.
+12. New collections, reprints and updates show up in News.
+13. A new collection is out. Pick it at the distributor (quando a próxima coleção sai).
 
 **Regra de atualização:** o tutorial tem um número de revisão. Toda mudança de mecânica atualiza o tutorial e sobe esse número; jogadores com revisão antiga veem só os passos novos. Nenhuma entrega é considerada pronta sem o tutorial atualizado.
 

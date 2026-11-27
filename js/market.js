@@ -49,6 +49,8 @@ function hash(str) {
   return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 }
 const rand = (...parts) => hash(SEED + '|' + parts.join('|')) / 9007199254740992;
+// Same global seed, for other deterministic systems (booster supply).
+export const hashRand = rand;
 const smoothstep = t => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 
 function smoothNoise(key, day, period, amp) {
@@ -166,9 +168,6 @@ export function cardMultiplier(set, card, day) {
 }
 
 export const marketValue = (set, card, day) => card.value * cardMultiplier(set, card, day);
-
-// Distributor booster price follows the collection trend only.
-export const boosterMultiplier = (set, day) => Math.exp(smoothNoise('set:' + set.id, day, 35, 0.08));
 
 export function history(set, card, day, days = 30) {
   const out = [];

@@ -2,7 +2,9 @@
 import * as G from '../js/game.js';
 import * as M from '../js/market.js';
 import * as Save from '../js/save.js';
-import { loadCollections, normalizeSet, linkOrder } from '../js/data.js';
+import * as SU from '../js/supply.js';
+import { loadCollections, normalizeSet, linkOrder, cardFilter } from '../js/data.js';
+import { fmtMoney } from '../js/format.js';
 import { setTutorialData, currentStep, skipTutorial, restartTutorial } from '../js/tutorial.js';
 
 const out = document.getElementById('out');
@@ -146,8 +148,9 @@ async function run() {
   G.tick(s, sets, 20, T0 + 45000);
   ok(s.money >= s.rules.cashReserve - 1e-9 && emp.status === 'cash reserve', 'buyer respects the cash reserve');
 
-  // ---------- Collection unlock ----------
-  section('Collection unlock');
+  // ---------- Release calendar ----------
+  section('Release calendar');
+  const DAY = 86400000;
   {
     const mk = id => normalizeSet({ id, name: id.toUpperCase(), booster: { wholesalePrice: 1, slots: [{ count: 1, rarity: 'c' }] }, rarities: { c: { value: 1 } },
       cards: Array.from({ length: 10 }, (_, i) => ({ index: i + 1, id: `${i + 1}`, name: `Card ${i + 1}`, rarity: 'c' })) });
@@ -155,15 +158,68 @@ async function run() {
     linkOrder(two, ['a', 'b']);
     const u = fresh(two, ['a', 'b']);
     u.money = 1000;
-    ok(G.setUnlocked(u, two.a) && !G.setUnlocked(u, two.b), 'only the first collection starts unlocked');
-    ok(!G.buyBooster(u, two.b) && !G.buySingle(u, two, two.b, two.b.cards[0]), 'a locked collection sells no boosters or singles');
-    for (let i = 0; i < 8; i++) G.buySingle(u, two, two.a, two.a.cards[i]);
-    ok(!G.setUnlocked(u, two.b), '80% of the previous collection is not enough');
-    G.buySingle(u, two, two.a, two.a.cards[8]);
-    ok(G.setUnlocked(u, two.b) && G.buyBooster(u, two.b), '90% of the previous collection unlocks the next', `${G.collectionProgress(u, two.a).seen}/10`);
-    ok(u.log.some(l => l.kind === 'unlock'), 'the unlock shows in Recent');
-    u.binder.a['1'] = 1;
-    ok(G.listCard(u, two.a, two.a.cards[0], 1, 5) === 1 && !u.binder.a['1'] && G.setUnlocked(u, two.b), 'selling every copy keeps the discovery and the unlock');
+    ok(G.setUnlocked(u, two.a) && !G.setUnlocked(u, two.b), 'only the first collection is out on day one');
+    ok(!G.buyBooster(u, two.b) && !G.buySingle(u, two, two.b, two.b.cards[0]), 'a collection not out yet sells no boosters or singles');
+    for (let i = 0; i < 10; i++) G.buySingle(u, two, two.a, two.a.cards[i]);
+    ok(!G.setUnlocked(u, two.b), 'discovering the whole collection does not release the next');
+    G.tick(u, two, 1, T0 + 6 * DAY);
+    ok(!G.setUnlocked(u, two.b), 'six days later the next collection is still not out');
+    G.tick(u, two, 1, T0 + 7 * DAY);
+    ok(G.setUnlocked(u, two.b) && G.buyBooster(u, two.b), `the next collection is out after ${SU.RELEASE_EVERY_DAYS} days`);
+    ok(u.log.some(l => l.kind === 'release') && u.inbox.some(n => n.kind === 'release'), 'the release shows in Recent and News');
+    ok(G.unreadNotices(u) > 0 && (G.markNoticesRead(u), G.unreadNotices(u) === 0), 'reading News clears the unread count');
+  }
+
+  // ---------- Booster supply ----------
+  section('Booster supply');
+  {
+    ok(SU.printRun(sets.base) === SU.BASE_PRINT_RUN && SU.printRun(sets.jungle) > SU.printRun(sets.base), 'each newer collection prints more', order.map(id => SU.printRun(sets[id])).join('/'));
+    ok(order.every(id => SU.printRun(sets[id]) <= SU.BASE_PRINT_RUN * SU.PRINT_CAP), 'print runs stop growing at the cap');
+    const a = fresh(sets, order), b = fresh(sets, order);
+    const p0 = G.boosterPrice(a, base);
+    ok(Math.abs(p0 - base.booster.wholesalePrice) < 1e-9, 'a new collection starts at its base booster price', fmtMoney(p0));
+    for (let d = 1; d <= 120; d++) G.tick(a, sets, 1, T0 + d * DAY);
+    G.tick(b, sets, 1, T0 + 120 * DAY);
+    const ma = a.market.base, mb = b.market.base;
+    ok(ma.left === mb.left && ma.printed === mb.printed && ma.held === mb.held, 'day by day and one jump give the same supply', `${ma.left} left`);
+    ok(ma.left < ma.run && G.boosterPrice(a, base) > p0, 'rival shops buy, so supply drops and the price rises', `${fmtMoney(G.boosterPrice(a, base))} after 120 days`);
+    ok(ma.left >= ma.printed * SU.PLAYER_MARGIN - 1, 'rivals always leave a share for the player');
+    // A long run reaches the reprint zone at some point; reprints raise supply.
+    const c = fresh(sets, order);
+    let reprinted = false, minFrac = 1, maxP = 0;
+    for (let d = 1; d <= 1500 && !reprinted; d += 10) {
+      G.tick(c, sets, 1, T0 + d * DAY);
+      const m = c.market.base;
+      minFrac = Math.min(minFrac, m.left / m.printed);
+      maxP = Math.max(maxP, G.boosterPrice(c, base));
+      reprinted = m.reprints > 0;
+    }
+    ok(reprinted && c.inbox.some(n => n.kind === 'reprint'), 'a reprint happens and shows in News', `lowest supply ${(minFrac * 100).toFixed(0)}%, top price ${fmtMoney(maxP)}`);
+    const t = fresh(sets, order);
+    t.money = 1000;
+    const before = t.market.base.left;
+    G.buyBooster(t, base);
+    ok(t.market.base.left === before - 1, 'buying from the distributor takes from the supply');
+    ok(!G.buyMarketBooster(t, base), 'nothing to buy on the Market before rivals hold boosters');
+    G.tick(t, sets, 1, T0 + 3 * DAY);
+    const held = t.market.base.held;
+    const cost = G.marketBoosterBuyPrice(t, base);
+    const m0 = t.money;
+    ok(held > 0 && G.buyMarketBooster(t, base) && Math.abs(m0 - t.money - cost) < 1e-9 && t.market.base.held === held - 1, 'Market boosters cost 110% and come from rival stock');
+    const left = t.market.base.left, sell = G.marketBoosterSellPrice(t, base), m1 = t.money, n = t.stock.base;
+    ok(G.sellMarketBooster(t, base) && Math.abs(t.money - m1 - sell) < 1e-9 && t.stock.base === n - 1 && t.market.base.left === left + 1, 'selling a booster pays 90% and returns it to the supply');
+    t.market.base.left = 0;
+    ok(G.soldOut(t, base) && !G.buyBooster(t, base), 'a sold-out distributor sells nothing');
+  }
+
+  // ---------- Market search ----------
+  section('Market search');
+  {
+    const find = q => base.cards.filter(cardFilter(q)).map(c => c.number);
+    ok(find('Alakazam 1').join() === '1/102', '"Alakazam 1" finds Alakazam 1/102 only');
+    ok(find('alakazam').length === 1 && find('1').join() === '1/102', 'name alone and number alone both work');
+    ok(find('97').length === 1 && find('1/102').join() === '1/102', 'printed number works');
+    ok(find('Alakazam 2').length === 0 && find('').length === base.cards.length, 'a mismatch finds nothing; empty finds all');
   }
 
   // ---------- Save ----------
@@ -175,7 +231,7 @@ async function run() {
   ok(!JSON.stringify(file).includes('"_bonus"'), 'transient caches are not saved');
   const back = Save.restore(file, sets, order);
   ok(JSON.stringify(back.binder) === JSON.stringify(s.binder) && back.money === s.money, 'export/import round trip keeps state');
-  const partial = { game: 'idlecardshop', saveVersion: 1, state: { money: 77, futureField: 1, showcase: [{ s: 'base', c: '001', p: 1 }, { s: 'gone', c: 'x', p: 1 }, { s: 'base', c: 'nope', p: 1 }], upgrades: { storage: 2 } } };
+  const partial = { game: 'idlecardshop', saveVersion: Save.SAVE_VERSION, state: { money: 77, futureField: 1, showcase: [{ s: 'base', c: '001', p: 1 }, { s: 'gone', c: 'x', p: 1 }, { s: 'base', c: 'nope', p: 1 }], upgrades: { storage: 2 } } };
   const merged = Save.restore(partial, sets, order);
   ok(merged.money === 77 && merged.upgrades.storage === 2 && merged.upgrades.showcase === 0, 'missing fields get defaults');
   ok(!('futureField' in merged), 'unknown fields are dropped');
@@ -186,10 +242,19 @@ async function run() {
     rules: { keepFirst: true, stockTarget: 7 },
     staff: [{ id: 1, name: 'Ada', task: 'list', skills: { buy: { lvl: 2, xp: 0 }, list: { lvl: 5, xp: 3 } }, training: { skill: 'list', left: 9, total: 20 } }],
   } };
+  // The v1 -> v2 step still runs on its own (shipped migrations never change).
+  const m12 = Save.MIGRATIONS[1](JSON.parse(JSON.stringify(v1.state)));
+  ok(m12.binder.base['001'] === 2 && m12.binder.base['002'] === 2 && !('unpriced' in m12) && m12.staff[0].task === 'price', 'v1 -> v2 step still moves cards to the binder and List staff to Price');
   const m2 = Save.restore(v1, sets, order);
-  ok(m2.binder.base['001'] === 2 && m2.binder.base['002'] === 2 && !('unpriced' in m2) && !('priced' in m2), 'v1 saves: unpriced and priced cards go back to the binder');
-  ok(m2.rules.keepCopies === 1 && m2.rules.stockTarget === 7 && !('keepFirst' in m2.rules), 'v1 saves: keepFirst becomes Keep copies 1');
-  ok(m2.staff[0].task === 'price' && !m2.staff[0].training && !('list' in m2.staff[0].skills) && m2.staff[0].skills.buy.lvl === 2, 'v1 saves: List staff move to Price');
+  const blank = G.newState(sets, order);
+  ok(m2.money === blank.money && !Object.keys(m2.binder).length && !m2.staff.length && !m2.setupDone, 'v1 saves start over (Nicolas, v3)');
+  const v2 = { game: 'idlecardshop', saveVersion: 2, state: { money: 999, setupDone: true, stats: { rescues: 3 }, binder: { base: { '001': 4 } } } };
+  const m3 = Save.restore(v2, sets, order);
+  ok(m3.money === blank.money && !Object.keys(m3.binder).length && !m3.setupDone && !('rescues' in m3.stats), 'v2 saves start over too');
+  const sup = fresh(sets, order);
+  G.tick(sup, sets, 1, T0 + 5 * 86400000);
+  const r3 = Save.restore(JSON.parse(JSON.stringify(Save.serialize(sup))), sets, order);
+  ok(r3.market.base.left === sup.market.base.left && r3.market.base.age === sup.market.base.age && r3.inbox.length === sup.inbox.length, 'booster supply and News survive a save round trip');
   let threw = false;
   try { Save.restore({ game: 'idlecardshop', saveVersion: 999, state: {} }, sets, order); } catch { threw = true; }
   ok(threw, 'a save from a newer version is refused');

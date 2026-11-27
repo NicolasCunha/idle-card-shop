@@ -9,8 +9,8 @@
 import { newState, SKILL_KEYS } from './game.js';
 
 export const GAME_ID = 'idlecardshop';
-export const SAVE_VERSION = 2;
-export const GAME_VERSION = '1.1.0';
+export const SAVE_VERSION = 3;
+export const GAME_VERSION = '1.2.0';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
@@ -39,6 +39,10 @@ export const MIGRATIONS = {
     }
     return state;
   },
+  // v3 (2026-11-27): booster supply, release calendar and News. Nicolas chose
+  // to start every older save from zero, so the state is dropped and the
+  // defaults (a new shop) take its place.
+  2: () => ({}),
 };
 
 export function serialize(state) {
@@ -94,6 +98,13 @@ export function mergeDefaults(def, saved) {
 export function sanitize(state, sets) {
   const ok = it => it && sets[it.s]?.byId[it.c];
   state.showcase = state.showcase.filter(it => ok(it) && typeof it.p === 'number');
+  for (const [sid, m] of Object.entries(state.market)) {
+    const okNum = k => Number.isFinite(m?.[k]) && m[k] >= 0;
+    if (!sets[sid] || !['run', 'printed', 'left', 'held', 'age'].every(okNum)) delete state.market[sid];
+    else if (!Array.isArray(m.hist)) m.hist = [];
+  }
+  state.inbox = state.inbox.filter(n => isPlainObject(n) && Number.isFinite(n.id) && typeof n.text === 'string');
+  state.newsSeen = state.newsSeen.filter(id => typeof id === 'string');
   for (const map of [state.stock, state.binder, state.seen]) {
     for (const sid of Object.keys(map)) if (!sets[sid]) delete map[sid];
   }

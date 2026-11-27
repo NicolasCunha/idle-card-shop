@@ -10,7 +10,7 @@ Saves are versioned JSON. A player's save must never break.
 - After migrations, `state` is merged with defaults: missing fields get the default, unknown fields are ignored.
 - Card or collection ids that no longer exist are skipped without touching the rest.
 - Device preferences (theme, volumes) live in a separate localStorage key, never in the save.
-- Market prices are never saved; they are computed from the day (`.claude/rules/design-pillars.md`).
+- Card market prices are never saved; they are computed from the day. Booster supply (`state.market`) is the one saved market state (`.claude/rules/design-pillars.md`).
 
 ## Where
 

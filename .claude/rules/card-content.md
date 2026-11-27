@@ -25,6 +25,6 @@ Base Set booster (decided 2026-11-27): 7 common, 3 uncommon, 1 rare slot (33% ho
 
 Jungle, Fossil, Base Set 2 and Team Rocket (added 2026-11-27, crawled at Nicolas's direct request) use the same booster layout and $4 wholesale price until he says otherwise. Base Set 2 cards carry `reprintOf` to the Base Set or Jungle card with the same name and rarity (Imposter Professor Oak has none). Team Rocket's secret rare Dark Raichu (83/82) is mapped to `holo`.
 
-Collections unlock in `collections.json` order: each needs 90% of the previous one discovered (Nicolas, 2026-11-27). Append new collections in release order.
+Collections are released in `collections.json` order, one every 7 market days from the save's first day (Nicolas, 2026-11-27; replaces the earlier 90% discovery unlock). Each newer collection gets a bigger print run (`js/supply.js`). Append new collections in release order, and add a patch note to `data/news.json` when one ships.
 
 Nicolas's crawler (`C:\DEV\pkmn-crawler`, his own tool that he runs himself) emits collection JSON in this format. Nicolas confirmed on 2026-11-27 that its output counts as data supplied by him. Agents still never run bulk crawls or download art themselves.

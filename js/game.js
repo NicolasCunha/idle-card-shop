@@ -5,6 +5,8 @@
 //       --price--> Showcase --> customers buy (or bulk buyer for cheap spares)
 
 import * as M from './market.js';
+import * as SU from './supply.js';
+import { RIVAL_NAMES } from './strings.js';
 
 // ---------- Tunables (GDD sections 6 and 7) ----------
 export const START_MONEY = 20;
@@ -35,6 +37,7 @@ export const BASE_STORAGE = 20;
 export const BASE_SHOWCASE = 40;
 export const BASE_CUSTOMER_INTERVAL = 6;
 export const LOG_SIZE = 40;
+export const INBOX_SIZE = 60;
 
 export const SKILLS = {
   buy: { base: 8 },
@@ -125,8 +128,13 @@ export function newState(sets, order, nowMs = Date.now()) {
     flags: { visited: {} },
     stats: {
       earned: 0, spent: 0, boostersBought: 0, boostersOpened: 0, cardsPriced: 0, cardsListed: 0,
-      cardsSold: 0, bulkSold: 0, customers: 0, levelsGained: 0, playTime: 0, rescues: 0,
+      cardsSold: 0, bulkSold: 0, customers: 0, levelsGained: 0, playTime: 0,
+      boostersSold: 0, boostersBoughtMarket: 0,
     },
+    market: {},         // setId -> booster supply (supply.js)
+    inbox: [],          // game notices for the News panel: [{id, day, kind, text}]
+    inboxRead: 0,       // highest inbox id the player has seen
+    newsSeen: [],       // ids of patch notes (data/news.json) the player has seen
     log: [],
     nextId: 1,
     createdAt: nowMs,
@@ -153,9 +161,11 @@ export function marketValue(state, set, card) {
   return card._mv;
 }
 
-export function boosterPrice(state, set) {
-  return set.booster.wholesalePrice * M.boosterMultiplier(set, state.day);
-}
+// Distributor price: set by the supply left (supply.js).
+export const supply = (state, set) => SU.supplyOf(state, set);
+export const boosterPrice = (state, set) => SU.priceOf(set, supply(state, set));
+export const marketBoosterBuyPrice = (state, set) => boosterPrice(state, set) * SU.MARKET_BUY_RATE;
+export const marketBoosterSellPrice = (state, set) => boosterPrice(state, set) * SU.MARKET_SELL_RATE;
 
 // ---------- Helpers ----------
 function log(state, kind, text) {
@@ -187,25 +197,27 @@ export function milestoneBonus(state, set) {
   return b;
 }
 
-// A collection's boosters and singles can be bought once the collection before
-// it (collections.json order) is UNLOCK_AT discovered. The first one is always open.
-export const UNLOCK_AT = 0.9;
+// Collections come out one every RELEASE_EVERY_DAYS market days, in
+// collections.json order (Nicolas, 2026-11-27). Before its release a collection
+// is hidden everywhere.
+export const setUnlocked = (state, set) => SU.isReleased(state, set);
+export const releasedSets = (state, sets) => Object.values(sets).filter(s => setUnlocked(state, s));
+export const nextRelease = (state, sets) => Object.values(sets).find(s => !setUnlocked(state, s)) || null;
 
-export function setUnlocked(state, set) {
-  return !set.prev || collectionProgress(state, set.prev).frac >= UNLOCK_AT - 1e-9;
-}
-
-// Refresh cached milestone bonuses (called when discoveries change). Announces
-// the next collection the moment this one crosses UNLOCK_AT.
-function refreshBonus(state, sets, setId, announce = true) {
+// Refresh the cached milestone bonus (called when discoveries change).
+function refreshBonus(state, sets, setId) {
   state._bonus = state._bonus || {};
   state._bonus[setId] = milestoneBonus(state, sets[setId]);
-  const next = sets[sets[setId].nextId];
-  if (!next) return;
-  state._open = state._open || {};
-  const open = setUnlocked(state, next);
-  if (announce && open && state._open[next.id] === false) log(state, 'unlock', `${next.name} boosters available`);
-  state._open[next.id] = open;
+}
+
+// ---------- Notices (News panel) ----------
+export function notify(state, kind, text) {
+  state.inbox.unshift({ id: state.nextId++, day: state.day, kind, text });
+  if (state.inbox.length > INBOX_SIZE) state.inbox.length = INBOX_SIZE;
+}
+export const unreadNotices = state => state.inbox.filter(n => n.id > state.inboxRead).length;
+export function markNoticesRead(state) {
+  state.inboxRead = state.inbox.reduce((a, n) => Math.max(a, n.id), state.inboxRead);
 }
 
 function saleMultiplier(state, setId) {
@@ -213,16 +225,53 @@ function saleMultiplier(state, setId) {
 }
 
 // ---------- Actions: buy ----------
+export const soldOut = (state, set) => supply(state, set).left < 1;
+
 export function canBuyBooster(state, set, reserve = 0) {
-  return setUnlocked(state, set) && totalStock(state) < stockCapacity(state) && state.money - boosterPrice(state, set) >= reserve - 1e-9;
+  return setUnlocked(state, set) && !soldOut(state, set) && totalStock(state) < stockCapacity(state)
+    && state.money - boosterPrice(state, set) >= reserve - 1e-9;
 }
 
 export function buyBooster(state, set, reserve = 0) {
   if (!canBuyBooster(state, set, reserve)) return false;
   spend(state, boosterPrice(state, set));
+  supply(state, set).left--;
   state.stock[set.id] = (state.stock[set.id] || 0) + 1;
   state.stats.boostersBought++;
   return true;
+}
+
+// Market (sealed): buy from what rival shops hold at 110%, even when the
+// distributor is sold out; sell back at 90%. Sold boosters return to the
+// supply, so selling a lot lowers the price.
+export function canBuyMarketBooster(state, set) {
+  return setUnlocked(state, set) && supply(state, set).held >= 1 && totalStock(state) < stockCapacity(state)
+    && state.money >= marketBoosterBuyPrice(state, set) - 1e-9;
+}
+
+export function buyMarketBooster(state, set) {
+  if (!canBuyMarketBooster(state, set)) return false;
+  spend(state, marketBoosterBuyPrice(state, set));
+  supply(state, set).held--;
+  state.stock[set.id] = (state.stock[set.id] || 0) + 1;
+  state.stats.boostersBoughtMarket++;
+  return true;
+}
+
+export function sellMarketBooster(state, set) {
+  if (!(state.stock[set.id] > 0) || !setUnlocked(state, set)) return false;
+  earn(state, marketBoosterSellPrice(state, set));
+  supply(state, set).left++;
+  state.stock[set.id]--;
+  state.stats.boostersSold++;
+  return true;
+}
+
+// n boosters through one of the functions above; returns how many went through.
+export function repeat(fn, state, set, n) {
+  let k = 0;
+  while (k < n && fn(state, set)) k++;
+  return k;
 }
 
 export function buyBoosters(state, set, n) {
@@ -511,6 +560,7 @@ function doTask(state, sets, emp) {
       const set = sets[state.rules.buySet];
       if (!set) { emp.status = 'no collection'; return false; }
       if (!setUnlocked(state, set)) { emp.status = 'locked'; return false; }
+      if (soldOut(state, set)) { emp.status = 'sold out'; return false; }
       if ((state.stock[set.id] || 0) >= state.rules.stockTarget) { emp.status = 'stock target'; return false; }
       if (totalStock(state) >= stockCapacity(state)) { emp.status = 'storage full'; return false; }
       if (!buyBooster(state, set, state.rules.cashReserve)) { emp.status = 'cash reserve'; return false; }
@@ -628,6 +678,7 @@ export function tick(state, sets, dt, nowMs) {
     state.day = day;
     if (state.firstDay == null) state.firstDay = day;
     if (!first) log(state, 'day', `New market day: ${M.dayLabel(day)}`);
+    advanceSupply(state, sets);
   }
   state.customerTimer -= dt;
   let guard = 0;
@@ -639,11 +690,54 @@ export function tick(state, sets, dt, nowMs) {
   checkUnlocks(state, sets);
 }
 
+// Runs every market day since the last one for each released collection, and
+// announces new releases. Same result live or offline: the dice depend only on
+// (collection, days since release) and the supply the player left.
+function advanceSupply(state, sets) {
+  for (const set of Object.values(sets)) {
+    if (!setUnlocked(state, set)) continue;
+    const m = supply(state, set);
+    if (!m.out) {
+      m.out = true;
+      if (set.releaseIndex > 0) {
+        log(state, 'release', `${set.name} is out`);
+        notify(state, 'release', `${set.name} is out. Boosters at the distributor.`);
+      }
+    }
+    const age = state.day - SU.releaseDay(state, set);
+    while (m.age < age) {
+      for (const n of SU.stepDay(set, m)) {
+        if (n.kind === 'reprint') {
+          const text = `${set.name}: reprint of ${fmtCount(n.n)} boosters`;
+          log(state, 'reprint', text);
+          notify(state, 'reprint', text);
+        } else if (n.kind === 'rival') {
+          notify(state, 'rival', `${RIVAL_NAMES[n.rival] || 'A rival shop'} bought ${fmtCount(n.n)} ${set.name} boosters`);
+        }
+      }
+    }
+  }
+  refreshOpen(state, sets);
+}
+
+// Short count for notices: 12,400 -> 12.4K.
+function fmtCount(n) {
+  if (n >= 1e6) return `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(n >= 1e4 ? 0 : 1)}K`;
+  return String(n);
+}
+
+// state._open: collections after the first that are out (tutorial "nextset").
+function refreshOpen(state, sets) {
+  state._open = {};
+  for (const set of Object.values(sets)) if (set.releaseIndex > 0) state._open[set.id] = setUnlocked(state, set);
+}
+
 // Recomputes derived caches after load.
 export function prepare(state, sets) {
   state._bonus = {};
-  state._open = {};
-  for (const id of Object.keys(sets)) refreshBonus(state, sets, id, false);
+  for (const id of Object.keys(sets)) refreshBonus(state, sets, id);
+  refreshOpen(state, sets);
 }
 
 // Replays the time since the last tick in full, in chunks, so the page stays

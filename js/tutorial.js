@@ -28,7 +28,9 @@ const COND = {
   staffHasTask: s => s.staff.some(e => e.task),
   visitedMarket: s => !!s.flags.visited.market,
   visitedSettings: s => !!s.flags.visited.settings,
-  // s._open: collections past the first whose boosters are unlocked (game.js).
+  visitedNews: s => !!s.flags.visited.news,
+  tradedBooster: s => grew(s, 'boostersSold') || grew(s, 'boostersBoughtMarket'),
+  // s._open: collections past the first that are out (game.js).
   nextSetOpen: s => Object.values(s._open || {}).some(Boolean),
   boughtNextSet: s => Object.keys(s._open || {}).some(id => s._open[id] && (s.stock[id] > 0 || Object.keys(s.seen[id] || {}).length > 0)),
 };

@@ -4,7 +4,7 @@ A calm, menu-based (Cookie Clicker style) idle browser game about running a trad
 
 ## Current phase
 
-**v1 built (2026-11-26) and live on GitHub Pages.** Nicolas told us to build the game with the GDD as written, using the GDD's proposed answers to the open questions as assumptions. Implementation notes, assumptions and open balancing items: [docs/sdd/v1-implementation.md](docs/sdd/v1-implementation.md). For new features, use the `develop-feature` skill.
+**v1 built (2026-11-26) and live on GitHub Pages.** Nicolas told us to build the game with the GDD as written, using the GDD's proposed answers to the open questions as assumptions. Implementation notes, assumptions and open balancing items: [docs/sdd/v1-implementation.md](docs/sdd/v1-implementation.md). For new features, use the `develop-feature` skill. Booster supply, the 7-day release calendar and News: [docs/sdd/booster-supply.md](docs/sdd/booster-supply.md).
 
 ## Owner
 

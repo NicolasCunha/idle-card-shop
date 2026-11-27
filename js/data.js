@@ -21,9 +21,11 @@ export async function loadCollections(base = '') {
   return { sets, order };
 }
 
-// Collections unlock in collections.json order: each one needs the one before it.
+// Collections are released in collections.json order, one every few market days
+// (supply.js RELEASE_EVERY_DAYS).
 export function linkOrder(sets, order) {
   order.forEach((id, i) => {
+    sets[id].releaseIndex = i;
     sets[id].prev = i > 0 ? sets[order[i - 1]] : null;
     sets[id].nextId = order[i + 1] || null;
   });
@@ -110,6 +112,27 @@ function resolveReprints(sets) {
       if (card.ownValue == null) card.value = orig.value * set.reprintFactor;
     }
   }
+}
+
+// Market search: words match the card name, a plain number matches the card's
+// number in its collection, "1/102" matches the printed number. Every part
+// given must match: "Alakazam 1" finds Alakazam 1/102 only.
+export function cardFilter(query) {
+  const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) return () => true;
+  const nums = [], full = [], names = [];
+  for (const w of words) {
+    if (/^#?\d+$/.test(w)) nums.push(Number(w.replace('#', '')));
+    else if (/^\d+\/\d+$/.test(w)) full.push(w);
+    else names.push(w);
+  }
+  return card => {
+    const name = card.name.toLowerCase();
+    if (!names.every(w => name.includes(w))) return false;
+    const n = parseInt(card.number, 10) || card.index;
+    if (!nums.every(x => x === n)) return false;
+    return full.every(x => card.number.toLowerCase() === x);
+  };
 }
 
 // Celebration tier for the opening scene (GDD section 5): quiet, highlight, big.
