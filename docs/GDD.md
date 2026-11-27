@@ -193,7 +193,7 @@ Carta inédita ganha o selo NEW em qualquer nível. Cada passo da animação pod
 
 O mesmo arquivo de imagem serve para todos os tamanhos. Carta ainda não descoberta aparece escurecida no fichário.
 
-**Montagem do booster:** definida em `booster.slots` de cada coleção. Para o Base Set, provisório: 6 comuns, 2 incomuns e 1 rara (com chance de ser holo); o Nicolas vai confirmar os números.
+**Montagem do booster:** definida em `booster.slots` de cada coleção. Para o Base Set (decidido pelo Nicolas em 27/11/2026, seguindo as raridades reais): 11 cartas, sendo 7 comuns, 3 incomuns e 1 rara (67% rara, 33% rara holo). As 6 energias básicas contam como comuns, então a coleção tem 38 comuns, 32 incomuns, 16 raras e 16 raras holo.
 
 ## 6. Funcionários
 
@@ -431,7 +431,7 @@ Depois que o Nicolas aprovar este GDD, ele vira a base dos SDDs, das diretivas e
 
 **Perguntas para o Nicolas**
 
-- [ ] Montagem do booster do Base Set: quantas comuns, incomuns e raras, e a chance de holo.
+- [x] Montagem do booster do Base Set: 7 comuns, 3 incomuns, 1 rara (33% holo); energias são comuns (seção 5).
 - [ ] Funcionários têm salário? Proposta: não, para não punir ausência (pilar cozy).
 - [ ] Semente do mercado global (todos veem o mesmo mercado e podem comparar) ou por save? Proposta: global.
 - [ ] Clientes compram também boosters lacrados, além de avulsas? Proposta: não na v1.

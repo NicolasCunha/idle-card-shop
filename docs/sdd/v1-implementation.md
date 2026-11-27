@@ -45,7 +45,7 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 
 | GDD question | Used in v1 |
 | --- | --- |
-| Q1 Base Set booster | 6 common, 2 uncommon, 1 rare slot (67% rare, 33% holo). Template rarity split: 16 holo, 16 rare, 26 uncommon, 44 common |
+| Q1 Base Set booster | **Answered 2026-11-27:** 7 common, 3 uncommon, 1 rare slot (67% rare, 33% holo). Rarities follow Nicolas's crawler data: 38 common (6 basic energies count as common), 32 uncommon, 16 rare, 16 holo |
 | Q2 Staff salaries | None |
 | Q3 Market seed | One global seed for everyone |
 | Q4 Customers buy sealed | No |

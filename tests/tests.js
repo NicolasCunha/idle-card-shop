@@ -46,7 +46,9 @@ async function run() {
   ok(base.cards.length === 102, 'Base Set has 102 cards', `${base.cards.length}`);
   ok(new Set(base.cards.map(c => c.id)).size === base.cards.length, 'card ids are unique');
   ok(base.cards.every(c => base.rarities[c.rarity]), 'every card rarity exists');
-  ok(base.booster.slots.reduce((a, s) => a + s.count, 0) === 9, 'booster has 9 cards (6C 2U 1R, provisional)');
+  ok(base.booster.slots.reduce((a, s) => a + s.count, 0) === 11, 'booster has 11 cards (7C 3U 1R)');
+  const count = r => base.cards.filter(c => c.rarity === r).length;
+  ok(count('common') === 38 && count('uncommon') === 32 && count('rare') === 16 && count('holo') === 16, 'Base Set rarities: 38C 32U 16R 16H');
   const reprintSet = normalizeSet({ id: 'x', name: 'X', booster: { wholesalePrice: 1, slots: [] }, rarities: { c: { value: 1 } }, cards: [{ index: 1, id: 'a', name: 'A', rarity: 'c' }, { index: 2, id: 'b', name: 'B', rarity: 'nope' }] });
   ok(reprintSet.cards.length === 1, 'cards with unknown rarity are skipped');
 
@@ -80,13 +82,13 @@ async function run() {
   const price = G.boosterPrice(s, base);
   ok(G.buyBooster(s, base) && Math.abs(s.money - (20 - price)) < 1e-9, 'buying a booster costs the day price');
   const opened = G.openBooster(s, sets, base);
-  ok(opened.length === 9 && s.unpriced.length === 9, 'opening puts 9 cards in the unpriced pile');
+  ok(opened.length === 11 && s.unpriced.length === 11, 'opening puts 11 cards in the unpriced pile');
   const ranks = opened.map(r => base.rarities[r.card.rarity].rank);
   ok(ranks.every((r, i) => i === 0 || r >= ranks[i - 1]), 'reveal order goes from common to rare');
   ok(opened.every(r => r.isNew || opened.filter(o => o.card === r.card).length > 1), 'first copies are marked NEW');
-  G.priceMany(s, sets, 9);
+  G.priceMany(s, sets, 11);
   ok(s.unpriced.length === 0 && s.priced.every(it => it.p >= s.rules.bulkBelow), 'pricing sends cheap cards to bulk');
-  G.listMany(s, 9);
+  G.listMany(s, 11);
   ok(s.priced.length === 0 && s.showcase.length > 0, 'listing moves priced cards to the showcase');
   for (let i = 0; i < 120 && s.showcase.length; i++) G.tick(s, sets, 1, T0 + i * 1000);
   ok(s.showcase.length === 0 && s.stats.cardsSold > 0, 'customers buy from the showcase');

@@ -13,7 +13,7 @@ Ask for whatever is missing (in Portuguese):
 
 - Collection `id` (lowercase, kebab-case, permanent — it goes into saves), display `name`, `game`, `releaseYear`.
 - Rarities, from most common to rarest, each with name, base value and color.
-- Booster: `wholesalePrice` and `slots` (how many of each rarity, holo chance). **[PENDING GDD Q1]** for Base Set.
+- Booster: `wholesalePrice` and `slots` (how many of each rarity, holo chance). Base Set: 7C / 3U / 1R (33% holo).
 - The card list: index, id, name, rarity, and optional number, foil, value, reprintOf, extra.
 - Images: where they are. Do not proceed to invent any of these.
 
