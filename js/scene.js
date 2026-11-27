@@ -15,17 +15,13 @@ const DOOR = { x: 20, y: 50 };
 const LANE_Y = 96;                        // where customers walk
 const LOOK_Y = 84;                        // where they stand in front of the case
 
-const BUBBLE = {
-  cheap: 'Good price!',
-  fair: 'Fair price.',
-  pricey: 'Bit pricey...',
-  steep: 'Too pricey!',
-  later: 'Maybe later.',
-  empty: 'Nothing here...',
-};
+// Bought: what they say when they buy at that feeling. Passed: when they leave.
+const BOUGHT = { cheap: 'Good price!', fair: 'Fair price.', pricey: 'Pricey, but ok.', steep: 'Steep... I want it.' };
+const PASSED = { cheap: 'Maybe later.', fair: 'Maybe later.', pricey: 'Bit pricey...', steep: 'Too pricey!' };
+const EMPTY = 'Nothing here...';
 
 let ctx = null, canvas = null, host = null, scale = 0;
-let getState = () => null, sets = {};
+let getState = () => null, sets = {}, onPaid = null;
 const sheets = [];
 const people = [];
 let last = 0, running = false;
@@ -33,6 +29,7 @@ let last = 0, running = false;
 export function initScene(opts) {
   getState = opts.getState;
   sets = opts.sets;
+  onPaid = opts.onPaid || null;
   for (let i = 1; i <= SHEETS; i++) {
     const img = new Image();
     img.src = `images/sprites/customer-${i}.png`;
@@ -74,17 +71,30 @@ function resize() {
 const reduced = () => document.documentElement.classList.contains('reduce-motion');
 const visible = () => running && host && host.isConnected && !document.hidden;
 
-// One customer visit from the rules: { looks: [{ s, c, p, f, b }], miss, empty }.
+// True while the floor is on screen: sales then show over the buyer instead
+// of the header (main.js).
+export const showing = () => visible();
+
+// One customer visit from the rules: { looks: [{ s, c, p, f, b, paid }], miss, empty }.
+// Returns false when the visit is not drawn.
 export function customer(ev) {
-  if (!visible() || people.length >= MAX_ON_FLOOR) return;
+  if (!visible()) return false;
   const st = getState();
-  const bought = ev.looks.find(l => l.b);
-  const lookAt = bought || ev.looks[ev.looks.length - 1];
+  const bought = ev.looks.filter(l => l.b);
+  const paid = bought.reduce((a, l) => a + l.paid, 0);
+  // Buyers are always drawn; a full floor makes room by sending the oldest
+  // non-buyer away. Non-buyers wait their turn.
+  if (people.length >= MAX_ON_FLOOR) {
+    if (!bought.length) return false;
+    const i = people.findIndex(p => !p.paid && p.phase !== 'out');
+    if (i >= 0) people.splice(i, 1);
+  }
+  const lookAt = bought[0] || ev.looks[ev.looks.length - 1];
   let text, happy;
   if (ev.miss) { text = `No ${sets[ev.miss]?.name || 'new set'}?`; happy = false; }
-  else if (ev.empty || !lookAt) { text = BUBBLE.empty; happy = false; }
-  else if (bought) { text = BUBBLE[bought.f]; happy = true; }
-  else { text = lookAt.f === 'cheap' || lookAt.f === 'fair' ? BUBBLE.later : BUBBLE[lookAt.f]; happy = false; }
+  else if (ev.empty || !lookAt) { text = EMPTY; happy = false; }
+  else if (bought.length) { text = BOUGHT[lookAt.f]; happy = true; }
+  else { text = PASSED[lookAt.f]; happy = false; }
   // Where along the case they stop (0-1); resolved against the case each frame
   // because the room's width follows the panel.
   const frac = Math.random();
@@ -92,10 +102,11 @@ export function customer(ev) {
     sheet: Math.floor(Math.random() * SHEETS),
     x: DOOR.x, y: DOOR.y, dir: 0, t: 0, frac,
     path: [{ x: DOOR.x, y: LANE_Y }, { frac, y: LANE_Y }, { frac, y: LOOK_Y }],
-    phase: 'in', wait: 0, text, happy, feeling: lookAt?.f || null,
+    phase: 'in', wait: 0, text, happy, feeling: lookAt?.f || null, paid, n: bought.length,
   };
   if (reduced()) { p.x = spotX(st, frac); p.y = LOOK_Y; p.path = []; }
   people.push(p);
+  return true;
 }
 
 // ---------- Loop ----------
@@ -132,7 +143,10 @@ function step(p, dt) {
   p.wait += dt;
   if (p.phase === 'in') { p.phase = 'look'; p.wait = 0; p.dir = 1; }
   else if (p.phase === 'look' && p.wait > 0.9) { p.phase = 'talk'; p.wait = 0; }
-  else if (p.phase === 'talk' && p.wait > 1.8) { p.phase = 'react'; p.wait = 0; }
+  else if (p.phase === 'talk' && p.wait > 1.8) {
+    p.phase = 'react'; p.wait = 0;
+    if (p.paid && onPaid) onPaid(p.paid);
+  }
   else if (p.phase === 'react' && p.wait > 1.3) {
     p.phase = 'out'; p.wait = 0;
     if (reduced()) { p.phase = 'gone'; return; }
@@ -233,6 +247,21 @@ function drawPerson(p) {
   px(x + 3, y + SPRITE_H - 2, 10, 3, C.shadow);
   if (img.complete && img.naturalWidth) ctx.drawImage(img, col * SPRITE_W, row * SPRITE_H, SPRITE_W, SPRITE_H, x, y, SPRITE_W, SPRITE_H);
   if (p.phase === 'react') drawEmote(p, x, y);
+  if (p.phase === 'react' && p.paid) drawPaid(p, x, y);
+}
+
+function drawPaid(p, x, y) {
+  const rise = reduced() ? 0 : Math.min(8, p.wait * 10);
+  const text = `+$${p.paid.toFixed(2)}${p.n > 1 ? ` (${p.n})` : ''}`;
+  ctx.font = '700 7px system-ui, sans-serif';
+  const tw = ctx.measureText(text).width;
+  const tx = Math.round(Math.max(1, Math.min(W - tw - 1, x + 8 - tw / 2)));
+  const ty = Math.round(y - 20 - rise);
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = C.outline;
+  for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) ctx.fillText(text, tx + dx * 0.5, ty + dy * 0.5);
+  ctx.fillStyle = '#f2c14e';
+  ctx.fillText(text, tx, ty);
 }
 
 function drawEmote(p, x, y) {

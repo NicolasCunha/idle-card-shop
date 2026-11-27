@@ -733,11 +733,13 @@ function customerVisit(state, sets) {
     const bought = rng() < buyChance(it.p, mv);
     const f = feeling(it.p, mv);
     remember(state, it, f, bought);
-    looks.push({ s: it.s, c: it.c, p: it.p, f, b: bought });
+    const look = { s: it.s, c: it.c, p: it.p, f, b: bought, paid: 0 };
+    looks.push(look);
     if (!bought) continue;
     state.showcase.splice(pick, 1);
     budget -= it.p;
     const paid = it.p * saleMultiplier(state, it.s);
+    look.paid = paid;
     earn(state, paid);
     state.stats.cardsSold++;
     if (saleListener && !quiet) saleListener(paid);

@@ -13,13 +13,13 @@ A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libra
 
 | Bubble | When |
 | --- | --- |
-| `Good price!` / `Fair price.` / `Bit pricey...` / `Too pricey!` | Bought a card; the feeling of that card's tag |
+| `Good price!` / `Fair price.` / `Pricey, but ok.` / `Steep... I want it.` | Bought a card; the feeling of that card's tag. Happy emote and `+$x` (gold, `(n)` when several cards) over the buyer |
 | `Too pricey!` / `Bit pricey...` | Bought nothing; feeling of the last card looked at |
 | `Maybe later.` | Bought nothing at a cheap or fair tag |
 | `Nothing here...` | Empty showcase |
 | `No <set>?` | Wanted the newest collection and found none |
 
-At most 5 customers on the floor; extra visits still happen in the rules but are not drawn. Offline catch-up and hidden tabs draw nothing. "Reduce motion": customers appear at the case, show the bubble and emote without walking or bouncing, then vanish.
+At most 5 customers on the floor. A buyer is always drawn: when the floor is full, the oldest non-buyer leaves to make room; non-buyers past the limit are not drawn. The money is credited by the rules when the visit happens; while the floor is on screen the sale sound and the header `+$` play when the buyer reacts (`onPaid`), otherwise on the sale itself (`G.onSale`). Offline catch-up and hidden tabs draw nothing. "Reduce motion": customers appear at the case, show the bubble and emote without walking or bouncing, then vanish.
 
 ## Size
 

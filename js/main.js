@@ -51,13 +51,17 @@ async function boot() {
     onOpenAnother: set => openOne(set),
     onClose: () => UI.frame(),
   });
-  Scene.initScene({ getState: () => state, sets });
+  Scene.initScene({
+    getState: () => state, sets,
+    onPaid: v => { Audio.sfx.sale(); UI.floatMoney(v); },
+  });
   Scene.setCapacity(st => G.showcaseCapacity(st));
   UI.initUI({ state, sets, order, prefs, news, actions: { run, click: () => Audio.sfx.click() } });
 
   G.onCustomer(ev => Scene.customer(ev));
 
   G.onSale(v => {
+    if (Scene.showing()) return; // the buyer on the shop floor shows it
     Audio.sfx.sale();
     pendingSale += v;
     if (!saleTimer) saleTimer = setTimeout(() => { UI.floatMoney(pendingSale); pendingSale = 0; saleTimer = null; }, 900);
