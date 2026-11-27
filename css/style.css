@@ -158,7 +158,8 @@ label.check { gap: .35rem; }
   background: var(--surface); padding: .35rem .7rem; border-radius: 8px;
 }
 .tr.th { background: none; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-.market-table .tr { grid-template-columns: 40px 1fr 80px 70px 70px 96px 110px; }
+.market-table .tr { grid-template-columns: 48px 1fr 80px 70px 70px 96px 110px; }
+.market-table .card.size-xs { width: 46px; }
 .news { margin-bottom: .8rem; }
 .pager { display: flex; align-items: center; gap: .6rem; margin: .4rem 0 .6rem; font-variant-numeric: tabular-nums; }
 .pager button { min-width: 2rem; }

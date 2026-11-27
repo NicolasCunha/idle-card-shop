@@ -159,12 +159,40 @@ function patch(root, vals) {
   }
 }
 
+// Money counts to its new value in a short, smooth tween (~180 ms).
+const MONEY_TWEEN_MS = 180;
+let moneyTween = null;
+function setMoneyText(v) { document.getElementById('money').textContent = fmtMoney(v); }
+function animateMoney(target) {
+  if (shownMoney === null || PREFS.reduceMotion || Math.abs(target - shownMoney) < 0.005) {
+    shownMoney = target;
+    moneyTween = null;
+    setMoneyText(target);
+    return;
+  }
+  if (moneyTween && moneyTween.to === target) {
+    // Background tabs pause animation frames: snap instead of lagging behind.
+    if (performance.now() - moneyTween.start > MONEY_TWEEN_MS + 50) {
+      shownMoney = target;
+      moneyTween = null;
+      setMoneyText(target);
+    }
+    return;
+  }
+  moneyTween = { from: shownMoney, to: target, start: performance.now() };
+  const step = now => {
+    if (!moneyTween || moneyTween.to !== target) return;
+    const t = Math.min(1, (now - moneyTween.start) / MONEY_TWEEN_MS);
+    shownMoney = moneyTween.from + (target - moneyTween.from) * (1 - (1 - t) * (1 - t));
+    setMoneyText(shownMoney);
+    if (t < 1) requestAnimationFrame(step);
+    else { shownMoney = target; moneyTween = null; }
+  };
+  requestAnimationFrame(step);
+}
+
 function updateHeader() {
-  const target = S.money;
-  if (shownMoney === null || PREFS.reduceMotion) shownMoney = target;
-  else shownMoney += (target - shownMoney) * 0.35;
-  if (Math.abs(target - shownMoney) < 0.005) shownMoney = target;
-  document.getElementById('money').textContent = fmtMoney(shownMoney);
+  animateMoney(S.money);
   document.getElementById('day-label').textContent = S.day ? M.dayLabel(S.day) : '';
   document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay(S.timeZone));
 }
@@ -417,14 +445,14 @@ PANELS.market = {
       </select></label>
     </div>
     ${news.length ? `<section class="box news"><h3>News</h3><ul>${news.slice(0, 8).map(n =>
-      `<li class="${n.kind}"><b>${esc(seen[n.card.id] ? n.card.name : n.card.number || n.card.name)}</b> ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day))}</span></li>`).join('')}</ul></section>` : ''}
+      `<li class="${n.kind}"><b>${esc(n.card.name)}</b> ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day))}</span></li>`).join('')}</ul></section>` : ''}
     ${pagerHtml}
     <div class="table market-table">
       <div class="tr th"><span></span><span>Card</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
       ${shown.map(r => {
         const cost = r.now * G.MARKET_BUY_RATE;
         return `<div class="tr">
-          ${cardHtml(st, r.c, { size: 'xs', unseen: !seen[r.c.id] })}
+          ${cardHtml(st, r.c, { size: 'xs' })}
           <span>${rarityTag(st, r.c)} ${esc(r.c.name)}</span>
           <span class="num">${fmtMoney(r.now)}</span>
           <span class="num ${r.d1 >= 0 ? 'up' : 'down'}">${fmtPct(r.d1)}</span>
