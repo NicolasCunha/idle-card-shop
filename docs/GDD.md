@@ -2,7 +2,7 @@
 
 Nov 26, 2026 · @Nicolas
 
-> Fonte: [Claude Doc do GDD](https://claude.ai/artifact/Qk7rreXjreA9rsB8n22A4i) (revisão 29). Status: **rascunho, aguardando aprovação do Nicolas**. As perguntas em aberto estão na seção 12.
+> Fonte: [Claude Doc do GDD](https://claude.ai/artifact/Qk7rreXjreA9rsB8n22A4i) (revisão 29). Status: **em uso, base do v1**. As perguntas em aberto estão na seção 12.
 
 ## 1. Visão geral
 
@@ -436,7 +436,7 @@ Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
 
 ## 12. Próximos passos e perguntas em aberto
 
-Depois que o Nicolas aprovar este GDD, ele vira a base dos SDDs, das diretivas em `.claude/` e das skills.
+Este GDD é a base dos SDDs, das diretivas em `.claude/` e das skills. O desenvolvimento segue sem esperar aprovação formal; as perguntas abaixo usam as respostas propostas até o Nicolas decidir.
 
 **Entregáveis seguintes**
 

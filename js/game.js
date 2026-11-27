@@ -636,23 +636,7 @@ export function tick(state, sets, dt, nowMs) {
     state.customerTimer += customerInterval(state) * (0.5 + rng());
   }
   for (const emp of state.staff) tickEmployee(state, sets, emp, dt);
-  rescueIfStuck(state, sets);
   checkUnlocks(state, sets);
-}
-
-// Calm pillar: the shop can never get stuck. With no cash for a booster and
-// nothing left to sell, the distributor fronts one free booster.
-// ASSUMPTION: not in the GDD yet; needs Nicolas's OK.
-function rescueIfStuck(state, sets) {
-  if (state.showcase.length) return;
-  if (totalStock(state) > 0) return;
-  let set = sets[state.rules.buySet];
-  if (!set || !setUnlocked(state, set)) set = Object.values(sets).find(s => !s.prev);
-  if (!set || state.money >= boosterPrice(state, set)) return;
-  for (const cards of Object.values(state.binder)) for (const n of Object.values(cards)) if (n > 0) return;
-  state.stock[set.id] = 1;
-  state.stats.rescues = (state.stats.rescues || 0) + 1;
-  log(state, 'rescue', 'The distributor fronted you a booster');
 }
 
 // Recomputes derived caches after load.

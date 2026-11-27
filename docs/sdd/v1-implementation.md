@@ -66,6 +66,6 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 
 ## Additions and deviations to confirm with Nicolas
 
-- **Stuck-shop rescue (new)**: if the shop has no cash for a booster and nothing left to sell (no sealed boosters, no cards anywhere, empty binder), the distributor fronts one free booster. Without it a player who spends everything on staff can get permanently stuck, which breaks the calm pillar.
+- **No stuck-shop rescue**: removed 2026-11-27 by Nicolas. A shop with no cash and nothing to sell stays stuck; the player can start a new save. The `stats.rescues` field stays in the save (always 0) to avoid a schema change.
 - **XP curve**: the GDD formula `25 x level^2.3` gives about 3,900 XP for level 9 to 10; the GDD text says about 4,400. The code follows the formula.
-- **Pacing**: first sale about 15 s and first employee about 3.5 min hit the targets. Full automation (4 staff) takes about 2 h for the test bot, against the 45 to 90 min target. Demand (one customer every 6 s) caps income near $20/min early on, and 4 staff plus 3 Staff room levels cost about $2,140. Fixing it is a balancing choice (cheaper Staff room, more customers early, or a longer target).
+- **Pacing**: first sale about 15 s and first employee about 3.5 min hit the targets. Full automation (4 staff) takes about 2 h for the test bot, against the 45 to 90 min target. Demand (one customer every 6 s) caps income near $20/min early on, and 4 staff plus 3 Staff room levels cost about $2,140. Fixing it is a balancing choice (cheaper Staff room, more customers early, or a longer target). Nicolas, 2026-11-27: leave as is for now.

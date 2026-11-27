@@ -125,9 +125,7 @@ async function run() {
   s = fresh(sets, order);
   s.money = 1;
   G.tick(s, sets, 1, T0 + 1000);
-  ok(s.stock.base === 1 && s.stats.rescues === 1, 'a broke shop with nothing to sell gets a free booster');
-  G.tick(s, sets, 1, T0 + 2000);
-  ok(s.stock.base === 1, 'the rescue does not repeat while there is something to open');
+  ok(!s.stock.base, 'a broke shop gets no free booster');
   ok(Math.abs(G.seriesCost(50, 2.2, 0, 3) - (G.hireCost(0) + G.hireCost(1) + G.hireCost(2))) < 1, 'geometric series matches summed costs');
 
   // ---------- Staff ----------
