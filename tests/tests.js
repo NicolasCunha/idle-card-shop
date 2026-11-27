@@ -85,25 +85,43 @@ async function run() {
   const price = G.boosterPrice(s, base);
   ok(G.buyBooster(s, base) && Math.abs(s.money - (20 - price)) < 1e-9, 'buying a booster costs the day price');
   const opened = G.openBooster(s, sets, base);
-  ok(opened.length === 11 && s.unpriced.length === 11, 'opening puts 11 cards in the unpriced pile');
+  const inBinder = () => Object.values(s.binder.base || {}).reduce((x, y) => x + y, 0);
+  ok(opened.length === 11 && inBinder() === 11, 'opening puts all 11 cards in the binder');
   const ranks = opened.map(r => base.rarities[r.card.rarity].rank);
   ok(ranks.every((r, i) => i === 0 || r >= ranks[i - 1]), 'reveal order goes from common to rare');
   ok(opened.every(r => r.isNew || opened.filter(o => o.card === r.card).length > 1), 'first copies are marked NEW');
-  G.priceMany(s, sets, 11);
-  ok(s.unpriced.length === 0 && s.priced.every(it => it.p >= s.rules.bulkBelow), 'pricing sends cheap cards to bulk');
-  G.listMany(s, 11);
-  ok(s.priced.length === 0 && s.showcase.length > 0, 'listing moves priced cards to the showcase');
-  for (let i = 0; i < 120 && s.showcase.length; i++) G.tick(s, sets, 1, T0 + i * 1000);
+  const cheap = opened.filter(r => G.marketValue(s, base, r.card) < s.rules.bulkBelow).length;
+  const listed = G.priceSpares(s, sets, 4, 0, 0);
+  ok(listed === Math.min(4, 11 - cheap) && s.showcase.length === listed, 'pricing N puts N cards straight in the showcase', `${listed}`);
+  const mvTop = Math.max(...opened.map(r => G.marketValue(s, base, r.card)));
+  ok(s.showcase.some(it => Math.abs(it.p - G.tagPrice(mvTop, 0)) < 1e-9), 'batch pricing starts with the priciest card');
+  ok(G.priceSpares(s, sets, 99, 0.1, 0) >= 0 && s.showcase.every(it => it.p >= s.rules.bulkBelow * 0.9), 'cards under the bulk threshold are left for bulk');
+  const bulkBefore = s.money;
+  const bk = G.sellBulk(s, sets, 0);
+  ok(bk.n === cheap && s.money >= bulkBefore, 'bulk sells the cheap copies at 30%', `${bk.n}`);
+  s.binder.base = { '001': 3 };
+  ok(G.priceSpares(s, sets, 99, 0, 1) === 2 && s.binder.base['001'] === 1, 'Keep 1 leaves one copy in the binder');
+  const one = base.byId['001'];
+  ok(G.listCard(s, base, one, 1, 1.23) === 1 && s.showcase.at(-1).p === 1.23 && !s.binder.base['001'], 'a card can be listed at a manual price');
+  ok(G.buyChance(1, 1) === 0.5 && G.buyChance(0.95, 1) === 0.6 && G.buyChance(0.8, 1) === 0.7, 'customers buy 50% at market, 60% up to 10% below, 70% further below');
+  ok(G.buyChance(1.04, 1) < 0.5 && G.buyChance(1.2, 1) < G.buyChance(1.08, 1) && G.buyChance(2, 1) <= 0.005, 'the chance drops above market; 2x almost never sells');
+  for (let i = 0; i < 400 && s.showcase.length; i++) G.tick(s, sets, 1, T0 + i * 1000);
   ok(s.showcase.length === 0 && s.stats.cardsSold > 0, 'customers buy from the showcase');
   s.showcase.push({ s: 'base', c: base.cards[0].id, p: 9999 });
-  for (let i = 0; i < 120; i++) G.tick(s, sets, 1, T0 + 200000 + i * 1000);
-  ok(s.showcase.length === 1, 'customers skip cards tagged above 115% of market');
-  s.rules.keepFirst = true;
-  s.money = 100;
-  G.buyBooster(s, base);
-  const before = Object.keys(s.binder.base || {}).length;
-  const kept = G.openBooster(s, sets, base);
-  ok(kept.some(r => r.kept) || before === 102, 'keep-first sends new cards to the binder');
+  for (let i = 0; i < 300; i++) G.tick(s, sets, 1, T0 + 500000 + i * 1000);
+  ok(s.showcase.length === 1, 'customers never pay above their budget');
+  s.showcase = [];
+  { // 2x market almost never sells; market sells about half the looks.
+    const t = fresh(sets, order), c = base.byId['004'], mv = G.marketValue(t, base, c);
+    t.upgrades.showcase = 20;
+    for (let i = 0; i < 40; i++) t.showcase.push({ s: 'base', c: '004', p: G.tagPrice(mv, 1) });
+    for (let i = 0; i < 600; i++) G.tick(t, sets, 1, T0 + i * 1000);
+    ok(t.stats.cardsSold <= 2, '2x market tags stay unsold', `${t.stats.cardsSold} sold in 10 min`);
+  }
+  s.binder.base = { '002': 2 };
+  s.showcase.push({ s: 'base', c: '002', p: 1 });
+  G.recallShowcase(s);
+  ok(s.binder.base['002'] === 3 && !s.showcase.length, 'recall brings cards back to the binder');
   s = fresh(sets, order);
   s.money = 1;
   G.tick(s, sets, 1, T0 + 1000);
@@ -146,10 +164,8 @@ async function run() {
     G.buySingle(u, two, two.a, two.a.cards[8]);
     ok(G.setUnlocked(u, two.b) && G.buyBooster(u, two.b), '90% of the previous collection unlocks the next', `${G.collectionProgress(u, two.a).seen}/10`);
     ok(u.log.some(l => l.kind === 'unlock'), 'the unlock shows in Recent');
-    u.binder.a['1'] = 12;
-    ok(G.sellFromBinder(u, two.a, two.a.cards[0], 5) === 5 && u.binder.a['1'] === 7, 'binder sells 5 at once');
-    ok(G.sellFromBinder(u, two.a, two.a.cards[0], 6) === 6 && u.binder.a['1'] === 1, 'binder sells all but one');
-    ok(G.sellFromBinder(u, two.a, two.a.cards[0], 99) === 1 && !u.binder.a['1'] && G.setUnlocked(u, two.b), 'selling every copy keeps the discovery and the unlock');
+    u.binder.a['1'] = 1;
+    ok(G.listCard(u, two.a, two.a.cards[0], 1, 5) === 1 && !u.binder.a['1'] && G.setUnlocked(u, two.b), 'selling every copy keeps the discovery and the unlock');
   }
 
   // ---------- Save ----------
@@ -160,12 +176,20 @@ async function run() {
   ok(file.game === 'idlecardshop' && file.saveVersion === Save.SAVE_VERSION && file.state, 'file has { game, saveVersion, gameVersion, exportedAt, state }');
   ok(!JSON.stringify(file).includes('"_bonus"'), 'transient caches are not saved');
   const back = Save.restore(file, sets, order);
-  ok(back.unpriced.length === s.unpriced.length && back.money === s.money, 'export/import round trip keeps state');
-  const partial = { game: 'idlecardshop', saveVersion: 1, state: { money: 77, futureField: 1, unpriced: [{ s: 'base', c: '001' }, { s: 'gone', c: 'x' }, { s: 'base', c: 'nope' }], upgrades: { storage: 2 } } };
+  ok(JSON.stringify(back.binder) === JSON.stringify(s.binder) && back.money === s.money, 'export/import round trip keeps state');
+  const partial = { game: 'idlecardshop', saveVersion: 1, state: { money: 77, futureField: 1, showcase: [{ s: 'base', c: '001', p: 1 }, { s: 'gone', c: 'x', p: 1 }, { s: 'base', c: 'nope', p: 1 }], upgrades: { storage: 2 } } };
   const merged = Save.restore(partial, sets, order);
   ok(merged.money === 77 && merged.upgrades.storage === 2 && merged.upgrades.showcase === 0, 'missing fields get defaults');
   ok(!('futureField' in merged), 'unknown fields are dropped');
-  ok(merged.unpriced.length === 1, 'unknown cards and collections are skipped');
+  ok(merged.showcase.length === 1, 'unknown cards and collections are skipped');
+  const v1 = { game: 'idlecardshop', saveVersion: 1, state: {
+    money: 5, binder: { base: { '001': 1 } },
+    unpriced: [{ s: 'base', c: '001' }, { s: 'base', c: '002' }], priced: [{ s: 'base', c: '002', p: 3 }],
+    rules: { keepFirst: true, stockTarget: 7 },
+  } };
+  const m2 = Save.restore(v1, sets, order);
+  ok(m2.binder.base['001'] === 2 && m2.binder.base['002'] === 2 && !('unpriced' in m2) && !('priced' in m2), 'v1 saves: unpriced and priced cards go back to the binder');
+  ok(m2.rules.keepCopies === 1 && m2.rules.stockTarget === 7 && !('keepFirst' in m2.rules), 'v1 saves: keepFirst becomes Keep copies 1');
   let threw = false;
   try { Save.restore({ game: 'idlecardshop', saveVersion: 999, state: {} }, sets, order); } catch { threw = true; }
   ok(threw, 'a save from a newer version is refused');
@@ -189,9 +213,9 @@ async function run() {
   const live = fresh(sets, order), off = fresh(sets, order);
   for (const st of [live, off]) {
     st.money = 2000;
-    st.upgrades.staffRoom = 3;
-    for (let i = 0; i < 4; i++) G.hire(st);
-    ['buy', 'open', 'price', 'list'].forEach((t, i) => { st.staff[i].task = t; st.staff[i].skills[t].lvl = 1; });
+    st.upgrades.staffRoom = 2;
+    for (let i = 0; i < 3; i++) G.hire(st);
+    ['buy', 'open', 'price'].forEach((t, i) => { st.staff[i].task = t; st.staff[i].skills[t].lvl = 1; });
   }
   const HOURS = 2;
   G.setRandom(G.seededRandom(7));
@@ -224,7 +248,7 @@ async function run() {
   };
   const p = { firstSale: median('firstSale'), firstHire: median('firstHire'), fullAuto: median('fullAuto') };
   note(`median of ${runs.length} runs\n` + Object.entries(p).map(([k, v]) => `${k}: ${fmtT(v)}  (all: ${runs.map(r => fmtT(r[k])).join(', ')})`).join('\n'));
-  ok(runs.every(r => r.fullAuto != null), 'no run gets stuck (every bot reaches 4 staff in 4 hours)');
+  ok(runs.every(r => r.fullAuto != null), 'no run gets stuck (every bot reaches 3 staff in 4 hours)');
   // Balancing targets are reported, not failed: tuning them is a design call.
   target(p.firstSale < 60, 'first sale under 1 minute', fmtT(p.firstSale));
   target(p.firstHire >= 120 && p.firstHire <= 360, 'first employee in about 3-5 minutes', fmtT(p.firstHire));
@@ -245,7 +269,9 @@ function pacing(sets, order) {
   const r = { firstSale: null, firstHire: null, fullAuto: null };
   let t = 0, busy = 0;
   const dt = 0.5;
-  const tasksNeeded = ['open', 'price', 'list', 'buy'];
+  const tasksNeeded = ['open', 'price', 'buy'];
+  const N = tasksNeeded.length;
+  const owned = () => Object.values(s.binder.base || {}).reduce((a, b) => a + b, 0);
   while (t < 4 * 3600) {
     t += dt;
     G.tick(s, sets, dt, T0 + t * 1000);
@@ -253,20 +279,20 @@ function pacing(sets, order) {
     busy -= dt;
     if (busy > 0) continue;
     // Spend: hire, then staff room, then upgrades.
-    if (s.staff.length < 4 && G.canHire(s)) {
+    if (s.staff.length < N && G.canHire(s)) {
       const e = G.hire(s);
       e.task = tasksNeeded.find(k => !s.staff.some(x => x.task === k));
       if (r.firstHire == null) r.firstHire = t;
-      if (s.staff.length === 4 && r.fullAuto == null) r.fullAuto = t;
+      if (s.staff.length === N && r.fullAuto == null) r.fullAuto = t;
       busy = 2; continue;
     }
-    if (s.staff.length < 4 && s.staff.length >= G.maxStaff(s) && G.buyUpgrade(s, 'staffRoom')) { busy = 1.5; continue; }
+    if (s.staff.length < N && s.staff.length >= G.maxStaff(s) && G.buyUpgrade(s, 'staffRoom')) { busy = 1.5; continue; }
     // Demand is the shop's limit, so a sensible player also buys some Marketing.
     if (s.staff.length && s.upgrades.marketing < 2 * s.staff.length && G.buyUpgrade(s, 'marketing')) { busy = 1.5; continue; }
     const doneByStaff = k => s.staff.some(e => e.task === k);
-    if (!doneByStaff('price') && s.unpriced.length) { G.priceMany(s, sets, 3); busy = 1.5; continue; }
-    if (!doneByStaff('list') && s.priced.length && s.showcase.length < G.showcaseCapacity(s)) { G.listMany(s, 5); busy = 1.5; continue; }
-    if (!doneByStaff('open') && s.stock.base > 0 && s.unpriced.length < 30) { G.openBooster(s, sets, base); busy = 6; continue; }
+    if (!doneByStaff('price') && owned() && G.freeSlots(s) && G.priceSpares(s, sets, 10, 0, 0)) { busy = 1.5; continue; }
+    if (!doneByStaff('price') && G.bulkSpares(s, sets, 0).n > 20) { G.sellBulk(s, sets, 0); busy = 1.5; continue; }
+    if (!doneByStaff('open') && s.stock.base > 0 && owned() < 30) { G.openBooster(s, sets, base); busy = 6; continue; }
     if (!doneByStaff('buy') && (s.stock.base || 0) < 3 && G.buyBooster(s, base, 0)) { busy = 1.5; continue; }
     busy = 1.5;
   }

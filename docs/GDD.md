@@ -50,17 +50,16 @@ O jogo combina quatro ideias consagradas: o loop central com motor de progressã
 O jogador transforma dinheiro em boosters, boosters em cartas e cartas em dinheiro, com lucro, e reinveste. Cada etapa pode ser feita à mão ou por um funcionário.
 
 ```
-Buy → Open → Price → List → Customers buy → (money back to Buy)
+Buy → Open (binder) → Price (showcase) → Customers buy → (money back to Buy)
  each step: by hand or by an employee
 ```
 
 Os três limites (depósito, vitrine e demanda) são exatamente o que as melhorias aumentam.
 
 1. **Comprar** boosters lacrados na distribuidora (preço do dia). Ficam no depósito, que tem capacidade limitada.
-2. **Abrir** boosters. As cartas vão para a pilha "sem preço" (ou para o fichário, se a regra "guardar a primeira cópia" estiver ligada).
-3. **Precificar** cartas pelo preço de mercado do dia. Cartas abaixo de um valor mínimo viram *bulk* e são vendidas ao atacadista por 30% do valor.
-4. **Expor** as cartas precificadas na vitrine, que tem número limitado de lugares.
-5. **Clientes** chegam sozinhos e compram da vitrine. O dinheiro volta para o passo 1.
+2. **Abrir** boosters. Todas as cartas vão para o fichário (decidido 2026-11-27), e o jogador decide depois o que fazer com cada cópia.
+3. **Precificar** cartas do fichário: o jogador escolhe quantas e o preço (mercado do dia, ±5% ou ±10%, ou um valor digitado). Precificar já põe a carta na vitrine, que tem número limitado de lugares. Cartas abaixo de um valor mínimo podem ir para o *bulk*, vendidas ao atacadista por 30% do valor.
+4. **Clientes** chegam sozinhos, cada um com um orçamento, e compram da vitrine com uma chance que depende do preço (seção 7). O dinheiro volta para o passo 1.
 
 **Progressão**
 
@@ -87,7 +86,7 @@ Os três limites (depósito, vitrine e demanda) são exatamente o que as melhori
 | --- | --- |
 | Primeira venda | Menos de 1 minuto |
 | Primeiro funcionário ($50) | 3 a 5 minutos |
-| Loja toda automatizada (4 funcionários) | 45 a 90 minutos |
+| Loja toda automatizada (3 funcionários: Buy, Open, Price) | 45 a 90 minutos |
 | Primeira habilidade no nível 10 | Alguns dias de jogo idle |
 | Coleção Base Set completa (descoberta) | 1 a 2 semanas, ou antes comprando avulsas |
 
@@ -96,16 +95,15 @@ Os três limites (depósito, vitrine e demanda) são exatamente o que as melhori
 | Ação | Onde | Efeito | Custo ou ganho |
 | --- | --- | --- | --- |
 | Buy booster (1 ou 5) | Shop | +1 booster lacrado | Preço base × tendência do dia da coleção |
-| Open 1 / 10 / 100 / all | Shop | Cartas para a pilha sem preço | — |
-| Price 3 | Shop | 3 cartas recebem 100% do preço de mercado | — |
-| List 5 | Shop | 5 cartas vão para a vitrine | — |
-| Sell as bulk | Shop | Vende toda a pilha sem preço | Ganha 30% do mercado |
-| Recall showcase | Showcase | Vitrine volta para a pilha sem preço, para reprecificar | — |
+| Open 1 / 10 / 100 / all | Shop | Cartas vão para o fichário | — |
+| Price (1 / 10 / 100 / all, nível de preço, Keep 0 ou 1) | Shop | As cópias mais valiosas do fichário vão para a vitrine | — |
+| Bulk | Shop | Vende as cópias abaixo do valor mínimo | Ganha 30% do mercado |
+| List (1 / 5 / 10 / Keep 1 / all, preço livre) | Binder | Cópias da carta vão para a vitrine; a última cópia pede confirmação | — |
+| Recall showcase | Showcase | Vitrine volta para o fichário, para reprecificar | — |
 | Buy single | Market | +1 cópia no fichário | Paga 110% do mercado |
-| Sell from binder | Binder | 1 cópia vai para a pilha sem preço | — |
 | Hire, train, upgrade | Staff, Upgrades | Ver seções 6 e 7 | Custo exponencial |
 
-O fichário registra todas as cartas já descobertas (progresso da coleção) e as cópias que o jogador decidiu guardar.
+O fichário registra todas as cartas já descobertas (progresso da coleção) e todas as cópias que o jogador tem. Carta descoberta sem cópia aparece escurecida.
 
 ## 4. Coleções e cartas
 
@@ -198,14 +196,13 @@ O mesmo arquivo de imagem serve para todos os tamanhos. Carta ainda não descobe
 
 ## 6. Funcionários
 
-Cada funcionário tem 4 habilidades independentes, do nível 1 ao 10, e faz uma tarefa por vez escolhida pelo jogador. Ele melhora sozinho na tarefa que pratica ou mais rápido com treino pago.
+Cada funcionário tem 3 habilidades independentes, do nível 1 ao 10, e faz uma tarefa por vez escolhida pelo jogador. Ele melhora sozinho na tarefa que pratica ou mais rápido com treino pago.
 
 | Habilidade | O que faz | Tempo no nível 1 | Efeito extra do nível |
 | --- | --- | --- | --- |
 | Buy | Compra 1 booster na distribuidora | 8 s por booster | — |
 | Open | Abre 1 booster | 10 s por booster | — |
-| Price | Precifica 1 carta | 3 s por carta | Cobra de 75% (nv 1) a 100% (nv 10) do preço de mercado |
-| List | Põe 1 carta na vitrine | 2 s por carta | — |
+| Price | Precifica 1 cópia do fichário e a põe na vitrine (ou no bulk) | 3 s por carta | — |
 
 - **Velocidade:** cada nível deixa a ação 22% mais rápida; no nível 10 ela é cerca de 9x mais rápida.
 - **Experiência:** cada ação feita dá 1 XP naquela habilidade. XP para o próximo nível = 25 × nível^2,3 (nv 1→2: 25 ações; nv 9→10: cerca de 4.400).
@@ -222,9 +219,10 @@ Cada funcionário tem 4 habilidades independentes, do nível 1 ao 10, e faz uma 
 | Meta de estoque (comprador para ao atingir) | 10 boosters |
 | Saldo mínimo (comprador não gasta abaixo) | $20 |
 | Valor mínimo para ir à vitrine (abaixo vira bulk) | $0,25 |
-| Guardar a primeira cópia de cada carta no fichário | Desligado |
+| Cópias que o precificador deixa no fichário (Keep copies) | 1 |
+| Preço do precificador (mercado, ±5% ou ±10%) | Mercado |
 
-**Contrapressão:** o abridor espera se houver mais de 2× a capacidade da vitrine em cartas esperando, e o precificador espera se a fila de cartas precificadas já encher a vitrine. Isso evita dinheiro parado em pilhas de cartas.
+**Contrapressão:** o precificador espera quando a vitrine está cheia.
 
 **Sem salário na v1** (decisão provisória, ver perguntas em aberto).
 
@@ -234,9 +232,22 @@ O dinheiro entra quando clientes compram cartas da vitrine; a demanda é o limit
 
 **Clientes**
 
-- Chegam em média a cada 6 s (÷ 1 + 25% por nível de Marketing), cada um querendo de 1 a 3 cartas.
-- Cartas mais caras chamam mais atenção: a chance de uma carta ser escolhida é proporcional à raiz do seu preço de mercado.
-- O cliente ignora cartas com preço acima de 115% do mercado do dia (precisa reprecificar quando o mercado cai).
+- Chegam em média a cada 6 s (÷ 1 + 25% por nível de Marketing). Cada um tem um orçamento (entre $2 e $120, distribuição log-uniforme) e olha até 3 cartas que cabem no orçamento.
+- Cartas mais caras chamam mais atenção: a chance de uma carta ser olhada é proporcional à raiz do seu preço de mercado.
+- Para cada carta olhada, a chance de compra depende da etiqueta comparada ao mercado do dia (decidido 2026-11-27; faixas acima do mercado propostas por nós):
+
+| Etiqueta / mercado | Chance de compra |
+| --- | --- |
+| Mais de 10% abaixo | 70% |
+| Até 10% abaixo | 60% |
+| No mercado | 50% |
+| Até +5% | 35% |
+| Até +10% | 20% |
+| Até +25% | 8% |
+| Até +50% | 3% |
+| Até 2× | 1% |
+| 2× ou mais | 0,5% |
+
 - O cliente paga o preço da etiqueta × bônus de Reputação.
 - Não há fila nem paciência: ninguém vai embora irritado (pilar "tranquilo").
 
@@ -341,11 +352,13 @@ Ao carregar o save, o jogo simula 100% do tempo que passou desde o último salva
 
 A interface é só menus e painéis, em inglês, com paleta pastéis puxada para marrom e amarelo escuro, modo claro e escuro, e música calma gerada no próprio navegador.
 
+**Celular (decidido 2026-11-27):** o jogo roda no celular. Em telas estreitas as abas viram uma barra fixa embaixo, os painéis ficam em uma coluna e os botões têm tamanho de toque. Também é um PWA: dá para instalar na tela inicial e jogar sem internet depois da primeira visita.
+
 **Telas (abas)**
 
 | Aba | Conteúdo |
 | --- | --- |
-| Shop | As 4 etapas do loop lado a lado, resumo da equipe, últimos acontecimentos |
+| Shop | As 3 etapas do loop lado a lado (Distributor, Open, Price), resumo da equipe, últimos acontecimentos |
 | Binder | Fichário por coleção, progresso de descoberta |
 | Showcase | Cartas à venda com preço, recolher para reprecificar |
 | Market | Preços do dia, tendências, notícias |
@@ -397,7 +410,7 @@ O tutorial ensina o loop na primeira partida, passo a passo, e é atualizado jun
 | Aparece quando | O quê |
 | --- | --- |
 | Início | Shop (só Buy e Open), Settings |
-| Primeira carta aberta | Etapas Price e List, aba Binder |
+| Primeira carta aberta | Etapa Price, aba Binder |
 | Primeira venda | Aba Showcase |
 | Saldo chega a $40 | Aba Upgrades |
 | Saldo chega a $50 | Aba Staff (passo do tutorial "Hire") |
@@ -411,9 +424,8 @@ Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
 1. Choose your time zone.
 2. Buy a booster.
 3. Open it (animação).
-4. Price your cards.
-5. List them in the showcase.
-6. Customers buy on their own. Make your first sale.
+4. Your cards are in the binder. Price them for the showcase.
+5. Customers buy on their own. Cheaper tags sell faster.
 7. Hire your first employee (quando tiver dinheiro).
 8. Pick a task for them.
 9. Check the Market tab: prices change once a day.

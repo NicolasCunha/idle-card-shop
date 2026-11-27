@@ -13,7 +13,7 @@ import { GAME_VERSION } from './save.js';
 let S = null, SETS = null, ORDER = [], PREFS = null, A = null;
 let active = 'shop';
 let lastSig = null;
-let ui = { shopSet: null, binderSet: null, marketSet: null, marketSort: 'number', marketPage: 0 };
+let ui = { shopSet: null, binderSet: null, marketSet: null, marketSort: 'number', marketPage: 0, priceQty: '10', priceLevel: '0', priceKeep: '0' };
 export const PAGE_SIZES = [10, 25, 50, 100, 0];
 let shownMoney = null;
 
@@ -73,6 +73,7 @@ function bindEvents() {
     A.run(el.dataset.action, { ...el.dataset, value, files: el.files });
   });
   document.addEventListener('input', e => {
+    if (e.target.matches?.('[data-pf="price"]')) { pfInput(e.target); return; }
     const el = e.target.closest('input[type="range"][data-action]');
     if (el) A.run(el.dataset.action, { ...el.dataset, value: el.value });
   });
@@ -92,6 +93,8 @@ export function setUiOption(key, value) {
   if (key === 'marketSet' || key === 'marketSort') ui.marketPage = 0;
   lastSig = null;
 }
+
+export function uiOption(key) { return ui[key]; }
 
 export function setMarketPage(page) { ui.marketPage = page; lastSig = null; }
 
@@ -233,6 +236,8 @@ const setOptions = (sel, withLock = false) => ORDER.map(id => {
   const lock = withLock && !G.setUnlocked(S, SETS[id]);
   return `<option value="${esc(id)}" ${id === sel ? 'selected' : ''}>${esc(SETS[id].name)}${lock ? ' · locked' : ''}</option>`;
 }).join('');
+const fmtLevel = l => (Number(l) ? `${Number(l) > 0 ? '+' : '−'}${Math.round(Math.abs(Number(l)) * 100)}%` : 'Market');
+const levelOptions = sel => G.PRICE_LEVELS.map(l => `<option value="${l}" ${String(l) === String(sel) ? 'selected' : ''}>${fmtLevel(l)}</option>`).join('');
 const lockSig = () => ORDER.map(id => (G.setUnlocked(S, SETS[id]) ? 1 : 0)).join('');
 
 function staffOn(task) {
@@ -290,21 +295,22 @@ PANELS.shop = {
       ${S.unlocked.priceList ? `
       <section class="stage" id="stage-price">
         <h3>Price</h3>
-        <div class="stat-big" title="${esc(TIPS.price)}"><span data-k="unpriced"></span><small> unpriced</small></div>
+        <div class="stat-big"><span data-k="avail"></span><small> in binder</small></div>
+        <div class="kv" title="${esc(TIPS.customers)}"><span>Showcase</span><b data-k="showcase"></b></div>
+        <div class="price-opts">
+          <select data-action="ui-opt" data-opt="priceQty" aria-label="Quantity">
+            ${[['1', '1'], ['10', '10'], ['100', '100'], ['all', 'All']].map(([v, l]) => `<option value="${v}" ${ui.priceQty === v ? 'selected' : ''}>${l}</option>`).join('')}
+          </select>
+          <select data-action="ui-opt" data-opt="priceLevel" aria-label="Price" title="${esc(TIPS.priceLevel)}">${levelOptions(ui.priceLevel)}</select>
+          <select data-action="ui-opt" data-opt="priceKeep" aria-label="Keep" title="${esc(TIPS.priceKeep)}">
+            ${[['0', 'Keep 0'], ['1', 'Keep 1']].map(([v, l]) => `<option value="${v}" ${ui.priceKeep === v ? 'selected' : ''}>${l}</option>`).join('')}
+          </select>
+        </div>
         <div class="btns">
-          <button data-action="price" data-d="price" title="${esc(TIPS.price)}">Price 3</button>
-          <button data-action="bulk" data-d="bulk" title="${esc(TIPS.bulk)}">Sell as bulk <span data-k="bulkv"></span></button>
+          <button class="primary" data-action="price" data-d="price" title="${esc(TIPS.price)}">Price</button>
+          <button data-action="bulk" data-d="bulk" title="${esc(TIPS.bulk)}">Bulk <span data-k="bulkv"></span></button>
         </div>
         <div class="chips" data-html="c-price"></div>
-      </section>
-      <section class="stage" id="stage-list">
-        <h3>List</h3>
-        <div class="stat-big" title="${esc(TIPS.list)}"><span data-k="priced"></span><small> priced</small></div>
-        <div class="kv" title="${esc(TIPS.customers)}"><span>Showcase</span><b data-k="showcase"></b></div>
-        <div class="btns">
-          <button data-action="list" data-d="list" title="${esc(TIPS.list)}">List 5</button>
-        </div>
-        <div class="chips" data-html="c-list"></div>
       </section>` : ''}
     </div>
     <div class="lower">
@@ -317,30 +323,25 @@ PANELS.shop = {
     const price = G.boosterPrice(S, st);
     const full = G.totalStock(S) >= G.stockCapacity(S) || !G.setUnlocked(S, st);
     const prevFrac = st.prev ? G.collectionProgress(S, st.prev).frac : 1;
-    let bulk = 0;
-    if (S.unlocked.priceList && S.unpriced.length < 5000) {
-      for (const it of S.unpriced) {
-        const s2 = SETS[it.s], c = s2?.byId[it.c];
-        if (c) bulk += G.marketValue(S, s2, c) * G.BULK_RATE;
-      }
-    }
+    const keep = Number(ui.priceKeep) || 0;
+    let avail = 0;
+    for (const cards of Object.values(S.binder)) for (const n of Object.values(cards)) if (n > keep) avail += n - keep;
+    const bulk = S.unlocked.priceList ? G.bulkSpares(S, SETS, keep) : { n: 0, total: 0 };
     return {
       bprice: fmtMoney(price),
       stock: `${fmtNum(G.totalStock(S))} / ${fmtNum(G.stockCapacity(S))}`,
       sealed: fmtNum(S.stock[st.id] || 0),
-      unpriced: fmtNum(S.unpriced.length),
-      priced: fmtNum(S.priced.length),
+      avail: fmtNum(avail),
       showcase: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
-      bulkv: S.unpriced.length ? fmtMoney(bulk) : '',
+      bulkv: bulk.n ? fmtMoney(bulk.total) : '',
       lockw: prevFrac / G.UNLOCK_AT,
       lockp: `${Math.floor(prevFrac * 100)}% / ${Math.round(G.UNLOCK_AT * 100)}%`,
       'd:buy1': full || S.money < price,
       'd:buy5': full || S.money < price,
       'd:open': !(S.stock[st.id] > 0),
-      'd:price': !S.unpriced.length,
-      'd:bulk': !S.unpriced.length,
-      'd:list': !S.priced.length || S.showcase.length >= G.showcaseCapacity(S),
-      'c-buy': chips('buy'), 'c-open': chips('open'), 'c-price': chips('price'), 'c-list': chips('list'),
+      'd:price': !avail || !G.freeSlots(S),
+      'd:bulk': !bulk.n,
+      'c-buy': chips('buy'), 'c-open': chips('open'), 'c-price': chips('price'),
       log: logHtml(),
       staffmini: S.staff.map(e => `<li><b>${esc(e.name)}</b> <span class="muted">${esc(e.task ? SKILL_NAMES[e.task] : '—')}</span> <span class="status st-${esc(e.status.replace(/\s/g, '-'))}">${esc(e.status)}</span></li>`).join(''),
     };
@@ -378,7 +379,7 @@ PANELS.binder = {
 };
 
 PANELS.showcase = {
-  sig: () => [S.showcase.length, S.priced.length, S.day, S.showcase[0]?.c].join(),
+  sig: () => [S.showcase.length, S.day, S.showcase[0]?.c].join(),
   html() {
     const groups = new Map();
     for (const it of S.showcase) {
@@ -392,7 +393,6 @@ PANELS.showcase = {
     <div class="bar-head">
       <h2>Showcase <span class="muted" data-k="count"></span></h2>
       <span class="grow"></span>
-      <span class="muted">${S.priced.length ? `${fmtNum(S.priced.length)} waiting` : ''}</span>
       <button data-action="recall" ${S.showcase.length ? '' : 'disabled'} title="${esc(TIPS.recall)}">Recall all</button>
     </div>
     <div class="table">
@@ -400,13 +400,13 @@ PANELS.showcase = {
       ${rows.map(({ it, n }) => {
         const st = SETS[it.s], c = st.byId[it.c];
         const mv = G.marketValue(S, st, c);
-        const high = it.p > mv * G.CUSTOMER_MAX_MARKUP;
+        const off = it.p / mv - 1;
         return `<div class="tr">
           ${cardHtml(st, c, { size: 'xs' })}
           <span>${rarityTag(st, c)} ${esc(c.name)} ${n > 1 ? `<span class="muted">×${n}</span>` : ''}</span>
           <span class="num">${fmtMoney(it.p)}</span>
           <span class="num muted">${fmtMoney(mv)}</span>
-          <span>${high ? `<span class="warn" title="${esc(TIPS.customers)}">too high</span>` : ''}</span>
+          <span class="num ${off > 0.10 ? 'warn' : 'muted'}" title="${esc(TIPS.customers)}">${Math.abs(off) < 0.005 ? '=' : fmtPct(off)}</span>
         </div>`;
       }).join('') || '<div class="empty muted">Empty</div>'}
     </div>`;
@@ -516,7 +516,7 @@ PANELS.staff = {
             <span class="sk-name">${SKILL_NAMES[k]}</span>
             <span class="sk-lvl">Lv ${sk.lvl}</span>
             <span class="progress thin sk-xp"><i data-w="xp-${e.id}-${k}"></i></span>
-            <span class="muted sk-time"${k === 'price' ? ` title="${esc(TIPS.priceQuality)}"` : ''}>${fmtSec(G.skillDuration(k, sk.lvl))}${k === 'price' ? ` · ${Math.round(G.priceQuality(sk.lvl) * 100)}%` : ''}</span>
+            <span class="muted sk-time">${fmtSec(G.skillDuration(k, sk.lvl))}</span>
             ${max ? '<span class="muted">Max</span>' : `<button class="small" data-action="train" data-id="${e.id}" data-skill="${k}" data-d="tr-${e.id}-${k}">Train ${fmtMoney(tc)}</button>`}
           </div>`;
         }).join('')}</div>
@@ -531,7 +531,8 @@ PANELS.staff = {
         <label title="${esc(TIPS.stockTarget)}">Stock target <input type="number" min="0" step="1" data-action="rule" data-rule="stockTarget" value="${r.stockTarget}"></label>
         <label title="${esc(TIPS.cashReserve)}">Cash reserve <input type="number" min="0" step="1" data-action="rule" data-rule="cashReserve" value="${r.cashReserve}"></label>
         <label title="${esc(TIPS.bulkBelow)}">Bulk below <input type="number" min="0" step="0.05" data-action="rule" data-rule="bulkBelow" value="${r.bulkBelow}"></label>
-        <label class="check" title="${esc(TIPS.keepFirst)}"><input type="checkbox" data-action="rule" data-rule="keepFirst" ${r.keepFirst ? 'checked' : ''}> Keep first copy</label>
+        <label title="${esc(TIPS.keepCopies)}">Keep copies <input type="number" min="0" step="1" data-action="rule" data-rule="keepCopies" value="${r.keepCopies}"></label>
+        <label title="${esc(TIPS.priceLevel)}">Staff price <select data-action="rule" data-rule="priceLevel">${levelOptions(r.priceLevel)}</select></label>
       </div>
     </section>`;
   },
@@ -628,15 +629,51 @@ export function timeZoneOptions(sel) {
 }
 
 // ---------- Card detail ----------
+// Pricing form inside the card detail. `pf` keeps the choice while the
+// detail is redrawn; it resets when another card is opened.
+const pf = { key: '', n: '1', price: 0 };
+
+export function pfQty(n) { pf.n = n; }
+export function pfLevel(st, c, level) { pf.price = G.tagPrice(G.marketValue(S, st, c), Number(level)); }
+export function pfState() { return pf; }
+
+function pfCount(have) {
+  if (pf.n === 'all') return have;
+  if (pf.n === 'keep1') return have - 1;
+  return Math.min(have, Number(pf.n) || 1);
+}
+
+// Live update while the price is typed: % against market and the button label.
+export function pfInput(input) {
+  const v = Math.round(Number(input.value) * 100) / 100;
+  pf.price = v > 0 ? v : 0;
+  const root = input.closest('.detail');
+  const mv = Number(input.dataset.mv);
+  const off = root.querySelector('.pf-off');
+  if (off) {
+    off.textContent = pf.price ? (Math.abs(pf.price / mv - 1) < 0.005 ? 'market' : fmtPct(pf.price / mv - 1)) : '';
+    off.className = `pf-off ${pf.price > mv * 1.1 ? 'warn' : 'muted'}`;
+  }
+  for (const b of root.querySelectorAll('[data-pf-level]')) b.classList.toggle('on', pf.price === G.tagPrice(mv, Number(b.dataset.pfLevel)));
+  const btn = root.querySelector('[data-action="list-card"]');
+  if (btn) btn.disabled = !pf.price || Number(btn.dataset.max) < 1;
+}
+
 export function cardDetailHtml(st, c) {
   const day = S.day;
   const hist = M.history(st, c, day, 30);
   const now = hist[hist.length - 1];
-  const copies = S.binder[st.id]?.[c.id] || 0;
+  const have = S.binder[st.id]?.[c.id] || 0;
   const cost = now * G.MARKET_BUY_RATE;
   const open = G.setUnlocked(S, st);
   const ref = `data-s="${esc(st.id)}" data-c="${esc(c.id)}"`;
-  const sell = (n, label, ok) => `<button class="small" data-action="sell-binder" ${ref} data-n="${n}" ${ok ? '' : 'disabled'} title="${esc(n === 'keep1' ? TIPS.keepOne : TIPS.sellBinder)}">${label}</button>`;
+  const key = `${st.id}:${c.id}`;
+  if (pf.key !== key) { pf.key = key; pf.n = '1'; pf.price = G.tagPrice(now, 0); }
+  if (pf.n === 'keep1' && have < 2) pf.n = '1';
+  const k = Math.min(Math.max(0, pfCount(have)), G.freeSlots(S));
+  const qty = (n, label, ok) => `<button class="small ${pf.n === n ? 'on' : ''}" data-action="pf-qty" ${ref} data-n="${n}" ${ok ? '' : 'disabled'}${n === 'keep1' ? ` title="${esc(TIPS.keepOne)}"` : ''}>${label}</button>`;
+  const lvl = l => `<button class="small ${pf.price === G.tagPrice(now, l) ? 'on' : ''}" data-action="pf-level" ${ref} data-level="${l}" data-pf-level="${l}">${fmtLevel(l)}</button>`;
+  const off = pf.price / now - 1;
   return `
   <div class="modal detail">
     ${cardHtml(st, c, { size: 'lg' })}
@@ -646,33 +683,37 @@ export function cardDetailHtml(st, c) {
       <div class="kv"><span>Market</span><b>${fmtMoney(now)}</b></div>
       <div class="kv"><span>7 days</span><b class="${now >= hist[hist.length - 8] ? 'up' : 'down'}">${fmtPct(now / hist[hist.length - 8] - 1)}</b></div>
       ${sparkline(hist, 240, 60)}
-      <div class="kv"><span>In binder</span><b>${copies}</b></div>
-      <div class="btns sell-btns">
-        ${sell('1', 'Sell 1', copies >= 1)}
-        ${sell('5', 'Sell 5', copies >= 5)}
-        ${sell('10', 'Sell 10', copies >= 10)}
-        ${sell('keep1', 'Keep 1', copies >= 2)}
-        ${sell('all', 'Sell all', copies >= 1)}
-      </div>
+      <div class="kv"><span>In binder</span><b>${have}</b></div>
+      ${have && S.unlocked.priceList ? `
+      <div class="price-form">
+        <div class="seg">${qty('1', '1', have >= 1)}${qty('5', '5', have >= 5)}${qty('10', '10', have >= 10)}${qty('keep1', 'Keep 1', have >= 2)}${qty('all', 'All', have >= 1)}</div>
+        <div class="seg">${G.PRICE_LEVELS.map(lvl).join('')}</div>
+        <div class="pf-price">
+          <label>Price <input type="number" min="0.01" step="0.01" inputmode="decimal" data-pf="price" data-mv="${now}" value="${pf.price.toFixed(2)}"></label>
+          <span class="pf-off ${pf.price > now * 1.1 ? 'warn' : 'muted'}" title="${esc(TIPS.customers)}">${Math.abs(off) < 0.005 ? 'market' : fmtPct(off)}</span>
+          <span class="grow"></span>
+          ${G.freeSlots(S) ? `<button class="primary" data-action="list-card" ${ref} data-max="${k}" ${k > 0 && pf.price > 0 ? '' : 'disabled'} title="${esc(TIPS.price)}">List ${k}</button>` : '<span class="muted">showcase full</span>'}
+        </div>
+      </div>` : ''}
       <div class="btns">
         ${open
           ? `<button data-action="buy-single" ${ref} ${S.money >= cost ? '' : 'disabled'} title="${esc(TIPS.single)}">Buy ${fmtMoney(cost)}</button>`
           : `<span class="muted" title="${esc(TIPS.locked)}">locked</span>`}
         <span class="grow"></span>
-        <button class="primary" data-action="close">Done</button>
+        <button data-action="close">Done</button>
       </div>
     </div>
   </div>`;
 }
 
-export function confirmSellHtml(st, c, n) {
+export function confirmLastHtml(st, c, n, price) {
   const ref = `data-s="${esc(st.id)}" data-c="${esc(c.id)}"`;
   return `
   <div class="modal confirm">
-    <p>Sell your last ${esc(c.name)}?</p>
+    <p>List your last ${esc(c.name)}?</p>
     <div class="btns end">
       <button data-action="card" ${ref}>Cancel</button>
-      <button class="primary" data-action="sell-binder-ok" ${ref} data-n="${n}">Sell</button>
+      <button class="primary" data-action="list-card-ok" ${ref} data-n="${n}" data-price="${price}">List</button>
     </div>
   </div>`;
 }

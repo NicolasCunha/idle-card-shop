@@ -37,12 +37,20 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 - **Device preferences** (theme, volumes, mutes, reduce motion) live in `idlecardshop.prefs`, never in the save.
 - **Collection unlock** (Nicolas, 2026-11-27): collections unlock in `collections.json` order. `G.setUnlocked(state, set)` is true for the first one, and for the others once the previous one is `UNLOCK_AT` (90%) discovered (`state.seen`, the same measure as the Binder progress). Locked collections sell no boosters or singles; a Buyer set to one shows `locked`. `data.js` links each set to `prev` / `nextId`. Derived from existing data, so no save change. The unlock is announced in Recent and by tutorial step `nextset` (rev 2).
 - **Collections** (2026-11-27): Base Set, Jungle, Fossil, Base Set 2, Team Rocket, from Nicolas's crawler. Same booster layout and $4 wholesale for all (assumption, to confirm). Base Set 2 reprints link by name and rarity to Base Set or Jungle; Dark Raichu (secret rare) counts as holo.
-- **Binder selling**: Sell 1 / 5 / 10, Keep 1 (all but one), Sell all; selling the last copy asks first. Discovered cards with no copy are dimmed.
+- **Binder and pricing** (Nicolas, 2026-11-27): opening puts every card in the binder. Pricing takes copies from the binder and lists them straight in the showcase: the Shop batch picks the priciest copies first (quantity 1/10/100/all, price level −10/−5/0/+5/+10%, Keep 0 or 1), the card detail lists 1/5/10/Keep 1/all at any typed price, with chips for the levels and the % against market. Listing the last copy asks first. Bulk sells copies under `rules.bulkBelow` at 30%. Recall sends the showcase back to the binder. Discovered cards with no copy are dimmed.
+- **Customers**: each has a log-uniform budget ($2 to $120) and looks at up to 3 affordable cards (weight sqrt of market). Each look buys with `G.buyChance(tag, market)` from `BUY_BANDS` (70/60/50% at or below market from Nicolas; 35/20/8/3/1/0.5% above market from us).
+- **Staff**: tasks Buy, Open, Price. The pricer walks a cached list of copies above `rules.keepCopies` (priciest first, one copy per card per pass, rebuilt when the binder changes) and tags at `rules.priceLevel`, or bulks cards under the threshold. Full automation is now 3 staff; the pacing bot reaches it in about 60 min (target 45 to 90).
+- **Mobile and PWA**: under 640 px the tabs become a fixed bottom bar, panels stack, touch targets grow, inputs use 16 px (no iOS zoom). `manifest.webmanifest`, icons in `icons/`, and `sw.js` (game files network first with cache fallback, card images cache first) make it installable and playable offline.
 - **Debug handle**: `window.idleCardShop` exposes the live state in the console.
 
-## Save schema v1
+## Save schema
 
-`{ game: "idlecardshop", saveVersion: 1, gameVersion, exportedAt, state }`. `state` fields are defined by `G.newState()`; keys starting with `_` are caches and are never saved. No migrations yet (v1 is the first schema). Any change goes through the `change-save-schema` skill.
+`{ game: "idlecardshop", saveVersion: 2, gameVersion, exportedAt, state }`. `state` fields are defined by `G.newState()`; keys starting with `_` are caches and are never saved. Any change goes through the `change-save-schema` skill.
+
+| Version | Change | Old saves |
+| --- | --- | --- |
+| 1 | First schema | — |
+| 2 (2026-11-27) | Opened cards live in the binder; `unpriced` and `priced` removed; `rules.keepFirst` replaced by `rules.keepCopies` (default 1) and `rules.priceLevel` (default 0) | Unpriced and priced cards go back to the binder (Nicolas). keepCopies starts at 1 |
 
 ## Assumptions taken from GDD proposals (open questions)
 

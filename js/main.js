@@ -217,13 +217,17 @@ function run(action, d) {
       showBulkResult(shopSet, res);
       break;
     }
-    case 'price': G.priceMany(state, sets, G.MANUAL_PRICE_BATCH); break;
+    case 'price': {
+      const q = UI.uiOption('priceQty');
+      if (G.priceSpares(state, sets, q === 'all' ? Infinity : Number(q) || 1, Number(UI.uiOption('priceLevel')) || 0, Number(UI.uiOption('priceKeep')) || 0)) Audio.sfx.click();
+      break;
+    }
+    case 'ui-opt': UI.setUiOption(d.opt, d.value); break;
     case 'bulk': {
-      const r = G.sellBulk(state, sets);
+      const r = G.sellBulk(state, sets, Number(UI.uiOption('priceKeep')) || 0);
       if (r.n) Audio.sfx.coin();
       break;
     }
-    case 'list': G.listMany(state, G.MANUAL_LIST_BATCH); break;
     case 'recall': G.recallShowcase(state); break;
     case 'shop-set': UI.setUiOption('shopSet', d.value); break;
     case 'binder-set': UI.setUiOption('binderSet', d.value); break;
@@ -252,17 +256,28 @@ function run(action, d) {
       }
       break;
     }
-    case 'sell-binder':
-    case 'sell-binder-ok': {
+    case 'pf-qty':
+    case 'pf-level': {
+      const { set, card } = find(d);
+      if (!card) break;
+      if (action === 'pf-qty') UI.pfQty(d.n); else UI.pfLevel(set, card, d.level);
+      overlayEl().innerHTML = UI.cardDetailHtml(set, card);
+      return;
+    }
+    case 'list-card':
+    case 'list-card-ok': {
       const { set, card } = find(d);
       if (!card) break;
       const have = state.binder[set.id]?.[card.id] || 0;
-      const n = d.n === 'all' ? have : d.n === 'keep1' ? have - 1 : Number(d.n) || 1;
-      if (action === 'sell-binder' && n >= have) {
-        overlayEl().innerHTML = UI.confirmSellHtml(set, card, n);
+      const pf = UI.pfState();
+      const n = action === 'list-card' ? Math.min(Number(d.max) || 0, have) : Number(d.n);
+      const price = action === 'list-card' ? pf.price : Number(d.price);
+      if (!(n > 0) || !(price > 0)) break;
+      if (action === 'list-card' && n >= have) {
+        overlayEl().innerHTML = UI.confirmLastHtml(set, card, n, price);
         return;
       }
-      if (G.sellFromBinder(state, set, card, n)) overlayEl().innerHTML = UI.cardDetailHtml(set, card);
+      if (G.listCard(state, set, card, n, price)) { Audio.sfx.click(); overlayEl().innerHTML = UI.cardDetailHtml(set, card); }
       break;
     }
     case 'close': closeOverlay(); break;
@@ -279,7 +294,7 @@ function run(action, d) {
     }
     case 'rule': {
       const r = state.rules;
-      if (d.rule === 'keepFirst') r.keepFirst = !!d.value;
+      if (d.rule === 'priceLevel') { if (G.PRICE_LEVELS.includes(Number(d.value))) r.priceLevel = Number(d.value); }
       else if (d.rule === 'buySet' || d.rule === 'openSet') { if (sets[d.value]) r[d.rule] = d.value; }
       else {
         const v = Number(d.value);
@@ -331,3 +346,8 @@ async function importFile(file) {
 }
 
 boot();
+
+// Installable app and offline play (sw.js).
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(err => console.warn('No offline mode:', err)));
+}

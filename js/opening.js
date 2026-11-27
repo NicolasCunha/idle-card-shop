@@ -125,7 +125,7 @@ function showSummary(set, result) {
     <div class="modal summary">
       <div class="summary-cards">${[...result].reverse().map(r => cardHtml(set, r.card, {
         size: 'md',
-        badge: (r.isNew ? '<span class="badge-new">NEW</span>' : '') + (r.kept ? '<span class="badge-kept">binder</span>' : ''),
+        badge: (r.isNew ? '<span class="badge-new">NEW</span>' : ''),
       })).join('')}</div>
       <div class="summary-foot">
         <span>Value <b>${fmtMoney(total)}</b></span>
@@ -143,10 +143,9 @@ function showSummary(set, result) {
 export function showBulkResult(set, result) {
   const groups = new Map();
   for (const r of result) {
-    const g = groups.get(r.card.id) || { card: r.card, n: 0, isNew: false, kept: 0 };
+    const g = groups.get(r.card.id) || { card: r.card, n: 0, isNew: false };
     g.n++;
     g.isNew ||= r.isNew;
-    if (r.kept) g.kept++;
     groups.set(r.card.id, g);
   }
   const rows = [...groups.values()].sort((a, b) =>

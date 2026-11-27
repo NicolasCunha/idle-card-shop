@@ -9,14 +9,29 @@
 import { newState, SKILL_KEYS } from './game.js';
 
 export const GAME_ID = 'idlecardshop';
-export const SAVE_VERSION = 1;
-export const GAME_VERSION = '1.0.0';
+export const SAVE_VERSION = 2;
+export const GAME_VERSION = '1.1.0';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
 // MIGRATIONS[n] turns a version-n state into version n+1.
 export const MIGRATIONS = {
-  // 1: state => { ...; return state; },
+  // v2 (2026-11-27): opened cards live in the binder and pricing lists them
+  // straight in the showcase. The unpriced pile and the priced queue go back to
+  // the binder, and keepFirst becomes rules.keepCopies (default 1, from
+  // newState). Both decided by Nicolas.
+  1: state => {
+    const binder = (state.binder && typeof state.binder === 'object') ? state.binder : (state.binder = {});
+    for (const it of [...(state.unpriced || []), ...(state.priced || [])]) {
+      if (!it || typeof it.s !== 'string' || typeof it.c !== 'string') continue;
+      const cards = (binder[it.s] ||= {});
+      cards[it.c] = (cards[it.c] || 0) + 1;
+    }
+    delete state.unpriced;
+    delete state.priced;
+    if (state.rules) delete state.rules.keepFirst;
+    return state;
+  },
 };
 
 export function serialize(state) {
@@ -71,8 +86,6 @@ export function mergeDefaults(def, saved) {
 // touching anything else.
 export function sanitize(state, sets) {
   const ok = it => it && sets[it.s]?.byId[it.c];
-  state.unpriced = state.unpriced.filter(ok);
-  state.priced = state.priced.filter(it => ok(it) && typeof it.p === 'number');
   state.showcase = state.showcase.filter(it => ok(it) && typeof it.p === 'number');
   for (const map of [state.stock, state.binder, state.seen]) {
     for (const sid of Object.keys(map)) if (!sets[sid]) delete map[sid];

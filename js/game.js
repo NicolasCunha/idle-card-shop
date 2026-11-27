@@ -1,8 +1,8 @@
 // Game rules: state, economy, customers and staff. No DOM here, so the exact same
 // code runs live and during offline catch-up (GDD section 9).
 //
-// Flow: Distributor --buy--> Sealed stock --open--> Unpriced cards
-//       --price--> Priced cards --list--> Showcase --> customers buy
+// Flow: Distributor --buy--> Sealed stock --open--> Binder
+//       --price--> Showcase --> customers buy (or bulk buyer for cheap spares)
 
 import * as M from './market.js';
 
@@ -10,11 +10,27 @@ import * as M from './market.js';
 export const START_MONEY = 20;
 export const MAX_SKILL = 10;
 export const SPEED_PER_LEVEL = 0.78; // each level is 22% faster
-export const MANUAL_PRICE_BATCH = 3;
-export const MANUAL_LIST_BATCH = 5;
 export const BULK_RATE = 0.3;
 export const MARKET_BUY_RATE = 1.1;
-export const CUSTOMER_MAX_MARKUP = 1.15;
+// Price levels offered when pricing: offset from today's market.
+export const PRICE_LEVELS = [-0.1, -0.05, 0, 0.05, 0.1];
+// Chance that a customer buys a card they look at, by tag / market (Nicolas,
+// 2026-11-27: market 50%, up to 10% below 60%, more than 10% below 70%; the
+// bands above market are ours). First band whose `upTo` covers the ratio wins.
+export const BUY_BANDS = [
+  { upTo: 0.9 - 1e-9, chance: 0.70 },
+  { upTo: 0.995, chance: 0.60 },
+  { upTo: 1.005, chance: 0.50 },
+  { upTo: 1.05, chance: 0.35 },
+  { upTo: 1.10, chance: 0.20 },
+  { upTo: 1.25, chance: 0.08 },
+  { upTo: 1.5, chance: 0.03 },
+  { upTo: 2 - 1e-9, chance: 0.01 },
+  { upTo: Infinity, chance: 0.005 },
+];
+export const CUSTOMER_LOOKS = 3;          // cards a customer looks at per visit
+export const BUDGET_MIN = 2;              // customer budget, log-uniform
+export const BUDGET_MAX = 120;
 export const BASE_STORAGE = 20;
 export const BASE_SHOWCASE = 40;
 export const BASE_CUSTOMER_INTERVAL = 6;
@@ -24,7 +40,6 @@ export const SKILLS = {
   buy: { base: 8 },
   open: { base: 10 },
   price: { base: 3 },
-  list: { base: 2 },
 };
 export const SKILL_KEYS = Object.keys(SKILLS);
 
@@ -65,7 +80,6 @@ export function seededRandom(seed) {
 
 // ---------- Formulas ----------
 export const skillDuration = (skill, lvl) => SKILLS[skill].base * Math.pow(SPEED_PER_LEVEL, lvl - 1);
-export const priceQuality = lvl => 0.75 + (0.25 * (lvl - 1)) / (MAX_SKILL - 1);
 export const xpToNext = lvl => Math.round(25 * Math.pow(lvl, 2.3));
 export const trainCost = lvl => Math.round(40 * Math.pow(2, lvl));
 export const trainTime = lvl => 20 * lvl;
@@ -76,7 +90,6 @@ export const seriesCost = (base, rate, k, n) => base * Math.pow(rate, k) * (Math
 
 export const stockCapacity = s => BASE_STORAGE + 10 * s.upgrades.storage;
 export const showcaseCapacity = s => BASE_SHOWCASE + 20 * s.upgrades.showcase;
-export const backlogLimit = s => 2 * showcaseCapacity(s);
 export const maxStaff = s => 1 + s.upgrades.staffRoom;
 export const customerInterval = s => BASE_CUSTOMER_INTERVAL / (1 + 0.25 * s.upgrades.marketing);
 export const reputationBonus = s => 1 + 0.06 * s.upgrades.reputation;
@@ -88,11 +101,9 @@ export function newState(sets, order, nowMs = Date.now()) {
   return {
     money: START_MONEY,
     stock: {},          // setId -> sealed boosters
-    binder: {},         // setId -> cardId -> copies kept
+    binder: {},         // setId -> cardId -> copies owned (opened cards land here)
     seen: {},           // setId -> cardId -> true
-    unpriced: [],       // [{s, c}]
-    priced: [],         // [{s, c, p}]
-    showcase: [],       // [{s, c, p}]
+    showcase: [],       // [{s, c, p}] tagged cards for sale
     staff: [],
     upgrades: { storage: 0, showcase: 0, marketing: 0, reputation: 0, staffRoom: 0 },
     rules: {
@@ -101,7 +112,8 @@ export function newState(sets, order, nowMs = Date.now()) {
       stockTarget: 10,
       cashReserve: 20,
       bulkBelow: 0.25,
-      keepFirst: false,
+      keepCopies: 1,    // the pricing employee leaves this many copies of each card
+      priceLevel: 0,    // the pricing employee's offset from market (PRICE_LEVELS)
     },
     timeZone: M.browserTimeZone(),
     setupDone: false,
@@ -243,8 +255,8 @@ export function rollBooster(set) {
   return out;
 }
 
-// Opens one booster. Cards go to the unpriced pile right away, so closing the
-// opening scene never loses anything. Returns [{card, isNew, kept}] or null.
+// Opens one booster. Every card goes to the binder right away, so closing the
+// opening scene never loses anything. Returns [{card, isNew}] or null.
 export function openBooster(state, sets, set) {
   if (!(state.stock[set.id] > 0)) return null;
   state.stock[set.id]--;
@@ -256,15 +268,10 @@ export function openBooster(state, sets, set) {
   for (const card of rollBooster(set)) {
     const isNew = !seen[card.id];
     if (isNew) { seen[card.id] = true; discovered = true; }
-    let kept = false;
-    if (state.rules.keepFirst && !(binder[card.id] > 0)) {
-      binder[card.id] = 1;
-      kept = true;
-    } else {
-      state.unpriced.push({ s: set.id, c: card.id });
-    }
-    result.push({ card, isNew, kept });
+    binder[card.id] = (binder[card.id] || 0) + 1;
+    result.push({ card, isNew });
   }
+  state._binderVer = (state._binderVer || 0) + 1;
   if (discovered) {
     const before = state._bonus?.[set.id] || 0;
     refreshBonus(state, sets, set.id);
@@ -284,67 +291,138 @@ export function openBoosters(state, sets, set, n) {
   return all;
 }
 
-// ---------- Actions: price ----------
-// Prices the oldest unpriced card at `quality` x market. Cards below the bulk
-// threshold go to the bulk buyer at 30%. Returns 'priced' | 'bulk' | null.
-export function priceOne(state, sets, quality = 1) {
-  const it = state.unpriced.shift();
-  if (!it) return null;
-  const set = sets[it.s], card = set?.byId[it.c];
-  if (!card) return 'bulk';
-  const mv = marketValue(state, set, card);
-  state.stats.cardsPriced++;
-  if (mv < state.rules.bulkBelow) {
-    earn(state, mv * BULK_RATE);
-    state.stats.bulkSold++;
-    return 'bulk';
-  }
-  state.priced.push({ s: it.s, c: it.c, p: Math.round(mv * quality * 100) / 100 });
-  return 'priced';
+// ---------- Actions: price (binder -> showcase) ----------
+export const copies = (state, set, card) => state.binder[set.id]?.[card.id] || 0;
+export const freeSlots = state => Math.max(0, showcaseCapacity(state) - state.showcase.length);
+export const tagPrice = (mv, level) => Math.max(0.01, Math.round(mv * (1 + level) * 100) / 100);
+
+export function buyChance(tag, mv) {
+  const r = mv > 0 ? tag / mv : Infinity;
+  for (const b of BUY_BANDS) if (r <= b.upTo) return b.chance;
+  return 0;
 }
 
-export function priceMany(state, sets, n) {
-  let k = 0;
-  while (k < n && priceOne(state, sets, 1)) k++;
+function takeFromBinder(state, set, card, n) {
+  const binder = state.binder[set.id];
+  const have = binder?.[card.id] || 0;
+  const k = Math.max(0, Math.min(have, Math.floor(n)));
+  if (!k) return 0;
+  binder[card.id] = have - k;
+  if (!binder[card.id]) delete binder[card.id];
   return k;
 }
 
-export function sellBulk(state, sets) {
-  let total = 0, n = 0;
-  for (const it of state.unpriced) {
-    const set = sets[it.s], card = set?.byId[it.c];
-    if (!card) continue;
-    total += marketValue(state, set, card) * BULK_RATE;
-    n++;
+// Puts up to n copies of one card in the showcase at `price` each (limited by
+// free slots). Returns how many were listed.
+export function listCard(state, set, card, n, price) {
+  if (!(price > 0)) return 0;
+  const k = takeFromBinder(state, set, card, Math.min(n, freeSlots(state)));
+  const p = Math.round(price * 100) / 100;
+  for (let i = 0; i < k; i++) state.showcase.push({ s: set.id, c: card.id, p });
+  state.stats.cardsPriced += k;
+  state.stats.cardsListed += k;
+  return k;
+}
+
+// Spare copies: what is left after keeping `keep` copies of each card. Sorted
+// by today's value, priciest first.
+export function spares(state, sets, keep) {
+  const out = [];
+  for (const [sid, cards] of Object.entries(state.binder)) {
+    const set = sets[sid];
+    if (!set) continue;
+    for (const [cid, n] of Object.entries(cards)) {
+      const card = set.byId[cid];
+      if (card && n > keep) out.push({ set, card, n: n - keep, mv: marketValue(state, set, card) });
+    }
   }
-  state.unpriced = [];
-  earn(state, total);
-  state.stats.bulkSold += n;
+  return out.sort((a, b) => b.mv - a.mv);
+}
+
+// Manual batch: prices up to n copies, priciest first, keeping `keep` copies
+// of each card, at market x (1 + level). Cards worth less than the bulk
+// threshold are left for the bulk buyer.
+export function priceSpares(state, sets, n, level = 0, keep = 0) {
+  let left = Math.min(n, freeSlots(state)), k = 0;
+  for (const sp of spares(state, sets, keep)) {
+    if (left <= 0) break;
+    if (sp.mv < state.rules.bulkBelow) continue;
+    const m = listCard(state, sp.set, sp.card, Math.min(left, sp.n), tagPrice(sp.mv, level));
+    left -= m; k += m;
+  }
+  return k;
+}
+
+// Copies (keeping `keep` of each card) worth less than the bulk threshold.
+export function bulkSpares(state, sets, keep = 0) {
+  let n = 0, total = 0;
+  for (const sp of spares(state, sets, keep)) {
+    if (sp.mv >= state.rules.bulkBelow) continue;
+    n += sp.n;
+    total += sp.n * sp.mv * BULK_RATE;
+  }
   return { n, total };
 }
 
-// ---------- Actions: list ----------
-export function listOne(state) {
-  if (!state.priced.length || state.showcase.length >= showcaseCapacity(state)) return false;
-  state.showcase.push(state.priced.shift());
-  state.stats.cardsListed++;
-  return true;
+export function sellBulk(state, sets, keep = 0) {
+  let n = 0, total = 0;
+  for (const sp of spares(state, sets, keep)) {
+    if (sp.mv >= state.rules.bulkBelow) continue;
+    takeFromBinder(state, sp.set, sp.card, sp.n);
+    n += sp.n;
+    total += sp.n * sp.mv * BULK_RATE;
+  }
+  earn(state, total);
+  state.stats.bulkSold += n;
+  if (n) state._binderVer = (state._binderVer || 0) + 1;
+  return { n, total };
 }
 
-export function listMany(state, n) {
-  let k = 0;
-  while (k < n && listOne(state)) k++;
-  return k;
+// One step of the pricing employee: the priciest spare copy (keeping
+// rules.keepCopies) goes to the showcase at the rule's price level, or to the
+// bulk buyer if it is worth less than the bulk threshold. The candidate list
+// is cached and walked one copy per card per pass; it is rebuilt when a pass
+// ends having done something or the binder gained cards (state._binderVer), or when the day
+// or the rule changes.
+function staffPriceOne(state, sets) {
+  const keep = Math.max(0, Math.floor(state.rules.keepCopies) || 0);
+  const ver = state._binderVer || 0;
+  let q = state._spares;
+  for (;;) {
+    const stale = !q || q.day !== state.day || q.keep !== keep;
+    if (stale || q.i >= q.list.length) {
+      if (!stale && q.ver === ver && !q.acted) return 'none';
+      q = state._spares = { day: state.day, keep, ver, i: 0, list: spares(state, sets, keep) };
+      continue;
+    }
+    const sp = q.list[q.i];
+    if (copies(state, sp.set, sp.card) <= keep) { q.i++; continue; }
+    if (sp.mv >= state.rules.bulkBelow && !freeSlots(state)) return 'full';
+    q.i++; // one copy per card per pass, so cards opened meanwhile get their turn
+    q.acted = true;
+    if (sp.mv < state.rules.bulkBelow) {
+      takeFromBinder(state, sp.set, sp.card, 1);
+      earn(state, sp.mv * BULK_RATE);
+      state.stats.bulkSold++;
+      return 'bulk';
+    }
+    listCard(state, sp.set, sp.card, 1, tagPrice(sp.mv, state.rules.priceLevel || 0));
+    return 'priced';
+  }
 }
 
 export function recallShowcase(state) {
   const n = state.showcase.length;
-  for (const it of state.showcase) state.unpriced.push({ s: it.s, c: it.c });
+  for (const it of state.showcase) {
+    const b = (state.binder[it.s] ||= {});
+    b[it.c] = (b[it.c] || 0) + 1;
+  }
   state.showcase = [];
+  state._binderVer = (state._binderVer || 0) + 1;
   return n;
 }
 
-// ---------- Actions: market and binder ----------
+// ---------- Actions: market ----------
 export function singlePrice(state, set, card) {
   return marketValue(state, set, card) * MARKET_BUY_RATE;
 }
@@ -355,21 +433,10 @@ export function buySingle(state, sets, set, card) {
   spend(state, cost);
   const binder = (state.binder[set.id] ||= {});
   binder[card.id] = (binder[card.id] || 0) + 1;
+  state._binderVer = (state._binderVer || 0) + 1;
   const seen = (state.seen[set.id] ||= {});
   if (!seen[card.id]) { seen[card.id] = true; refreshBonus(state, sets, set.id); }
   return true;
-}
-
-// Moves up to n copies to the unpriced pile. Returns how many moved.
-export function sellFromBinder(state, set, card, n = 1) {
-  const binder = state.binder[set.id];
-  const have = binder?.[card.id] || 0;
-  const k = Math.max(0, Math.min(have, Math.floor(n)));
-  if (!k) return 0;
-  binder[card.id] = have - k;
-  if (!binder[card.id]) delete binder[card.id];
-  for (let i = 0; i < k; i++) state.unpriced.push({ s: set.id, c: card.id });
-  return k;
 }
 
 // ---------- Upgrades ----------
@@ -439,7 +506,6 @@ function gainXp(state, emp, skill) {
 // One action of the employee's task. Returns true if it happened; otherwise
 // sets emp.status to the reason it is waiting.
 function doTask(state, sets, emp) {
-  const lvl = emp.skills[emp.task].lvl;
   switch (emp.task) {
     case 'buy': {
       const set = sets[state.rules.buySet];
@@ -452,18 +518,15 @@ function doTask(state, sets, emp) {
     }
     case 'open': {
       const set = sets[state.rules.openSet];
-      if (state.unpriced.length + state.priced.length >= backlogLimit(state)) { emp.status = 'waiting on pricing'; return false; }
       if (!set || !openBooster(state, sets, set)) { emp.status = 'no packs'; return false; }
       return true;
     }
-    case 'price':
-      if (state.priced.length >= showcaseCapacity(state)) { emp.status = 'waiting on showcase'; return false; }
-      if (priceOne(state, sets, priceQuality(lvl)) === null) { emp.status = 'nothing to price'; return false; }
+    case 'price': {
+      const r = staffPriceOne(state, sets);
+      if (r === 'full') { emp.status = 'showcase full'; return false; }
+      if (r === 'none') { emp.status = 'nothing to price'; return false; }
       return true;
-    case 'list':
-      if (!state.priced.length) { emp.status = 'nothing to list'; return false; }
-      if (!listOne(state)) { emp.status = 'showcase full'; return false; }
-      return true;
+    }
   }
   return false;
 }
@@ -496,30 +559,33 @@ let saleListener = null;
 export function onSale(fn) { saleListener = fn; }
 let quiet = false; // true during offline catch-up: no sounds or floating text
 
+// A customer arrives with a budget and looks at up to CUSTOMER_LOOKS cards
+// they can afford (pricier cards draw more attention: weight = sqrt of market
+// price). Each look buys with the chance of the tag's price band (BUY_BANDS).
 function customerVisit(state, sets) {
   state.stats.customers++;
   if (!state.showcase.length) return;
-  const want = 1 + Math.floor(rng() * 3);
-  for (let i = 0; i < want && state.showcase.length; i++) {
-    // Pricier cards draw more attention (weight = sqrt of market price).
-    // Cards tagged above 115% of today's market are skipped.
+  let budget = BUDGET_MIN * Math.pow(BUDGET_MAX / BUDGET_MIN, rng());
+  const looked = new Set();
+  for (let i = 0; i < CUSTOMER_LOOKS && state.showcase.length; i++) {
     let total = 0;
     const weights = new Array(state.showcase.length);
     for (let j = 0; j < state.showcase.length; j++) {
       const it = state.showcase[j];
       const set = sets[it.s], card = set?.byId[it.c];
-      let w = 0;
-      if (card) {
-        const mv = marketValue(state, set, card);
-        w = it.p > mv * CUSTOMER_MAX_MARKUP ? 0 : Math.sqrt(mv);
-      }
+      const w = card && it.p <= budget && !looked.has(it) ? Math.sqrt(marketValue(state, set, card)) : 0;
       weights[j] = w;
       total += w;
     }
     if (total <= 0) break;
     let r = rng() * total, pick = 0;
     while (pick < weights.length - 1 && (r -= weights[pick]) > 0) pick++;
-    const [it] = state.showcase.splice(pick, 1);
+    const it = state.showcase[pick];
+    looked.add(it);
+    const set = sets[it.s], card = set.byId[it.c];
+    if (rng() >= buyChance(it.p, marketValue(state, set, card))) continue;
+    state.showcase.splice(pick, 1);
+    budget -= it.p;
     const paid = it.p * saleMultiplier(state, it.s);
     earn(state, paid);
     state.stats.cardsSold++;
@@ -538,15 +604,15 @@ function checkUnlocks(state, sets) {
     const newDay = state.firstDay != null && state.day !== state.firstDay;
     let pricey = false;
     if (!newDay && state.stats.boostersOpened > 0) {
-      for (const it of state.unpriced) {
-        const set = sets[it.s], card = set?.byId[it.c];
-        if (card && marketValue(state, set, card) > 5) { pricey = true; break; }
-      }
-      if (!pricey) {
-        for (const it of state.showcase.concat(state.priced)) {
-          if (it.p > 5) { pricey = true; break; }
+      for (const [sid, cards] of Object.entries(state.binder)) {
+        const set = sets[sid];
+        for (const cid of Object.keys(cards)) {
+          const card = set?.byId[cid];
+          if (card && marketValue(state, set, card) > 5) { pricey = true; break; }
         }
+        if (pricey) break;
       }
+      if (!pricey) pricey = state.showcase.some(it => it.p > 5);
     }
     if (newDay || pricey) u.market = true;
   }
@@ -578,7 +644,7 @@ export function tick(state, sets, dt, nowMs) {
 // nothing left to sell, the distributor fronts one free booster.
 // ASSUMPTION: not in the GDD yet; needs Nicolas's OK.
 function rescueIfStuck(state, sets) {
-  if (state.unpriced.length || state.priced.length || state.showcase.length) return;
+  if (state.showcase.length) return;
   if (totalStock(state) > 0) return;
   let set = sets[state.rules.buySet];
   if (!set || !setUnlocked(state, set)) set = Object.values(sets).find(s => !s.prev);
