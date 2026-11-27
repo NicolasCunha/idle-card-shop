@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-floor-crowd",
+      "date": "2026-11-27",
+      "version": "1.5.3",
+      "title": "Livelier shop floor",
+      "text": "Customers now browse together, each at their own pace. They wander along the showcase, glance around and take turns to speak."
+    },
+    {
       "id": "2026-11-27-floor-sales",
       "date": "2026-11-27",
       "version": "1.5.2",

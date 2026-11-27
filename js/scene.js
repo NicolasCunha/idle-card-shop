@@ -9,8 +9,10 @@ const TARGET_CSS_H = 230;                 // about this tall on screen
 let W = 240;
 const SPRITE_W = 16, SPRITE_H = 32;
 const SHEETS = 5;
-const SPEED = 42;                         // px per second
-const MAX_ON_FLOOR = 5;
+const SPEED = 42;                         // average px per second; each customer varies
+// Customers on the floor at once: 5 in a narrow room, up to 8 in a wide one.
+const maxOnFloor = () => Math.max(5, Math.min(8, Math.floor(W / 48)));
+const rand = (a, b) => a + Math.random() * (b - a);
 const DOOR = { x: 20, y: 50 };
 const LANE_Y = 96;                        // where customers walk
 const LOOK_Y = 84;                        // where they stand in front of the case
@@ -84,7 +86,7 @@ export function customer(ev) {
   const paid = bought.reduce((a, l) => a + l.paid, 0);
   // Buyers are always drawn; a full floor makes room by sending the oldest
   // non-buyer away. Non-buyers wait their turn.
-  if (people.length >= MAX_ON_FLOOR) {
+  if (people.length >= maxOnFloor()) {
     if (!bought.length) return false;
     const i = people.findIndex(p => !p.paid && p.phase !== 'out');
     if (i >= 0) people.splice(i, 1);
@@ -97,14 +99,23 @@ export function customer(ev) {
   else { text = PASSED[lookAt.f]; happy = false; }
   // Where along the case they stop (0-1); resolved against the case each frame
   // because the room's width follows the panel.
-  const frac = Math.random();
+  // Each customer has their own pace: walking speed, how long they browse,
+  // whether they move along the case, and a small delay at the door so
+  // arrivals do not line up like clockwork.
+  const { frac, row } = freeSpot();
+  const lane = LANE_Y + Math.round(rand(-3, 3));
+  const look = LOOK_Y + Math.round(rand(-1, 1)) + row * 9;
   const p = {
     sheet: Math.floor(Math.random() * SHEETS),
-    x: DOOR.x, y: DOOR.y, dir: 0, t: 0, frac,
-    path: [{ x: DOOR.x, y: LANE_Y }, { frac, y: LANE_Y }, { frac, y: LOOK_Y }],
+    x: DOOR.x, y: DOOR.y, dir: 0, t: 0, frac, row, look, lane,
+    speed: SPEED * rand(0.75, 1.2),
+    delay: rand(0, 1.6),
+    browse: rand(1, 3.5),
+    moves: Math.random() < 0.45 ? 1 : 0,
+    path: [{ x: DOOR.x, y: lane }, { frac, y: lane }, { frac, y: look }],
     phase: 'in', wait: 0, text, happy, feeling: lookAt?.f || null, paid, n: bought.length,
   };
-  if (reduced()) { p.x = spotX(st, frac); p.y = LOOK_Y; p.path = []; }
+  if (reduced()) { p.x = spotX(st, frac); p.y = LOOK_Y; p.path = []; p.delay = 0; p.moves = 0; }
   people.push(p);
   return true;
 }
@@ -121,19 +132,44 @@ function loop(now) {
   requestAnimationFrame(loop);
 }
 
+// A spot along the case away from where others stand or are heading:
+// frac 0-1 along the case (a little past each end), row 0 at the glass or
+// row 1 just behind when the front is crowded.
+function freeSpot(skip) {
+  const span = spotX(getState(), 1) - spotX(getState(), 0) || 1;
+  const others = people.filter(o => o !== skip && o.phase !== 'out' && o.frac != null);
+  let best = { frac: Math.random(), row: 0 }, bestGap = -1;
+  for (const row of [0, 1]) {
+    const taken = others.filter(o => (o.row || 0) === row).map(o => o.frac);
+    for (let i = 0; i < 8; i++) {
+      const f = rand(-0.08, 1.08);
+      const gap = taken.length ? Math.min(...taken.map(t => Math.abs(t - f))) * span : 999;
+      // The back row is only used when it gives clearly more room.
+      const score = row ? gap - 10 : gap;
+      if (score > bestGap) { best = { frac: f, row }; bestGap = score; }
+    }
+    if (bestGap >= 14) break;
+  }
+  return best;
+}
+
+// Someone close by is talking: wait for them to finish first.
+const someoneTalking = p => people.some(o => o !== p && (o.phase === 'talk') && Math.abs(o.x - p.x) < 40);
+
 function spotX(st, frac) {
   const c = caseRect(st);
   return c.x + 8 + frac * Math.max(4, c.w - 16);
 }
 
 function step(p, dt) {
+  if (p.delay > 0) { p.delay -= dt; return; }
   p.t += dt;
   if (p.path.length) {
     const tgt = p.path[0];
     if (tgt.frac != null) tgt.x = spotX(getState(), tgt.frac);
     const dx = tgt.x - p.x, dy = tgt.y - p.y;
     const d = Math.hypot(dx, dy);
-    const move = SPEED * dt;
+    const move = (p.speed || SPEED) * dt;
     if (Math.abs(dx) > Math.abs(dy)) p.dir = dx > 0 ? 3 : 2; else p.dir = dy > 0 ? 0 : 1;
     if (d <= move) { p.x = tgt.x; p.y = tgt.y; p.path.shift(); } else { p.x += dx / d * move; p.y += dy / d * move; }
     p.walking = true;
@@ -142,7 +178,22 @@ function step(p, dt) {
   p.walking = false;
   p.wait += dt;
   if (p.phase === 'in') { p.phase = 'look'; p.wait = 0; p.dir = 1; }
-  else if (p.phase === 'look' && p.wait > 0.9) { p.phase = 'talk'; p.wait = 0; }
+  else if (p.phase === 'look') {
+    // Glance along the case now and then.
+    p.dir = Math.floor(p.t * 0.9 + p.frac * 7) % 5 === 0 ? (p.frac < 0.5 ? 3 : 2) : 1;
+    if (p.wait < p.browse) return;
+    if (p.moves > 0) {
+      // Step over to another part of the case and browse a bit more.
+      p.moves--; p.wait = 0; p.browse = rand(0.8, 2);
+      const spot = freeSpot(p);
+      p.frac = spot.frac; p.row = spot.row;
+      p.look = LOOK_Y + Math.round(rand(-1, 1)) + spot.row * 9;
+      p.path = [{ frac: p.frac, y: p.look }];
+      return;
+    }
+    if (someoneTalking(p)) return;
+    p.phase = 'talk'; p.wait = 0; p.dir = 0;
+  }
   else if (p.phase === 'talk' && p.wait > 1.8) {
     p.phase = 'react'; p.wait = 0;
     if (p.paid && onPaid) onPaid(p.paid);
@@ -150,7 +201,8 @@ function step(p, dt) {
   else if (p.phase === 'react' && p.wait > 1.3) {
     p.phase = 'out'; p.wait = 0;
     if (reduced()) { p.phase = 'gone'; return; }
-    p.path = [{ x: p.x, y: LANE_Y }, { x: DOOR.x, y: LANE_Y }, { x: DOOR.x, y: DOOR.y }];
+    const lane = p.lane ?? LANE_Y;
+    p.path = [{ x: p.x, y: lane }, { x: DOOR.x, y: lane }, { x: DOOR.x, y: DOOR.y }];
   } else if (p.phase === 'out') p.phase = 'gone';
 }
 
@@ -298,7 +350,7 @@ function draw() {
   ctx.imageSmoothingEnabled = false;
   drawRoom(st);
   drawCase(st);
-  const order = [...people].sort((a, b) => a.y - b.y);
+  const order = people.filter(p => !(p.delay > 0)).sort((a, b) => a.y - b.y);
   for (const p of order) drawPerson(p);
   for (const p of order) if (p.phase === 'talk' || p.phase === 'react') drawBubble(p);
 }
