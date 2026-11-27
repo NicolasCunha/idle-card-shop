@@ -57,6 +57,10 @@ export const STATUS = {
   training: 'training',
 };
 
+export const TOASTS = {
+  showcaseFull: 'Showcase full',
+};
+
 export const OFFLINE = {
   title: 'While you were away',
   simulating: 'Catching up',

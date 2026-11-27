@@ -7,7 +7,7 @@ import * as M from './market.js';
 import * as SU from './supply.js';
 import { cardHtml, rarityTag } from './cards.js';
 import { fmtMoney, fmtNum, fmtPct, fmtSec, fmtDuration, fmtClock, esc } from './format.js';
-import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS } from './strings.js';
+import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS } from './strings.js';
 import { currentStep } from './tutorial.js';
 import { cardFilter } from './data.js';
 import { GAME_VERSION } from './save.js';
@@ -121,6 +121,24 @@ function tabVisible(tab) {
 }
 
 // ---------- Frame ----------
+// Short notice at the bottom of the screen. Fades out on its own.
+let toastTimer = 0;
+export function toast(key) {
+  let el = document.getElementById('toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'toast';
+    el.className = 'toast';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    document.body.appendChild(el);
+  }
+  el.textContent = TOASTS[key] || key;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
 export function frame(force = false) {
   updateHeader();
   for (const b of document.querySelectorAll('#tabs .tab')) {

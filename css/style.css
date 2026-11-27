@@ -210,6 +210,14 @@ label.check { gap: .35rem; }
   display: flex; gap: 1rem; align-items: center; z-index: 20; max-width: calc(100% - 2rem);
 }
 .tip[hidden] { display: none; }
+.toast {
+  position: fixed; left: 50%; bottom: 4.6rem; transform: translate(-50%, .5rem);
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+  padding: .55rem 1rem; border-radius: 10px; box-shadow: var(--shadow); z-index: 30;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.reduce-motion .toast { transition: none; transform: translate(-50%, 0); }
 .tip .link { color: var(--bg); opacity: .7; font-size: .85rem; }
 .tut-target { animation: pulse 1.6s ease-in-out infinite; position: relative; z-index: 1; }
 @keyframes pulse {
@@ -457,6 +465,7 @@ button, select, .tab, .binder-slot, .thumb { -webkit-tap-highlight-color: transp
   .result-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: .5rem; }
   .bar-head { flex-wrap: wrap; gap: .5rem; }
   .lf-row input { width: 5rem; }
+  .toast { bottom: calc(8.4rem + env(safe-area-inset-bottom)); }
   .tip { left: .5rem; right: .5rem; bottom: calc(4rem + env(safe-area-inset-bottom)); max-width: none; transform: none; border-radius: 14px; z-index: 21; }
 }
 @media (display-mode: standalone) {

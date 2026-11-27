@@ -228,7 +228,9 @@ function run(action, d) {
     }
     case 'price': {
       const q = UI.uiOption('priceQty');
-      if (G.priceSpares(state, sets, q === 'all' ? Infinity : Number(q) || 1, Number(UI.uiOption('priceLevel')) || 0, Number(UI.uiOption('priceKeep')) || 0)) Audio.sfx.click();
+      const keep = Number(UI.uiOption('priceKeep')) || 0;
+      if (G.priceSpares(state, sets, q === 'all' ? Infinity : Number(q) || 1, Number(UI.uiOption('priceLevel')) || 0, keep)) Audio.sfx.click();
+      if (!G.freeSlots(state) && G.spares(state, sets, keep).length) UI.toast('showcaseFull');
       break;
     }
     case 'buy-market-booster': {
