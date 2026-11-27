@@ -12,7 +12,7 @@ All tunables are constants at the top of `js/supply.js`.
 
 | Constant | Value | Meaning |
 | --- | --- | --- |
-| `RELEASE_EVERY_DAYS` | 7 | Market days between releases, from the save's first day |
+| `RELEASE_EVERY_DAYS` | 12 | Market days between releases (2 real hours), from the save's first day |
 | `BASE_PRINT_RUN` | 1,000,000 | First collection's print run |
 | `PRINT_GROWTH` / `PRINT_CAP` | 1.25 / 2 | Each newer set prints 25% more, up to 2x the first |
 | `PLAYER_MARGIN` | 0.10 | Rivals never take the supply below 10% of all printed |
@@ -20,10 +20,10 @@ All tunables are constants at the top of `js/supply.js`.
 | `MARKET_EXPONENT` / `MARKET_SWING` | 0.5 / 0.06 | Market value = wholesale x (printed / left)^0.5 x daily swing (5- and 13-day waves, about ±12%) |
 | `MIN_LEFT_FRAC` | 0.02 | Prices stop rising below 2% left (distributor ~2.7x, Market ~7x) |
 | `MARKET_BUY_RATE` / `MARKET_SELL_RATE` | 1.1 / 0.9 | Sealed boosters on the Market |
-| `RIVALS` | 8 appetites, 0.04% to 0.6% of the run per day | Rival shops |
-| Rival buy chance | 60% per rival per day | Demand fades from 100% to 20% (`HYPE_DAYS` 30) |
-| Returns | 12% per day, up to 0.4% of the run | From what rivals hold |
-| Reprints | Below 35% left, 2% per day, 40-80% of the run | Adds to printed and left |
+| `RIVALS` | 8 appetites, 0.018% to 0.27% of the run per day | Rival shops (tuned for 10-minute days: a set gets scarce after about 2-3 real days) |
+| Rival buy chance | 60% per rival per day | Demand fades from 100% to 20% (`HYPE_DAYS` 66) |
+| Returns | 12% per day, up to 0.18% of the run | From what rivals hold |
+| Reprints | Below 35% left, 0.5% per day, 40-80% of the run | Adds to printed and left |
 
 Pools per collection (`state.market[setId]`): `left` (at the distributor), `held` (rival shops' stock, which the Market sells from), `printed` (run plus reprints).
 

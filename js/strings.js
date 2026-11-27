@@ -19,6 +19,7 @@ export const UPGRADE_TEXT = {
   marketing: { name: 'Marketing', effect: '+25% customers' },
   reputation: { name: 'Reputation', effect: '+6% sale price' },
   staffRoom: { name: 'Staff room', effect: '+1 staff slot' },
+  fame: { name: 'Fame', effect: 'Richer customers, +3% customers' },
 };
 
 export const TIPS = {
@@ -45,7 +46,7 @@ export const TIPS = {
   feelings: 'What customers think of the tags they looked at.',
   customers: 'Each customer has a budget. At market price they buy half the time; cheaper sells more often, pricier much less. Twice the market almost never sells.',
   milestone: 'Discovery bonus on sale price for this collection.',
-  timeZone: 'Market day changes at midnight in this time zone.',
+  day: 'A new market day every 10 minutes, the same for everyone.',
 };
 
 // Simulated rival shops (supply.js RIVALS, same order: biggest first).

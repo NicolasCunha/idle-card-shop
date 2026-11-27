@@ -39,7 +39,7 @@ function buildShell() {
       <div class="brand">IdleCardShop</div>
       <div class="top-stats">
         <span class="money" id="money" title="Cash">$0.00</span>
-        <span class="day" title="${esc(TIPS.timeZone)}"><span id="day-label"></span> · next <span id="day-next"></span></span>
+        <span class="day" title="${esc(TIPS.day)}"><span id="day-label"></span> · next <span id="day-next"></span></span>
         <button class="small news-btn" id="news-btn" data-action="news">News<span class="news-count" id="news-count" hidden></span></button>
       </div>
     </header>
@@ -218,8 +218,8 @@ function animateMoney(target) {
 
 function updateHeader() {
   animateMoney(S.money);
-  document.getElementById('day-label').textContent = S.day ? M.dayLabel(S.day) : '';
-  document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay(S.timeZone));
+  document.getElementById('day-label').textContent = S.day ? M.dayLabel(S.day, S.firstDay) : '';
+  document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay());
   const n = unreadCount();
   const badge = document.getElementById('news-count');
   badge.hidden = !n;
@@ -239,7 +239,7 @@ export function newsHtml() {
   <div class="modal news-panel">
     <h2>News</h2>
     ${notices.length ? `<section><h3>Shop</h3><ul class="notices">${notices.map(n =>
-      `<li class="${n.id > S.inboxRead ? 'unread' : ''} log-${esc(n.kind)}"><span>${esc(n.text)}</span> <span class="muted">${n.day ? esc(M.dayLabel(n.day)) : ''}</span></li>`).join('')}</ul></section>` : ''}
+      `<li class="${n.id > S.inboxRead ? 'unread' : ''} log-${esc(n.kind)}"><span>${esc(n.text)}</span> <span class="muted">${n.day ? esc(M.dayLabel(n.day, S.firstDay)) : ''}</span></li>`).join('')}</ul></section>` : ''}
     <section><h3>Updates</h3>${notes.map(n => `
       <article class="note ${unread.has(n.id) ? 'unread' : ''}">
         <div class="note-head"><b>${esc(n.title)}</b><span class="muted">${esc(n.version ? `${n.version} · ` : '')}${esc(n.date || '')}</span></div>
@@ -473,13 +473,16 @@ PANELS.showcase = {
     const { total } = G.feedbackSummary(S);
     const pct = k => (total.looks ? Math.round((total[k] / total.looks) * 100) : 0);
     const recent = (S._feedback || []).slice(-12).reverse();
+    const miss = total.missed ? `<span class="feel feel-steep">✕ wanted new set ${Math.round((total.missed / (total.missed + total.looks)) * 100)}%</span>` : '';
     return {
       count: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
       feelsum: total.looks
-        ? G.FEELINGS.map(f => `<span class="feel feel-${f.key}">${esc(FEELING_TEXT[f.key])} ${pct(f.key)}%</span>`).join('')
-        : '',
+        ? G.FEELINGS.map(f => `<span class="feel feel-${f.key}">${esc(FEELING_TEXT[f.key])} ${pct(f.key)}%</span>`).join('') + miss
+        : miss,
       feellog: recent.map(e => {
-        const st = SETS[e.s], c = st?.byId[e.c];
+        const st = SETS[e.s];
+        if (e.miss) return st ? `<li><span class="feel feel-steep">✕ wanted ${esc(st.name)}</span> <span class="muted">left</span></li>` : '';
+        const c = st?.byId[e.c];
         if (!c) return '';
         return `<li>${rarityTag(st, c)} ${esc(c.name)} <span class="num">${fmtMoney(e.p)}</span> ${feelingTag(e.f)} <span class="muted">${e.b ? 'bought' : 'passed'}</span></li>`;
       }).join('') || '<li class="muted">no customers yet</li>',
@@ -567,7 +570,7 @@ PANELS.market = {
       </div>
     </section>
     ${news.length ? `<section class="box news"><h3>Card news</h3><ul>${news.slice(0, 8).map(n =>
-      `<li class="${n.kind}"><b>${esc(n.card.name)}</b>${many ? ` <span class="muted">${esc(n.set.name)}</span>` : ''} ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day))}</span></li>`).join('')}</ul></section>` : ''}
+      `<li class="${n.kind}"><b>${esc(n.card.name)}</b>${many ? ` <span class="muted">${esc(n.set.name)}</span>` : ''} ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day, S.firstDay))}</span></li>`).join('')}</ul></section>` : ''}
     ${pagerHtml}
     <div class="table market-table">
       <div class="tr th"><span></span><span class="num">#</span><span>Card</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
@@ -700,7 +703,7 @@ PANELS.upgrades = {
       const cost = G.upgradeCost(k, lvl);
       return `<section class="box upgrade">
         <div><b>${esc(txt.name)}</b><div class="muted">${esc(txt.effect)}</div></div>
-        <span class="muted">Lv ${lvl} / ${def.max}</span>
+        <span class="muted">Lv ${lvl + (def.start || 0)} / ${def.max + (def.start || 0)}</span>
         ${max ? '<span class="muted">Max</span>' : `<button data-action="upgrade" data-key="${k}" data-cost="${cost}">${fmtMoney(cost)}</button>`}
       </section>`;
     }).join('')}</div>`;
@@ -708,7 +711,7 @@ PANELS.upgrades = {
 };
 
 PANELS.settings = {
-  sig: () => [PREFS.theme, PREFS.reduceMotion, S.timeZone, PREFS.muteMaster, PREFS.muteMusic, PREFS.muteEffects, S.tutorial.done.length === 0].join(),
+  sig: () => [PREFS.theme, PREFS.reduceMotion, PREFS.muteMaster, PREFS.muteMusic, PREFS.muteEffects, S.tutorial.done.length === 0].join(),
   html() {
     const vol = (key, label) => `
       <label class="vol">${label}
@@ -730,7 +733,6 @@ PANELS.settings = {
       </section>
       <section class="box">
         <h3>Market</h3>
-        <label title="${esc(TIPS.timeZone)}">Time zone <select data-action="timezone">${timeZoneOptions(S.timeZone)}</select></label>
       </section>
       <section class="box">
         <h3>Tutorial</h3>
@@ -757,13 +759,6 @@ export function markSaved(t) { lastSavedAt = t; }
 function lastSavedText() {
   if (!lastSavedAt) return '';
   return `Saved ${fmtDuration((Date.now() - lastSavedAt) / 1000)} ago`;
-}
-
-let tzCache = null;
-export function timeZoneOptions(sel) {
-  tzCache ||= M.listTimeZones();
-  const list = tzCache.includes(sel) ? tzCache : [sel, ...tzCache];
-  return list.map(z => `<option value="${esc(z)}" ${z === sel ? 'selected' : ''}>${esc(z)}</option>`).join('');
 }
 
 // ---------- Card detail ----------

@@ -34,7 +34,8 @@ export function fmtDuration(s) {
 export function fmtClock(ms) {
   const s = Math.max(0, Math.floor(ms / 1000));
   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  const mm = `${h ? String(m).padStart(2, '0') : m}:${String(sec).padStart(2, '0')}`;
+  return h ? `${h}:${mm}` : mm;
 }
 
 export function esc(s) {

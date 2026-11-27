@@ -9,7 +9,6 @@ import { loadTutorial, skipTutorial, restartTutorial } from './tutorial.js';
 import { initOpening, playOpening, showBulkResult, closeOverlay } from './opening.js';
 import { fmtMoney, fmtNum, fmtDuration, esc } from './format.js';
 import { OFFLINE } from './strings.js';
-import { listTimeZones } from './market.js';
 
 const TICK_MS = 250;
 const AUTOSAVE_MS = 10000;
@@ -158,16 +157,12 @@ function showSetup() {
   el.className = 'overlay';
   el.innerHTML = `<div class="modal setup">
     <h1>IdleCardShop</h1>
-    <label>Choose your time zone
-      <select id="setup-tz">${UI.timeZoneOptions(state.timeZone)}</select>
-    </label>
     <div class="btns end"><button class="primary" id="setup-go">Open the shop</button></div>
   </div>`;
   el.hidden = false;
   el.querySelector('#setup-go').addEventListener('click', () => {
     Audio.unlock();
     Audio.sfx.click();
-    state.timeZone = el.querySelector('#setup-tz').value;
     state.setupDone = true;
     const now = Date.now();
     state.lastTick = now;
@@ -337,9 +332,6 @@ function run(action, d) {
     case 'pref-motion': prefs.reduceMotion = !!d.value; Save.savePrefs(prefs); UI.applyTheme(); break;
     case 'pref-vol': prefs[d.key] = Number(d.value); Audio.setPrefs(prefs); Save.savePrefs(prefs); break;
     case 'pref-mute': prefs[d.key] = !!d.value; Audio.setPrefs(prefs); Save.savePrefs(prefs); break;
-    case 'timezone':
-      if (listTimeZones().includes(d.value) || d.value === 'UTC') { state.timeZone = d.value; G.tick(state, sets, 0, Date.now()); }
-      break;
     case 'save-now': save(); break;
     case 'export': save(); Save.exportFile(state); break;
     case 'import': importFile(d.files?.[0]); break;

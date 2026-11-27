@@ -60,49 +60,16 @@ export function smoothNoise(key, day, period, amp) {
 }
 
 // ---------- Market day ----------
-export function browserTimeZone() {
-  try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; }
-}
+// Market days (Nicolas, 2026-11-27): one global clock, a new day every
+// DAY_MS of real time, the same for every player. No time zones.
+export const DAY_MS = 10 * 60 * 1000;
 
-export function listTimeZones() {
-  try { return ['UTC', ...Intl.supportedValuesOf('timeZone').filter(z => z !== 'UTC')]; }
-  catch { return ['UTC', browserTimeZone()]; }
-}
+export const dayNumber = (nowMs = Date.now()) => Math.floor(nowMs / DAY_MS);
 
-// Days since 1970-01-01 on the local date in the given time zone.
-const formatters = new Map();
-function formatter(timeZone) {
-  let f = formatters.get(timeZone);
-  if (!f) {
-    f = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
-    formatters.set(timeZone, f);
-  }
-  return f;
-}
+// "Day N" counts from the save's first day (Day 1).
+export const dayLabel = (day, firstDay) => `Day ${(day - (firstDay ?? day) + 1).toLocaleString('en-US')}`;
 
-export function dayNumber(timeZone, date = new Date()) {
-  let ymd;
-  try {
-    ymd = formatter(timeZone).format(date);
-  } catch {
-    ymd = date.toISOString().slice(0, 10);
-  }
-  return Math.floor(Date.parse(ymd + 'T00:00:00Z') / 86400000);
-}
-
-export function dayLabel(day) {
-  return new Date(day * 86400000).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-export function msUntilNextDay(timeZone, nowMs = Date.now()) {
-  const today = dayNumber(timeZone, new Date(nowMs));
-  let lo = 0, hi = 26 * 3600000;
-  while (hi - lo > 1000) {
-    const mid = (lo + hi) / 2;
-    if (dayNumber(timeZone, new Date(nowMs + mid)) > today) hi = mid; else lo = mid;
-  }
-  return hi;
-}
+export const msUntilNextDay = (nowMs = Date.now()) => DAY_MS - (nowMs % DAY_MS);
 
 // ---------- Events ----------
 function eventForWindow(key, w) {

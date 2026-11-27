@@ -12,7 +12,7 @@
 import { hashRand, smoothNoise } from './market.js';
 
 // ---------- Tunables ----------
-export const RELEASE_EVERY_DAYS = 7;      // a new collection every 7 market days
+export const RELEASE_EVERY_DAYS = 12;     // a new collection every 12 market days (2 hours)
 export const BASE_PRINT_RUN = 1000000;    // first collection's print run
 export const PRINT_GROWTH = 1.25;         // each newer collection prints 25% more...
 export const PRINT_CAP = 2;               // ...up to 2x the first one
@@ -28,13 +28,15 @@ export const MARKET_SELL_RATE = 0.9;      // sell sealed to the Market at 90% of
 export const HISTORY_DAYS = 30;
 
 // Rival shops: share of the first print run each one wants on a busy day.
-export const RIVALS = [0.006, 0.004, 0.003, 0.0025, 0.002, 0.0015, 0.0006, 0.0004];
+// Tuned for 10-minute days (Nicolas, 2026-11-27): a collection gets scarce
+// after about 3 real days (~430 market days).
+export const RIVALS = [0.0027, 0.0018, 0.00135, 0.0011, 0.0009, 0.00068, 0.00027, 0.00018];
 const RIVAL_BUY_CHANCE = 0.6;
-const HYPE_DAYS = 30;                     // demand fades from 100% to 20% over a few months
+const HYPE_DAYS = 66;                     // demand fades from 100% to 20%
 const RETURN_CHANCE = 0.12;               // a rival returns some boosters
-const RETURN_MAX = 0.004;                 // up to 0.4% of the print run
+const RETURN_MAX = 0.0018;                // up to 0.18% of the print run
 const REPRINT_BELOW = 0.35;               // reprints only happen below 35% left
-const REPRINT_CHANCE = 0.02;              // per day, when below
+const REPRINT_CHANCE = 0.005;             // per day, when below
 const REPRINT_MIN = 0.4, REPRINT_MAX = 0.8; // size, share of the first print run
 const BIG_BUY = 0.01;                     // a rival buy above 1% of the run makes news
 

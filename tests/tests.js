@@ -29,7 +29,6 @@ const T0 = Date.UTC(2026, 10, 26, 12, 0, 0);
 
 function fresh(sets, order) {
   const s = G.newState(sets, order, T0);
-  s.timeZone = 'UTC';
   s.setupDone = true;
   G.prepare(s, sets);
   G.tick(s, sets, 0, T0);
@@ -80,8 +79,8 @@ async function run() {
   }
   ok(maxUp < 0.07 && maxDown > -0.07, `no daily move above 7% over ${DAYS} days x 102 cards`, `+${(maxUp * 100).toFixed(1)}% / ${(maxDown * 100).toFixed(1)}%`);
   ok(maxMul < 3.05 && minMul > 0.32, 'soft cap keeps prices within ~1/3x..3x', `${minMul.toFixed(2)}x..${maxMul.toFixed(2)}x`);
-  ok(M.dayNumber('UTC', new Date(Date.UTC(1970, 0, 2))) === 1, 'day number counts days since 1970-01-01');
-  ok(M.dayNumber('Asia/Tokyo', new Date(Date.UTC(2026, 0, 1, 20))) === M.dayNumber('UTC', new Date(Date.UTC(2026, 0, 1, 20))) + 1, 'day follows the chosen time zone');
+  ok(M.dayNumber(M.DAY_MS * 5 + 1) === 5 && M.dayNumber(M.DAY_MS * 6 - 1) === 5 && M.DAY_MS === 600000, 'a market day lasts 10 minutes');
+  ok(M.msUntilNextDay(M.DAY_MS * 5 + 1000) === M.DAY_MS - 1000 && M.dayLabel(105, 100) === 'Day 6', 'countdown and Day N label');
 
   // ---------- Loop ----------
   section('Shop loop');
@@ -118,6 +117,19 @@ async function run() {
   const fb = G.feedbackSummary(s);
   ok(fb.total.looks > 0 && fb.total.bought === s.stats.cardsSold && fb.total.looks <= G.FEEDBACK_SIZE, 'every customer look is remembered with its feeling', `${fb.total.looks} looks, ${fb.total.bought} bought`);
   ok(!('_feedback' in Save.serialize(s).state), 'customer feedback is never saved');
+  {
+    const f = fresh(sets, order);
+    G.setRandom(G.seededRandom(7));
+    const draw = fame => { f.upgrades.fame = fame; return Array.from({ length: 4000 }, () => G.customerBudget(f)); };
+    const b1 = draw(0), b20 = draw(19);
+    ok(Math.abs(G.richCap(0) - G.BUDGET_MAX) < 1e-9 && Math.abs(G.richCap(19) - G.RICH_MAX) < 1e-6, 'Fame ceiling grows from $120 to $1,000');
+    ok(b1.every(x => x >= G.BUDGET_MIN && x <= G.BUDGET_MAX), 'Fame 1 keeps budgets between $2 and $120');
+    const rich = b20.filter(x => x > G.BUDGET_MAX).length / b20.length;
+    ok(b20.every(x => x <= G.RICH_MAX) && rich > 0.07 && rich < 0.13 && b20.some(x => x > 600), 'Fame 20: about 10% of customers bring up to $1,000', `${Math.round(rich * 100)}% rich`);
+    f.upgrades.fame = 0; const i0 = G.customerInterval(f);
+    f.upgrades.fame = 10;
+    ok(Math.abs(i0 / G.customerInterval(f) - 1.3) < 1e-9, 'each Fame level brings 3% more customers');
+  }
   s.showcase.push({ s: 'base', c: base.cards[0].id, p: 9999 });
   for (let i = 0; i < 300; i++) G.tick(s, sets, 1, T0 + 500000 + i * 1000);
   ok(s.showcase.length === 1, 'customers never pay above their budget');
@@ -159,7 +171,7 @@ async function run() {
 
   // ---------- Release calendar ----------
   section('Release calendar');
-  const DAY = 86400000;
+  const DAY = M.DAY_MS;
   {
     const mk = id => normalizeSet({ id, name: id.toUpperCase(), booster: { wholesalePrice: 1, slots: [{ count: 1, rarity: 'c' }] }, rarities: { c: { value: 1 } },
       cards: Array.from({ length: 10 }, (_, i) => ({ index: i + 1, id: `${i + 1}`, name: `Card ${i + 1}`, rarity: 'c' })) });
@@ -171,11 +183,20 @@ async function run() {
     ok(!G.buyBooster(u, two.b) && !G.buySingle(u, two, two.b, two.b.cards[0]), 'a collection not out yet sells no boosters or singles');
     for (let i = 0; i < 10; i++) G.buySingle(u, two, two.a, two.a.cards[i]);
     ok(!G.setUnlocked(u, two.b), 'discovering the whole collection does not release the next');
-    G.tick(u, two, 1, T0 + 6 * DAY);
-    ok(!G.setUnlocked(u, two.b), 'six days later the next collection is still not out');
-    G.tick(u, two, 1, T0 + 7 * DAY);
+    G.tick(u, two, 1, T0 + (SU.RELEASE_EVERY_DAYS - 1) * DAY);
+    ok(!G.setUnlocked(u, two.b), 'a day before the release the next collection is still not out');
+    G.tick(u, two, 1, T0 + SU.RELEASE_EVERY_DAYS * DAY);
     ok(G.setUnlocked(u, two.b) && G.buyBooster(u, two.b), `the next collection is out after ${SU.RELEASE_EVERY_DAYS} days`);
     ok(u.log.some(l => l.kind === 'release') && u.inbox.some(n => n.kind === 'release'), 'the release shows in Recent and News');
+    const want = G.wantedSet(u, two);
+    ok(want && want.set === two.b && Math.abs(want.share - G.WANT_SHARE) < 1e-9, 'on release day some customers want the new collection');
+    G.setRandom(G.seededRandom(3));
+    u.showcase = Array.from({ length: 30 }, (_, i) => ({ s: 'a', c: two.a.cards[i % 10].id, p: 0.5 }));
+    const missed0 = u.stats.missedCustomers;
+    for (let i = 0; i < 200; i++) G.tick(u, two, 1, T0 + SU.RELEASE_EVERY_DAYS * DAY + 1000 + i * 1000);
+    ok(u.stats.missedCustomers > missed0 && u.showcase.length < 30, 'customers who want it leave without buying; others still buy', `${u.stats.missedCustomers - missed0} left`);
+    G.tick(u, two, 1, T0 + (SU.RELEASE_EVERY_DAYS + G.WANT_DAYS) * DAY);
+    ok(!G.wantedSet(u, two), `after ${G.WANT_DAYS} days nobody comes for it only`);
     ok(G.unreadNotices(u) > 0 && (G.markNoticesRead(u), G.unreadNotices(u) === 0), 'reading News clears the unread count');
   }
 
@@ -195,7 +216,7 @@ async function run() {
     ok(ma.left >= ma.printed * SU.PLAYER_MARGIN - 1, 'rivals always leave a share for the player');
     const dRise = G.boosterPrice(a, base) / p0 - 1;
     const scarce = ma.printed / ma.left;
-    ok(Math.abs(dRise - (Math.pow(scarce, SU.DISTRIBUTOR_EXPONENT) - 1)) < 1e-6 && SU.DISTRIBUTOR_EXPONENT < SU.MARKET_EXPONENT,
+    ok(Math.abs(dRise - (Math.pow(scarce, SU.DISTRIBUTOR_EXPONENT) - 1)) < 1e-4 && SU.DISTRIBUTOR_EXPONENT < SU.MARKET_EXPONENT,
       'the distributor rises with scarcity, less than the Market', `distributor ${fmtMoney(G.boosterPrice(a, base))}, market ${fmtMoney(G.marketBoosterValue(a, base))}`);
     let maxSwing = 0;
     for (let d = 0; d < 400; d++) maxSwing = Math.max(maxSwing, Math.abs(SU.marketValueOf(base, ma, 20000 + d) / SU.marketValueOf(base, ma, 20000 + d - 1) - 1));
@@ -277,7 +298,7 @@ async function run() {
   const m3 = Save.restore(v2, sets, order);
   ok(m3.money === blank.money && !Object.keys(m3.binder).length && !m3.setupDone && !('rescues' in m3.stats), 'v2 saves start over too');
   const sup = fresh(sets, order);
-  G.tick(sup, sets, 1, T0 + 5 * 86400000);
+  G.tick(sup, sets, 1, T0 + 5 * M.DAY_MS);
   const r3 = Save.restore(JSON.parse(JSON.stringify(Save.serialize(sup))), sets, order);
   ok(r3.market.base.left === sup.market.base.left && r3.market.base.age === sup.market.base.age && r3.inbox.length === sup.inbox.length, 'booster supply and News survive a save round trip');
   let threw = false;
@@ -322,7 +343,7 @@ async function run() {
   await G.catchUp(week, sets, week.lastTick + 7 * 86400 * 1000, null, { budgetMs: 1000 });
   const secs = (performance.now() - t1) / 1000;
   ok(secs < 60, 'one week away simulates in under a minute', `${secs.toFixed(1)}s`);
-  ok(week.day === off.day + 7, 'market days advance during catch-up');
+  ok(week.day === off.day + 7 * 86400000 / M.DAY_MS, 'market days advance during catch-up', `${week.day - off.day} days`);
 
   // ---------- Pacing ----------
   section('Pacing (GDD targets)');

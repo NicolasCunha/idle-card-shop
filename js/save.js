@@ -9,8 +9,8 @@
 import { newState, SKILL_KEYS } from './game.js';
 
 export const GAME_ID = 'idlecardshop';
-export const SAVE_VERSION = 3;
-export const GAME_VERSION = '1.3.0';
+export const SAVE_VERSION = 4;
+export const GAME_VERSION = '1.4.0';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
@@ -43,6 +43,9 @@ export const MIGRATIONS = {
   // to start every older save from zero, so the state is dropped and the
   // defaults (a new shop) take its place.
   2: () => ({}),
+  // v4 (2026-11-27): Fame upgrade, new-set customers and shorter market days.
+  // Nicolas chose to start every older save from zero again.
+  3: () => ({}),
 };
 
 export function serialize(state) {

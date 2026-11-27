@@ -62,7 +62,22 @@ export const UPGRADES = {
   marketing: { baseCost: 80, growth: 1.75, max: 20 },
   reputation: { baseCost: 120, growth: 1.85, max: 15 },
   staffRoom: { baseCost: 150, growth: 2.2, max: 8 },
+  // Fame (Nicolas, 2026-11-27): shown as Lv 1-20; the saved value is 0-19.
+  fame: { baseCost: 200, growth: 1.5, max: 19, start: 1 },
 };
+
+// Fame: from level 2 a share of customers is rich, with a budget between
+// BUDGET_MAX and a ceiling that grows to RICH_MAX at level 20. Each level also
+// brings FAME_CUSTOMERS more customers.
+export const RICH_SHARE = 0.10;
+export const RICH_MAX = 1000;
+export const FAME_CUSTOMERS = 0.03;
+
+// New-set customers (Nicolas, 2026-11-27): right after a release some
+// customers come for the newest collection only. With none of it in the
+// showcase they leave without buying.
+export const WANT_SHARE = 0.30;           // share on release day...
+export const WANT_DAYS = 6;               // ...fading to 0 over this many days
 
 // ASSUMPTION [GDD Q5]: collection milestones as proposed (bonus on sale price).
 export const MILESTONES = [
@@ -104,7 +119,28 @@ export const seriesCost = (base, rate, k, n) => base * Math.pow(rate, k) * (Math
 export const stockCapacity = s => BASE_STORAGE + 10 * s.upgrades.storage;
 export const showcaseCapacity = s => BASE_SHOWCASE + 20 * s.upgrades.showcase;
 export const maxStaff = s => 1 + s.upgrades.staffRoom;
-export const customerInterval = s => BASE_CUSTOMER_INTERVAL / (1 + 0.25 * s.upgrades.marketing);
+export const customerInterval = s => BASE_CUSTOMER_INTERVAL / ((1 + 0.25 * s.upgrades.marketing) * (1 + FAME_CUSTOMERS * (s.upgrades.fame || 0)));
+// Budget ceiling of rich customers at a Fame value (0-19).
+export const richCap = fame => BUDGET_MAX * Math.pow(RICH_MAX / BUDGET_MAX, fame / UPGRADES.fame.max);
+export function customerBudget(state) {
+  const fame = state.upgrades.fame || 0;
+  if (fame > 0 && rng() < RICH_SHARE) return BUDGET_MAX * Math.pow(richCap(fame) / BUDGET_MAX, rng());
+  return BUDGET_MIN * Math.pow(BUDGET_MAX / BUDGET_MIN, rng());
+}
+
+// The newest released collection past the first, and the share of customers
+// who want it today (0 outside the window).
+export function wantedSet(state, sets) {
+  let best = null;
+  for (const set of Object.values(sets)) {
+    if (!(set.releaseIndex > 0) || !setUnlocked(state, set)) continue;
+    if (!best || set.releaseIndex > best.releaseIndex) best = set;
+  }
+  if (!best) return null;
+  const age = state.day - SU.releaseDay(state, best);
+  const share = WANT_SHARE * (1 - age / WANT_DAYS);
+  return share > 0 ? { set: best, share } : null;
+}
 export const reputationBonus = s => 1 + 0.06 * s.upgrades.reputation;
 export const totalStock = s => Object.values(s.stock).reduce((a, b) => a + b, 0);
 
@@ -118,7 +154,7 @@ export function newState(sets, order, nowMs = Date.now()) {
     seen: {},           // setId -> cardId -> true
     showcase: [],       // [{s, c, p}] tagged cards for sale
     staff: [],
-    upgrades: { storage: 0, showcase: 0, marketing: 0, reputation: 0, staffRoom: 0 },
+    upgrades: { storage: 0, showcase: 0, marketing: 0, reputation: 0, staffRoom: 0, fame: 0 },
     rules: {
       buySet: first,
       openSet: first,
@@ -128,7 +164,6 @@ export function newState(sets, order, nowMs = Date.now()) {
       keepCopies: 1,    // the pricing employee leaves this many copies of each card
       priceLevel: 0,    // the pricing employee's offset from market (PRICE_LEVELS)
     },
-    timeZone: M.browserTimeZone(),
     setupDone: false,
     day: 0,
     firstDay: null,
@@ -138,7 +173,7 @@ export function newState(sets, order, nowMs = Date.now()) {
     flags: { visited: {} },
     stats: {
       earned: 0, spent: 0, boostersBought: 0, boostersOpened: 0, cardsPriced: 0, cardsListed: 0,
-      cardsSold: 0, bulkSold: 0, customers: 0, levelsGained: 0, playTime: 0,
+      cardsSold: 0, bulkSold: 0, customers: 0, missedCustomers: 0, levelsGained: 0, playTime: 0,
       boostersSold: 0, boostersBoughtMarket: 0,
     },
     market: {},         // setId -> booster supply (supply.js)
@@ -153,14 +188,7 @@ export function newState(sets, order, nowMs = Date.now()) {
 }
 
 // ---------- Market access ----------
-// Cached until the next midnight, so long catch-ups stay fast.
-export function dayAt(state, nowMs) {
-  const c = state._dayCache;
-  if (c && c.tz === state.timeZone && nowMs >= c.from && nowMs < c.to) return c.day;
-  const day = M.dayNumber(state.timeZone, new Date(nowMs));
-  state._dayCache = { tz: state.timeZone, from: nowMs, to: nowMs + M.msUntilNextDay(state.timeZone, nowMs), day };
-  return day;
-}
+export const dayAt = (state, nowMs) => M.dayNumber(nowMs);
 
 // Per-card memo of today's market value; cheap enough for offline catch-up.
 export function marketValue(state, set, card) {
@@ -633,12 +661,23 @@ function remember(state, it, f, bought) {
   state._feedbackVer = (state._feedbackVer || 0) + 1;
 }
 
+// A customer who wanted the newest collection and found none of it.
+function rememberMiss(state, setId) {
+  const fb = (state._feedback ||= []);
+  fb.push({ s: setId, miss: true, day: state.day });
+  if (fb.length > FEEDBACK_SIZE) fb.splice(0, fb.length - FEEDBACK_SIZE);
+  state._feedbackVer = (state._feedbackVer || 0) + 1;
+  state.stats.missedCustomers = (state.stats.missedCustomers || 0) + 1;
+}
+
 // Counts per feeling over the kept looks, and per showcase card.
 export function feedbackSummary(state) {
   const total = { looks: 0, bought: 0 };
   for (const f of FEELINGS) total[f.key] = 0;
   const byCard = {};
+  total.missed = 0;
   for (const e of state._feedback || []) {
+    if (e.miss) { total.missed++; continue; }
     total.looks++; total[e.f]++;
     if (e.b) total.bought++;
     const k = `${e.s}:${e.c}`;
@@ -659,7 +698,14 @@ let quiet = false; // true during offline catch-up: no sounds or floating text
 function customerVisit(state, sets) {
   state.stats.customers++;
   if (!state.showcase.length) return;
-  let budget = BUDGET_MIN * Math.pow(BUDGET_MAX / BUDGET_MIN, rng());
+  // Some customers come for the newest collection only.
+  const want = wantedSet(state, sets);
+  const only = want && rng() < want.share ? want.set.id : null;
+  if (only && !state.showcase.some(it => it.s === only)) {
+    rememberMiss(state, only);
+    return;
+  }
+  let budget = customerBudget(state);
   const looked = new Set();
   for (let i = 0; i < CUSTOMER_LOOKS && state.showcase.length; i++) {
     let total = 0;
@@ -667,7 +713,7 @@ function customerVisit(state, sets) {
     for (let j = 0; j < state.showcase.length; j++) {
       const it = state.showcase[j];
       const set = sets[it.s], card = set?.byId[it.c];
-      const w = card && it.p <= budget && !looked.has(it) ? Math.sqrt(marketValue(state, set, card)) : 0;
+      const w = card && it.p <= budget && !looked.has(it) && (!only || it.s === only) ? Math.sqrt(marketValue(state, set, card)) : 0;
       weights[j] = w;
       total += w;
     }
@@ -724,7 +770,7 @@ export function tick(state, sets, dt, nowMs) {
     const first = !state.day;
     state.day = day;
     if (state.firstDay == null) state.firstDay = day;
-    if (!first) log(state, 'day', `New market day: ${M.dayLabel(day)}`);
+    if (!first) log(state, 'day', `New market day: ${M.dayLabel(day, state.firstDay)}`);
     advanceSupply(state, sets);
   }
   state.customerTimer -= dt;

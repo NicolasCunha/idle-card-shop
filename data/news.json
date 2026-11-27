@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-fame",
+      "date": "2026-11-27",
+      "version": "1.4.0",
+      "title": "Faster days and Fame",
+      "text": "A market day now lasts 10 minutes, the same for everyone. A new collection comes out every 12 days. The new Fame upgrade brings more customers, and some with up to $1,000 to spend. Right after a release, some customers come only for the new collection. Older saves start over."
+    },
+    {
       "id": "2026-11-27-customers",
       "date": "2026-11-27",
       "version": "1.3.0",
