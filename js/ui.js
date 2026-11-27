@@ -330,8 +330,11 @@ PANELS.shop = {
         <div class="kv"><span>Sealed</span><b data-k="stock"></b></div>
         ${next ? `<div class="kv muted"><span>Next set: ${esc(next.name)}</span><span data-k="nextin"></span></div>` : ''}
         <div class="btns">
-          <button data-action="buy" data-n="1" data-d="buy1">Buy booster</button>
-          <button data-action="buy" data-n="5" data-d="buy5">Buy 5</button>
+          <button data-action="buy" data-n="1" data-d="buy">Buy booster</button>
+          <button data-action="buy" data-n="5" data-d="buy">Buy 5</button>
+          <button data-action="buy" data-n="10" data-d="buy">Buy 10</button>
+          <button data-action="buy" data-n="100" data-d="buy">Buy 100</button>
+          <button data-action="buy" data-n="all" data-d="buy" title="${esc(TIPS.buyAll)}">Buy all</button>
         </div>
         <div class="chips" data-html="c-buy"></div>
       </section>
@@ -386,15 +389,14 @@ PANELS.shop = {
     const bulk = S.unlocked.priceList ? G.bulkSpares(S, SETS, keep) : { n: 0, total: 0 };
     return {
       bprice: fmtMoney(price),
-      left: out ? 'sold out' : fmtCount(sup.left),
+      left: out ? 'sold out' : fmtNum(sup.left),
       nextin: days > 1 ? `${days} days` : days === 1 ? 'tomorrow' : 'soon',
       stock: `${fmtNum(G.totalStock(S))} / ${fmtNum(G.stockCapacity(S))}`,
       sealed: fmtNum(S.stock[st.id] || 0),
       avail: fmtNum(avail),
       showcase: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
       bulkv: bulk.n ? fmtMoney(bulk.total) : '',
-      'd:buy1': full || S.money < price,
-      'd:buy5': full || S.money < price,
+      'd:buy': full || S.money < price,
       'd:open': !(S.stock[st.id] > 0),
       'd:price': !avail || !G.freeSlots(S),
       'd:bulk': !bulk.n,
@@ -453,7 +455,7 @@ PANELS.showcase = {
       <button data-action="recall" ${S.showcase.length ? '' : 'disabled'} title="${esc(TIPS.recall)}">Recall all</button>
     </div>
     <div class="table showcase-table">
-      <div class="tr th"><span></span><span>Card</span><span class="num">Tag</span><span class="num">Market</span><span class="num">Customers</span></div>
+      <div class="tr th"><span></span><span>Card</span><span class="num">#</span><span>Collection</span><span class="num">Tag</span><span class="num">Market</span><span class="num">Customers</span></div>
       ${rows.map(({ it, n }) => {
         const st = SETS[it.s], c = st.byId[it.c];
         const mv = G.marketValue(S, st, c);
@@ -461,6 +463,8 @@ PANELS.showcase = {
         return `<div class="tr">
           ${cardHtml(st, c, { size: 'xs' })}
           <span>${rarityTag(st, c)} ${esc(c.name)} ${n > 1 ? `<span class="muted">×${n}</span>` : ''}</span>
+          <span class="num muted">${esc(c.number || String(c.index))}</span>
+          <span class="muted">${esc(st.name)}</span>
           <span class="num">${fmtMoney(it.p)}</span>
           <span class="num muted">${fmtMoney(mv)}</span>
           ${feelingTag(G.feeling(it.p, mv), Math.abs(off) < 0.005 ? 'market' : fmtPct(off))}
@@ -507,18 +511,23 @@ function sparkline(values, w = 90, h = 24) {
   return `<svg class="spark ${up ? 'up' : 'down'}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polyline points="${pts}"/></svg>`;
 }
 
+// "{card}" in a news template becomes the card's name, highlighted.
+function newsSentence(n) {
+  return esc(n.text).split('{card}').join(`<b>${esc(n.card.name)}</b>`);
+}
+
 PANELS.market = {
   sig: () => [S.day, ui.marketSet, ui.marketSort, ui.marketPage, ui.marketQuery, PREFS.marketPageSize, lockSig()].join(),
   html() {
     const ids = released();
-    if (ui.marketSet !== 'all' && !ids.includes(ui.marketSet)) ui.marketSet = 'all';
-    const shownSets = (ui.marketSet === 'all' ? ids : [ui.marketSet]).map(set);
+    ui.marketSet = 'all';
+    const shownSets = ids.map(set);
     const day = S.day;
     const match = cardFilter(ui.marketQuery);
     const rows = [];
     for (const st of shownSets) {
       for (const c of st.cards) {
-        if (!match(c)) continue;
+        if (!match(c, st)) continue;
         const hist = M.history(st, c, day, 30);
         const now = hist[hist.length - 1];
         rows.push({ st, c, now, d1: now / hist[hist.length - 2] - 1, d7: now / hist[hist.length - 8] - 1, hist });
@@ -542,8 +551,6 @@ PANELS.market = {
     const many = shownSets.length > 1;
     return `
     <div class="bar-head market-filters">
-      ${ids.length > 1 ? `<select data-action="market-set" aria-label="Collection">
-        <option value="all" ${ui.marketSet === 'all' ? 'selected' : ''}>All collections</option>${setOptions(ui.marketSet)}</select>` : `<h2>${esc(set(ids[0]).name)}</h2>`}
       <input type="search" class="market-search" data-market-search placeholder="Search" aria-label="Search" title="${esc(TIPS.search)}" value="${esc(ui.marketQuery)}">
       <span class="grow"></span>
       <label class="inline">Sort <select data-action="market-sort">
@@ -573,17 +580,18 @@ PANELS.market = {
       </div>
     </section>
     ${news.length ? `<section class="box news"><h3>Card news</h3><ul>${news.slice(0, 8).map(n =>
-      `<li class="${n.kind}"><b>${esc(n.card.name)}</b>${many ? ` <span class="muted">${esc(n.set.name)}</span>` : ''} ${esc(n.text)} <span class="muted">${esc(M.dayLabel(n.day, S.firstDay))}</span></li>`).join('')}</ul></section>` : ''}
+      `<li class="${n.kind}">${newsSentence(n)}${many ? ` <span class="muted">${esc(n.set.name)}</span>` : ''} <span class="muted">${esc(M.dayLabel(n.day, S.firstDay))}</span></li>`).join('')}</ul></section>` : ''}
     ${pagerHtml}
     <div class="table market-table">
-      <div class="tr th"><span></span><span class="num">#</span><span>Card</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
+      <div class="tr th"><span></span><span class="num">#</span><span>Card</span><span>Collection</span><span class="num">Today</span><span class="num">1d</span><span class="num">7d</span><span>30d</span><span></span></div>
       ${shown.map(r => {
         const cost = r.now * G.MARKET_BUY_RATE;
         const ref = `data-s="${esc(r.st.id)}" data-c="${esc(r.c.id)}"`;
         return `<div class="tr">
           <button class="thumb" data-action="card" ${ref} aria-label="${esc(r.c.name)}">${cardHtml(r.st, r.c, { size: 'xs' })}</button>
           <span class="num muted">${esc(r.c.number || String(r.c.index))}</span>
-          <span>${rarityTag(r.st, r.c)} ${esc(r.c.name)}${many ? ` <span class="muted small">${esc(r.st.name)}</span>` : ''}</span>
+          <span>${rarityTag(r.st, r.c)} ${esc(r.c.name)}</span>
+          <span class="muted">${esc(r.st.name)}</span>
           <span class="num">${fmtMoney(r.now)}</span>
           <span class="num ${r.d1 >= 0 ? 'up' : 'down'}">${fmtPct(r.d1)}</span>
           <span class="num ${r.d7 >= 0 ? 'up' : 'down'}">${fmtPct(r.d7)}</span>
@@ -604,7 +612,7 @@ PANELS.market = {
       v[`bd-${id}`] = G.soldOut(S, st) ? 'sold out' : fmtMoney(G.boosterPrice(S, st));
       v[`bp-${id}`] = fmtMoney(p);
       v[`b7-${id}`] = `<span class="${ch >= 0 ? 'up' : 'down'}">${fmtPct(ch)}</span>`;
-      v[`bs-${id}`] = G.soldOut(S, st) ? 'sold out' : `${fmtCount(m.left)} / ${fmtCount(m.printed)}`;
+      v[`bs-${id}`] = G.soldOut(S, st) ? 'sold out' : `${fmtNum(m.left)} / ${fmtCount(m.printed)}`;
       v[`by-${id}`] = fmtNum(S.stock[id] || 0);
       v[`bbp-${id}`] = fmtMoney(G.marketBoosterBuyPrice(S, st));
       v[`blp-${id}`] = fmtMoney(G.marketBoosterSellPrice(S, st));

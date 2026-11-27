@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-27-market-search",
+      "date": "2026-11-27",
+      "version": "1.5.1",
+      "title": "Market and showcase tweaks",
+      "text": "Market search now covers every collection, and both the Market and the Showcase show each card's collection and number. Buy 10, Buy 100 and Buy all at the distributor. Supply shows the exact count."
+    },
+    {
       "id": "2026-11-27-floor",
       "date": "2026-11-27",
       "version": "1.5.0",

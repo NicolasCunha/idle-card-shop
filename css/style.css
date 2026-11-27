@@ -158,7 +158,8 @@ label.check { gap: .35rem; }
   background: var(--surface); padding: .35rem .7rem; border-radius: 8px;
 }
 .tr.th { background: none; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-.market-table .tr { grid-template-columns: 48px 64px 1fr 80px 70px 70px 96px 110px; }
+.market-table .tr { grid-template-columns: 48px 64px 1fr 110px 80px 70px 70px 96px 110px; }
+.showcase-table .tr { grid-template-columns: 40px 1fr 64px 110px 90px 90px 120px; }
 .booster-table .tr { grid-template-columns: 1fr 90px 80px 70px 150px 60px 250px; }
 .btns.tight { gap: .3rem; flex-wrap: nowrap; justify-content: flex-end; }
 .boosters { margin-bottom: .8rem; }
@@ -363,7 +364,7 @@ label.check { gap: .35rem; }
 @media (max-width: 640px) {
   .modal.detail { grid-template-columns: 1fr; justify-items: center; }
   .market-table .tr { grid-template-columns: 36px 1fr 70px auto; }
-  .market-table .tr > :nth-child(2), .market-table .tr > :nth-child(5), .market-table .tr > :nth-child(6), .market-table .tr > :nth-child(7) { display: none; }
+  .market-table .tr > :nth-child(2), .market-table .tr > :nth-child(4), .market-table .tr > :nth-child(6), .market-table .tr > :nth-child(7), .market-table .tr > :nth-child(8) { display: none; }
   .booster-table .tr { grid-template-columns: 1fr 70px 200px; }
   .booster-table .tr > :nth-child(2), .booster-table .tr > :nth-child(4), .booster-table .tr > :nth-child(5), .booster-table .tr > :nth-child(6) { display: none; }
   .booster-table .tr > :nth-child(7) { display: flex; }
@@ -373,8 +374,8 @@ label.check { gap: .35rem; }
   .tr { grid-template-columns: 36px 1fr 70px 70px; }
   .tr > :nth-child(5) { display: none; }
   .showcase-table .tr { grid-template-columns: 36px 1fr 64px auto; }
-  .showcase-table .tr > :nth-child(5) { display: block; }
-  .showcase-table .tr > :nth-child(4) { display: none; }
+  .showcase-table .tr > :nth-child(5), .showcase-table .tr > :nth-child(7) { display: block; }
+  .showcase-table .tr > :nth-child(3), .showcase-table .tr > :nth-child(4), .showcase-table .tr > :nth-child(6) { display: none; }
 }
 
 /* ---------- Opening scene ---------- */

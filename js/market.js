@@ -22,18 +22,20 @@ const EVENT_LOOKBACK = 10;
 export const REPRINT_HYPE_FACTOR = 0.6;
 const LOG_CAP = 1.1;
 
+// Player-facing sentences; {card} is replaced by the card's name. Same count
+// and order as before, so the seeded picks do not change.
 const NEWS_UP = [
-  'appeared on a TV show',
-  'went viral online',
-  'was played by a tournament champion',
-  'a famous streamer opened one',
-  'collectors are chasing the full set',
-  'showed up in a movie',
+  '{card} appeared on a TV show',
+  '{card} went viral online',
+  'A tournament champion played {card}',
+  'A famous streamer opened a {card}',
+  'Collectors are chasing {card}',
+  '{card} showed up in a movie',
 ];
 const NEWS_DOWN = [
-  'a large lot hit the market',
-  'collector interest cooled',
-  'fakes are flooding the market',
+  'A large lot of {card} hit the market',
+  'Collector interest in {card} cooled',
+  'Fake {card} cards are flooding the market',
 ];
 
 function hash(str) {

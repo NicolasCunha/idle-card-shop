@@ -261,11 +261,14 @@ async function run() {
   // ---------- Market search ----------
   section('Market search');
   {
-    const find = q => base.cards.filter(cardFilter(q)).map(c => c.number);
+    const find = q => base.cards.filter(c => cardFilter(q)(c, base)).map(c => c.number);
     ok(find('Alakazam 1').join() === '1/102', '"Alakazam 1" finds Alakazam 1/102 only');
     ok(find('alakazam').length === 1 && find('1').join() === '1/102', 'name alone and number alone both work');
     ok(find('97').length === 1 && find('1/102').join() === '1/102', 'printed number works');
     ok(find('Alakazam 2').length === 0 && find('').length === base.cards.length, 'a mismatch finds nothing; empty finds all');
+    const jungle = sets.jungle;
+    ok(jungle.cards.filter(c => cardFilter('jungle')(c, jungle)).length === jungle.cards.length && find('jungle').length === 0, 'the collection name matches every card in it');
+    ok(find('base alakazam').join() === '1/102', 'collection and card name together');
   }
 
   // ---------- Save ----------

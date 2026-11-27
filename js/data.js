@@ -118,6 +118,8 @@ function resolveReprints(sets) {
 // number in its collection, "1/102" matches the printed number. Every part
 // given must match: "Alakazam 1" finds Alakazam 1/102 only.
 export function cardFilter(query) {
+  // Words also match the collection name ("jungle", "base set").
+  // Returns (card, set) => boolean; set is optional.
   const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
   if (!words.length) return () => true;
   const nums = [], full = [], names = [];
@@ -126,9 +128,10 @@ export function cardFilter(query) {
     else if (/^\d+\/\d+$/.test(w)) full.push(w);
     else names.push(w);
   }
-  return card => {
+  return (card, set) => {
     const name = card.name.toLowerCase();
-    if (!names.every(w => name.includes(w))) return false;
+    const setName = (set?.name || '').toLowerCase();
+    if (!names.every(w => name.includes(w) || setName.includes(w))) return false;
     const n = parseInt(card.number, 10) || card.index;
     if (!nums.every(x => x === n)) return false;
     return full.every(x => card.number.toLowerCase() === x);

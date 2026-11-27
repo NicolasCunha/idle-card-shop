@@ -213,7 +213,7 @@ function run(action, d) {
   const shopSet = sets[d.set] || sets[document.querySelector('[data-action="shop-set"]')?.value] || sets[order[0]];
   switch (action) {
     case 'buy': {
-      if (G.buyBoosters(state, shopSet, Number(d.n) || 1)) Audio.sfx.coin();
+      if (G.buyBoosters(state, shopSet, d.n === 'all' ? Infinity : Number(d.n) || 1)) Audio.sfx.coin();
       break;
     }
     case 'open': {
