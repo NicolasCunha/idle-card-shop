@@ -36,6 +36,135 @@
   color-scheme: dark;
 }
 
+[data-theme="ocean"] {
+  --bg: #e4eef3;
+  --surface: #f4f9fb;
+  --surface-2: #d6e5ec;
+  --text: #24404f;
+  --muted: #5f7d8c;
+  --border: #c3d7e0;
+  --accent: #2f7fa3;
+  --accent-soft: #cfe6f0;
+  --accent-text: #f4fbff;
+  --up: #3f8a5a;
+  --down: #b3544a;
+  --danger: #b3544a;
+  --shadow: 0 1px 2px rgba(40, 40, 40, .08), 0 4px 14px rgba(40, 40, 40, .06);
+  color-scheme: light;
+}
+[data-theme="lavender"] {
+  --bg: #ece8f4;
+  --surface: #f8f6fc;
+  --surface-2: #e0daee;
+  --text: #3b3350;
+  --muted: #7a7192;
+  --border: #d4cce6;
+  --accent: #7c5fb8;
+  --accent-soft: #e3d9f5;
+  --accent-text: #fbf9ff;
+  --up: #4f8a4b;
+  --down: #b2584a;
+  --danger: #b2584a;
+  --shadow: 0 1px 2px rgba(40, 40, 40, .08), 0 4px 14px rgba(40, 40, 40, .06);
+  color-scheme: light;
+}
+[data-theme="rose"] {
+  --bg: #f6e6e8;
+  --surface: #fdf5f6;
+  --surface-2: #efd7da;
+  --text: #4d2e33;
+  --muted: #8f6a70;
+  --border: #e6c8cd;
+  --accent: #b8576a;
+  --accent-soft: #f4d3da;
+  --accent-text: #fff8f9;
+  --up: #4f8a4b;
+  --down: #b04646;
+  --danger: #b04646;
+  --shadow: 0 1px 2px rgba(40, 40, 40, .08), 0 4px 14px rgba(40, 40, 40, .06);
+  color-scheme: light;
+}
+[data-theme="sepia"] {
+  --bg: #ede3cf;
+  --surface: #f7f0e1;
+  --surface-2: #e3d5bb;
+  --text: #3f3222;
+  --muted: #7d6a51;
+  --border: #d6c4a4;
+  --accent: #8c6a3a;
+  --accent-soft: #e8d6b4;
+  --accent-text: #fffaf0;
+  --up: #56804a;
+  --down: #a8523f;
+  --danger: #a8523f;
+  --shadow: 0 1px 2px rgba(40, 40, 40, .08), 0 4px 14px rgba(40, 40, 40, .06);
+  color-scheme: light;
+}
+[data-theme="mint"] {
+  --bg: #e2f1ea;
+  --surface: #f4fbf7;
+  --surface-2: #d2e8dd;
+  --text: #23443a;
+  --muted: #5c8275;
+  --border: #bfdccf;
+  --accent: #2f9273;
+  --accent-soft: #cdeee0;
+  --accent-text: #f3fffa;
+  --up: #2f8a4f;
+  --down: #b3544a;
+  --danger: #b3544a;
+  --shadow: 0 1px 2px rgba(40, 40, 40, .08), 0 4px 14px rgba(40, 40, 40, .06);
+  color-scheme: light;
+}
+[data-theme="forest"] {
+  --bg: #18221b;
+  --surface: #202d24;
+  --surface-2: #29382d;
+  --text: #e2eedf;
+  --muted: #9cb39f;
+  --border: #34473a;
+  --accent: #8fbf6a;
+  --accent-soft: #34502f;
+  --accent-text: #14200f;
+  --up: #9fd38f;
+  --down: #e8957f;
+  --danger: #e8957f;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+[data-theme="midnight"] {
+  --bg: #141826;
+  --surface: #1c2233;
+  --surface-2: #252c40;
+  --text: #e3e7f3;
+  --muted: #9aa3bd;
+  --border: #323a52;
+  --accent: #7f9cf0;
+  --accent-soft: #2d3a66;
+  --accent-text: #0f1526;
+  --up: #8cc9a0;
+  --down: #ee9a8c;
+  --danger: #ee9a8c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+[data-theme="ember"] {
+  --bg: #211614;
+  --surface: #2c1d1a;
+  --surface-2: #382622;
+  --text: #f3e2d9;
+  --muted: #bd9a8c;
+  --border: #4a332d;
+  --accent: #e8814f;
+  --accent-soft: #5a3022;
+  --accent-text: #26130b;
+  --up: #9bcf8a;
+  --down: #f0978a;
+  --danger: #f0978a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
 body {
@@ -169,6 +298,34 @@ label.check { gap: .35rem; }
 .news-btn { display: inline-flex; align-items: center; }
 .news-count { display: inline-flex; align-items: center; justify-content: center; min-width: 1.15rem; height: 1.15rem; margin-left: .4rem; background: var(--accent); color: var(--bg); border-radius: 99px; padding: 0 .35rem; font-size: .72rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
 .news-count[hidden] { display: none; }
+/* Storage */
+.goods-table .tr { grid-template-columns: 1fr 60px 90px 100px 64px 330px; }
+.shelf-table .tr { grid-template-columns: 1fr 60px 90px 64px 90px; }
+input.gp { width: 100%; padding: .3rem .5rem; }
+.shelf .bar-head { margin-bottom: .3rem; }
+/* Finances */
+.fin-today { display: grid; grid-template-columns: 1fr 1fr auto; gap: .8rem; margin-bottom: .8rem; }
+.fin-table .tr { grid-template-columns: 1fr auto; }
+.fin-table .tr.total { border-top: 1px solid var(--border); font-weight: 650; }
+.fin-net b { font-size: 1.4rem; font-variant-numeric: tabular-nums; }
+.fin-days .tr { grid-template-columns: 1fr 100px 100px 100px 120px; }
+.fin-bar { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; align-self: center; }
+.fin-bar i { display: block; height: 100%; background: var(--up); }
+.fin-bar.neg i { background: var(--down); }
+/* Awards */
+.modal.awards-panel { width: min(640px, 100%); max-height: 88vh; overflow: auto; display: grid; gap: .8rem; }
+.awards { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; font-size: .9rem; }
+.awards li { display: grid; grid-template-columns: 1.4rem 1fr auto; gap: .5rem; align-items: baseline; opacity: .6; }
+.awards li.got { opacity: 1; }
+.aw-mark { color: var(--accent); }
+@media (max-width: 720px) {
+  .fin-today { grid-template-columns: 1fr; }
+  .goods-table .tr { grid-template-columns: 1fr 50px 90px; }
+  .goods-table .tr > :nth-child(3), .goods-table .tr > :nth-child(5) { display: none; }
+  .goods-table .tr > :nth-child(6) { grid-column: 1 / -1; display: flex; flex-wrap: wrap; }
+  .fin-days .tr { grid-template-columns: 1fr 90px 90px; }
+  .fin-days .tr > :nth-child(2), .fin-days .tr > :nth-child(5) { display: none; }
+}
 .modal.news-panel { width: min(640px, 100%); max-height: 88vh; overflow: auto; display: grid; gap: .8rem; }
 .news-panel h3 { margin: .2rem 0 .4rem; }
 .notices { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; font-size: .9rem; }
@@ -296,7 +453,7 @@ label.check { gap: .35rem; }
 .card.has-img.size-lg .rar-corner { font-size: 1rem; min-width: 1.8rem; height: 1.8rem; left: 10px; bottom: 10px; }
 .card.has-img.size-xs .rar-corner { display: none; }
 .card.unseen { filter: grayscale(1) brightness(.75); opacity: .45; }
-[data-theme="dark"] .card.unseen { filter: grayscale(1) brightness(.6); }
+[data-mode="dark"] .card.unseen { filter: grayscale(1) brightness(.6); }
 /* Discovered but no copy in the binder: full art, dimmed. */
 .card.not-owned { filter: brightness(.45) saturate(.6); }
 .binder-slot:hover .card.not-owned { filter: brightness(.7) saturate(.8); }

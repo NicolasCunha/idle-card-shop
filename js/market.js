@@ -13,9 +13,16 @@
 // Every curve is a smoothstep whose length grows with the size of the move, so no
 // day-to-day jump exceeds ~6% (see tests).
 //
-// ASSUMPTION [GDD Q3]: one global seed for everyone (GDD proposal).
+// Each save has its own seed (Nicolas, 2026-11-28; docs/sdd/economy-v5.md).
+// Saves from before v5 keep the old global seed. G.prepare sets it.
 
-const SEED = 'idlecardshop-market-v1';
+export const LEGACY_SEED = 'idlecardshop-market-v1';
+let SEED = LEGACY_SEED;
+export function setSeed(seed) {
+  const next = typeof seed === 'string' && seed ? seed : LEGACY_SEED;
+  if (next !== SEED) { SEED = next; cache.clear(); }
+}
+export const getSeed = () => SEED;
 const EVENT_WINDOW = 40;
 const EVENT_CHANCE = 0.22;
 const EVENT_LOOKBACK = 10;
@@ -51,7 +58,7 @@ function hash(str) {
   return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 }
 const rand = (...parts) => hash(SEED + '|' + parts.join('|')) / 9007199254740992;
-// Same global seed, for other deterministic systems (booster supply).
+// Same seed, for other deterministic systems (booster supply, accessories).
 export const hashRand = rand;
 const smoothstep = t => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 

@@ -12,12 +12,21 @@ import { fmtMoney, fmtNum, fmtDuration, esc } from './format.js';
 import { OFFLINE } from './strings.js';
 import * as Clock from './clock.js';
 import * as Debug from './debug.js';
+import * as Achievements from './achievements.js';
 
 const TICK_MS = 250;
 const AUTOSAVE_MS = 10000;
 const LIVE_MAX_DT = 2; // longer gaps (paused tab) go through catch-up
 
 let state, sets, order, prefs, news = [];
+
+// Accessories for the Storage tab (placeholder list Nicolas can replace).
+async function loadAccessories() {
+  try {
+    const res = await fetch('data/accessories.json', { cache: 'no-cache' });
+    return res.ok ? ((await res.json()).items || []) : [];
+  } catch { return []; }
+}
 
 // Patch notes for the News panel. Missing or broken file: no notes.
 async function loadNews() {
@@ -37,6 +46,7 @@ async function boot() {
     ({ sets, order } = await loadCollections());
     await loadTutorial();
     news = await loadNews();
+    G.setAccessories(await loadAccessories());
   } catch (err) {
     document.getElementById('app').innerHTML = `<p class="fatal">Could not load game data.</p>`;
     console.error(err);
@@ -46,7 +56,8 @@ async function boot() {
     document.getElementById('app').innerHTML = `<p class="fatal">No card collections found.</p>`;
     return;
   }
-  state = Save.loadLocal(sets, order) || G.newState(sets, order);
+  Achievements.register();
+  state = Save.loadLocal(sets, order) || G.newState(sets, order, Clock.now());
   G.prepare(state, sets);
 
   initOpening({
@@ -62,6 +73,7 @@ async function boot() {
   UI.initUI({ state, sets, order, prefs, news, actions: { run, click: () => Audio.sfx.click() } });
 
   G.onCustomer(ev => Scene.customer(ev));
+  G.onAchievement(name => UI.toastText(`Achievement: ${name}`));
 
   G.onSale(v => {
     if (Scene.showing()) return; // the buyer on the shop floor shows it
@@ -262,6 +274,15 @@ function run(action, d) {
       UI.frame();
       return;
     }
+    case 'awards': {
+      const el = overlayEl();
+      el.className = 'overlay';
+      el.innerHTML = UI.awardsHtml();
+      el.hidden = false;
+      UI.frame();
+      return;
+    }
+    case 'good-level': UI.setUiOption('gp', {}); UI.setUiOption('goodLevel', d.value); break;
     case 'ui-opt': UI.setUiOption(d.opt, d.value); break;
     case 'bulk': {
       const r = G.sellBulk(state, sets, Number(UI.uiOption('priceKeep')) || 0);
@@ -350,6 +371,19 @@ function run(action, d) {
     case 'pref-vol': prefs[d.key] = Number(d.value); Audio.setPrefs(prefs); Save.savePrefs(prefs); break;
     case 'pref-mute': prefs[d.key] = !!d.value; Audio.setPrefs(prefs); Save.savePrefs(prefs); break;
     case 'save-now': save(); break;
+    case 'good-list': {
+      const input = document.querySelector(`[data-gp="${CSS.escape(d.g)}"]`);
+      const price = Number(input?.value) || UI.goodPriceFor(d.g);
+      const n = d.n === 'all' ? Infinity : Number(d.n) || 1;
+      if (G.listGood(state, sets, d.g, n, price)) Audio.sfx.coin();
+      else if (!G.shelfFree(state)) UI.toast('shelfFull');
+      break;
+    }
+    case 'shelf-recall': G.recallShelf(state); break;
+    case 'shelf-take': G.recallShelfItem(state, Number(d.i)); break;
+    case 'box-buy': if (sets[d.set] && G.buyBox(state, sets[d.set])) Audio.sfx.coin(); break;
+    case 'box-open': if (sets[d.set] && G.openBox(state, sets[d.set])) Audio.sfx.tear(); break;
+    case 'acc-buy': if (G.buyAccessory(state, d.id, Number(d.n) || 1)) Audio.sfx.coin(); break;
     case 'dbg-code': {
       const input = document.getElementById('dbg-code');
       Debug.checkCode(input?.value).then(ok => {

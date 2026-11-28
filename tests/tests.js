@@ -8,6 +8,7 @@ import { fmtMoney } from '../js/format.js';
 import { setTutorialData, currentStep, skipTutorial, restartTutorial } from '../js/tutorial.js';
 import * as Debug from '../js/debug.js';
 import * as Clock from '../js/clock.js';
+import * as Achievements from '../js/achievements.js';
 
 const out = document.getElementById('out');
 let passed = 0, failed = 0;
@@ -31,6 +32,7 @@ const T0 = Date.UTC(2026, 10, 26, 12, 0, 0);
 
 function fresh(sets, order) {
   const s = G.newState(sets, order, T0);
+  s.seed = M.LEGACY_SEED; // fixed seed: deterministic expectations
   s.setupDone = true;
   G.prepare(s, sets);
   G.tick(s, sets, 0, T0);
@@ -170,6 +172,83 @@ async function run() {
   s.money = 25;
   G.tick(s, sets, 20, T0 + 45000);
   ok(s.money >= s.rules.cashReserve - 1e-9 && emp.status === 'cash reserve', 'buyer respects the cash reserve');
+
+  // ---------- Economy v5 ----------
+  section('Salaries and Finances');
+  G.setAccessories((await (await fetch('../data/accessories.json')).json()).items);
+  Achievements.register();
+  s = fresh(sets, order);
+  s.money = 1000;
+  const worker = G.hire(s);
+  const lv = G.SKILL_KEYS.reduce((a, k) => a + worker.skills[k].lvl, 0);
+  ok(worker.hiredDay === s.day && Math.abs(G.salaryPerDay(s, worker) - G.SALARY_PER_LEVEL * lv) < 1e-9, 'salary is $2 per skill level per day at hiring', fmtMoney(G.salaryPerDay(s, worker)));
+  worker.hiredDay = s.day - 20;
+  ok(Math.abs(G.salaryPerDay(s, worker) / (G.SALARY_PER_LEVEL * lv) - 1.2) < 1e-9, 'tenure adds 1% per market day');
+  worker.hiredDay = s.day - 500;
+  ok(Math.abs(G.salaryPerDay(s, worker) / (G.SALARY_PER_LEVEL * lv) - 1.5) < 1e-9, 'tenure bonus stops at +50%');
+  worker.hiredDay = s.day;
+  const m0 = s.money;
+  G.tick(s, sets, 60, T0 + 60000);
+  const paid = G.salaryPerDay(s, worker) * 60 / (M.DAY_MS / 1000);
+  ok(Math.abs(m0 - s.money - paid) < 1e-6 && Math.abs(s.stats.salariesPaid - paid) < 1e-6, 'salary is paid continuously by the tick', fmtMoney(paid));
+  const today = s.ledger[s.ledger.length - 1];
+  ok(today.day === s.day && Math.abs(today.out.salaries - paid) < 1e-6 && today.out.hires > 0, 'the ledger books salaries and hiring by category');
+  s.money = 0;
+  G.setTask(s, worker, 'open');
+  G.tick(s, sets, 5, T0 + 65000);
+  ok(worker.status === 'unpaid' && s.money === 0, 'with no cash the employee waits, no debt');
+  const led = fresh(sets, order);
+  G.buyBooster(led, base);
+  ok(led.ledger.at(-1).out.boosters > 0, 'distributor purchases are booked');
+  led.money = 1e6;
+  for (let d = 1; d <= G.LEDGER_DAYS + 10; d++) { led.day++; led.stock.base = 0; G.buyBooster(led, base); }
+  ok(led.ledger.length === G.LEDGER_DAYS, `the ledger keeps ${G.LEDGER_DAYS} market days`);
+
+  section('Seed per save');
+  const ns1 = G.newState(sets, order, T0), ns2 = G.newState(sets, order, T0);
+  ok(typeof ns1.seed === 'string' && ns1.seed.length >= 16 && ns1.seed !== ns2.seed, 'each new save gets its own seed');
+  const c0 = base.cards[0];
+  M.setSeed(ns1.seed); const p1 = M.marketValue(base, c0, 100);
+  M.setSeed(ns2.seed); const p2 = M.marketValue(base, c0, 100);
+  M.setSeed(ns1.seed); const p1b = M.marketValue(base, c0, 100);
+  ok(p1 !== p2 && p1 === p1b, 'prices depend on the save seed and repeat for the same seed');
+  M.setSeed(M.LEGACY_SEED);
+  const v4 = { game: 'idlecardshop', saveVersion: 4, state: { money: 50, setupDone: true, staff: [{ id: 1, name: 'Ada', task: 'open', skills: {} }] } };
+  const m45 = Save.restore(v4, sets, order);
+  ok(m45.seed === M.LEGACY_SEED && m45.money === 50, 'v4 saves keep the old global seed');
+  ok(m45.staff[0].hiredDay === null && Array.isArray(m45.ledger) && !m45.ledger.length && !m45.shelf.length, 'v4 -> v5: tenure starts on load, empty ledger and shelf');
+  const empty4 = Save.restore({ game: 'idlecardshop', saveVersion: 4, state: {} }, sets, order);
+  ok(empty4.seed !== M.LEGACY_SEED, 'an empty v4 save starts with a new seed');
+
+  section('Storage');
+  s = fresh(sets, order);
+  s.money = 5000;
+  s.upgrades.storage = 3;
+  ok(G.buyBox(s, base) && G.goodsOwned(s, 'x:base') === 1, 'a booster box can be bought');
+  ok(Math.abs(G.boxPrice(s, base) - 36 * G.boosterPrice(s, base) * 0.9) < 1e-9, 'a box costs 36 boosters less 10%');
+  ok(G.openBox(s, base) && G.goodsOwned(s, 'b:base') === 36 && !G.goodsOwned(s, 'x:base'), 'opening a box gives 36 boosters');
+  const acc = G.accessories()[0];
+  ok(acc && G.buyAccessory(s, acc.id, 2) === 2 && G.goodsOwned(s, `a:${acc.id}`) === 2, 'accessories can be bought', acc?.name);
+  ok(G.listGood(s, sets, 'b:base', 10, 5) === 10 && s.stock.base === 26 && G.shelfCount(s) === 10, 'listing moves goods to the shelf');
+  ok(G.listGood(s, sets, 'b:base', 5, 5) === 5 && s.shelf.length === 1, 'same good at the same price stacks');
+  const room = G.shelfFree(s);
+  ok(G.listGood(s, sets, 'b:base', 999, 6) === room && G.shelfCount(s) === G.shelfCapacity(s), 'the shelf has limited room', `${G.shelfCapacity(s)}`);
+  ok(G.recallShelf(s) > 0 && !s.shelf.length && s.stock.base === 36, 'recall brings goods back');
+  G.listGood(s, sets, `a:${acc.id}`, 2, acc.value);
+  G.setRandom(G.seededRandom(3));
+  for (let t = 1; t <= 1800 && s.shelf.length; t++) G.tick(s, sets, 1, T0 + 60000 + t * 1000);
+  ok(!s.shelf.length && s.stats.sealedSold === 2 && s.ledger.at(-1).in.sealed > 0, 'customers buy shelf goods at a fair price', `${s.stats.sealedSold} sold`);
+  ok(s.achievements['sealed-sale'] != null && s.achievements['box-break'] != null, 'achievements are earned during play');
+
+  section('Achievements');
+  const aw = fresh(sets, order);
+  aw.stats.cardsSold = 150;
+  Achievements.check(aw, sets, true);
+  ok(aw.achievements['first-sale'] != null && aw.achievements['sold-100'] != null && aw.achievements['sold-1k'] == null, 'existing progress earns its achievements');
+  ok(Achievements.list(sets).some(a => a.id === 'complete-jungle') && Achievements.list(sets).some(a => a.id === 'master'), 'one achievement per collection plus Master collector');
+  const before = aw.inbox.length;
+  Achievements.check(aw, sets, true);
+  ok(aw.inbox.length === before, 'silent checks add no notices');
 
   // ---------- Release calendar ----------
   section('Release calendar');

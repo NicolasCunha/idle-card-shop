@@ -44,10 +44,14 @@ export function setUpgrade(state, key, lvl) {
 export function hireFree(state) {
   if (state.staff.length > G.UPGRADES.staffRoom.max) return null;
   state.upgrades.staffRoom = Math.max(state.upgrades.staffRoom, state.staff.length);
-  const money = state.money;
+  const money = state.money, spent = state.stats.spent;
+  const cost = G.hireCost(state.staff.length);
   state.money = Infinity;
   const emp = G.hire(state);
   state.money = money;
+  state.stats.spent = spent;
+  const e = state.ledger[state.ledger.length - 1];
+  if (e?.out.hires) { e.out.hires -= cost; if (e.out.hires < 1e-9) delete e.out.hires; }
   return emp;
 }
 

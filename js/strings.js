@@ -6,10 +6,26 @@ export const TABS = {
   binder: 'Binder',
   showcase: 'Showcase',
   market: 'Market',
+  storage: 'Storage',
   staff: 'Staff',
   upgrades: 'Upgrades',
+  finances: 'Finances',
   settings: 'Settings',
 };
+
+// Finances tab categories (game.js earn/spend).
+export const LEDGER_CATS = {
+  cards: 'Card sales', bulk: 'Bulk sales', sealed: 'Storage sales', market: 'Market',
+  boosters: 'Distributor', goods: 'Boxes and accessories', upgrades: 'Upgrades',
+  hires: 'Hiring', training: 'Training', salaries: 'Salaries',
+};
+
+export const THEMES = [
+  ['system', 'System'], ['light', 'Light'], ['dark', 'Dark'], ['forest', 'Forest'], ['ocean', 'Ocean'],
+  ['lavender', 'Lavender'], ['rose', 'Rose'], ['sepia', 'Sepia'], ['midnight', 'Midnight'], ['mint', 'Mint'], ['ember', 'Ember'],
+];
+// Themes with a dark background.
+export const DARK_THEMES = ['dark', 'forest', 'midnight', 'ember'];
 
 export const SKILL_NAMES = { buy: 'Buy', open: 'Open', price: 'Price', list: 'List' };
 
@@ -48,6 +64,11 @@ export const TIPS = {
   customers: 'Each customer has a budget. At market price they buy half the time; cheaper sells more often, pricier much less. Twice the market almost never sells.',
   milestone: 'Discovery bonus on sale price for this collection.',
   day: 'A new market day every 10 minutes, the same for everyone.',
+  salary: 'Per market day: $2 per skill level, +1% per day at the shop (up to +50%). Unpaid staff wait for cash.',
+  goodPrice: 'Price tag. Customers react to it like card tags.',
+  box: '36 boosters. 10% off the distributor price.',
+  openBox: 'Needs room for 36 boosters.',
+  shelf: 'Goods for sale. Room grows with Bigger showcase.',
 };
 
 // Simulated rival shops (supply.js RIVALS, same order: biggest first).
@@ -67,6 +88,7 @@ export const FEELING_TEXT = { cheap: 'cheap', fair: 'fair', pricey: 'pricey', st
 
 export const TOASTS = {
   showcaseFull: 'Showcase full',
+  shelfFull: 'Shelf full',
   badCode: 'Wrong code',
 };
 

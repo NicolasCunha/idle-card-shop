@@ -87,7 +87,25 @@ export const MILESTONES = [
   { at: 1, bonus: 0.10 },
 ];
 
-// ASSUMPTION [GDD Q2]: no staff salaries.
+// Salaries (Nicolas, 2026-11-28; docs/sdd/economy-v5.md): per market day,
+// $2 x the sum of skill levels, +1% per market day at the shop up to +50%.
+// Paid by the tick, live and offline. No cash: the employee waits, no debt.
+export const SALARY_PER_LEVEL = 2;
+export const TENURE_BONUS = 0.01;
+export const TENURE_MAX = 0.5;
+const DAY_SECONDS = M.DAY_MS / 1000;
+
+// Finances: one ledger entry per market day, this many kept.
+export const LEDGER_DAYS = 72;
+
+// Sealed goods (docs/sdd/economy-v5.md).
+export const BOX_SIZE = 36;               // boosters per box
+export const BOX_DISCOUNT = 0.9;          // a box costs 36 boosters less 10%
+export const SEALED_SHARE = 0.25;         // visits that shop the sealed shelf when it has goods
+export const SEALED_LOOKS = 2;
+export const SHELF_BASE = 20;             // shelf room, +10 per Bigger showcase level
+export const SHELF_PER_LEVEL = 10;
+const ACC_SWING = 0.05;                   // accessories' daily value swing
 
 const NAMES = ['Ada', 'Ben', 'Cleo', 'Dev', 'Eli', 'Finn', 'Gus', 'Hana', 'Ivy', 'Jo', 'Kai', 'Lou',
   'Mae', 'Nico', 'Otto', 'Pia', 'Rae', 'Sam', 'Theo', 'Uma', 'Vic', 'Wren'];
@@ -145,9 +163,15 @@ export const reputationBonus = s => 1 + 0.06 * s.upgrades.reputation;
 export const totalStock = s => Object.values(s.stock).reduce((a, b) => a + b, 0);
 
 // ---------- State ----------
+export function newSeed() {
+  if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
+  return 'seed-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
+
 export function newState(sets, order, nowMs = Date.now()) {
   const first = order[0] || '';
   return {
+    seed: newSeed(),    // market seed (docs/sdd/economy-v5.md)
     money: START_MONEY,
     stock: {},          // setId -> sealed boosters
     binder: {},         // setId -> cardId -> copies owned (opened cards land here)
@@ -168,14 +192,19 @@ export function newState(sets, order, nowMs = Date.now()) {
     day: 0,
     firstDay: null,
     customerTimer: 3,
-    unlocked: { priceList: false, binder: false, showcase: false, upgrades: false, staff: false, market: false },
+    unlocked: { priceList: false, binder: false, showcase: false, upgrades: false, staff: false, market: false, storage: false, finances: false },
     tutorial: { rev: 0, done: [], skipped: false, base: {} },
     flags: { visited: {} },
     stats: {
       earned: 0, spent: 0, boostersBought: 0, boostersOpened: 0, cardsPriced: 0, cardsListed: 0,
       cardsSold: 0, bulkSold: 0, customers: 0, missedCustomers: 0, levelsGained: 0, playTime: 0,
       boostersSold: 0, boostersBoughtMarket: 0,
+      sealedSold: 0, boxesBought: 0, boxesOpened: 0, accessoriesBought: 0, salariesPaid: 0,
     },
+    goods: {},          // 'x:<set>' boxes, 'a:<id>' accessories -> count
+    shelf: [],          // [{g, p, n}] sealed goods for sale (Storage tab)
+    ledger: [],         // [{day, in: {cat: $}, out: {cat: $}}] Finances tab
+    achievements: {},   // id -> market day earned
     market: {},         // setId -> booster supply (supply.js)
     inbox: [],          // game notices for the News panel: [{id, day, kind, text}]
     inboxRead: 0,       // highest inbox id the player has seen
@@ -214,14 +243,29 @@ function log(state, kind, text) {
   if (state.log.length > LOG_SIZE) state.log.length = LOG_SIZE;
 }
 
-function earn(state, v) {
+// Every money change has a category for the Finances tab.
+function earn(state, v, cat) {
   state.money += v;
   state.stats.earned += v;
+  book(state, 'in', cat, v);
 }
 
-function spend(state, v) {
+function spend(state, v, cat) {
   state.money -= v;
   state.stats.spent += v;
+  book(state, 'out', cat, v);
+}
+
+function book(state, side, cat, v) {
+  if (!v) return;
+  const L = state.ledger;
+  let e = L[L.length - 1];
+  if (!e || e.day !== state.day) {
+    e = { day: state.day, in: {}, out: {} };
+    L.push(e);
+    if (L.length > LEDGER_DAYS) L.splice(0, L.length - LEDGER_DAYS);
+  }
+  e[side][cat] = (e[side][cat] || 0) + v;
 }
 
 export function collectionProgress(state, set) {
@@ -275,7 +319,7 @@ export function canBuyBooster(state, set, reserve = 0) {
 
 export function buyBooster(state, set, reserve = 0) {
   if (!canBuyBooster(state, set, reserve)) return false;
-  spend(state, boosterPrice(state, set));
+  spend(state, boosterPrice(state, set), 'boosters');
   supply(state, set).left--;
   state.stock[set.id] = (state.stock[set.id] || 0) + 1;
   state.stats.boostersBought++;
@@ -293,7 +337,7 @@ export function canBuyMarketBooster(state, set) {
 
 export function buyMarketBooster(state, set) {
   if (!canBuyMarketBooster(state, set)) return false;
-  spend(state, marketBoosterBuyPrice(state, set));
+  spend(state, marketBoosterBuyPrice(state, set), 'market');
   supply(state, set).held--;
   state.stock[set.id] = (state.stock[set.id] || 0) + 1;
   state.stats.boostersBoughtMarket++;
@@ -302,7 +346,7 @@ export function buyMarketBooster(state, set) {
 
 export function sellMarketBooster(state, set) {
   if (!(state.stock[set.id] > 0) || !setUnlocked(state, set)) return false;
-  earn(state, marketBoosterSellPrice(state, set));
+  earn(state, marketBoosterSellPrice(state, set), 'market');
   supply(state, set).held++;
   state.stock[set.id]--;
   state.stats.boostersSold++;
@@ -462,7 +506,7 @@ export function sellBulk(state, sets, keep = 0) {
     n += sp.n;
     total += sp.n * sp.mv * BULK_RATE;
   }
-  earn(state, total);
+  earn(state, total, 'bulk');
   state.stats.bulkSold += n;
   if (n) state._binderVer = (state._binderVer || 0) + 1;
   return { n, total };
@@ -492,7 +536,7 @@ function staffPriceOne(state, sets) {
     q.acted = true;
     if (sp.mv < state.rules.bulkBelow) {
       takeFromBinder(state, sp.set, sp.card, 1);
-      earn(state, sp.mv * BULK_RATE);
+      earn(state, sp.mv * BULK_RATE, 'bulk');
       state.stats.bulkSold++;
       return 'bulk';
     }
@@ -520,7 +564,7 @@ export function singlePrice(state, set, card) {
 export function buySingle(state, sets, set, card) {
   const cost = singlePrice(state, set, card);
   if (!setUnlocked(state, set) || state.money < cost) return false;
-  spend(state, cost);
+  spend(state, cost, 'market');
   const binder = (state.binder[set.id] ||= {});
   binder[card.id] = (binder[card.id] || 0) + 1;
   state._binderVer = (state._binderVer || 0) + 1;
@@ -535,7 +579,7 @@ export function buyUpgrade(state, key) {
   if (lvl >= UPGRADES[key].max) return false;
   const cost = upgradeCost(key, lvl);
   if (state.money < cost) return false;
-  spend(state, cost);
+  spend(state, cost, 'upgrades');
   state.upgrades[key]++;
   return true;
 }
@@ -547,13 +591,13 @@ export function canHire(state) {
 
 export function hire(state) {
   if (!canHire(state)) return null;
-  spend(state, hireCost(state.staff.length));
+  spend(state, hireCost(state.staff.length), 'hires');
   const used = new Set(state.staff.map(e => e.name));
   const free = NAMES.filter(n => !used.has(n));
   const name = free.length ? free[Math.floor(rng() * free.length)] : `Clerk ${state.nextId}`;
   const skills = {};
   for (const k of SKILL_KEYS) skills[k] = { lvl: 1 + Math.floor(rng() * 2), xp: 0 };
-  const emp = { id: state.nextId++, name, skills, task: null, progress: 0, training: null, status: 'idle' };
+  const emp = { id: state.nextId++, name, skills, task: null, progress: 0, training: null, status: 'idle', hiredDay: state.day };
   state.staff.push(emp);
   log(state, 'staff', `${name} joined the shop`);
   return emp;
@@ -572,7 +616,7 @@ export function canTrain(state, emp, skill) {
 export function train(state, emp, skill) {
   if (!canTrain(state, emp, skill)) return false;
   const lvl = emp.skills[skill].lvl;
-  spend(state, trainCost(lvl));
+  spend(state, trainCost(lvl), 'training');
   emp.training = { skill, left: trainTime(lvl), total: trainTime(lvl) };
   emp.progress = 0;
   return true;
@@ -622,7 +666,20 @@ function doTask(state, sets, emp) {
   return false;
 }
 
+export function salaryPerDay(state, emp) {
+  let lv = 0;
+  for (const k of SKILL_KEYS) lv += emp.skills[k].lvl;
+  const days = emp.hiredDay == null ? 0 : Math.max(0, state.day - emp.hiredDay);
+  return SALARY_PER_LEVEL * lv * (1 + Math.min(TENURE_MAX, TENURE_BONUS * days));
+}
+export const payroll = state => state.staff.reduce((a, e) => a + salaryPerDay(state, e), 0);
+
 function tickEmployee(state, sets, emp, dt) {
+  if (emp.hiredDay == null) emp.hiredDay = state.day;
+  const due = salaryPerDay(state, emp) * dt / DAY_SECONDS;
+  if (state.money < due) { emp.status = 'unpaid'; return; }
+  spend(state, due, 'salaries');
+  state.stats.salariesPaid += due;
   if (emp.training) {
     emp.status = 'training';
     emp.training.left -= dt;
@@ -701,6 +758,7 @@ let quiet = false; // true during offline catch-up: no sounds or floating text
 // price). Each look buys with the chance of the tag's price band (BUY_BANDS).
 function customerVisit(state, sets) {
   state.stats.customers++;
+  if (state.shelf.length && rng() < SEALED_SHARE) { sealedVisit(state, sets); return; }
   if (!state.showcase.length) { tellScene({ looks: [], empty: true }); return; }
   // Some customers come for the newest collection only.
   const want = wantedSet(state, sets);
@@ -740,11 +798,170 @@ function customerVisit(state, sets) {
     budget -= it.p;
     const paid = it.p * saleMultiplier(state, it.s);
     look.paid = paid;
-    earn(state, paid);
+    earn(state, paid, 'cards');
     state.stats.cardsSold++;
     if (saleListener && !quiet) saleListener(paid);
   }
   tellScene({ looks });
+}
+
+// A customer for sealed goods and accessories: looks at up to SEALED_LOOKS
+// shelf goods they can afford (weight = sqrt of value) and buys with the same
+// price bands as cards.
+function sealedVisit(state, sets) {
+  const looks = [];
+  let budget = customerBudget(state);
+  const looked = new Set();
+  for (let i = 0; i < SEALED_LOOKS && state.shelf.length; i++) {
+    let total = 0;
+    const weights = state.shelf.map(it => {
+      const w = it.p <= budget && !looked.has(it) ? Math.sqrt(Math.max(0.01, goodValue(state, sets, it.g))) : 0;
+      total += w;
+      return w;
+    });
+    if (total <= 0) break;
+    let r = rng() * total, pick = 0;
+    while (pick < weights.length - 1 && (r -= weights[pick]) > 0) pick++;
+    const it = state.shelf[pick];
+    looked.add(it);
+    const mv = goodValue(state, sets, it.g);
+    const bought = rng() < buyChance(it.p, mv);
+    const look = { g: it.g, p: it.p, f: feeling(it.p, mv), b: bought, paid: 0 };
+    looks.push(look);
+    if (!bought) continue;
+    if (--it.n <= 0) state.shelf.splice(pick, 1);
+    budget -= it.p;
+    const paid = it.p * reputationBonus(state);
+    look.paid = paid;
+    earn(state, paid, 'sealed');
+    state.stats.sealedSold++;
+    if (saleListener && !quiet) saleListener(paid);
+  }
+  tellScene({ looks });
+}
+
+// ---------- Sealed goods (Storage tab) ----------
+// Goods ids: 'b:<set>' sealed booster (state.stock), 'x:<set>' box,
+// 'a:<accessory id>' accessory (state.goods).
+let ACCESSORIES = {};
+export function setAccessories(list) {
+  ACCESSORIES = {};
+  for (const a of list || []) {
+    if (a && typeof a.id === 'string' && a.name && a.cost > 0 && a.value > 0) ACCESSORIES[a.id] = a;
+  }
+}
+export const accessories = () => Object.values(ACCESSORIES);
+
+export function goodInfo(sets, g) {
+  const kind = g.slice(0, 1), id = g.slice(2);
+  if (kind === 'a') return ACCESSORIES[id] ? { kind, acc: ACCESSORIES[id], name: ACCESSORIES[id].name } : null;
+  const set = sets[id];
+  if (!set || (kind !== 'b' && kind !== 'x')) return null;
+  return { kind, set, name: `${set.name} ${kind === 'b' ? 'booster' : 'booster box'}` };
+}
+
+export function goodValue(state, sets, g) {
+  const info = goodInfo(sets, g);
+  if (!info) return 0;
+  if (info.kind === 'a') return info.acc.value * (1 + ACC_SWING * (M.hashRand('acc', info.acc.id, state.day) * 2 - 1));
+  const v = marketBoosterValue(state, info.set);
+  return info.kind === 'x' ? v * BOX_SIZE : v;
+}
+
+export function goodsOwned(state, g) {
+  return g.startsWith('b:') ? (state.stock[g.slice(2)] || 0) : (state.goods[g] || 0);
+}
+function takeGoods(state, g, n) {
+  const k = Math.max(0, Math.min(goodsOwned(state, g), Math.floor(n)));
+  if (!k) return 0;
+  if (g.startsWith('b:')) state.stock[g.slice(2)] -= k;
+  else { state.goods[g] -= k; if (!state.goods[g]) delete state.goods[g]; }
+  return k;
+}
+function addGoods(state, g, n) {
+  if (g.startsWith('b:')) state.stock[g.slice(2)] = (state.stock[g.slice(2)] || 0) + n;
+  else state.goods[g] = (state.goods[g] || 0) + n;
+}
+
+export const shelfCapacity = s => SHELF_BASE + SHELF_PER_LEVEL * s.upgrades.showcase;
+export const shelfCount = s => s.shelf.reduce((a, it) => a + it.n, 0);
+export const shelfFree = s => Math.max(0, shelfCapacity(s) - shelfCount(s));
+
+// Puts up to n of a good on the shelf at `price` each. Returns how many.
+export function listGood(state, sets, g, n, price) {
+  if (!(price > 0) || !goodInfo(sets, g)) return 0;
+  const k = takeGoods(state, g, Math.min(n, shelfFree(state)));
+  if (!k) return 0;
+  const p = Math.round(price * 100) / 100;
+  const it = state.shelf.find(x => x.g === g && x.p === p);
+  if (it) it.n += k; else state.shelf.push({ g, p, n: k });
+  return k;
+}
+
+export function recallShelfItem(state, i) {
+  const it = state.shelf[i];
+  if (!it) return 0;
+  addGoods(state, it.g, it.n);
+  state.shelf.splice(i, 1);
+  return it.n;
+}
+
+export function recallShelf(state) {
+  let n = 0;
+  for (const it of state.shelf) { addGoods(state, it.g, it.n); n += it.n; }
+  state.shelf = [];
+  return n;
+}
+
+export const boxPrice = (state, set) => BOX_SIZE * boosterPrice(state, set) * BOX_DISCOUNT;
+export function canBuyBox(state, set) {
+  return setUnlocked(state, set) && supply(state, set).left >= BOX_SIZE && state.money >= boxPrice(state, set) - 1e-9;
+}
+export function buyBox(state, set) {
+  if (!canBuyBox(state, set)) return false;
+  spend(state, boxPrice(state, set), 'goods');
+  supply(state, set).left -= BOX_SIZE;
+  addGoods(state, `x:${set.id}`, 1);
+  state.stats.boxesBought++;
+  return true;
+}
+export function canOpenBox(state, set) {
+  return goodsOwned(state, `x:${set.id}`) > 0 && stockCapacity(state) - totalStock(state) >= BOX_SIZE;
+}
+export function openBox(state, set) {
+  if (!canOpenBox(state, set)) return false;
+  takeGoods(state, `x:${set.id}`, 1);
+  addGoods(state, `b:${set.id}`, BOX_SIZE);
+  state.stats.boxesOpened++;
+  return true;
+}
+export function buyAccessory(state, id, n = 1) {
+  const a = ACCESSORIES[id];
+  if (!a) return 0;
+  let k = 0;
+  while (k < n && state.money >= a.cost - 1e-9) {
+    spend(state, a.cost, 'goods');
+    addGoods(state, `a:${id}`, 1);
+    k++;
+  }
+  state.stats.accessoriesBought += k;
+  return k;
+}
+
+// ---------- Achievements ----------
+// achievements.js registers its check; it runs every few simulated seconds.
+let achievementCheck = null;
+export function setAchievementCheck(fn) { achievementCheck = fn; }
+let achievementListener = null;
+export function onAchievement(fn) { achievementListener = fn; }
+export function earnAchievement(state, id, name, silent) {
+  if (state.achievements[id] != null) return false;
+  state.achievements[id] = state.day;
+  if (!silent) {
+    notify(state, 'achievement', `Achievement: ${name}`);
+    if (achievementListener && !quiet) achievementListener(name);
+  }
+  return true;
 }
 
 // ---------- Progressive reveal (GDD section 11) ----------
@@ -752,6 +969,8 @@ function checkUnlocks(state, sets) {
   const u = state.unlocked;
   if (!u.priceList && state.stats.boostersOpened > 0) { u.priceList = true; u.binder = true; }
   if (!u.showcase && state.stats.cardsSold > 0) u.showcase = true;
+  if (!u.finances && u.showcase) u.finances = true;
+  if (!u.storage && u.market) u.storage = true;
   if (!u.upgrades && state.money >= 40) u.upgrades = true;
   if (!u.staff && state.money >= 50) u.staff = true;
   if (!u.market) {
@@ -792,6 +1011,8 @@ export function tick(state, sets, dt, nowMs) {
   }
   for (const emp of state.staff) tickEmployee(state, sets, emp, dt);
   checkUnlocks(state, sets);
+  state._achT = (state._achT || 0) + dt;
+  if (state._achT >= 5 && achievementCheck) { state._achT = 0; achievementCheck(state, sets, false); }
 }
 
 // Runs every market day since the last one for each released collection, and
@@ -839,9 +1060,13 @@ function refreshOpen(state, sets) {
 
 // Recomputes derived caches after load.
 export function prepare(state, sets) {
+  M.setSeed(state.seed);
+  for (const set of Object.values(sets)) for (const c of set.cards) c._mvDay = null;
   state._bonus = {};
   for (const id of Object.keys(sets)) refreshBonus(state, sets, id);
   refreshOpen(state, sets);
+  // Achievements the save already qualifies for, without announcing them.
+  if (achievementCheck) achievementCheck(state, sets, true);
 }
 
 // Replays the time since the last tick in full, in chunks, so the page stays

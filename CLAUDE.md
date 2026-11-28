@@ -4,7 +4,7 @@ A calm, menu-based (Cookie Clicker style) idle browser game about running a trad
 
 ## Current phase
 
-**v1 built (2026-11-26) and live on GitHub Pages.** Nicolas told us to build the game with the GDD as written, using the GDD's proposed answers to the open questions as assumptions. Implementation notes, assumptions and open balancing items: [docs/sdd/v1-implementation.md](docs/sdd/v1-implementation.md). For new features, use the `develop-feature` skill. Booster supply, the release calendar and News: [docs/sdd/booster-supply.md](docs/sdd/booster-supply.md). 10-minute market days, Fame and new-set customers: [docs/sdd/fast-days-fame.md](docs/sdd/fast-days-fame.md). Shop floor scene and sprite format: [docs/sdd/shop-floor.md](docs/sdd/shop-floor.md). Debug menu (code-locked, Settings): [docs/sdd/debug-menu.md](docs/sdd/debug-menu.md).
+**v1 built (2026-11-26) and live on GitHub Pages.** Nicolas told us to build the game with the GDD as written, using the GDD's proposed answers to the open questions as assumptions. Implementation notes, assumptions and open balancing items: [docs/sdd/v1-implementation.md](docs/sdd/v1-implementation.md). For new features, use the `develop-feature` skill. Booster supply, the release calendar and News: [docs/sdd/booster-supply.md](docs/sdd/booster-supply.md). 10-minute market days, Fame and new-set customers: [docs/sdd/fast-days-fame.md](docs/sdd/fast-days-fame.md). Shop floor scene and sprite format: [docs/sdd/shop-floor.md](docs/sdd/shop-floor.md). Debug menu (code-locked, Settings): [docs/sdd/debug-menu.md](docs/sdd/debug-menu.md). Salaries, seed per save, Storage, Finances, achievements and themes (save v5, game 1.7.0): [docs/sdd/economy-v5.md](docs/sdd/economy-v5.md).
 
 ## Owner
 
@@ -32,9 +32,9 @@ Read these before any change. Each one is short.
 Nicolas answered all of them on 2026-11-27/28 (GDD section 12). Code still built on the old provisional answer is marked `ASSUMPTION [GDD Q#]` until the decided version ships; details still being settled are listed in GDD section 12. Do not settle those yourself.
 
 1. Base Set booster layout: 7 common, 3 uncommon, 1 rare slot (33% holo). Done.
-2. Staff salaries: **yes**, growing with skill levels and/or tenure. In progress.
-3. Market seed: **per save** (UUID at save start). In progress.
-4. Customers buy sealed boosters, boxes and accessories, with a Storage tab. In progress.
+2. Staff salaries: **yes**, growing with skill levels and tenure. Done (1.7.0).
+3. Market seed: **per save** (UUID at save start; old saves keep the global seed). Done (1.7.0).
+4. Customers buy sealed boosters, boxes and accessories, with a Storage tab. Done (1.7.0).
 5. Collection milestones: approved as proposed. Done.
 6. Prestige: not now.
 7. Document language: everything in English. Done.

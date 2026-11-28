@@ -1,0 +1,131 @@
+{
+  "_note": "Placeholder accessories (docs/sdd/economy-v5.md). Nicolas replaces names and numbers; ids never change once published. cost = wholesale price, value = base market value.",
+  "items": [
+    {
+      "id": "sleeves-fire",
+      "name": "Sleeves (Fire)",
+      "kind": "sleeves",
+      "cost": 4,
+      "value": 6.5
+    },
+    {
+      "id": "sleeves-water",
+      "name": "Sleeves (Water)",
+      "kind": "sleeves",
+      "cost": 4,
+      "value": 6.5
+    },
+    {
+      "id": "sleeves-grass",
+      "name": "Sleeves (Grass)",
+      "kind": "sleeves",
+      "cost": 4,
+      "value": 6.5
+    },
+    {
+      "id": "sleeves-lightning",
+      "name": "Sleeves (Lightning)",
+      "kind": "sleeves",
+      "cost": 4,
+      "value": 6.5
+    },
+    {
+      "id": "sleeves-psychic",
+      "name": "Sleeves (Psychic)",
+      "kind": "sleeves",
+      "cost": 4,
+      "value": 6.5
+    },
+    {
+      "id": "sleeves-fighting",
+      "name": "Sleeves (Fighting)",
+      "kind": "sleeves",
+      "cost": 4,
+      "value": 6.5
+    },
+    {
+      "id": "deck-box-fire",
+      "name": "Deck box (Fire)",
+      "kind": "deck-box",
+      "cost": 3,
+      "value": 5
+    },
+    {
+      "id": "deck-box-water",
+      "name": "Deck box (Water)",
+      "kind": "deck-box",
+      "cost": 3,
+      "value": 5
+    },
+    {
+      "id": "deck-box-grass",
+      "name": "Deck box (Grass)",
+      "kind": "deck-box",
+      "cost": 3,
+      "value": 5
+    },
+    {
+      "id": "deck-box-lightning",
+      "name": "Deck box (Lightning)",
+      "kind": "deck-box",
+      "cost": 3,
+      "value": 5
+    },
+    {
+      "id": "deck-box-psychic",
+      "name": "Deck box (Psychic)",
+      "kind": "deck-box",
+      "cost": 3,
+      "value": 5
+    },
+    {
+      "id": "deck-box-fighting",
+      "name": "Deck box (Fighting)",
+      "kind": "deck-box",
+      "cost": 3,
+      "value": 5
+    },
+    {
+      "id": "playmat-fire",
+      "name": "Playmat (Fire)",
+      "kind": "playmat",
+      "cost": 12,
+      "value": 20
+    },
+    {
+      "id": "playmat-water",
+      "name": "Playmat (Water)",
+      "kind": "playmat",
+      "cost": 12,
+      "value": 20
+    },
+    {
+      "id": "playmat-grass",
+      "name": "Playmat (Grass)",
+      "kind": "playmat",
+      "cost": 12,
+      "value": 20
+    },
+    {
+      "id": "playmat-lightning",
+      "name": "Playmat (Lightning)",
+      "kind": "playmat",
+      "cost": 12,
+      "value": 20
+    },
+    {
+      "id": "playmat-psychic",
+      "name": "Playmat (Psychic)",
+      "kind": "playmat",
+      "cost": 12,
+      "value": 20
+    },
+    {
+      "id": "playmat-fighting",
+      "name": "Playmat (Fighting)",
+      "kind": "playmat",
+      "cost": 12,
+      "value": 20
+    }
+  ]
+}

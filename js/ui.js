@@ -7,7 +7,8 @@ import * as M from './market.js';
 import * as SU from './supply.js';
 import { cardHtml, rarityTag } from './cards.js';
 import { fmtMoney, fmtNum, fmtPct, fmtSec, fmtDuration, fmtClock, esc } from './format.js';
-import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS, FEELING_TEXT } from './strings.js';
+import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS, FEELING_TEXT, LEDGER_CATS, THEMES, DARK_THEMES } from './strings.js';
+import * as Achievements from './achievements.js';
 import { currentStep } from './tutorial.js';
 import { cardFilter } from './data.js';
 import { GAME_VERSION } from './save.js';
@@ -17,7 +18,7 @@ import * as Clock from './clock.js';
 let S = null, SETS = null, ORDER = [], PREFS = null, A = null, NEWS = [];
 let active = 'shop';
 let lastSig = null;
-let ui = { shopSet: null, binderSet: null, marketSet: 'all', marketSort: 'number', marketPage: 0, marketQuery: '', priceQty: '10', priceLevel: '0', priceKeep: '0' };
+let ui = { gp: {}, goodLevel: '0', shopSet: null, binderSet: null, marketSet: 'all', marketSort: 'number', marketPage: 0, marketQuery: '', priceQty: '10', priceLevel: '0', priceKeep: '0' };
 export const PAGE_SIZES = [10, 25, 50, 100, 0];
 let shownMoney = null;
 
@@ -42,6 +43,7 @@ function buildShell() {
       <div class="top-stats">
         <span class="money" id="money" title="Cash">$0.00</span>
         <span class="day" title="${esc(TIPS.day)}"><span id="day-label"></span> · next <span id="day-next"></span></span>
+        <button class="small" id="awards-btn" data-action="awards">Awards <span class="muted" id="awards-count"></span></button>
         <button class="small news-btn" id="news-btn" data-action="news">News<span class="news-count" id="news-count" hidden></span></button>
       </div>
     </header>
@@ -56,7 +58,9 @@ export function applyTheme() {
   const t = PREFS.theme === 'system'
     ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
     : PREFS.theme;
-  document.documentElement.dataset.theme = t;
+  const known = THEMES.some(([k]) => k === t) ? t : 'light';
+  document.documentElement.dataset.theme = known;
+  document.documentElement.dataset.mode = DARK_THEMES.includes(known) ? 'dark' : 'light';
   document.documentElement.classList.toggle('reduce-motion', !!PREFS.reduceMotion);
 }
 
@@ -80,6 +84,7 @@ function bindEvents() {
   document.addEventListener('input', e => {
     if (e.target.matches?.('[data-lf]')) { lfInput(e.target); return; }
     if (e.target.matches?.('[data-market-search]')) { marketSearch(e.target); return; }
+    if (e.target.matches?.('[data-gp]')) { ui.gp[e.target.dataset.gp] = e.target.value; patchGoodPct(e.target); return; }
     const el = e.target.closest('input[type="range"][data-action]');
     if (el) A.run(el.dataset.action, { ...el.dataset, value: el.value });
   });
@@ -125,7 +130,8 @@ function tabVisible(tab) {
 // ---------- Frame ----------
 // Short notice at the bottom of the screen. Fades out on its own.
 let toastTimer = 0;
-export function toast(key) {
+export function toast(key) { toastText(TOASTS[key] || key); }
+export function toastText(text) {
   let el = document.getElementById('toast');
   if (!el) {
     el = document.createElement('div');
@@ -135,7 +141,7 @@ export function toast(key) {
     el.setAttribute('aria-live', 'polite');
     document.body.appendChild(el);
   }
-  el.textContent = TOASTS[key] || key;
+  el.textContent = text;
   el.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
@@ -229,6 +235,9 @@ function updateHeader() {
   animateMoney(S.money);
   document.getElementById('day-label').textContent = S.day ? M.dayLabel(S.day, S.firstDay) : '';
   document.getElementById('day-next').textContent = fmtClock(M.msUntilNextDay(Clock.now()));
+  const ac = document.getElementById('awards-count');
+  const at = `${Object.keys(S.achievements).length}/${Achievements.list(SETS).length}`;
+  if (ac.textContent !== at) ac.textContent = at;
   const n = unreadCount();
   const badge = document.getElementById('news-count');
   badge.hidden = !n;
@@ -254,6 +263,23 @@ export function newsHtml() {
         <div class="note-head"><b>${esc(n.title)}</b><span class="muted">${esc(n.version ? `${n.version} · ` : '')}${esc(n.date || '')}</span></div>
         <p>${esc(n.text)}</p>
       </article>`).join('') || '<div class="muted">—</div>'}</section>
+    <div class="btns end"><button class="primary" data-action="close">Done</button></div>
+  </div>`;
+}
+
+// ---------- Awards ----------
+export function awardsHtml() {
+  const all = Achievements.list(SETS);
+  const got = all.filter(a => S.achievements[a.id] != null).length;
+  return `
+  <div class="modal awards-panel">
+    <h2>Awards <span class="muted">${got} / ${all.length}</span></h2>
+    <ul class="awards">${all.map(a => {
+      const day = S.achievements[a.id];
+      return `<li class="${day != null ? 'got' : ''}"><span class="aw-mark" aria-hidden="true">${day != null ? '★' : '☆'}</span>
+        <span><b>${esc(a.name)}</b><span class="muted"> ${esc(a.desc)}</span></span>
+        <span class="muted">${day != null ? esc(M.dayLabel(day, S.firstDay)) : ''}</span></li>`;
+    }).join('')}</ul>
     <div class="btns end"><button class="primary" data-action="close">Done</button></div>
   </div>`;
 }
@@ -666,6 +692,7 @@ PANELS.staff = {
     return `
     <div class="bar-head">
       <h2>Staff <span class="muted">${S.staff.length} / ${G.maxStaff(S)}</span></h2>
+      ${S.staff.length ? `<span class="muted" title="${esc(TIPS.salary)}">Payroll <span data-k="payroll"></span>/day</span>` : ''}
       <span class="grow"></span>
       ${room ? `<button class="primary" data-action="hire" data-cost="${cost}">Hire ${fmtMoney(cost)}</button>` : '<span class="muted">No free slot</span>'}
     </div>
@@ -675,6 +702,7 @@ PANELS.staff = {
           <b>${esc(e.name)}</b>
           <span class="status" data-k="st-${e.id}"></span>
           <span class="grow"></span>
+          <span class="muted small" title="${esc(TIPS.salary)}"><span data-k="sal-${e.id}"></span>/day</span>
           <select data-action="task" data-id="${e.id}" aria-label="Task">
             <option value="" ${!e.task ? 'selected' : ''}>No task</option>
             ${G.SKILL_KEYS.map(k => `<option value="${k}" ${e.task === k ? 'selected' : ''}>${SKILL_NAMES[k]}</option>`).join('')}
@@ -710,8 +738,9 @@ PANELS.staff = {
     </section>`;
   },
   vals() {
-    const v = {};
+    const v = { payroll: fmtMoney(G.payroll(S)) };
     for (const e of S.staff) {
+      v[`sal-${e.id}`] = fmtMoney(G.salaryPerDay(S, e));
       v[`st-${e.id}`] = e.training ? `training ${fmtDuration(e.training.left)}` : e.status;
       if (e.training) v[`pg-${e.id}`] = 1 - e.training.left / e.training.total;
       else if (e.task && e.status === 'working') v[`pg-${e.id}`] = e.progress / G.skillDuration(e.task, e.skills[e.task].lvl);
@@ -742,6 +771,150 @@ PANELS.upgrades = {
   },
 };
 
+// ---------- Storage: sealed goods and accessories ----------
+const goodKeys = () => [
+  ...released().map(id => `b:${id}`),
+  ...released().map(id => `x:${id}`),
+  ...G.accessories().map(a => `a:${a.id}`),
+];
+const goodName = g => G.goodInfo(SETS, g)?.name || g;
+function goodPrice(g) {
+  const typed = Number(ui.gp[g]);
+  if (ui.gp[g] != null && typed > 0) return typed;
+  return Math.round(G.goodValue(S, SETS, g) * (1 + Number(ui.goodLevel)) * 100) / 100;
+}
+const pctText = (p, v) => (v > 0 ? (Math.abs(p / v - 1) < 0.005 ? '0%' : fmtPct(p / v - 1)) : '');
+function patchGoodPct(input) {
+  const g = input.dataset.gp;
+  const el = document.querySelector(`[data-gpct="${CSS.escape(g)}"]`);
+  if (el) el.textContent = pctText(Number(input.value), G.goodValue(S, SETS, g));
+}
+export function goodPriceFor(g) { return goodPrice(g); }
+
+function goodRow(g) {
+  const info = G.goodInfo(SETS, g);
+  const k = esc(g);
+  const extra = info.kind === 'x'
+    ? `<button class="small" data-action="box-buy" data-set="${esc(info.set.id)}" data-d="xb-${k}" title="${esc(TIPS.box)}">Buy <span data-k="xbp-${k}"></span></button>
+       <button class="small" data-action="box-open" data-set="${esc(info.set.id)}" data-d="xo-${k}" title="${esc(TIPS.openBox)}">Open</button>`
+    : info.kind === 'a'
+      ? `<button class="small" data-action="acc-buy" data-id="${esc(info.acc.id)}" data-n="1" data-cost="${info.acc.cost}">Buy ${fmtMoney(info.acc.cost)}</button>
+         <button class="small" data-action="acc-buy" data-id="${esc(info.acc.id)}" data-n="10" data-cost="${info.acc.cost * 10}">Buy 10</button>`
+      : '';
+  return `<div class="tr">
+    <span>${esc(info.kind === 'a' ? info.name : info.set.name)}</span>
+    <span class="num" data-k="go-${k}"></span>
+    <span class="num" data-k="gv-${k}"></span>
+    <span><input type="number" min="0.01" step="0.01" class="gp" data-gp="${k}" value="${goodPrice(g).toFixed(2)}" aria-label="Price" title="${esc(TIPS.goodPrice)}"></span>
+    <span class="num muted" data-gpct="${k}">${pctText(goodPrice(g), G.goodValue(S, SETS, g))}</span>
+    <span class="btns tight">
+      <button class="small" data-action="good-list" data-g="${k}" data-n="1" data-d="gl-${k}">List</button>
+      <button class="small" data-action="good-list" data-g="${k}" data-n="10" data-d="gl-${k}">List 10</button>
+      <button class="small" data-action="good-list" data-g="${k}" data-n="all" data-d="gl-${k}">All</button>
+      ${extra}
+    </span>
+  </div>`;
+}
+
+PANELS.storage = {
+  sig: () => [S.day, lockSig(), ui.goodLevel, G.accessories().length, S.shelf.length,
+    S.shelf.map(it => `${it.g}@${it.p}`).join(';')].join('|'),
+  html() {
+    const keys = goodKeys();
+    const head = `<div class="tr th"><span>Item</span><span class="num">Yours</span><span class="num">Market</span><span>Price</span><span class="num">%</span><span></span></div>`;
+    const section = (title, list) => list.length ? `<section class="box goods"><h3>${title}</h3><div class="table goods-table">${head}${list.map(goodRow).join('')}</div></section>` : '';
+    return `
+    <div class="bar-head">
+      <h2>Storage</h2>
+      <span class="grow"></span>
+      <label class="inline">Price <select data-action="good-level">${levelOptions(ui.goodLevel)}</select></label>
+    </div>
+    <section class="box shelf">
+      <div class="bar-head"><h3 title="${esc(TIPS.shelf)}">Shelf <span data-k="shelf-n"></span></h3><span class="grow"></span>
+        ${S.shelf.length ? '<button class="small" data-action="shelf-recall">Recall all</button>' : ''}</div>
+      <div class="table shelf-table">${S.shelf.map((it, i) => `<div class="tr">
+        <span>${esc(goodName(it.g))}</span>
+        <span class="num" data-k="sn-${i}"></span>
+        <span class="num">${fmtMoney(it.p)}</span>
+        <span class="num muted" data-k="sp-${i}"></span>
+        <span><button class="small" data-action="shelf-take" data-i="${i}">Recall</button></span>
+      </div>`).join('') || '<div class="empty muted">Empty</div>'}</div>
+    </section>
+    ${section('Boosters', keys.filter(g => g.startsWith('b:')))}
+    ${section('Booster boxes', keys.filter(g => g.startsWith('x:')))}
+    ${section('Accessories', keys.filter(g => g.startsWith('a:')))}`;
+  },
+  vals() {
+    const v = { 'shelf-n': `${fmtNum(G.shelfCount(S))} / ${fmtNum(G.shelfCapacity(S))}` };
+    const free = G.shelfFree(S) > 0;
+    for (const g of goodKeys()) {
+      const n = G.goodsOwned(S, g);
+      v[`go-${g}`] = fmtNum(n);
+      v[`gv-${g}`] = fmtMoney(G.goodValue(S, SETS, g));
+      v[`d:gl-${g}`] = !(n > 0 && free);
+      if (g.startsWith('x:')) {
+        const st = SETS[g.slice(2)];
+        v[`xbp-${g}`] = fmtMoney(G.boxPrice(S, st));
+        v[`d:xb-${g}`] = !G.canBuyBox(S, st);
+        v[`d:xo-${g}`] = !G.canOpenBox(S, st);
+      }
+    }
+    S.shelf.forEach((it, i) => {
+      v[`sn-${i}`] = fmtNum(it.n);
+      v[`sp-${i}`] = pctText(it.p, G.goodValue(S, SETS, it.g));
+    });
+    return v;
+  },
+};
+
+// ---------- Finances ----------
+const sumOf = o => Object.values(o).reduce((a, x) => a + x, 0);
+function catRows(o) {
+  const rows = Object.entries(o).filter(([, x]) => x >= 0.005).sort((a, b) => b[1] - a[1]);
+  return rows.map(([c, x]) => `<div class="tr"><span>${esc(LEDGER_CATS[c] || c)}</span><span class="num">${fmtMoney(x)}</span></div>`).join('')
+    || '<div class="empty muted">—</div>';
+}
+
+PANELS.finances = {
+  minRenderMs: 1000,
+  sig: () => {
+    const e = S.ledger[S.ledger.length - 1];
+    return [S.ledger.length, e?.day, e ? Math.floor(sumOf(e.in)) + '/' + Math.floor(sumOf(e.out)) + '/' + Object.keys(e.in).length + Object.keys(e.out).length : ''].join('|');
+  },
+  html() {
+    const L = S.ledger;
+    const today = L.length && L[L.length - 1].day === S.day ? L[L.length - 1] : { day: S.day, in: {}, out: {} };
+    const tin = sumOf(today.in), tout = sumOf(today.out), net = tin - tout;
+    const past = L.filter(e => e.day !== S.day).slice().reverse();
+    const max = Math.max(1, ...past.map(e => Math.abs(sumOf(e.in) - sumOf(e.out))));
+    return `
+    <div class="bar-head"><h2>Finances <span class="muted">${esc(M.dayLabel(S.day, S.firstDay))}</span></h2></div>
+    <div class="fin-today">
+      <section class="box"><h3>Income</h3><div class="table fin-table">${catRows(today.in)}
+        <div class="tr total"><span>Total</span><span class="num up">${fmtMoney(tin)}</span></div></div></section>
+      <section class="box"><h3>Expenses</h3><div class="table fin-table">${catRows(today.out)}
+        <div class="tr total"><span>Total</span><span class="num down">${fmtMoney(tout)}</span></div></div></section>
+      <section class="box fin-net"><h3>Net</h3><b class="${net >= 0 ? 'up' : 'down'}">${net >= 0 ? '+' : '−'}${fmtMoney(Math.abs(net))}</b></section>
+    </div>
+    <section class="box">
+      <h3>Past days</h3>
+      <div class="table fin-days">
+        <div class="tr th"><span>Day</span><span class="num">Income</span><span class="num">Expenses</span><span class="num">Net</span><span></span></div>
+        ${past.map(e => {
+          const i = sumOf(e.in), o = sumOf(e.out), n = i - o;
+          return `<div class="tr" title="${esc([...Object.entries(e.in).map(([c, x]) => `+${fmtMoney(x)} ${LEDGER_CATS[c] || c}`), ...Object.entries(e.out).map(([c, x]) => `−${fmtMoney(x)} ${LEDGER_CATS[c] || c}`)].join('\n'))}">
+            <span>${esc(M.dayLabel(e.day, S.firstDay))}</span>
+            <span class="num">${fmtMoney(i)}</span>
+            <span class="num">${fmtMoney(o)}</span>
+            <span class="num ${n >= 0 ? 'up' : 'down'}">${n >= 0 ? '+' : '−'}${fmtMoney(Math.abs(n))}</span>
+            <span class="fin-bar ${n >= 0 ? 'pos' : 'neg'}"><i style="width:${Math.round(Math.abs(n) / max * 100)}%"></i></span>
+          </div>`;
+        }).join('') || '<div class="empty muted">No past days yet</div>'}
+      </div>
+    </section>`;
+  },
+};
+
 PANELS.settings = {
   sig: () => [PREFS.theme, PREFS.reduceMotion, PREFS.muteMaster, PREFS.muteMusic, PREFS.muteEffects, S.tutorial.done.length === 0,
     PREFS.debug, S.staff.length, released().length].join(),
@@ -756,7 +929,7 @@ PANELS.settings = {
       <section class="box">
         <h3>Display</h3>
         <label>Theme <select data-action="pref-theme">
-          ${[['system', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([k, v]) => `<option value="${k}" ${PREFS.theme === k ? 'selected' : ''}>${v}</option>`).join('')}
+          ${THEMES.map(([k, v]) => `<option value="${k}" ${PREFS.theme === k ? 'selected' : ''}>${v}</option>`).join('')}
         </select></label>
         <label class="check"><input type="checkbox" data-action="pref-motion" ${PREFS.reduceMotion ? 'checked' : ''}> Reduce motion</label>
       </section>

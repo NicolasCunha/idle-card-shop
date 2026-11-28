@@ -6,11 +6,12 @@
 // - After migrations, state is merged with defaults: missing fields get the
 //   default, unknown fields are dropped. Unknown cards and collections are skipped.
 
-import { newState, SKILL_KEYS } from './game.js';
+import { newState, SKILL_KEYS, goodInfo } from './game.js';
+import { LEGACY_SEED } from './market.js';
 
 export const GAME_ID = 'idlecardshop';
-export const SAVE_VERSION = 4;
-export const GAME_VERSION = '1.6.2';
+export const SAVE_VERSION = 5;
+export const GAME_VERSION = '1.7.0';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
@@ -46,6 +47,18 @@ export const MIGRATIONS = {
   // v4 (2026-11-27): Fame upgrade, new-set customers and shorter market days.
   // Nicolas chose to start every older save from zero again.
   3: () => ({}),
+  // v5 (2026-11-28, docs/sdd/economy-v5.md; all choices Nicolas's): a seed per
+  // save, where older saves keep the old global seed so their prices do not
+  // change; staff tenure counts from the first tick after loading (hiredDay
+  // null). Ledger, goods, shelf and achievements start from their defaults
+  // (achievements are then filled from what the save qualifies for).
+  4: state => {
+    if (state && typeof state === 'object' && Object.keys(state).length) {
+      state.seed = LEGACY_SEED;
+      for (const e of state.staff || []) if (e && typeof e === 'object') e.hiredDay = null;
+    }
+    return state;
+  },
 };
 
 export function serialize(state) {
@@ -107,6 +120,14 @@ export function sanitize(state, sets) {
     else if (!Array.isArray(m.hist)) m.hist = [];
   }
   state.inbox = state.inbox.filter(n => isPlainObject(n) && Number.isFinite(n.id) && typeof n.text === 'string');
+  if (typeof state.seed !== 'string' || !state.seed) state.seed = LEGACY_SEED;
+  state.shelf = state.shelf.filter(it => isPlainObject(it) && typeof it.g === 'string' && goodInfo(sets, it.g)
+    && Number.isFinite(it.p) && it.p > 0 && Number.isInteger(it.n) && it.n > 0);
+  for (const [g, n] of Object.entries(state.goods)) {
+    if (!goodInfo(sets, g) || g.startsWith('b:') || !Number.isInteger(n) || n <= 0) delete state.goods[g];
+  }
+  state.ledger = state.ledger.filter(e => isPlainObject(e) && Number.isFinite(e.day) && isPlainObject(e.in) && isPlainObject(e.out));
+  for (const [id, day] of Object.entries(state.achievements)) if (!Number.isFinite(day)) delete state.achievements[id];
   state.newsSeen = state.newsSeen.filter(id => typeof id === 'string');
   for (const map of [state.stock, state.binder, state.seen]) {
     for (const sid of Object.keys(map)) if (!sets[sid]) delete map[sid];
@@ -134,6 +155,7 @@ export function sanitize(state, sets) {
       progress: Number(e.progress) || 0,
       training: e.training && SKILL_KEYS.includes(e.training.skill) ? e.training : null,
       status: 'idle',
+      hiredDay: Number.isFinite(e.hiredDay) ? e.hiredDay : null,
     };
   });
   return state;

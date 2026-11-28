@@ -223,7 +223,7 @@ Each employee has 3 independent skills, level 1 to 10, and does one task at a ti
 
 **Back pressure:** the pricer waits when the showcase is full.
 
-**Salaries (decided 2026-11-28, in progress):** employees earn a salary that grows with their skill levels and/or time at the shop. Formula, what happens when cash runs out, and whether salaries are charged offline are being settled with Nicolas (section 12).
+**Salaries (Nicolas, 2026-11-28; shipped in 1.7.0, `docs/sdd/economy-v5.md`):** each employee costs, per market day, $2 × the sum of their skill levels × (1 + 1% per market day at the shop, up to +50%). Paid continuously by the same tick, live and offline. When cash cannot cover the next payment the employee waits (status `unpaid`) until there is cash: no debt, no quitting. The Staff tab shows each salary and the payroll.
 
 ## 7. Customers and economy
 
@@ -315,7 +315,7 @@ Card prices change once per market day by a deterministic calculation: the same 
 
 **Reprints:** a card with `reprintOf` feels the original's events at 60% strength and is worth half the original by default (`reprintFactor`).
 
-**Seed:** one global seed today. **Decided 2026-11-28, in progress:** each save gets its own seed (a UUID) when it starts; what happens to existing saves is being settled with Nicolas.
+**Seed:** each save gets its own seed (a UUID) when it starts (Nicolas, 2026-11-28; 1.7.0). Saves from before 1.7.0 keep the old global seed, so their prices do not change.
 
 **What the player does with it**
 
@@ -361,9 +361,22 @@ Boosters are not infinite. Each collection has a print run, and the booster pric
 - Two parts: game notices (new collection out, reprints, big rival buys) and patch notes, kept in `data/news.json`.
 - A note can require a released collection (`requires`).
 
-### 8.3 Storage tab (decided 2026-11-28, in progress)
+### 8.3 Storage tab (Nicolas, 2026-11-28; 1.7.0)
 
-Customers will also buy sealed products and accessories: sealed boosters, booster boxes, and TCG accessories (sleeves, deck boxes, playmats) themed after Pokémon. A separate **Storage** tab lets the player set the price of everything and put up for sale whatever they want at whatever price, following the Market's percentages. Box size, prices, accessory content and the share of customers who want sealed goods are being settled with Nicolas (section 12).
+Customers also buy sealed products and accessories: sealed boosters, booster boxes, and TCG accessories (sleeves, deck boxes, playmats) themed after Pokémon types. The **Storage** tab (unlocks with the Market) lets the player set the price of every good (prefilled at market value, or at a Market percentage) and put any amount on the shelf.
+
+- **Booster box:** 36 boosters of one collection, bought from the distributor at 36 × the booster price less 10%, taking 36 from the supply. Can be opened into 36 boosters or sold sealed; market value is 36 × the booster's market value.
+- **Accessories:** `data/accessories.json`, a placeholder list with no images; each has a wholesale cost and a base value that swings ±5% per day.
+- **Shelf:** 20 goods, +10 per Bigger showcase level.
+- **Customers:** while the shelf has goods, 25% of visits look at the shelf instead of the cards and react to the tags with the same price bands as cards.
+
+### 8.4 Finances tab (Nicolas, 2026-11-28; 1.7.0)
+
+Every money change is booked by category (card sales, bulk, Storage sales, Market, distributor, boxes and accessories, upgrades, hiring, training, salaries). The **Finances** tab (unlocks with the Showcase) shows today's income, expenses and net, and the previous 72 market days (12 hours) with a net bar.
+
+### 8.5 Achievements (Nicolas, 2026-11-28; 1.7.0)
+
+Awards for milestones (first sale, 100/1,000/10,000 cards sold, boosters opened, money earned, first hire, full team, a level 10 skill, maxed upgrades, Fame 20, first sealed sale, first box opened), one per completed collection and one for completing every collection. No reward: the list is the record. The header **Awards** button shows earned / total and opens the list. Older saves get what they already qualify for on load.
 
 ## 9. Offline progress and save
 
@@ -403,18 +416,22 @@ The interface is menus and panels, in English, with a pastel palette leaning to 
 | Binder | Binder per collection, discovery progress, List screen per card |
 | Showcase | Cards for sale with number, collection, tag, market and customer feeling; Customers panel; Recall all |
 | Market | Search, prices, trends, sealed boosters, news |
-| Staff | Employees, skills, training, shop rules |
+| Storage | Sealed boosters, booster boxes and accessories: stock, price, shelf |
+| Staff | Employees, skills, salaries, training, shop rules |
 | Upgrades | Shop upgrades |
-| Settings | Theme, motion, volumes, tutorial, save (System), Code (debug menu) |
+| Finances | Today's income and expenses by category, past days |
+| Settings | Theme (10 themes plus System), motion, volumes, tutorial, save (System), Code (debug menu) |
 
-The header always shows money, the market day and the time to the next day, and the News button.
+The header always shows money, the market day and the time to the next day, and the Awards and News buttons.
+
+**Themes (1.7.0):** System, Light, Dark, Forest, Ocean, Lavender, Rose, Sepia, Midnight, Mint, Ember. A device preference, not saved in the game.
 
 **Shop floor** (details in `docs/sdd/shop-floor.md`)
 
 - A pixel-art view of the shop at the top of the Shop tab: customers (16×32 sprites, 4 directions) walk in, browse the showcase together at their own pace, say what they think of the prices in speech bubbles, show a happy or sad emote, and buyers show what they paid.
 - The showcase case fills as cards are listed and grows with the showcase upgrade; decor grows with Fame.
 - The floor keeps running on other tabs and with the browser hidden or minimized.
-- **Decided 2026-11-28, in progress:** more customer sprites and more decor at high Fame levels (done in 1.6.2: 12 customer looks, decor up to Fame 20).
+- 12 customer looks (1.6.2), plus two looks for sealed-goods customers; decor grows up to Fame 20.
 
 **Visual**
 
@@ -461,12 +478,13 @@ The tutorial teaches the loop in the first game, step by step, and is updated wi
 | --- | --- |
 | Start | Shop (Buy and Open only), Settings |
 | First card opened | Price step, Binder tab |
-| First sale | Showcase tab |
+| First sale | Showcase tab, Finances tab |
 | Cash reaches $40 | Upgrades tab |
 | Cash reaches $50 | Staff tab ("hire" tutorial step) |
 | First new market day, or first card above $5 | Market tab ("market" step) |
 | First Market visit | "supply" step: boosters have limited supply, buy and sell here |
-| First employee | "news" step: News button |
+| Market tab | Storage tab ("storage" and "shelf" steps) |
+| First employee | "news" step: News button; "salary" step: Finances |
 | 12 market days after the previous collection | The next collection, everywhere ("nextset" step) |
 
 A tab that has appeared never disappears.
@@ -475,16 +493,18 @@ A tab that has appeared never disappears.
 
 ## 12. Next steps and open items
 
-**Decided by Nicolas on 2026-11-28, in progress**
+**Decided by Nicolas on 2026-11-28** (he approved every recommended option)
 
-- **Salaries:** grow with skill levels and/or time at the shop. Still open: formula; tenure start in old saves; what happens when cash runs out; whether salaries are charged offline (needs an explicit exception to the calm pillar).
-- **Seed per save:** a UUID generated when the save starts. Still open: what existing saves get.
-- **Customers buy sealed goods and accessories; Storage tab** (section 8.3). Still open: accessory content (Nicolas supplies it or approves placeholders), booster box size and price, share of customers who want sealed goods, defaults in old saves.
-- **Collection milestones:** approved as in section 7.
+- **Salaries:** done (1.7.0, section 6). Charged offline too; unpaid staff wait, no debt.
+- **Seed per save:** done (1.7.0, section 8). Older saves keep the old global seed.
+- **Customers buy sealed goods and accessories; Storage tab:** done (1.7.0, section 8.3). Accessories are placeholders (no images needed, Nicolas) until he supplies a list.
+- **Finances tab:** done (1.7.0, section 8.4).
+- **Collection milestones:** approved as in section 7. Done.
 - **Prestige:** not now; revisit later.
-- **Language:** the whole project in English, this GDD included.
+- **Language:** the whole project in English, this GDD included. Done.
 - **More customer sprites and more decor at high Fame.** Done (1.6.2).
-- **Achievements:** completing collections and milestones along the way (hire 1 employee, hire everyone, own every upgrade...). Still open: what old saves get, and whether achievements give a reward.
+- **Achievements:** done (1.7.0, section 8.5). No reward; older saves get what they qualify for.
+- **Themes:** about 10, chosen in Settings. Done (1.7.0, section 10).
 
 **Balancing left as is (Nicolas, 2026-11-27)**
 

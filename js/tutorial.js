@@ -31,6 +31,10 @@ const COND = {
   visitedMarket: s => !!s.flags.visited.market,
   visitedSettings: s => !!s.flags.visited.settings,
   visitedNews: s => !!s.flags.visited.news,
+  visitedFinances: s => !!s.flags.visited.finances,
+  storageUnlocked: s => s.unlocked.storage,
+  visitedStorage: s => !!s.flags.visited.storage,
+  listedGood: s => s.shelf.length > 0 || grew(s, 'sealedSold'),
   tradedBooster: s => grew(s, 'boostersSold') || grew(s, 'boostersBoughtMarket'),
   // s._open: collections past the first that are out (game.js).
   nextSetOpen: s => Object.values(s._open || {}).some(Boolean),

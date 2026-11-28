@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-economy",
+      "date": "2026-11-28",
+      "version": "1.7.0",
+      "title": "Storage, Finances, salaries and awards",
+      "text": "Sell sealed boosters, booster boxes and accessories from the new Storage tab. Staff now earn a daily salary, and the Finances tab shows income and costs by day. Earn awards for milestones and complete collections, and pick one of ten themes in Settings."
+    },
+    {
       "id": "2026-11-28-floor-decor",
       "date": "2026-11-28",
       "version": "1.6.2",
