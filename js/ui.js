@@ -765,7 +765,7 @@ PANELS.upgrades = {
       const max = lvl >= def.max;
       const cost = G.upgradeCost(k, lvl);
       return `<section class="box upgrade">
-        <div><b>${esc(txt.name)}</b><div class="muted">${esc(txt.effect)}</div></div>
+        <div><b>${esc(txt.name)}</b><div class="muted">${esc(txt.effect)}${k === 'storage' ? ` · ${fmtNum(G.storageAt(lvl))}${max ? '' : ` → ${fmtNum(G.storageAt(lvl + 1))}`}` : ''}</div></div>
         <span class="muted">Lv ${lvl + (def.start || 0)} / ${def.max + (def.start || 0)}</span>
         ${max ? '<span class="muted">Max</span>' : `<button data-action="upgrade" data-key="${k}" data-cost="${cost}">${fmtMoney(cost)}</button>`}
       </section>`;

@@ -30,7 +30,7 @@ export const DARK_THEMES = ['dark', 'forest', 'midnight', 'ember'];
 export const SKILL_NAMES = { buy: 'Buy', open: 'Open', price: 'Price', list: 'List' };
 
 export const UPGRADE_TEXT = {
-  storage: { name: 'Bigger storage', effect: '+10 sealed boosters' },
+  storage: { name: 'Bigger storage', effect: 'More sealed boosters' },
   showcase: { name: 'Bigger showcase', effect: '+20 showcase slots' },
   marketing: { name: 'Marketing', effect: '+25% customers' },
   reputation: { name: 'Reputation', effect: '+6% sale price' },

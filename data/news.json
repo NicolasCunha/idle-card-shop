@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-storage",
+      "date": "2026-11-28",
+      "version": "1.7.3",
+      "title": "Room for 10,000 boosters",
+      "text": "Bigger storage now grows faster with each level, up to 10,000 sealed boosters at the top level."
+    },
+    {
       "id": "2026-11-28-buy-chance",
       "date": "2026-11-28",
       "version": "1.7.2",

@@ -147,6 +147,8 @@ async function run() {
     f.upgrades.fame = 0; const i0 = G.customerInterval(f);
     f.upgrades.fame = 10;
     ok(Math.abs(i0 / G.customerInterval(f) - 1.3) < 1e-9, 'each Fame level brings 3% more customers');
+    const caps = Array.from({ length: G.UPGRADES.storage.max + 1 }, (_, l) => G.storageAt(l));
+    ok(caps[0] === 20 && caps[1] === 30 && caps.at(-1) === 10000 && caps.every((c, i) => !i || c > caps[i - 1]), 'booster storage grows from 20 to 10,000', caps.join(' '));
   }
   s.showcase.push({ s: 'base', c: base.cards[0].id, p: 9999 });
   for (let i = 0; i < 300; i++) G.tick(s, sets, 1, T0 + 500000 + i * 1000);

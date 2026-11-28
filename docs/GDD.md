@@ -260,7 +260,7 @@ Money comes in when customers buy from the showcase; demand is the shop's natura
 
 | Upgrade | Effect per level | Starting cost | Growth | Max |
 | --- | --- | --- | --- | --- |
-| Bigger storage | +10 sealed boosters (base 20) | $40 | ×1.6 | 20 |
+| Bigger storage | Sealed booster room on a curve: 20, 30, 40 ... 450 at level 10 ... 10,000 at level 20 (Nicolas, 2026-11-28) | $40 | ×1.6 | 20 |
 | Bigger showcase | +20 showcase slots (base 40) | $60 | ×1.6 | 20 |
 | Marketing | +25% customers | $80 | ×1.75 | 20 |
 | Reputation | +6% price paid | $120 | ×1.85 | 15 |

@@ -132,7 +132,15 @@ export const upgradeCost = (key, lvl) => Math.round(UPGRADES[key].baseCost * Mat
 // Cost of n items starting at level k: base x rate^k x (rate^n - 1) / (rate - 1).
 export const seriesCost = (base, rate, k, n) => base * Math.pow(rate, k) * (Math.pow(rate, n) - 1) / (rate - 1);
 
-export const stockCapacity = s => BASE_STORAGE + 10 * s.upgrades.storage;
+// Sealed booster room (Nicolas, 2026-11-28): grows on a curve from 20 to
+// STORAGE_MAX at the last Bigger storage level, never below the old +10 a level.
+export const STORAGE_MAX = 10000;
+export function storageAt(level) {
+  const curve = BASE_STORAGE * Math.pow(STORAGE_MAX / BASE_STORAGE, level / UPGRADES.storage.max);
+  const v = Math.max(BASE_STORAGE + 10 * level, curve);
+  return v < 100 ? Math.round(v) : v < 1000 ? Math.round(v / 10) * 10 : Math.round(v / 50) * 50;
+}
+export const stockCapacity = s => storageAt(s.upgrades.storage);
 export const showcaseCapacity = s => BASE_SHOWCASE + 20 * s.upgrades.showcase;
 export const maxStaff = s => 1 + s.upgrades.staffRoom;
 export const customerInterval = s => BASE_CUSTOMER_INTERVAL / ((1 + 0.25 * s.upgrades.marketing) * (1 + FAME_CUSTOMERS * (s.upgrades.fame || 0)));
