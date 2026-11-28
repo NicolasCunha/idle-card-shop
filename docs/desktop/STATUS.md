@@ -68,6 +68,11 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 - The exported game mounts `packs/cards-*.pck` next to the executable (`GameData.mount_card_packs`). Checked in the container with a Linux export and the Base Set pack: 30 collections load and the scans decode.
 - Content root and pack mounting use the `template` feature (exported builds only).
 
+## Rarity foil (2.1 work)
+
+- Foil on the big card by rarity (holo: artwork window; ex: + faint sheen; secret: + whole card; Gold Star: gold). Details: [foil.md](foil.md).
+- Tooling: release downloads from github.com work again in the cloud container (2026-11-28): the official `Godot_v4.7.2-stable_linux.x86_64.zip` runs the tests, and `xvfb-run godot --path desktop --rendering-driver opengl3 -- --shots` takes screenshots (now including one card per foil rarity).
+
 ## Next step
 
 Released 2026-11-28: https://github.com/NicolasCunha/idle-card-shop/releases/tag/desktop-v2.0.0 (made by a manual run of the Desktop build workflow with version 2.0.0; tag pushes from the cloud container are refused). Next: fixes from Nicolas's tests, and new web fixes from PORT-FIXES.md.
