@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-market-speed",
+      "date": "2026-11-28",
+      "version": "1.9.3",
+      "title": "Faster Market",
+      "text": "The Market tab opens quickly again with every collection out."
+    },
+    {
       "id": "2026-11-28-buyer-warehouse",
       "date": "2026-11-28",
       "version": "1.9.2",

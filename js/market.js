@@ -20,7 +20,7 @@ export const LEGACY_SEED = 'idlecardshop-market-v1';
 let SEED = LEGACY_SEED;
 export function setSeed(seed) {
   const next = typeof seed === 'string' && seed ? seed : LEGACY_SEED;
-  if (next !== SEED) { SEED = next; cache.clear(); }
+  if (next !== SEED) { SEED = next; gen++; events.clear(); }
 }
 export const getSeed = () => SEED;
 const EVENT_WINDOW = 40;
@@ -81,7 +81,22 @@ export const dayLabel = (day, firstDay) => `Day ${(day - (firstDay ?? day) + 1).
 export const msUntilNextDay = (nowMs = Date.now()) => DAY_MS - (nowMs % DAY_MS);
 
 // ---------- Events ----------
+// Events are fixed per (seed, card, window): computed once. Every market day
+// looks back EVENT_LOOKBACK windows, so recomputing them was the Market tab's
+// main cost with 30 collections (2026-11-28).
+const events = new Map();
 function eventForWindow(key, w) {
+  const k = key + '|' + w;
+  let ev = events.get(k);
+  if (ev === undefined) {
+    if (events.size > 400000) events.clear();
+    ev = makeEvent(key, w);
+    events.set(k, ev);
+  }
+  return ev;
+}
+
+function makeEvent(key, w) {
   if (rand(key, 'ev', w) >= EVENT_CHANCE) return null;
   const up = rand(key, 'up', w) < 0.7;
   const r = rand(key, 'mag', w);
@@ -131,14 +146,18 @@ export function cardLogMultiplier(set, card, day) {
   return LOG_CAP * Math.tanh(lm / LOG_CAP);
 }
 
-const cache = new Map();
+// Per-card cache of recent days (card._mc, runtime only). A single shared
+// cache thrashed once 30 collections x 30 days of history passed its size.
+let gen = 0; // bumps when the seed changes
+const CARD_CACHE_DAYS = 64;
 export function cardMultiplier(set, card, day) {
-  const k = `${day}|${set.id}|${card.id}`;
-  let v = cache.get(k);
+  let m = card._mc;
+  if (!m || card._mcGen !== gen) { m = card._mc = new Map(); card._mcGen = gen; }
+  let v = m.get(day);
   if (v === undefined) {
-    if (cache.size > 50000) cache.clear();
+    if (m.size >= CARD_CACHE_DAYS) m.clear();
     v = Math.exp(cardLogMultiplier(set, card, day));
-    cache.set(k, v);
+    m.set(day, v);
   }
   return v;
 }
