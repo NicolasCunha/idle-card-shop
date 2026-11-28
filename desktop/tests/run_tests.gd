@@ -22,6 +22,7 @@ func _initialize() -> void:
 	_test_market()
 	_test_golden_sim()
 	_test_ui_helpers()
+	_test_foil()
 	print("%d passed, %d failed" % [_passed, _failed])
 	quit(1 if _failed > 0 else 0)
 
@@ -183,3 +184,27 @@ func _test_ui_helpers() -> void:
 		Palette.use(t)
 	ok(Palette.c.has("accent") and Palette.dark, "11 themes load", str(Palette.THEMES.size()))
 	Palette.font = null
+
+
+func _test_foil() -> void:
+	ok(load("res://shaders/card_foil.gdshader") is Shader, "foil shader loads")
+	ok(Foil.mode_of("holo") == 1 and Foil.mode_of("star") == 4 and Foil.mode_of("rare") == 0, "foil modes by rarity")
+	var rects = GameData.read_json("res://data/foil_rects.json")
+	ok(rects is Dictionary, "foil rects load")
+	if not rects is Dictionary:
+		return
+	var missing := 0
+	var bad := 0
+	var n := 0
+	for id in _data.order:
+		for c in _data.sets[id].cards:
+			if Foil.mode_of(c.rarity) == 0 or c.get("image", "") == "":
+				continue
+			n += 1
+			var r = rects.get(id, {}).get(c.id)
+			if r == null:
+				missing += 1
+			elif r.size() != 4 or r[0] < 0 or r[1] < 0 or r[2] < 0.5 or r[3] < 0.25 or r[0] + r[2] > 1 or r[1] + r[3] > 1:
+				bad += 1
+	ok(missing == 0, "every foil card has an artwork window", "%d of %d missing" % [missing, n])
+	ok(bad == 0, "artwork windows inside the card", "%d bad" % bad)

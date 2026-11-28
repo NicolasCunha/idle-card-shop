@@ -14,6 +14,7 @@ var dim := false
 var count := 0 # "×n" badge when > 0
 var is_new := false
 var glow := 0.0 # celebration glow, 0-1
+var part := "all" # "scan": only the card face; "overlay": only badges (card_tilt.gd)
 var _key := ""
 
 
@@ -55,6 +56,11 @@ func _draw() -> void:
 	var tex: Texture2D = null
 	if not unseen and _key != "" and CardImages.inst:
 		tex = CardImages.inst.get_tex(card.image, size_key == "lg")
+	if part == "overlay":
+		if tex and size_key != "xs":
+			_corner(font, rar, rc, a)
+		_badges(font)
+		return
 	if glow > 0:
 		draw_rect(r.grow(2), Color(Palette.c.accent, glow * 0.8), false, 2)
 	if unseen:
@@ -64,7 +70,7 @@ func _draw() -> void:
 			_center_text(font, "?", r, Palette.c.muted)
 	elif tex:
 		draw_texture_rect(tex, r, false, Color(1, 1, 1, a))
-		if size_key != "xs":
+		if size_key != "xs" and part == "all":
 			_corner(font, rar, rc, a)
 	else:
 		draw_rect(r, Color(Palette.c.surface, a))
@@ -84,6 +90,11 @@ func _draw() -> void:
 				draw_string(font, Vector2(3, size.y - 4), "%s %s" % [rar.short, card.get("number", "")], HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Color(Palette.c.muted, a))
 			else:
 				draw_string(font, Vector2(3, size.y - 4), rar.short, HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Color(Palette.c.muted, a))
+	if part == "all":
+		_badges(font)
+
+
+func _badges(font: Font) -> void:
 	if is_new:
 		_badge(font, "NEW", Vector2(1, 1), Palette.c.accent, Palette.c.accent_text)
 	if count > 0:

@@ -341,6 +341,18 @@ func _shots() -> void:
 	get_viewport().warp_mouse(tilt_card.get_global_transform_with_canvas() * Vector2(tilt_card.size.x * 0.95, tilt_card.size.y * 0.1))
 	await snap.call("%02d-card-tilt" % n)
 	n += 1
+	for rar in Foil.MODES:
+		var found := false
+		for sid in order:
+			for fc in sets[sid].cards:
+				if fc.rarity == rar and not found:
+					found = true
+					show_card(sets[sid], fc)
+					var tc: Control = _overlay.find_children("*", "CardTilt", true, false)[0]
+					await get_tree().process_frame
+					get_viewport().warp_mouse(tc.get_global_transform_with_canvas() * Vector2(tc.size.x * 0.8, tc.size.y * 0.3))
+					await snap.call("%02d-foil-%s" % [n, rar])
+					n += 1
 	show_list_form(sets[order[0]], sets[order[0]].cards[0])
 	await snap.call("%02d-list-form" % n)
 	n += 1
