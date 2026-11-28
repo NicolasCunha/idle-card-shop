@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-desktop",
+      "date": "2026-11-28",
+      "version": "1.9.8",
+      "title": "Desktop game",
+      "text": "IdleCardShop is now a desktop game for Windows and Linux. The browser version closes on Dec 5, 2026. Export your save in Settings and import it in the desktop game."
+    },
+    {
       "id": "2026-11-28-loading",
       "date": "2026-11-28",
       "version": "1.9.7",
