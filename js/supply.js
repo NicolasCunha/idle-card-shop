@@ -47,9 +47,12 @@ const BIG_BUY = 0.006;                    // a rival buy above 0.6% of the run m
 // ---------- Calendar ----------
 // set.releaseIndex is the collection's place in collections.json (data.js).
 // The first one is out on the save's first market day.
+// state._releaseAll (debug "Release all sets", a device preference, never
+// saved): every collection not out by that day comes out on it.
 export function releaseDay(state, set) {
   if (state.firstDay == null) return Infinity;
-  return state.firstDay + (set.releaseIndex || 0) * RELEASE_EVERY_DAYS;
+  const day = state.firstDay + (set.releaseIndex || 0) * RELEASE_EVERY_DAYS;
+  return state._releaseAll != null ? Math.min(day, Math.max(state.firstDay, state._releaseAll)) : day;
 }
 export const isReleased = (state, set) => !!state.day && state.day >= releaseDay(state, set);
 

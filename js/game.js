@@ -1245,7 +1245,7 @@ export function tick(state, sets, dt, nowMs) {
 // Runs every market day since the last one for each released collection, and
 // announces new releases. Same result live or offline: the dice depend only on
 // (collection, days since release) and the supply the player left.
-function advanceSupply(state, sets) {
+export function advanceSupply(state, sets) {
   for (const set of Object.values(sets)) {
     if (!setUnlocked(state, set)) continue;
     const m = supply(state, set);

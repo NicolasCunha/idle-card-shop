@@ -576,6 +576,15 @@ async function run() {
   ok(nextSet && M.dayNumber(T0 + skip) === SU.releaseDay(dbg, nextSet), 'skip to next set lands on its release day', `${skip / M.DAY_MS} days`);
   Debug.setUpgrade(dbg, 'fame', 99);
   ok(dbg.upgrades.fame === G.UPGRADES.fame.max, 'debug upgrade levels stay within the max');
+  const rel = fresh(sets, order);
+  rel.firstDay = M.dayNumber(T0) - 15; rel.day = M.dayNumber(T0);
+  G.tick(rel, sets, 0, T0);
+  const ageBase = SU.releaseDay(rel, sets[order[0]]), ageJungle = SU.releaseDay(rel, sets[order[1]]);
+  const prefsDbg = {};
+  Debug.releaseAll(rel, sets, prefsDbg);
+  ok(order.every(id => G.setUnlocked(rel, sets[id])) && prefsDbg.releaseAll === rel.day, 'release all sets brings every collection out today');
+  ok(SU.releaseDay(rel, sets[order[0]]) === ageBase && SU.releaseDay(rel, sets[order[1]]) === ageJungle && SU.releaseDay(rel, sets[order[2]]) === rel.day, 'collections already out keep their release day');
+  ok(!('_releaseAll' in Save.serialize(rel).state), 'release all is never saved');
 
   // ---------- Pacing ----------
   section('Pacing (GDD targets)');

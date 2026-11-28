@@ -683,3 +683,5 @@ button, select, .tab, .binder-slot, .thumb { -webkit-tap-highlight-color: transp
 .binder-slot { content-visibility: auto; contain-intrinsic-size: auto 140px; }
 .showcase-table .tr:not(.th), .market-table .tr:not(.th) { content-visibility: auto; contain-intrinsic-size: auto 44px; }
 .badge-count[hidden] { display: none; }
+.news-tabs { position: static; margin-bottom: 0; }
+.news-tabs .news-count { margin-left: .35rem; }

@@ -1,6 +1,20 @@
 {
   "items": [
     {
+      "id": "2026-11-28-news-tabs",
+      "date": "2026-11-28",
+      "version": "1.9.1",
+      "title": "News in two tabs",
+      "text": "Game news and Updates now have their own tabs. Updates lists every change to the game. Game news shows the next collection and when it comes out."
+    },
+    {
+      "id": "2026-11-28-ex-sets",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "title": "Nineteen more collections",
+      "text": "Expedition to Power Keepers join the release calendar after Neo Destiny, one every 12 days. New rarities: Pokémon-ex (E) and Gold Star (★)."
+    },
+    {
       "id": "2026-11-28-card-values",
       "date": "2026-11-28",
       "version": "1.9.0",
@@ -172,6 +186,13 @@
       "version": "1.8.1",
       "title": "Tidier News",
       "text": "News now has two parts, Game news and Updates, each showing the latest five with Read more. Rival purchases are grouped into one notice per collection."
+    },
+    {
+      "id": "2026-11-28-gym-neo-sets",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "title": "Six more collections",
+      "text": "Gym Heroes, Gym Challenge and the four Neo sets join the release calendar after Team Rocket, one every 12 days."
     },
     {
       "id": "set-gym-heroes",

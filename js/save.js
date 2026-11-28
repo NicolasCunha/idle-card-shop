@@ -11,7 +11,7 @@ import { LEGACY_SEED } from './market.js';
 
 export const GAME_ID = 'idlecardshop';
 export const SAVE_VERSION = 6;
-export const GAME_VERSION = '1.9.0';
+export const GAME_VERSION = '1.9.1';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
@@ -247,6 +247,7 @@ export const DEFAULT_PREFS = {
   marketPageSize: 25, // 0 = all
   debug: false,       // debug menu unlocked on this device (debug.js)
   clockOffset: 0,     // debug time skip, ms ahead of real time (clock.js)
+  releaseAll: null,   // debug: market day every collection came out (supply.js releaseDay)
 };
 
 export function loadPrefs() {

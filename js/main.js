@@ -58,6 +58,7 @@ async function boot() {
   }
   Achievements.register();
   state = Save.loadLocal(sets, order) || G.newState(sets, order, Clock.now());
+  state._releaseAll = prefs.releaseAll;
   G.prepare(state, sets);
 
   initOpening({
@@ -265,8 +266,9 @@ function run(action, d) {
       if (sets[d.set] && G.repeat(G.sellMarketBooster, state, sets[d.set], Number(d.n) || 1)) Audio.sfx.coin();
       break;
     }
+    case 'news-tab':
     case 'news-more': {
-      UI.setNewsMore(d.sec);
+      if (action === 'news-tab') UI.setNewsTab(d.news); else UI.setNewsMore(d.sec);
       const panel = document.querySelector('.news-panel');
       const top = panel ? panel.scrollTop : 0;
       overlayEl().innerHTML = UI.newsHtml();
@@ -443,11 +445,13 @@ function run(action, d) {
     case 'dbg-hire': Debug.hireFree(state); break;
     case 'dbg-skills': Debug.maxSkills(state); break;
     case 'dbg-unlock': Debug.unlockAll(state); break;
+    case 'dbg-release': Debug.releaseAll(state, sets, prefs); Save.savePrefs(prefs); break;
     case 'export': save(); Save.exportFile(state); break;
     case 'import': importFile(d.files?.[0]); break;
     case 'reset':
       confirmBox('Erase this save and start over?', 'Reset', () => {
         Save.clearLocal();
+        clearReleaseAll();
         state = G.newState(sets, order, Clock.now());
         G.prepare(state, sets);
         UI.setState(state);
@@ -458,12 +462,20 @@ function run(action, d) {
   UI.frame();
 }
 
+// The debug release belongs to the save it was pressed in.
+function clearReleaseAll() {
+  if (prefs.releaseAll == null) return;
+  prefs.releaseAll = null;
+  Save.savePrefs(prefs);
+}
+
 async function importFile(file) {
   if (!file) return;
   try {
     const text = await file.text();
     const next = Save.restore(JSON.parse(text), sets, order);
     next.setupDone = true;
+    clearReleaseAll();
     G.prepare(next, sets);
     state = next;
     UI.setState(state);

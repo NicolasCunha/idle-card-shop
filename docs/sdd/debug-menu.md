@@ -13,6 +13,7 @@ Requested by Nicolas, 2026-11-27: a hidden menu to test anything that would othe
 | Control | Effect |
 | --- | --- |
 | Skip 1 day / Skip 6 days / Skip to next set | Moves the game clock forward (`js/clock.js`, offset in `prefs.clockOffset`). The next loop runs the normal offline catch-up, so the skipped time plays out like time away. Only forward: going back would leave `lastTick` in the future. |
+| Release all sets | Every collection not out yet comes out on the current market day (Nicolas, 2026-11-28). Kept in `prefs.releaseAll` (the day), read into the runtime field `state._releaseAll`, which `supply.js` `releaseDay` uses; never saved. Collections already out keep their day. Cleared on reset and import. |
 | Set money | Sets cash. |
 | Add boosters | Adds sealed boosters of a released collection, past the storage cap. |
 | Open free | Adds and opens boosters into the binder. |
@@ -28,7 +29,7 @@ Requested by Nicolas, 2026-11-27: a hidden menu to test anything that would othe
 
 ## Save impact
 
-None: the debug tools only edit existing state fields. The offset and unlock live in device preferences. A save exported after a skip carries a `lastTick` ahead of real time; on another device the game waits until real time catches up.
+None: the debug tools only edit existing state fields. The offset, the release-all day and the unlock live in device preferences. A save exported after a skip carries a `lastTick` ahead of real time; on another device the game waits until real time catches up.
 
 ## Tutorial impact
 

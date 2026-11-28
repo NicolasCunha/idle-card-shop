@@ -245,24 +245,38 @@ function updateHeader() {
 }
 
 // ---------- News (patch notes + game notices) ----------
-// Patch notes with `requires` show once that collection is out.
-const visibleNotes = () => NEWS.filter(n => !n.requires || (SETS[n.requires] && G.setUnlocked(S, SETS[n.requires])));
+// Two tabs (Nicolas, 2026-11-28): Game news (the shop's notices, plus the next
+// release) and Updates (the changelog, always complete). Collection notes with
+// `requires` are not changelog: their text joins that collection's release notice.
+const visibleNotes = () => NEWS.filter(n => !n.requires);
 export const unreadCount = () => G.unreadNotices(S) + visibleNotes().filter(n => !S.newsSeen.includes(n.id)).length;
 
-// Each section shows its NEWS_SHOWN newest items, or every unread one if
-// there are more, and a Read more button for the rest (Nicolas, 2026-11-28).
+// Each tab shows its NEWS_SHOWN newest items, or every unread one if there are
+// more, and a Read more button for the rest (Nicolas, 2026-11-28).
 const NEWS_SHOWN = 5;
 let newsMore = { game: false, updates: false };
+let newsTab = 'game';
+// What was unread when the panel opened: opening marks everything read, and
+// switching tabs must not clear the dots.
+let newsUnread = { inboxRead: 0, seen: new Set() };
 export function setNewsMore(sec) { newsMore[sec] = true; }
-export function resetNewsMore() { newsMore = { game: false, updates: false }; }
+export function setNewsTab(tab) { if (tab === 'game' || tab === 'updates') newsTab = tab; }
+export function resetNewsMore() {
+  newsMore = { game: false, updates: false };
+  newsUnread = { inboxRead: S.inboxRead, seen: new Set(S.newsSeen) };
+  const gameUnread = G.unreadNotices(S), updUnread = visibleNotes().filter(n => !S.newsSeen.includes(n.id)).length;
+  newsTab = !gameUnread && updUnread ? 'updates' : 'game';
+}
 
-function newsSection(key, title, items, isUnread, itemHtml) {
-  if (!items.length) return '';
+function newsList(key, items, isUnread, itemHtml, emptyOk = false) {
+  if (!items.length) return emptyOk ? '' : '<div class="muted">—</div>';
   const unread = items.filter(isUnread).length;
   const n = newsMore[key] ? items.length : Math.max(NEWS_SHOWN, unread);
-  return `<section class="news-sec"><h3>${title}</h3>${items.slice(0, n).map(it => itemHtml(it, isUnread(it))).join('')}
-    ${items.length > n ? `<button class="link more" data-action="news-more" data-sec="${key}">Read more</button>` : ''}</section>`;
+  return `${items.slice(0, n).map(it => itemHtml(it, isUnread(it))).join('')}
+    ${items.length > n ? `<button class="link more" data-action="news-more" data-sec="${key}">Read more</button>` : ''}`;
 }
+
+const releaseNote = title => NEWS.find(n => n.requires && n.title === title);
 
 export function newsHtml() {
   const notes = visibleNotes().slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
@@ -271,15 +285,26 @@ export function newsHtml() {
         <div class="note-head"><b>${esc(title)}</b><span class="muted">${esc(meta)}</span></div>
         ${text ? `<p>${esc(text)}</p>` : ''}
       </article>`;
+  const gameUnread = n => n.id > newsUnread.inboxRead;
+  const updUnread = n => !newsUnread.seen.has(n.id);
+  const count = (items, f) => { const c = items.filter(f).length; return c ? ` <span class="news-count">${c}</span>` : ''; };
+  const next = G.nextRelease(S, SETS);
+  const nextHtml = next && S.firstDay != null
+    ? card(`Next: ${next.name}`, M.dayLabel(SU.releaseDay(S, next), S.firstDay), releaseNote(`${next.name} is out`)?.text || '', false) : '';
+  const tab = (k, label, badge) => `<button class="tab ${newsTab === k ? 'active' : ''}" role="tab" aria-selected="${newsTab === k}" data-action="news-tab" data-news="${k}">${label}${badge}</button>`;
+  const body = newsTab === 'game'
+    ? nextHtml + newsList('game', S.inbox, gameUnread, (n, u) => {
+      const extra = n.kind === 'release' ? releaseNote(n.text)?.text : '';
+      return card(n.text, n.day ? M.dayLabel(n.day, S.firstDay) : '', [extra, n.detail].filter(Boolean).join(' '), u);
+    }, !!nextHtml)
+    : newsList('updates', notes, updUnread,
+      (n, u) => card(n.title, `${n.version ? `${n.version} · ` : ''}${n.date || ''}`, n.text, u));
   return `
   <div class="modal news-panel">
     <button class="modal-x" data-action="close" aria-label="Close">×</button>
     <h2>News</h2>
-    ${newsSection('game', 'Game news', S.inbox, n => n.id > S.inboxRead,
-      (n, u) => card(n.text, n.day ? M.dayLabel(n.day, S.firstDay) : '', n.detail, u))}
-    ${newsSection('updates', 'Updates', notes, n => !S.newsSeen.includes(n.id),
-      (n, u) => card(n.title, `${n.version ? `${n.version} · ` : ''}${n.date || ''}`, n.text, u))}
-    ${!S.inbox.length && !notes.length ? '<div class="muted">—</div>' : ''}
+    <nav class="tabs news-tabs" role="tablist">${tab('game', 'Game news', count(S.inbox, gameUnread))}${tab('updates', 'Updates', count(notes, updUnread))}</nav>
+    <section class="news-sec" role="tabpanel">${body}</section>
     <div class="btns end"><button class="primary" data-action="close">Done</button></div>
   </div>`;
 }
@@ -1128,6 +1153,7 @@ function debugHtml() {
           <button data-action="dbg-skip" data-n="1">Skip 1 day</button>
           <button data-action="dbg-skip" data-n="6">Skip 6 days</button>
           <button data-action="dbg-skip" data-n="next">Skip to next set</button>
+          <button data-action="dbg-release">Release all sets</button>
         </div>
         <div class="lf-row"><input type="number" id="dbg-money" min="0" step="1" value="${Math.floor(S.money)}" aria-label="Money"><button data-action="dbg-money">Set money</button></div>
         <div class="lf-row">${setSel}<input type="number" id="dbg-n" min="1" step="1" value="10" aria-label="Amount">

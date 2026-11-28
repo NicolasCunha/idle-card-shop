@@ -59,6 +59,15 @@ export function maxSkills(state) {
   for (const e of state.staff) for (const k of G.SKILL_KEYS) e.skills[k] = { lvl: G.MAX_SKILL, xp: 0 };
 }
 
+// Every collection not out yet comes out today. Kept in device preferences
+// (prefs.releaseAll = market day), like the clock offset; the save is untouched.
+export function releaseAll(state, sets, prefs) {
+  if (state.day == null) return;
+  prefs.releaseAll = state.day;
+  state._releaseAll = state.day;
+  G.advanceSupply(state, sets);
+}
+
 export function unlockAll(state) {
   for (const k of Object.keys(state.unlocked)) state.unlocked[k] = true;
 }
