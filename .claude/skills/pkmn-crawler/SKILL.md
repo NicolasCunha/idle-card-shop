@@ -43,7 +43,8 @@ Options: `--rarity "Source=key"` (repeatable), `--printed-total N` (when secret 
 1. Read the WARNINGS: unmapped rarities, rarities missing from `rarities`, duplicate ids, template cards that vanished (affects saves), cards without images.
 2. Copy `work/<id>.json` to the repo root and each card's image from `work/images/` to `images/<id>/` (only the files the JSON names).
 3. Append the file to `collections.json` in release order (one release every 12 market days), and add a patch note to `data/news.json` with `requires: "<id>"` so it shows when the set comes out.
-4. Validate with the `add-card-collection` skill and run `/tests/`.
+4. Set rarity values with `python -X utf8 tools/balance.py` (`.claude/rules/card-content.md`, Card values).
+5. Validate with the `add-card-collection` skill and run `/tests/`.
 
 ## 5. Report
 

@@ -22,6 +22,7 @@ Ask for whatever is missing (in Portuguese):
 1. Create `<collection-id>.json` at the repo root with the fields in GDD section 4.
 2. Copy images Nicolas provided into `images/<collection-id>/` and point each card's `image` at its file. Leave `image` out for cards without art.
 3. Add the collection to `collections.json`.
+4. Run `python -X utf8 tools/balance.py` to set the rarity values (formula in `.claude/rules/card-content.md`, Card values). A rarity value Nicolas gives explicitly goes in as an anchor there.
 
 For an existing collection, never change a published `id` (collection or card). Adding cards is safe; removing a card is a save-impact question for Nicolas (`.claude/rules/save-schema.md`).
 

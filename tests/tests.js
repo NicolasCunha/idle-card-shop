@@ -57,6 +57,14 @@ async function run() {
   ok(order.join() === 'base,jungle,fossil,base-set-2,team-rocket,gym-heroes,gym-challenge,neo-genesis,neo-discovery,neo-revelation,neo-destiny,expedition,aquapolis,skyridge,ruby-sapphire,sandstorm,dragon,team-magma-vs-team-aqua,hidden-legends,firered-leafgreen,team-rocket-returns,deoxys,emerald,unseen-forces,delta-species,legend-maker,holon-phantoms,crystal-guardians,dragon-frontiers,power-keepers', 'collections load in release order', order.join());
   const trr = sets['team-rocket-returns'];
   ok(trr.rarities.ex.rank > trr.rarities.holo.rank && trr.rarities.star.rank > trr.rarities.secret.rank && Math.abs(Object.values(trr.booster.slots[2].weights).reduce((a, b) => a + b, 0) - 1) < 1e-9, 'ex and Gold Star rarer than holo; rare slot sums to 1');
+  const packEv = set => set.booster.slots.reduce((sum, s) => {
+    const w = s.rarity ? { [s.rarity]: 1 } : s.weights;
+    const tot = Object.values(w).reduce((a, b) => a + b, 0);
+    return sum + Object.entries(w).reduce((a, [r, x]) => a + (set.byRarity[r]?.length ? s.count * x / tot * set.rarities[r].value : 0), 0);
+  }, 0) / set.booster.wholesalePrice;
+  const evs = order.map(id => packEv(sets[id]));
+  ok(evs.every(e => Math.abs(e / evs[0] - 1) < 0.01), 'every booster is worth the same multiple of its price (tools/balance.py)', evs.map(e => e.toFixed(2)).join('/'));
+  ok(order.every(id => sets[id].rarityOrder.every((r, i, a) => !i || sets[id].rarities[r].value > sets[id].rarities[a[i - 1]].value)), 'rarer rarities are always worth more');
   ok(sets['neo-destiny'].cards.filter(c => c.rarity === 'secret').length === 8 && sets['neo-revelation'].cards.filter(c => c.rarity === 'secret').length === 2, 'Shining cards are Secret Rares (2 in Neo Revelation, 8 in Neo Destiny)');
   const tr = sets['team-rocket'];
   const w = tr.booster.slots[2].weights;

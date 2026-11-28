@@ -39,13 +39,13 @@
     "rare": {
       "name": "Rare",
       "short": "R",
-      "value": 3,
+      "value": 2.84,
       "color": "#6f9fd1"
     },
     "holo": {
       "name": "Rare Holo",
       "short": "H",
-      "value": 12,
+      "value": 12.4,
       "color": "#d9a53f"
     }
   },

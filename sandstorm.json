@@ -28,31 +28,31 @@
     "common": {
       "name": "Common",
       "short": "C",
-      "value": 0.15,
+      "value": 0.12,
       "color": "#a3a39a"
     },
     "uncommon": {
       "name": "Uncommon",
       "short": "U",
-      "value": 0.4,
+      "value": 0.35,
       "color": "#7fae7a"
     },
     "rare": {
       "name": "Rare",
       "short": "R",
-      "value": 3,
+      "value": 2.47,
       "color": "#6f9fd1"
     },
     "holo": {
       "name": "Rare Holo",
       "short": "H",
-      "value": 12,
+      "value": 10.02,
       "color": "#d9a53f"
     },
     "ex": {
       "name": "Rare Holo ex",
       "short": "E",
-      "value": 20,
+      "value": 15.92,
       "color": "#4fb3a9"
     }
   },

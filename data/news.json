@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-card-values",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "title": "Card values rebalanced",
+      "text": "A booster from any collection is now worth about the same against its price. Cards that are harder to pull are worth more: a holo in a set with many holos, or a lone Secret Rare."
+    },
+    {
       "id": "set-expedition",
       "date": "2026-11-28",
       "version": "1.9.0",

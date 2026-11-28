@@ -33,19 +33,19 @@
     "uncommon": {
       "name": "Uncommon",
       "short": "U",
-      "value": 0.4,
+      "value": 0.41,
       "color": "#7fae7a"
     },
     "rare": {
       "name": "Rare",
       "short": "R",
-      "value": 3,
+      "value": 3.04,
       "color": "#6f9fd1"
     },
     "holo": {
       "name": "Rare Holo",
       "short": "H",
-      "value": 12,
+      "value": 11.86,
       "color": "#d9a53f"
     }
   },
