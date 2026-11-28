@@ -1,0 +1,1449 @@
+{
+  "id": "delta-species",
+  "name": "Delta Species",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.55,
+          "holo": 0.3,
+          "ex": 0.12,
+          "secret": 0.02,
+          "star": 0.01
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    },
+    "ex": {
+      "name": "Rare Holo ex",
+      "short": "E",
+      "value": 20,
+      "color": "#4fb3a9"
+    },
+    "secret": {
+      "name": "Secret Rare",
+      "short": "S",
+      "value": 40,
+      "color": "#b36fd1"
+    },
+    "star": {
+      "name": "Gold Star",
+      "short": "★",
+      "value": 60,
+      "color": "#d1607a"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/113",
+      "name": "Beedrill",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.001.beedrill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 15
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/113",
+      "name": "Crobat",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.002.crobat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 169
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/113",
+      "name": "Dragonite",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.003.dragonite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 149
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/113",
+      "name": "Espeon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.004.espeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 196
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/113",
+      "name": "Flareon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.005.flareon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 136
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/113",
+      "name": "Gardevoir",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.006.gardevoir.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 282
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/113",
+      "name": "Jolteon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.007.jolteon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 135
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/113",
+      "name": "Latias",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.008.latias.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 380
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/113",
+      "name": "Latios",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.009.latios.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 381
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/113",
+      "name": "Marowak",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.010.marowak.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 105
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/113",
+      "name": "Metagross",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.011.metagross.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 376
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/113",
+      "name": "Mewtwo",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.012.mewtwo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 150
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/113",
+      "name": "Rayquaza",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.013.rayquaza.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 384
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/113",
+      "name": "Salamence",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.014.salamence.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 373
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/113",
+      "name": "Starmie",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.015.starmie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 121
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/113",
+      "name": "Tyranitar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.016.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/113",
+      "name": "Umbreon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.017.umbreon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 197
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/113",
+      "name": "Vaporeon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/delta-species/ds.018.vaporeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 134
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/113",
+      "name": "Azumarill",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.019.azumarill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 184
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/113",
+      "name": "Azurill",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.020.azurill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 298
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/113",
+      "name": "Holon’s Electrode",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.021.holons_electrode.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 101
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/113",
+      "name": "Holon’s Magneton",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.022.holons_magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/113",
+      "name": "Hypno",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.023.hypno_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 97
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/113",
+      "name": "Mightyena",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.024.mightyena.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 262
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/113",
+      "name": "Porygon2",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.025.porygon2.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 233
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/113",
+      "name": "Rain Castform",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.026.rain_castform.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 351
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/113",
+      "name": "Sandslash",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.027.sandslash.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 28
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/113",
+      "name": "Slowking",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.028.slowking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 199
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/113",
+      "name": "Snow-cloud Castform",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.029.snow_cloud_castform.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 351
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/113",
+      "name": "Starmie",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.030.starmie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 121
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/113",
+      "name": "Sunny Castform",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.031.sunny_castform.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 351
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/113",
+      "name": "Swellow",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.032.swellow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 277
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/113",
+      "name": "Weezing",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.033.weezing.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 110
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/113",
+      "name": "Castform",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.034.castform.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 351
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/113",
+      "name": "Ditto",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.035.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/113",
+      "name": "Ditto",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.036.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/113",
+      "name": "Ditto",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.037.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/113",
+      "name": "Ditto",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.038.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/113",
+      "name": "Ditto",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.039.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/113",
+      "name": "Ditto",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.040.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/113",
+      "name": "Dragonair",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.041.dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/113",
+      "name": "Dragonair",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.042.dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/113",
+      "name": "Golbat",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.043.golbat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 42
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/113",
+      "name": "Hariyama",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.044.hariyama.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 297
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/113",
+      "name": "Illumise",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.045.illumise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 314
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/113",
+      "name": "Kakuna",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.046.kakuna.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 14
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/113",
+      "name": "Kirlia",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.047.kirlia.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 281
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/113",
+      "name": "Magneton",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.048.magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/113",
+      "name": "Metang",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.049.metang.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 375
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/113",
+      "name": "Persian",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.050.persian.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 53
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/113",
+      "name": "Pupitar",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.051.pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/113",
+      "name": "Rapidash",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.052.rapidash.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 78
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/113",
+      "name": "Shelgon",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.053.shelgon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 372
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/113",
+      "name": "Shelgon",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.054.shelgon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 372
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/113",
+      "name": "Skarmory",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.055.skarmory.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 227
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/113",
+      "name": "Volbeat",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.056.volbeat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 313
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/113",
+      "name": "Bagon",
+      "rarity": "common",
+      "image": "images/delta-species/ds.057.bagon_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 371
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/113",
+      "name": "Bagon",
+      "rarity": "common",
+      "image": "images/delta-species/ds.058.bagon_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 371
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/113",
+      "name": "Beldum",
+      "rarity": "common",
+      "image": "images/delta-species/ds.059.beldum.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 374
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/113",
+      "name": "Cubone",
+      "rarity": "common",
+      "image": "images/delta-species/ds.060.cubone.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 104
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/113",
+      "name": "Ditto",
+      "rarity": "common",
+      "image": "images/delta-species/ds.061.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/113",
+      "name": "Ditto",
+      "rarity": "common",
+      "image": "images/delta-species/ds.062.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/113",
+      "name": "Ditto",
+      "rarity": "common",
+      "image": "images/delta-species/ds.063.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/113",
+      "name": "Ditto",
+      "rarity": "common",
+      "image": "images/delta-species/ds.064.ditto_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 132
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/113",
+      "name": "Dratini",
+      "rarity": "common",
+      "image": "images/delta-species/ds.065.dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/113",
+      "name": "Dratini",
+      "rarity": "common",
+      "image": "images/delta-species/ds.066.dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/113",
+      "name": "Drowzee",
+      "rarity": "common",
+      "image": "images/delta-species/ds.067.drowzee.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 96
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/113",
+      "name": "Eevee",
+      "rarity": "common",
+      "image": "images/delta-species/ds.068.eevee_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 133
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/113",
+      "name": "Eevee",
+      "rarity": "common",
+      "image": "images/delta-species/ds.069.eevee_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 133
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/113",
+      "name": "Holon’s Magnemite",
+      "rarity": "common",
+      "image": "images/delta-species/ds.070.holons_magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/113",
+      "name": "Holon’s Voltorb",
+      "rarity": "common",
+      "image": "images/delta-species/ds.071.holons_voltorb.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 100
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/113",
+      "name": "Koffing",
+      "rarity": "common",
+      "image": "images/delta-species/ds.072.koffing.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 109
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/113",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/delta-species/ds.073.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/113",
+      "name": "Magnemite",
+      "rarity": "common",
+      "image": "images/delta-species/ds.074.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/113",
+      "name": "Makuhita",
+      "rarity": "common",
+      "image": "images/delta-species/ds.075.makuhita.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 296
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/113",
+      "name": "Marill",
+      "rarity": "common",
+      "image": "images/delta-species/ds.076.marill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 183
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/113",
+      "name": "Meowth",
+      "rarity": "common",
+      "image": "images/delta-species/ds.077.meowth.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 52
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/113",
+      "name": "Ponyta",
+      "rarity": "common",
+      "image": "images/delta-species/ds.078.ponyta.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 77
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/113",
+      "name": "Poochyena",
+      "rarity": "common",
+      "image": "images/delta-species/ds.079.poochyena.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 261
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/113",
+      "name": "Porygon",
+      "rarity": "common",
+      "image": "images/delta-species/ds.080.porygon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 137
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/113",
+      "name": "Ralts",
+      "rarity": "common",
+      "image": "images/delta-species/ds.081.ralts_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 280
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/113",
+      "name": "Sandshrew",
+      "rarity": "common",
+      "image": "images/delta-species/ds.082.sandshrew.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 27
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/113",
+      "name": "Slowpoke",
+      "rarity": "common",
+      "image": "images/delta-species/ds.083.slowpoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 79
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/113",
+      "name": "Staryu",
+      "rarity": "common",
+      "image": "images/delta-species/ds.084.staryu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 120
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/113",
+      "name": "Staryu",
+      "rarity": "common",
+      "image": "images/delta-species/ds.085.staryu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 120
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/113",
+      "name": "Taillow",
+      "rarity": "common",
+      "image": "images/delta-species/ds.086.taillow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 276
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/113",
+      "name": "Weedle",
+      "rarity": "common",
+      "image": "images/delta-species/ds.087.weedle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 13
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/113",
+      "name": "Zubat",
+      "rarity": "common",
+      "image": "images/delta-species/ds.088.zubat_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 41
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/113",
+      "name": "Dual Ball",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.089.dual_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/113",
+      "name": "Great Ball",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.090.great_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/113",
+      "name": "Holon Farmer",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.091.holon_farmer.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/113",
+      "name": "Holon Lass",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.092.holon_lass.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/113",
+      "name": "Holon Mentor",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.093.holon_mentor.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/113",
+      "name": "Holon Research Tower",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.094.holon_research_tower.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/113",
+      "name": "Holon Researcher",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.095.holon_researcher.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/113",
+      "name": "Holon Ruins",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.096.holon_ruins.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/113",
+      "name": "Holon Scientist",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.097.holon_scientist.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/113",
+      "name": "Holon Transceiver",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.098.holon_transceiver.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/113",
+      "name": "Master Ball",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.099.master_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/113",
+      "name": "Super Scoop Up",
+      "rarity": "uncommon",
+      "image": "images/delta-species/ds.100.super_scoop_up.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/113",
+      "name": "Potion",
+      "rarity": "common",
+      "image": "images/delta-species/ds.101.potion.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/113",
+      "name": "Switch",
+      "rarity": "common",
+      "image": "images/delta-species/ds.102.switch.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 103,
+      "id": "103",
+      "number": "103/113",
+      "name": "Darkness Energy",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.103.darkness_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 104,
+      "id": "104",
+      "number": "104/113",
+      "name": "Holon Energy FF",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.104.holon_energy_ff.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 105,
+      "id": "105",
+      "number": "105/113",
+      "name": "Holon Energy GL",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.105.holon_energy_gl.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 106,
+      "id": "106",
+      "number": "106/113",
+      "name": "Holon Energy WP",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.106.holon_energy_wp.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 107,
+      "id": "107",
+      "number": "107/113",
+      "name": "Metal Energy",
+      "rarity": "rare",
+      "image": "images/delta-species/ds.107.metal_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 108,
+      "id": "108",
+      "number": "108/113",
+      "name": "Flareon ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/delta-species/ds.108.flareon_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 136
+      }
+    },
+    {
+      "index": 109,
+      "id": "109",
+      "number": "109/113",
+      "name": "Jolteon ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/delta-species/ds.109.jolteon_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 135
+      }
+    },
+    {
+      "index": 110,
+      "id": "110",
+      "number": "110/113",
+      "name": "Vaporeon ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/delta-species/ds.110.vaporeon_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 134
+      }
+    },
+    {
+      "index": 111,
+      "id": "111",
+      "number": "111/113",
+      "name": "Groudon Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/delta-species/ds.111.groudon_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 383
+      }
+    },
+    {
+      "index": 112,
+      "id": "112",
+      "number": "112/113",
+      "name": "Kyogre Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/delta-species/ds.112.kyogre_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 382
+      }
+    },
+    {
+      "index": 113,
+      "id": "113",
+      "number": "113/113",
+      "name": "Metagross Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/delta-species/ds.113.metagross_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 376
+      }
+    },
+    {
+      "index": 114,
+      "id": "114",
+      "number": "114/113",
+      "name": "Azumarill",
+      "rarity": "secret",
+      "image": "images/delta-species/ds.114.azumarill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 184
+      }
+    }
+  ]
+}

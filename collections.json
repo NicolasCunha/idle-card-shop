@@ -10,6 +10,25 @@
     "neo-genesis.json",
     "neo-discovery.json",
     "neo-revelation.json",
-    "neo-destiny.json"
+    "neo-destiny.json",
+    "expedition.json",
+    "aquapolis.json",
+    "skyridge.json",
+    "ruby-sapphire.json",
+    "sandstorm.json",
+    "dragon.json",
+    "team-magma-vs-team-aqua.json",
+    "hidden-legends.json",
+    "firered-leafgreen.json",
+    "team-rocket-returns.json",
+    "deoxys.json",
+    "emerald.json",
+    "unseen-forces.json",
+    "delta-species.json",
+    "legend-maker.json",
+    "holon-phantoms.json",
+    "crystal-guardians.json",
+    "dragon-frontiers.json",
+    "power-keepers.json"
   ]
 }

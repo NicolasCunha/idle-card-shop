@@ -54,7 +54,9 @@ async function run() {
   ok(base.booster.slots.reduce((a, s) => a + s.count, 0) === 11, 'booster has 11 cards (7C 3U 1R)');
   const count = r => base.cards.filter(c => c.rarity === r).length;
   ok(count('common') === 38 && count('uncommon') === 32 && count('rare') === 16 && count('holo') === 16, 'Base Set rarities: 38C 32U 16R 16H');
-  ok(order.join() === 'base,jungle,fossil,base-set-2,team-rocket,gym-heroes,gym-challenge,neo-genesis,neo-discovery,neo-revelation,neo-destiny', 'collections load in release order', order.join());
+  ok(order.join() === 'base,jungle,fossil,base-set-2,team-rocket,gym-heroes,gym-challenge,neo-genesis,neo-discovery,neo-revelation,neo-destiny,expedition,aquapolis,skyridge,ruby-sapphire,sandstorm,dragon,team-magma-vs-team-aqua,hidden-legends,firered-leafgreen,team-rocket-returns,deoxys,emerald,unseen-forces,delta-species,legend-maker,holon-phantoms,crystal-guardians,dragon-frontiers,power-keepers', 'collections load in release order', order.join());
+  const trr = sets['team-rocket-returns'];
+  ok(trr.rarities.ex.rank > trr.rarities.holo.rank && trr.rarities.star.rank > trr.rarities.secret.rank && Math.abs(Object.values(trr.booster.slots[2].weights).reduce((a, b) => a + b, 0) - 1) < 1e-9, 'ex and Gold Star rarer than holo; rare slot sums to 1');
   ok(sets['neo-destiny'].cards.filter(c => c.rarity === 'secret').length === 8 && sets['neo-revelation'].cards.filter(c => c.rarity === 'secret').length === 2, 'Shining cards are Secret Rares (2 in Neo Revelation, 8 in Neo Destiny)');
   const tr = sets['team-rocket'];
   const w = tr.booster.slots[2].weights;

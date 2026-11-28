@@ -1,0 +1,1287 @@
+{
+  "id": "dragon-frontiers",
+  "name": "Dragon Frontiers",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.57,
+          "holo": 0.3,
+          "ex": 0.12,
+          "star": 0.01
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    },
+    "ex": {
+      "name": "Rare Holo ex",
+      "short": "E",
+      "value": 20,
+      "color": "#4fb3a9"
+    },
+    "star": {
+      "name": "Gold Star",
+      "short": "★",
+      "value": 60,
+      "color": "#d1607a"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/101",
+      "name": "Ampharos",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.001.ampharos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 181
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/101",
+      "name": "Feraligatr",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.002.feraligatr.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 160
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/101",
+      "name": "Heracross",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.003.heracross.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 214
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/101",
+      "name": "Meganium",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.004.meganium.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 154
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/101",
+      "name": "Milotic",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.005.milotic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 350
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/101",
+      "name": "Nidoking",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.006.nidoking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 34
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/101",
+      "name": "Nidoqueen",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.007.nidoqueen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 31
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/101",
+      "name": "Ninetales",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.008.ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/101",
+      "name": "Pinsir",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.009.pinsir.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 127
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/101",
+      "name": "Snorlax",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.010.snorlax.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 143
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/101",
+      "name": "Togetic",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.011.togetic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 176
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/101",
+      "name": "Typhlosion",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.012.typhlosion.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 157
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/101",
+      "name": "Arbok",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.013.arbok_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 24
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/101",
+      "name": "Cloyster",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.014.cloyster.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 91
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/101",
+      "name": "Dewgong",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.015.dewgong.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 87
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/101",
+      "name": "Gligar",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.016.gligar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 207
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/101",
+      "name": "Jynx",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.017.jynx_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 124
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/101",
+      "name": "Ledian",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.018.ledian.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 166
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/101",
+      "name": "Lickitung",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.019.lickitung.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 108
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/101",
+      "name": "Mantine",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.020.mantine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 226
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/101",
+      "name": "Quagsire",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.021.quagsire.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 195
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/101",
+      "name": "Seadra",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.022.seadra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 117
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/101",
+      "name": "Tropius",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.023.tropius.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 357
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/101",
+      "name": "Vibrava",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.024.vibrava.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 329
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/101",
+      "name": "Xatu",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.025.xatu_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 178
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/101",
+      "name": "Bayleef",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.026.bayleef.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 153
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/101",
+      "name": "Croconaw",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.027.croconaw.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 159
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/101",
+      "name": "Dragonair",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.028.dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/101",
+      "name": "Electabuzz",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.029.electabuzz.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 125
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/101",
+      "name": "Flaaffy",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.030.flaaffy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 180
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/101",
+      "name": "Horsea",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.031.horsea.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 116
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/101",
+      "name": "Kirlia",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.032.kirlia.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 281
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/101",
+      "name": "Kirlia",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.033.kirlia.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 281
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/101",
+      "name": "Nidorina",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.034.nidorina.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 30
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/101",
+      "name": "Nidorino",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.035.nidorino.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 33
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/101",
+      "name": "Quilava",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.036.quilava.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 156
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/101",
+      "name": "Seadra",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.037.seadra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 117
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/101",
+      "name": "Shelgon",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.038.shelgon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 372
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/101",
+      "name": "Smeargle",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.039.smeargle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 235
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/101",
+      "name": "Swellow",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.040.swellow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 277
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/101",
+      "name": "Togepi",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.041.togepi.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 175
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/101",
+      "name": "Vibrava",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.042.vibrava.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 329
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/101",
+      "name": "Bagon",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.043.bagon_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 371
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/101",
+      "name": "Chikorita",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.044.chikorita.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 152
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/101",
+      "name": "Cyndaquil",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.045.cyndaquil.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 155
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/101",
+      "name": "Dratini",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.046.dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/101",
+      "name": "Ekans",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.047.ekans_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 23
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/101",
+      "name": "Elekid",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.048.elekid.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 239
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/101",
+      "name": "Feebas",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.049.feebas.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 349
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/101",
+      "name": "Horsea",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.050.horsea.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 116
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/101",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.051.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/101",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.052.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/101",
+      "name": "Ledyba",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.053.ledyba.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 165
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/101",
+      "name": "Mareep",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.054.mareep.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 179
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/101",
+      "name": "Natu",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.055.natu_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 177
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/101",
+      "name": "Nidoran Female",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.056.nidoran_female.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 29
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/101",
+      "name": "Nidoran Male",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.057.nidoran_male.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 32
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/101",
+      "name": "Pupitar",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.058.pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/101",
+      "name": "Pupitar",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.059.pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/101",
+      "name": "Ralts",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.060.ralts_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 280
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/101",
+      "name": "Ralts",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.061.ralts_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 280
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/101",
+      "name": "Seel",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.062.seel_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 86
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/101",
+      "name": "Shellder",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.063.shellder.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 90
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/101",
+      "name": "Smoochum",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.064.smoochum.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 238
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/101",
+      "name": "Swablu",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.065.swablu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 333
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/101",
+      "name": "Taillow",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.066.taillow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 276
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/101",
+      "name": "Totodile",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.067.totodile.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 158
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/101",
+      "name": "Trapinch",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.068.trapinch.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 328
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/101",
+      "name": "Trapinch",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.069.trapinch.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 328
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/101",
+      "name": "Vulpix",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.070.vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/101",
+      "name": "Wooper",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.071.wooper.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 194
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/101",
+      "name": "Buffer Piece",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.072.buffer_piece.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/101",
+      "name": "Copycat",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.073.copycat.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/101",
+      "name": "Holon Legacy",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.074.holon_legacy.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/101",
+      "name": "Holon Mentor",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.075.holon_mentor.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/101",
+      "name": "Island Hermit",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.076.island_hermit.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/101",
+      "name": "Mr. Stone’s Project",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.077.mr_stones_project.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/101",
+      "name": "Old Rod",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.078.old_rod.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/101",
+      "name": "Professor Elm’s Training Method",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.079.professor_elms_training_method.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/101",
+      "name": "Professor Oak’s Research",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.080.professor_oaks_research.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/101",
+      "name": "Strength Charm",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.081.strength_charm.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/101",
+      "name": "TV Reporter",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.082.tv_reporter.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/101",
+      "name": "Switch",
+      "rarity": "common",
+      "image": "images/dragon-frontiers/df.083.switch.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/101",
+      "name": "Holon Energy FF",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.084.holon_energy_ff.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/101",
+      "name": "Holon Energy GL",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.085.holon_energy_gl.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/101",
+      "name": "Holon Energy WP",
+      "rarity": "rare",
+      "image": "images/dragon-frontiers/df.086.holon_energy_wp.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/101",
+      "name": "Boost Energy",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.087.boost_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/101",
+      "name": "δ Rainbow Energy",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.088.delta_species_rainbow_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/101",
+      "name": "Scramble Energy",
+      "rarity": "uncommon",
+      "image": "images/dragon-frontiers/df.089.scramble_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/101",
+      "name": "Altaria ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.090.altaria_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 334
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/101",
+      "name": "Dragonite ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.091.dragonite_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 149
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/101",
+      "name": "Flygon ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.092.flygon_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 330
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/101",
+      "name": "Gardevoir ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.093.gardevoir_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 282
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/101",
+      "name": "Kingdra ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.094.kingdra_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 230
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/101",
+      "name": "Latias ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.095.latias_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 380
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/101",
+      "name": "Latios ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.096.latios_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 381
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/101",
+      "name": "Rayquaza ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.097.rayquaza_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 384
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/101",
+      "name": "Salamence ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.098.salamence_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 373
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/101",
+      "name": "Tyranitar ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.099.tyranitar_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/101",
+      "name": "Charizard Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.100.charizard_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      }
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/101",
+      "name": "Mew Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/dragon-frontiers/df.101.mew_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 151
+      }
+    }
+  ]
+}

@@ -1,0 +1,1276 @@
+{
+  "id": "crystal-guardians",
+  "name": "Crystal Guardians",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.57,
+          "holo": 0.3,
+          "ex": 0.12,
+          "star": 0.01
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    },
+    "ex": {
+      "name": "Rare Holo ex",
+      "short": "E",
+      "value": 20,
+      "color": "#4fb3a9"
+    },
+    "star": {
+      "name": "Gold Star",
+      "short": "★",
+      "value": 60,
+      "color": "#d1607a"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/100",
+      "name": "Banette",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.001.banette.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 354
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/100",
+      "name": "Blastoise",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.002.blastoise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 9
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/100",
+      "name": "Camerupt",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.003.camerupt.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 323
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/100",
+      "name": "Charizard",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.004.charizard.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/100",
+      "name": "Dugtrio",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.005.dugtrio.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 51
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/100",
+      "name": "Ludicolo",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.006.ludicolo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 272
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/100",
+      "name": "Luvdisc",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.007.luvdisc.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 370
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/100",
+      "name": "Manectric",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.008.manectric.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 310
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/100",
+      "name": "Mawile",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.009.mawile.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 303
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/100",
+      "name": "Sableye",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.010.sableye.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 302
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/100",
+      "name": "Swalot",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.011.swalot.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 317
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/100",
+      "name": "Tauros",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.012.tauros.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 128
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/100",
+      "name": "Wigglytuff",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.013.wigglytuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 40
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/100",
+      "name": "Blastoise",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.014.blastoise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 9
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/100",
+      "name": "Cacturne",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.015.cacturne.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 332
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/100",
+      "name": "Combusken",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.016.combusken.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 256
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/100",
+      "name": "Dusclops",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.017.dusclops.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 356
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/100",
+      "name": "Fearow",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.018.fearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 22
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/100",
+      "name": "Grovyle",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.019.grovyle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 253
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/100",
+      "name": "Grumpig",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.020.grumpig.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 326
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/100",
+      "name": "Igglybuff",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.021.igglybuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 174
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/100",
+      "name": "Kingler",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.022.kingler.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 99
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/100",
+      "name": "Loudred",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.023.loudred.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 294
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/100",
+      "name": "Marshtomp",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.024.marshtomp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 259
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/100",
+      "name": "Medicham",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.025.medicham.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 308
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/100",
+      "name": "Pelipper",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.026.pelipper.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 279
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/100",
+      "name": "Swampert",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.027.swampert.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 260
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/100",
+      "name": "Venusaur",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.028.venusaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 3
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/100",
+      "name": "Charmeleon",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.029.charmeleon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 5
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/100",
+      "name": "Charmeleon",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.030.charmeleon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 5
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/100",
+      "name": "Combusken",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.031.combusken.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 256
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/100",
+      "name": "Grovyle",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.032.grovyle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 253
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/100",
+      "name": "Gulpin",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.033.gulpin.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 316
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/100",
+      "name": "Ivysaur",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.034.ivysaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 2
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/100",
+      "name": "Ivysaur",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.035.ivysaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 2
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/100",
+      "name": "Lairon",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.036.lairon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 305
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/100",
+      "name": "Lombre",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.037.lombre.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 271
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/100",
+      "name": "Marshtomp",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.038.marshtomp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 259
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/100",
+      "name": "Nuzleaf",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.039.nuzleaf.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 274
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/100",
+      "name": "Shuppet",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.040.shuppet.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 353
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/100",
+      "name": "Skitty",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.041.skitty.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 300
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/100",
+      "name": "Wartortle",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.042.wartortle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 8
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/100",
+      "name": "Wartortle",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.043.wartortle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 8
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/100",
+      "name": "Aron",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.044.aron_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 304
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/100",
+      "name": "Bulbasaur",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.045.bulbasaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 1
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/100",
+      "name": "Bulbasaur",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.046.bulbasaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 1
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/100",
+      "name": "Cacnea",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.047.cacnea.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 331
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/100",
+      "name": "Charmander",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.048.charmander.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 4
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/100",
+      "name": "Charmander",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.049.charmander.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 4
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/100",
+      "name": "Diglett",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.050.diglett.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 50
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/100",
+      "name": "Duskull",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.051.duskull.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 355
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/100",
+      "name": "Electrike",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.052.electrike.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 309
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/100",
+      "name": "Jigglypuff",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.053.jigglypuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 39
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/100",
+      "name": "Krabby",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.054.krabby.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 98
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/100",
+      "name": "Lotad",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.055.lotad_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 270
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/100",
+      "name": "Meditite",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.056.meditite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 307
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/100",
+      "name": "Mudkip",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.057.mudkip.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 258
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/100",
+      "name": "Mudkip",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.058.mudkip.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 258
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/100",
+      "name": "Numel",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.059.numel_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 322
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/100",
+      "name": "Seedot",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.060.seedot.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 273
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/100",
+      "name": "Spearow",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.061.spearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 21
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/100",
+      "name": "Spoink",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.062.spoink.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 325
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/100",
+      "name": "Squirtle",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.063.squirtle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 7
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/100",
+      "name": "Squirtle",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.064.squirtle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 7
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/100",
+      "name": "Torchic",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.065.torchic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 255
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/100",
+      "name": "Torchic",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.066.torchic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 255
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/100",
+      "name": "Treecko",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.067.treecko.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 252
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/100",
+      "name": "Treecko",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.068.treecko.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 252
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/100",
+      "name": "Whismur",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.069.whismur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 293
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/100",
+      "name": "Wingull",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.070.wingull.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 278
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/100",
+      "name": "Bill’s Maintenance",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.071.bills_maintenance.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/100",
+      "name": "Castaway",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.072.castaway.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/100",
+      "name": "Celio’s Network",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.073.celios_network.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/100",
+      "name": "Cessation Crystal",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.074.cessation_crystal.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/100",
+      "name": "Crystal Beach",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.075.crystal_beach.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/100",
+      "name": "Crystal Shard",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.076.crystal_shard.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/100",
+      "name": "Double Full Heal",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.077.double_full_heal.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/100",
+      "name": "Dual Ball",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.078.dual_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/100",
+      "name": "Holon Circle",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.079.holon_circle.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/100",
+      "name": "Memory Berry",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.080.memory_berry.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/100",
+      "name": "Mysterious Shard",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.081.mysterious_shard.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/100",
+      "name": "Poké Ball",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.082.poke_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/100",
+      "name": "PokéNav",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.083.pokenav.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/100",
+      "name": "Warp Point",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.084.warp_point.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/100",
+      "name": "Windstorm",
+      "rarity": "uncommon",
+      "image": "images/crystal-guardians/cg.085.windstorm.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/100",
+      "name": "Energy Search",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.086.energy_search.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/100",
+      "name": "Potion",
+      "rarity": "common",
+      "image": "images/crystal-guardians/cg.087.potion.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/100",
+      "name": "Double Rainbow Energy",
+      "rarity": "rare",
+      "image": "images/crystal-guardians/cg.088.double_rainbow_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/100",
+      "name": "Aggron ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.089.aggron_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 306
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/100",
+      "name": "Blaziken ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.090.blaziken_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 257
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/100",
+      "name": "Delcatty ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.091.delcatty_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 301
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/100",
+      "name": "Exploud ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.092.exploud_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 295
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/100",
+      "name": "Groudon ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.093.groudon_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 383
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/100",
+      "name": "Jirachi ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.094.jirachi_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 385
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/100",
+      "name": "Kyogre ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.095.kyogre_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 382
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/100",
+      "name": "Sceptile ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.096.sceptile_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 254
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/100",
+      "name": "Shiftry ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.097.shiftry_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 275
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/100",
+      "name": "Swampert ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.098.swampert_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 260
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/100",
+      "name": "Alakazam Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.099.alakazam_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 65
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/100",
+      "name": "Celebi Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/crystal-guardians/cg.100.celebi_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 251
+      }
+    }
+  ]
+}

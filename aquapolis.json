@@ -1,0 +1,2248 @@
+{
+  "id": "aquapolis",
+  "name": "Aquapolis",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.66,
+          "holo": 0.32,
+          "secret": 0.02
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    },
+    "secret": {
+      "name": "Secret Rare",
+      "short": "S",
+      "value": 40,
+      "color": "#b36fd1"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/147",
+      "name": "Ampharos",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.001.ampharos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 181
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/147",
+      "name": "Arcanine",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.002.arcanine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 59
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/147",
+      "name": "Ariados",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.003.ariados.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 168
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/147",
+      "name": "Azumarill",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.004.azumarill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 184
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/147",
+      "name": "Bellossom",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.005.bellossom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 182
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/147",
+      "name": "Blissey",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.006.blissey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 242
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/147",
+      "name": "Donphan",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.007.donphan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 232
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/147",
+      "name": "Electrode",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.008.electrode.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 101
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/147",
+      "name": "Elekid",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.009.elekid.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 239
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/147",
+      "name": "Entei",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.010.entei_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 244
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/147",
+      "name": "Espeon",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.011.espeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 196
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/147",
+      "name": "Exeggutor",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.012.exeggutor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 103
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/147",
+      "name": "Exeggutor",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.013.exeggutor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 103
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/147",
+      "name": "Houndoom",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.014.houndoom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 229
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/147",
+      "name": "Houndoom",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.015.houndoom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 229
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/147",
+      "name": "Hypno",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.016.hypno_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 97
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/147",
+      "name": "Jumpluff",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.017.jumpluff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 189
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/147",
+      "name": "Jynx",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.018.jynx_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 124
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/147",
+      "name": "Kingdra",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.019.kingdra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 230
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/147",
+      "name": "Lanturn",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.020.lanturn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 171
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/147",
+      "name": "Lanturn",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.021.lanturn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 171
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/147",
+      "name": "Magneton",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.022.magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/147",
+      "name": "Muk",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.023.muk_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 89
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/147",
+      "name": "Nidoking",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.024.nidoking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 34
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/147",
+      "name": "Ninetales",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.025.ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/147",
+      "name": "Octillery",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.026.octillery.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 224
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/147",
+      "name": "Parasect",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.027.parasect.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 47
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/147",
+      "name": "Porygon2",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.028.porygon2.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 233
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/147",
+      "name": "Primeape",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.029.primeape.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 57
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/147",
+      "name": "Quagsire",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.030.quagsire.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 195
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/147",
+      "name": "Rapidash",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.031.rapidash.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 78
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/147",
+      "name": "Scizor",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.032.scizor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 212
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/147",
+      "name": "Slowbro",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.033.slowbro.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 80
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/147",
+      "name": "Slowking",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.034.slowking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 199
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/147",
+      "name": "Steelix",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.035.steelix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 208
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/147",
+      "name": "Sudowoodo",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.036.sudowoodo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 185
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/147",
+      "name": "Suicune",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.037.suicune.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 245
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/147",
+      "name": "Tentacruel",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.038.tentacruel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 73
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/147",
+      "name": "Togetic",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.039.togetic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 176
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/147",
+      "name": "Tyranitar",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.040.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/147",
+      "name": "Umbreon",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.041.umbreon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 197
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/147",
+      "name": "Victreebel",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.042.victreebel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 71
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/147",
+      "name": "Vileplume",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.043.vileplume.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 45
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/147",
+      "name": "Zapdos",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.044.zapdos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 145
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/147",
+      "name": "Bellsprout",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.045.bellsprout.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 69
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/147",
+      "name": "Dodrio",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.046.dodrio.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 85
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/147",
+      "name": "Flaaffy",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.047.flaaffy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 180
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/147",
+      "name": "Furret",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.048.furret.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 162
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/147",
+      "name": "Gloom",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.049.gloom_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 44
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/147",
+      "name": "Golduck",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.050.golduck.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 55
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/147",
+      "name": "Growlithe",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.051.growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/147",
+      "name": "Magnemite",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.052.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/147",
+      "name": "Marill",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.053.marill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 183
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/147",
+      "name": "Marowak",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.054.marowak.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 105
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/147",
+      "name": "Nidorino",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.055.nidorino.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 33
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/147",
+      "name": "Pupitar",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.056.pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/147",
+      "name": "Scyther",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.057.scyther.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 123
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/147",
+      "name": "Seadra",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.058.seadra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 117
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/147",
+      "name": "Seaking",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.059.seaking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 119
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/147",
+      "name": "Skiploom",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.060.skiploom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 188
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/147",
+      "name": "Smoochum",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.061.smoochum.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 238
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/147",
+      "name": "Spinarak",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.062.spinarak.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 167
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/147",
+      "name": "Tyrogue",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.063.tyrogue.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 236
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/147",
+      "name": "Voltorb",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.064.voltorb.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 100
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/147",
+      "name": "Weepinbell",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.065.weepinbell.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 70
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/147",
+      "name": "Wooper",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.066.wooper.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 194
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/147",
+      "name": "Aipom",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.067.aipom_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 190
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/147",
+      "name": "Bellsprout",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.068.bellsprout.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 69
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/147",
+      "name": "Chansey",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.069.chansey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 113
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/147",
+      "name": "Chinchou",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.070.chinchou.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 170
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/147",
+      "name": "Chinchou",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.071.chinchou.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 170
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/147",
+      "name": "Cubone",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.072.cubone.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 104
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/147",
+      "name": "Doduo",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.073.doduo_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 84
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/147",
+      "name": "Drowzee",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.074.drowzee.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 96
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/147",
+      "name": "Eevee",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.075.eevee_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 133
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/147",
+      "name": "Exeggcute",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.076.exeggcute.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 102
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/147",
+      "name": "Exeggcute",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.077.exeggcute.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 102
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/147",
+      "name": "Goldeen",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.078.goldeen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 118
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/147",
+      "name": "Grimer",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.079.grimer.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 88
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/147",
+      "name": "Growlithe",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.080.growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/147",
+      "name": "Hitmonchan",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.081.hitmonchan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 107
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/147",
+      "name": "Hitmontop",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.082.hitmontop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 237
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/147",
+      "name": "Hoppip",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.083.hoppip.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 187
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/147",
+      "name": "Horsea",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.084.horsea.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 116
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/147",
+      "name": "Horsea",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.085.horsea.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 116
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/147",
+      "name": "Houndour",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.086.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/147",
+      "name": "Houndour",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.087.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/147",
+      "name": "Kangaskhan",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.088.kangaskhan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 115
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/147",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.089.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/147",
+      "name": "Lickitung",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.090.lickitung.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 108
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/147",
+      "name": "Magnemite",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.091.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/147",
+      "name": "Mankey",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.092.mankey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 56
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/147",
+      "name": "Mareep",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.093.mareep.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 179
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/147",
+      "name": "Miltank",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.094.miltank.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 241
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/147",
+      "name": "Mr. Mime",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.095.mr_mime.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 122
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/147",
+      "name": "Nidoran Male",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.096.nidoran_male.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 32
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/147",
+      "name": "Oddish",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.097.oddish.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 43
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/147",
+      "name": "Onix",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.098.onix_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 95
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/147",
+      "name": "Paras",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.099.paras_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 46
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/147",
+      "name": "Phanpy",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.100.phanpy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 231
+      }
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/147",
+      "name": "Pinsir",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.101.pinsir.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 127
+      }
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/147",
+      "name": "Ponyta",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.102.ponyta.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 77
+      }
+    },
+    {
+      "index": 103,
+      "id": "103",
+      "number": "103/147",
+      "name": "Porygon",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.103.porygon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 137
+      }
+    },
+    {
+      "index": 104,
+      "id": "104",
+      "number": "104/147",
+      "name": "Psyduck",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.104.psyduck.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 54
+      }
+    },
+    {
+      "index": 105,
+      "id": "105",
+      "number": "105/147",
+      "name": "Remoraid",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.105.remoraid.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 223
+      }
+    },
+    {
+      "index": 106,
+      "id": "106",
+      "number": "106/147",
+      "name": "Scyther",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.106.scyther.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 123
+      }
+    },
+    {
+      "index": 107,
+      "id": "107",
+      "number": "107/147",
+      "name": "Sentret",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.107.sentret.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 161
+      }
+    },
+    {
+      "index": 108,
+      "id": "108",
+      "number": "108/147",
+      "name": "Slowpoke",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.108.slowpoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 79
+      }
+    },
+    {
+      "index": 109,
+      "id": "109",
+      "number": "109/147",
+      "name": "Smeargle",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.109.smeargle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 235
+      }
+    },
+    {
+      "index": 110,
+      "id": "110",
+      "number": "110/147",
+      "name": "Sneasel",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.110.sneasel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 215
+      }
+    },
+    {
+      "index": 111,
+      "id": "111",
+      "number": "111/147",
+      "name": "Spinarak",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.111.spinarak.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 167
+      }
+    },
+    {
+      "index": 112,
+      "id": "112",
+      "number": "112/147",
+      "name": "Tangela",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.112.tangela.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 114
+      }
+    },
+    {
+      "index": 113,
+      "id": "113",
+      "number": "113/147",
+      "name": "Tentacool",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.113.tentacool.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 72
+      }
+    },
+    {
+      "index": 114,
+      "id": "114",
+      "number": "114/147",
+      "name": "Togepi",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.114.togepi.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 175
+      }
+    },
+    {
+      "index": 115,
+      "id": "115",
+      "number": "115/147",
+      "name": "Voltorb",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.115.voltorb.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 100
+      }
+    },
+    {
+      "index": 116,
+      "id": "116",
+      "number": "116/147",
+      "name": "Vulpix",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.116.vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      }
+    },
+    {
+      "index": 117,
+      "id": "117",
+      "number": "117/147",
+      "name": "Wooper",
+      "rarity": "common",
+      "image": "images/aquapolis/aq.117.wooper.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 194
+      }
+    },
+    {
+      "index": 118,
+      "id": "118",
+      "number": "118/147",
+      "name": "Apricorn Forest",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.118.apricorn_forest.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 119,
+      "id": "119",
+      "number": "119/147",
+      "name": "Darkness Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.119.darkness_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 120,
+      "id": "120",
+      "number": "120/147",
+      "name": "Energy Switch",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.120.energy_switch.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 121,
+      "id": "121",
+      "number": "121/147",
+      "name": "Fighting Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.121.fighting_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 122,
+      "id": "122",
+      "number": "122/147",
+      "name": "Fire Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.122.fire_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 123,
+      "id": "123",
+      "number": "123/147",
+      "name": "Forest Guardian",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.123.forest_guardian.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 124,
+      "id": "124",
+      "number": "124/147",
+      "name": "Grass Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.124.grass_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 125,
+      "id": "125",
+      "number": "125/147",
+      "name": "Healing Berry",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.125.healing_berry.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 126,
+      "id": "126",
+      "number": "126/147",
+      "name": "Juggler",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.126.juggler.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 127,
+      "id": "127",
+      "number": "127/147",
+      "name": "Lightning Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.127.lightning_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 128,
+      "id": "128",
+      "number": "128/147",
+      "name": "Memory Berry",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.128.memory_berry.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 129,
+      "id": "129",
+      "number": "129/147",
+      "name": "Metal Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.129.metal_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 130,
+      "id": "130",
+      "number": "130/147",
+      "name": "Pokémon Fan Club",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.130.pokemon_fan_club.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 131,
+      "id": "131",
+      "number": "131/147",
+      "name": "Pokémon Park",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.131.pokemon_park.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 132,
+      "id": "132",
+      "number": "132/147",
+      "name": "Psychic Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.132.psychic_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 133,
+      "id": "133",
+      "number": "133/147",
+      "name": "Seer",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.133.seer_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 134,
+      "id": "134",
+      "number": "134/147",
+      "name": "Super Energy Removal 2",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.134.super_energy_removal_2.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 135,
+      "id": "135",
+      "number": "135/147",
+      "name": "Time Shard",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.135.time_shard.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 136,
+      "id": "136",
+      "number": "136/147",
+      "name": "Town Volunteers",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.136.town_volunteers.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 137,
+      "id": "137",
+      "number": "137/147",
+      "name": "Traveling Salesman",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.137.traveling_salesman.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 138,
+      "id": "138",
+      "number": "138/147",
+      "name": "Undersea Ruins",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.138.undersea_ruins.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 139,
+      "id": "139",
+      "number": "139/147",
+      "name": "Power Plant",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.139.power_plant.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 140,
+      "id": "140",
+      "number": "140/147",
+      "name": "Water Cube 01",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.140.water_cube_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 141,
+      "id": "141",
+      "number": "141/147",
+      "name": "Weakness Guard",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.141.weakness_guard.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 142,
+      "id": "142",
+      "number": "142/147",
+      "name": "Darkness Energy",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.142.darkness_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 143,
+      "id": "143",
+      "number": "143/147",
+      "name": "Metal Energy",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.143.metal_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 144,
+      "id": "144",
+      "number": "144/147",
+      "name": "Rainbow Energy",
+      "rarity": "rare",
+      "image": "images/aquapolis/aq.144.rainbow_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 145,
+      "id": "145",
+      "number": "145/147",
+      "name": "Boost Energy",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.145.boost_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 146,
+      "id": "146",
+      "number": "146/147",
+      "name": "Crystal Energy",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.146.crystal_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 147,
+      "id": "147",
+      "number": "147/147",
+      "name": "Warp Energy",
+      "rarity": "uncommon",
+      "image": "images/aquapolis/aq.147.warp_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 148,
+      "id": "148",
+      "number": "148/147",
+      "name": "Kingdra",
+      "rarity": "secret",
+      "image": "images/aquapolis/aq.148.kingdra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 230
+      }
+    },
+    {
+      "index": 149,
+      "id": "149",
+      "number": "149/147",
+      "name": "Lugia",
+      "rarity": "secret",
+      "image": "images/aquapolis/aq.149.lugia_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 249
+      }
+    },
+    {
+      "index": 150,
+      "id": "150",
+      "number": "150/147",
+      "name": "Nidoking",
+      "rarity": "secret",
+      "image": "images/aquapolis/aq.150.nidoking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 34
+      }
+    },
+    {
+      "index": 151,
+      "id": "h1",
+      "number": "H1",
+      "name": "Ampharos",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H1.ampharos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 181
+      }
+    },
+    {
+      "index": 152,
+      "id": "h10",
+      "number": "H10",
+      "name": "Exeggutor",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H10.exeggutor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 103
+      }
+    },
+    {
+      "index": 153,
+      "id": "h11",
+      "number": "H11",
+      "name": "Houndoom",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H11.houndoom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 229
+      }
+    },
+    {
+      "index": 154,
+      "id": "h12",
+      "number": "H12",
+      "name": "Hypno",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H12.hypno_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 97
+      }
+    },
+    {
+      "index": 155,
+      "id": "h13",
+      "number": "H13",
+      "name": "Jumpluff",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H13.jumpluff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 189
+      }
+    },
+    {
+      "index": 156,
+      "id": "h14",
+      "number": "H14",
+      "name": "Kingdra",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H14.kingdra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 230
+      }
+    },
+    {
+      "index": 157,
+      "id": "h15",
+      "number": "H15",
+      "name": "Lanturn",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H15.lanturn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 171
+      }
+    },
+    {
+      "index": 158,
+      "id": "h16",
+      "number": "H16",
+      "name": "Magneton",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H16.magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      }
+    },
+    {
+      "index": 159,
+      "id": "h17",
+      "number": "H17",
+      "name": "Muk",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H17.muk_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 89
+      }
+    },
+    {
+      "index": 160,
+      "id": "h18",
+      "number": "H18",
+      "name": "Nidoking",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H18.nidoking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 34
+      }
+    },
+    {
+      "index": 161,
+      "id": "h19",
+      "number": "H19",
+      "name": "Ninetales",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H19.ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      }
+    },
+    {
+      "index": 162,
+      "id": "h2",
+      "number": "H2",
+      "name": "Arcanine",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H2.arcanine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 59
+      }
+    },
+    {
+      "index": 163,
+      "id": "h20",
+      "number": "H20",
+      "name": "Octillery",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H20.octillery.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 224
+      }
+    },
+    {
+      "index": 164,
+      "id": "h21",
+      "number": "H21",
+      "name": "Scizor",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H21.scizor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 212
+      }
+    },
+    {
+      "index": 165,
+      "id": "h22",
+      "number": "H22",
+      "name": "Slowking",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H22.slowking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 199
+      }
+    },
+    {
+      "index": 166,
+      "id": "h23",
+      "number": "H23",
+      "name": "Steelix",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H23.steelix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 208
+      }
+    },
+    {
+      "index": 167,
+      "id": "h24",
+      "number": "H24",
+      "name": "Sudowoodo",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H24.sudowoodo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 185
+      }
+    },
+    {
+      "index": 168,
+      "id": "h25",
+      "number": "H25",
+      "name": "Suicune",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H25.suicune.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 245
+      }
+    },
+    {
+      "index": 169,
+      "id": "h26",
+      "number": "H26",
+      "name": "Tentacruel",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H26.tentacruel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 73
+      }
+    },
+    {
+      "index": 170,
+      "id": "h27",
+      "number": "H27",
+      "name": "Togetic",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H27.togetic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 176
+      }
+    },
+    {
+      "index": 171,
+      "id": "h28",
+      "number": "H28",
+      "name": "Tyranitar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H28.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 172,
+      "id": "h29",
+      "number": "H29",
+      "name": "Umbreon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H29.umbreon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 197
+      }
+    },
+    {
+      "index": 173,
+      "id": "h3",
+      "number": "H3",
+      "name": "Ariados",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H3.ariados.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 168
+      }
+    },
+    {
+      "index": 174,
+      "id": "h30",
+      "number": "H30",
+      "name": "Victreebel",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H30.victreebel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 71
+      }
+    },
+    {
+      "index": 175,
+      "id": "h31",
+      "number": "H31",
+      "name": "Vileplume",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H31.vileplume.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 45
+      }
+    },
+    {
+      "index": 176,
+      "id": "h32",
+      "number": "H32",
+      "name": "Zapdos",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.H32.zapdos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 145
+      }
+    },
+    {
+      "index": 177,
+      "id": "h4",
+      "number": "H4",
+      "name": "Azumarill",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H4.azumarill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 184
+      }
+    },
+    {
+      "index": 178,
+      "id": "h5",
+      "number": "H5",
+      "name": "Bellossom",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H5.bellossom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 182
+      }
+    },
+    {
+      "index": 179,
+      "id": "h6",
+      "number": "H6",
+      "name": "Blissey",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H6.blissey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 242
+      }
+    },
+    {
+      "index": 180,
+      "id": "h7",
+      "number": "H7",
+      "name": "Electrode",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H7.electrode.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 101
+      }
+    },
+    {
+      "index": 181,
+      "id": "h8",
+      "number": "H8",
+      "name": "Entei",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H8.entei_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 244
+      }
+    },
+    {
+      "index": 182,
+      "id": "h9",
+      "number": "H9",
+      "name": "Espeon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/aquapolis/aq.0H9.espeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 196
+      }
+    }
+  ]
+}

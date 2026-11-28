@@ -1,6 +1,158 @@
 {
   "items": [
     {
+      "id": "set-expedition",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "expedition",
+      "title": "Expedition is out",
+      "text": "165 cards."
+    },
+    {
+      "id": "set-aquapolis",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "aquapolis",
+      "title": "Aquapolis is out",
+      "text": "182 cards, with 3 Secret Rares."
+    },
+    {
+      "id": "set-skyridge",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "skyridge",
+      "title": "Skyridge is out",
+      "text": "182 cards, with 6 Secret Rares."
+    },
+    {
+      "id": "set-ruby-sapphire",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "ruby-sapphire",
+      "title": "Ruby & Sapphire is out",
+      "text": "109 cards, with 8 Pokémon-ex."
+    },
+    {
+      "id": "set-sandstorm",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "sandstorm",
+      "title": "Sandstorm is out",
+      "text": "100 cards, with 7 Pokémon-ex."
+    },
+    {
+      "id": "set-dragon",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "dragon",
+      "title": "Dragon is out",
+      "text": "100 cards, with 9 Pokémon-ex and 3 Secret Rares."
+    },
+    {
+      "id": "set-team-magma-vs-team-aqua",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "team-magma-vs-team-aqua",
+      "title": "Team Magma vs Team Aqua is out",
+      "text": "97 cards, with 7 Pokémon-ex and 2 Secret Rares."
+    },
+    {
+      "id": "set-hidden-legends",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "hidden-legends",
+      "title": "Hidden Legends is out",
+      "text": "102 cards, with 9 Pokémon-ex and 1 Secret Rare."
+    },
+    {
+      "id": "set-firered-leafgreen",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "firered-leafgreen",
+      "title": "FireRed & LeafGreen is out",
+      "text": "116 cards, with 9 Pokémon-ex and 4 Secret Rares."
+    },
+    {
+      "id": "set-team-rocket-returns",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "team-rocket-returns",
+      "title": "Team Rocket Returns is out",
+      "text": "111 cards, with 11 Pokémon-ex, 3 Gold Stars and 2 Secret Rares."
+    },
+    {
+      "id": "set-deoxys",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "deoxys",
+      "title": "Deoxys is out",
+      "text": "108 cards, with 9 Pokémon-ex, 3 Gold Stars and 1 Secret Rare."
+    },
+    {
+      "id": "set-emerald",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "emerald",
+      "title": "Emerald is out",
+      "text": "107 cards, with 11 Pokémon-ex and 1 Secret Rare."
+    },
+    {
+      "id": "set-unseen-forces",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "unseen-forces",
+      "title": "Unseen Forces is out",
+      "text": "145 cards, with 12 Pokémon-ex, 3 Gold Stars and 2 Secret Rares."
+    },
+    {
+      "id": "set-delta-species",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "delta-species",
+      "title": "Delta Species is out",
+      "text": "114 cards, with 3 Pokémon-ex, 3 Gold Stars and 1 Secret Rare."
+    },
+    {
+      "id": "set-legend-maker",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "legend-maker",
+      "title": "Legend Maker is out",
+      "text": "93 cards, with 7 Pokémon-ex, 3 Gold Stars and 1 Secret Rare."
+    },
+    {
+      "id": "set-holon-phantoms",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "holon-phantoms",
+      "title": "Holon Phantoms is out",
+      "text": "111 cards, with 3 Pokémon-ex, 3 Gold Stars and 1 Secret Rare."
+    },
+    {
+      "id": "set-crystal-guardians",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "crystal-guardians",
+      "title": "Crystal Guardians is out",
+      "text": "100 cards, with 10 Pokémon-ex and 2 Gold Stars."
+    },
+    {
+      "id": "set-dragon-frontiers",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "dragon-frontiers",
+      "title": "Dragon Frontiers is out",
+      "text": "101 cards, with 10 Pokémon-ex and 2 Gold Stars."
+    },
+    {
+      "id": "set-power-keepers",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "requires": "power-keepers",
+      "title": "Power Keepers is out",
+      "text": "108 cards, with 8 Pokémon-ex and 3 Gold Stars."
+    },
+    {
       "id": "2026-11-28-properties",
       "date": "2026-11-28",
       "version": "1.9.0",

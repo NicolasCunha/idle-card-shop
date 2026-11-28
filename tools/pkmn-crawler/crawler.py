@@ -93,8 +93,10 @@ RARITY_MAP = {
     "Rare Holo": "holo",
     "Rare Secret": "secret",  # rarer than holo (Nicolas, 2026-11-27)
     "No Rarity": "common",  # basic energies count as common (Nicolas, 2026-11-27)
+    "Rare Holo ex": "ex",  # EX era (2026-11-28, pending Nicolas)
+    "Rare Holo Star": "star",  # Gold Star (2026-11-28, pending Nicolas)
 }
-RARITY_ORDER = ["common", "uncommon", "rare", "holo", "secret"]  # without a template: most common -> rarest
+RARITY_ORDER = ["common", "uncommon", "rare", "holo", "ex", "secret", "star"]  # without a template: most common -> rarest
 # Card fields the crawler does not know, kept from the template.
 KEEP_FROM_TEMPLATE = ("value", "reprintOf", "image")
 

@@ -1,0 +1,2038 @@
+{
+  "id": "expedition",
+  "name": "Expedition",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.67,
+          "holo": 0.33
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/165",
+      "name": "Alakazam",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.001.alakazam.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 65
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/165",
+      "name": "Ampharos",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.002.ampharos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 181
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/165",
+      "name": "Arbok",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.003.arbok_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 24
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/165",
+      "name": "Blastoise",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.004.blastoise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 9
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/165",
+      "name": "Butterfree",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.005.butterfree.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 12
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/165",
+      "name": "Charizard",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.006.charizard.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/165",
+      "name": "Clefable",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.007.clefable.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 36
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/165",
+      "name": "Cloyster",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.008.cloyster.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 91
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/165",
+      "name": "Dragonite",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.009.dragonite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 149
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/165",
+      "name": "Dugtrio",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.010.dugtrio.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 51
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/165",
+      "name": "Fearow",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.011.fearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 22
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/165",
+      "name": "Feraligatr",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.012.feraligatr.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 160
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/165",
+      "name": "Gengar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.013.gengar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 94
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/165",
+      "name": "Golem",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.014.golem_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 76
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/165",
+      "name": "Kingler",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.015.kingler.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 99
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/165",
+      "name": "Machamp",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.016.machamp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 68
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/165",
+      "name": "Magby",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.017.magby_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 240
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/165",
+      "name": "Meganium",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.018.meganium.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 154
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/165",
+      "name": "Mew",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.019.mew_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 151
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/165",
+      "name": "Mewtwo",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.020.mewtwo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 150
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/165",
+      "name": "Ninetales",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.021.ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/165",
+      "name": "Pichu",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.022.pichu_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 172
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/165",
+      "name": "Pidgeot",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.023.pidgeot.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 18
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/165",
+      "name": "Poliwrath",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.024.poliwrath.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 62
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/165",
+      "name": "Raichu",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.025.raichu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 26
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/165",
+      "name": "Rapidash",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.026.rapidash.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 78
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/165",
+      "name": "Skarmory",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.027.skarmory.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 227
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/165",
+      "name": "Typhlosion",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.028.typhlosion.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 157
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/165",
+      "name": "Tyranitar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.029.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/165",
+      "name": "Venusaur",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.030.venusaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 3
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/165",
+      "name": "Vileplume",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.031.vileplume.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 45
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/165",
+      "name": "Weezing",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/expedition/ex.032.weezing.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 110
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/165",
+      "name": "Alakazam",
+      "rarity": "rare",
+      "image": "images/expedition/ex.033.alakazam.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 65
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/165",
+      "name": "Ampharos",
+      "rarity": "rare",
+      "image": "images/expedition/ex.034.ampharos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 181
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/165",
+      "name": "Arbok",
+      "rarity": "rare",
+      "image": "images/expedition/ex.035.arbok_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 24
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/165",
+      "name": "Blastoise",
+      "rarity": "rare",
+      "image": "images/expedition/ex.036.blastoise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 9
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/165",
+      "name": "Blastoise",
+      "rarity": "rare",
+      "image": "images/expedition/ex.037.blastoise.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 9
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/165",
+      "name": "Butterfree",
+      "rarity": "rare",
+      "image": "images/expedition/ex.038.butterfree.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 12
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/165",
+      "name": "Charizard",
+      "rarity": "rare",
+      "image": "images/expedition/ex.039.charizard.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/165",
+      "name": "Charizard",
+      "rarity": "rare",
+      "image": "images/expedition/ex.040.charizard.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/165",
+      "name": "Clefable",
+      "rarity": "rare",
+      "image": "images/expedition/ex.041.clefable.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 36
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/165",
+      "name": "Cloyster",
+      "rarity": "rare",
+      "image": "images/expedition/ex.042.cloyster.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 91
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/165",
+      "name": "Dragonite",
+      "rarity": "rare",
+      "image": "images/expedition/ex.043.dragonite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 149
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/165",
+      "name": "Dugtrio",
+      "rarity": "rare",
+      "image": "images/expedition/ex.044.dugtrio.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 51
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/165",
+      "name": "Fearow",
+      "rarity": "rare",
+      "image": "images/expedition/ex.045.fearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 22
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/165",
+      "name": "Feraligatr",
+      "rarity": "rare",
+      "image": "images/expedition/ex.046.feraligatr.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 160
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/165",
+      "name": "Feraligatr",
+      "rarity": "rare",
+      "image": "images/expedition/ex.047.feraligatr.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 160
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/165",
+      "name": "Gengar",
+      "rarity": "rare",
+      "image": "images/expedition/ex.048.gengar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 94
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/165",
+      "name": "Golem",
+      "rarity": "rare",
+      "image": "images/expedition/ex.049.golem_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 76
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/165",
+      "name": "Kingler",
+      "rarity": "rare",
+      "image": "images/expedition/ex.050.kingler.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 99
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/165",
+      "name": "Machamp",
+      "rarity": "rare",
+      "image": "images/expedition/ex.051.machamp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 68
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/165",
+      "name": "Magby",
+      "rarity": "rare",
+      "image": "images/expedition/ex.052.magby_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 240
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/165",
+      "name": "Meganium",
+      "rarity": "rare",
+      "image": "images/expedition/ex.053.meganium.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 154
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/165",
+      "name": "Meganium",
+      "rarity": "rare",
+      "image": "images/expedition/ex.054.meganium.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 154
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/165",
+      "name": "Mew",
+      "rarity": "rare",
+      "image": "images/expedition/ex.055.mew_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 151
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/165",
+      "name": "Mewtwo",
+      "rarity": "rare",
+      "image": "images/expedition/ex.056.mewtwo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 150
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/165",
+      "name": "Ninetales",
+      "rarity": "rare",
+      "image": "images/expedition/ex.057.ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/165",
+      "name": "Pichu",
+      "rarity": "rare",
+      "image": "images/expedition/ex.058.pichu_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 172
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/165",
+      "name": "Pidgeot",
+      "rarity": "rare",
+      "image": "images/expedition/ex.059.pidgeot.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 18
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/165",
+      "name": "Poliwrath",
+      "rarity": "rare",
+      "image": "images/expedition/ex.060.poliwrath.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 62
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/165",
+      "name": "Raichu",
+      "rarity": "rare",
+      "image": "images/expedition/ex.061.raichu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 26
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/165",
+      "name": "Rapidash",
+      "rarity": "rare",
+      "image": "images/expedition/ex.062.rapidash.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 78
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/165",
+      "name": "Skarmory",
+      "rarity": "rare",
+      "image": "images/expedition/ex.063.skarmory.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 227
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/165",
+      "name": "Typhlosion",
+      "rarity": "rare",
+      "image": "images/expedition/ex.064.typhlosion.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 157
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/165",
+      "name": "Typhlosion",
+      "rarity": "rare",
+      "image": "images/expedition/ex.065.typhlosion.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 157
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/165",
+      "name": "Tyranitar",
+      "rarity": "rare",
+      "image": "images/expedition/ex.066.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/165",
+      "name": "Venusaur",
+      "rarity": "rare",
+      "image": "images/expedition/ex.067.venusaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 3
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/165",
+      "name": "Venusaur",
+      "rarity": "rare",
+      "image": "images/expedition/ex.068.venusaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 3
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/165",
+      "name": "Vileplume",
+      "rarity": "rare",
+      "image": "images/expedition/ex.069.vileplume.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 45
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/165",
+      "name": "Weezing",
+      "rarity": "rare",
+      "image": "images/expedition/ex.070.weezing.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 110
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/165",
+      "name": "Bayleef",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.071.bayleef.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 153
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/165",
+      "name": "Chansey",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.072.chansey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 113
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/165",
+      "name": "Charmeleon",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.073.charmeleon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 5
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/165",
+      "name": "Croconaw",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.074.croconaw.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 159
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/165",
+      "name": "Dragonair",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.075.dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/165",
+      "name": "Electabuzz",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.076.electabuzz.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 125
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/165",
+      "name": "Flaaffy",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.077.flaaffy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 180
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/165",
+      "name": "Gloom",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.078.gloom_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 44
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/165",
+      "name": "Graveler",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.079.graveler.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 75
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/165",
+      "name": "Haunter",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.080.haunter.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 93
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/165",
+      "name": "Hitmonlee",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.081.hitmonlee.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 106
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/165",
+      "name": "Ivysaur",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.082.ivysaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 2
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/165",
+      "name": "Jynx",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.083.jynx_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 124
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/165",
+      "name": "Kadabra",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.084.kadabra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 64
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/165",
+      "name": "Machoke",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.085.machoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 67
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/165",
+      "name": "Magmar",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.086.magmar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 126
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/165",
+      "name": "Metapod",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.087.metapod.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 11
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/165",
+      "name": "Pidgeotto",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.088.pidgeotto.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 17
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/165",
+      "name": "Poliwhirl",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.089.poliwhirl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 61
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/165",
+      "name": "Pupitar",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.090.pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/165",
+      "name": "Quilava",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.091.quilava.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 156
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/165",
+      "name": "Wartortle",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.092.wartortle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 8
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/165",
+      "name": "Abra",
+      "rarity": "common",
+      "image": "images/expedition/ex.093.abra_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 63
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/165",
+      "name": "Bulbasaur",
+      "rarity": "common",
+      "image": "images/expedition/ex.094.bulbasaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 1
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/165",
+      "name": "Bulbasaur",
+      "rarity": "common",
+      "image": "images/expedition/ex.095.bulbasaur.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 1
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/165",
+      "name": "Caterpie",
+      "rarity": "common",
+      "image": "images/expedition/ex.096.caterpie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 10
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/165",
+      "name": "Charmander",
+      "rarity": "common",
+      "image": "images/expedition/ex.097.charmander.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 4
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/165",
+      "name": "Charmander",
+      "rarity": "common",
+      "image": "images/expedition/ex.098.charmander.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 4
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/165",
+      "name": "Chikorita",
+      "rarity": "common",
+      "image": "images/expedition/ex.099.chikorita.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 152
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/165",
+      "name": "Chikorita",
+      "rarity": "common",
+      "image": "images/expedition/ex.100.chikorita.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 152
+      }
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/165",
+      "name": "Clefairy",
+      "rarity": "common",
+      "image": "images/expedition/ex.101.clefairy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 35
+      }
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/165",
+      "name": "Corsola",
+      "rarity": "common",
+      "image": "images/expedition/ex.102.corsola.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 222
+      }
+    },
+    {
+      "index": 103,
+      "id": "103",
+      "number": "103/165",
+      "name": "Cubone",
+      "rarity": "common",
+      "image": "images/expedition/ex.103.cubone.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 104
+      }
+    },
+    {
+      "index": 104,
+      "id": "104",
+      "number": "104/165",
+      "name": "Cyndaquil",
+      "rarity": "common",
+      "image": "images/expedition/ex.104.cyndaquil.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 155
+      }
+    },
+    {
+      "index": 105,
+      "id": "105",
+      "number": "105/165",
+      "name": "Cyndaquil",
+      "rarity": "common",
+      "image": "images/expedition/ex.105.cyndaquil.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 155
+      }
+    },
+    {
+      "index": 106,
+      "id": "106",
+      "number": "106/165",
+      "name": "Diglett",
+      "rarity": "common",
+      "image": "images/expedition/ex.106.diglett.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 50
+      }
+    },
+    {
+      "index": 107,
+      "id": "107",
+      "number": "107/165",
+      "name": "Dratini",
+      "rarity": "common",
+      "image": "images/expedition/ex.107.dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      }
+    },
+    {
+      "index": 108,
+      "id": "108",
+      "number": "108/165",
+      "name": "Ekans",
+      "rarity": "common",
+      "image": "images/expedition/ex.108.ekans_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 23
+      }
+    },
+    {
+      "index": 109,
+      "id": "109",
+      "number": "109/165",
+      "name": "Gastly",
+      "rarity": "common",
+      "image": "images/expedition/ex.109.gastly.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 92
+      }
+    },
+    {
+      "index": 110,
+      "id": "110",
+      "number": "110/165",
+      "name": "Geodude",
+      "rarity": "common",
+      "image": "images/expedition/ex.110.geodude.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 74
+      }
+    },
+    {
+      "index": 111,
+      "id": "111",
+      "number": "111/165",
+      "name": "Goldeen",
+      "rarity": "common",
+      "image": "images/expedition/ex.111.goldeen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 118
+      }
+    },
+    {
+      "index": 112,
+      "id": "112",
+      "number": "112/165",
+      "name": "Hoppip",
+      "rarity": "common",
+      "image": "images/expedition/ex.112.hoppip.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 187
+      }
+    },
+    {
+      "index": 113,
+      "id": "113",
+      "number": "113/165",
+      "name": "Houndour",
+      "rarity": "common",
+      "image": "images/expedition/ex.113.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 114,
+      "id": "114",
+      "number": "114/165",
+      "name": "Koffing",
+      "rarity": "common",
+      "image": "images/expedition/ex.114.koffing.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 109
+      }
+    },
+    {
+      "index": 115,
+      "id": "115",
+      "number": "115/165",
+      "name": "Krabby",
+      "rarity": "common",
+      "image": "images/expedition/ex.115.krabby.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 98
+      }
+    },
+    {
+      "index": 116,
+      "id": "116",
+      "number": "116/165",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/expedition/ex.116.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 117,
+      "id": "117",
+      "number": "117/165",
+      "name": "Machop",
+      "rarity": "common",
+      "image": "images/expedition/ex.117.machop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 66
+      }
+    },
+    {
+      "index": 118,
+      "id": "118",
+      "number": "118/165",
+      "name": "Magikarp",
+      "rarity": "common",
+      "image": "images/expedition/ex.118.magikarp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 129
+      }
+    },
+    {
+      "index": 119,
+      "id": "119",
+      "number": "119/165",
+      "name": "Mareep",
+      "rarity": "common",
+      "image": "images/expedition/ex.119.mareep.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 179
+      }
+    },
+    {
+      "index": 120,
+      "id": "120",
+      "number": "120/165",
+      "name": "Marill",
+      "rarity": "common",
+      "image": "images/expedition/ex.120.marill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 183
+      }
+    },
+    {
+      "index": 121,
+      "id": "121",
+      "number": "121/165",
+      "name": "Meowth",
+      "rarity": "common",
+      "image": "images/expedition/ex.121.meowth.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 52
+      }
+    },
+    {
+      "index": 122,
+      "id": "122",
+      "number": "122/165",
+      "name": "Oddish",
+      "rarity": "common",
+      "image": "images/expedition/ex.122.oddish.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 43
+      }
+    },
+    {
+      "index": 123,
+      "id": "123",
+      "number": "123/165",
+      "name": "Pidgey",
+      "rarity": "common",
+      "image": "images/expedition/ex.123.pidgey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 16
+      }
+    },
+    {
+      "index": 124,
+      "id": "124",
+      "number": "124/165",
+      "name": "Pikachu",
+      "rarity": "common",
+      "image": "images/expedition/ex.124.pikachu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 25
+      }
+    },
+    {
+      "index": 125,
+      "id": "125",
+      "number": "125/165",
+      "name": "Poliwag",
+      "rarity": "common",
+      "image": "images/expedition/ex.125.poliwag.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 60
+      }
+    },
+    {
+      "index": 126,
+      "id": "126",
+      "number": "126/165",
+      "name": "Ponyta",
+      "rarity": "common",
+      "image": "images/expedition/ex.126.ponyta.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 77
+      }
+    },
+    {
+      "index": 127,
+      "id": "127",
+      "number": "127/165",
+      "name": "Qwilfish",
+      "rarity": "common",
+      "image": "images/expedition/ex.127.qwilfish.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 211
+      }
+    },
+    {
+      "index": 128,
+      "id": "128",
+      "number": "128/165",
+      "name": "Rattata",
+      "rarity": "common",
+      "image": "images/expedition/ex.128.rattata.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 19
+      }
+    },
+    {
+      "index": 129,
+      "id": "129",
+      "number": "129/165",
+      "name": "Shellder",
+      "rarity": "common",
+      "image": "images/expedition/ex.129.shellder.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 90
+      }
+    },
+    {
+      "index": 130,
+      "id": "130",
+      "number": "130/165",
+      "name": "Spearow",
+      "rarity": "common",
+      "image": "images/expedition/ex.130.spearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 21
+      }
+    },
+    {
+      "index": 131,
+      "id": "131",
+      "number": "131/165",
+      "name": "Squirtle",
+      "rarity": "common",
+      "image": "images/expedition/ex.131.squirtle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 7
+      }
+    },
+    {
+      "index": 132,
+      "id": "132",
+      "number": "132/165",
+      "name": "Squirtle",
+      "rarity": "common",
+      "image": "images/expedition/ex.132.squirtle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 7
+      }
+    },
+    {
+      "index": 133,
+      "id": "133",
+      "number": "133/165",
+      "name": "Tauros",
+      "rarity": "common",
+      "image": "images/expedition/ex.133.tauros.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 128
+      }
+    },
+    {
+      "index": 134,
+      "id": "134",
+      "number": "134/165",
+      "name": "Totodile",
+      "rarity": "common",
+      "image": "images/expedition/ex.134.totodile.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 158
+      }
+    },
+    {
+      "index": 135,
+      "id": "135",
+      "number": "135/165",
+      "name": "Totodile",
+      "rarity": "common",
+      "image": "images/expedition/ex.135.totodile.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 158
+      }
+    },
+    {
+      "index": 136,
+      "id": "136",
+      "number": "136/165",
+      "name": "Vulpix",
+      "rarity": "common",
+      "image": "images/expedition/ex.136.vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      }
+    },
+    {
+      "index": 137,
+      "id": "137",
+      "number": "137/165",
+      "name": "Bill’s Maintenance",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.137.bills_maintenance.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 138,
+      "id": "138",
+      "number": "138/165",
+      "name": "Copycat",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.138.copycat.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 139,
+      "id": "139",
+      "number": "139/165",
+      "name": "Dual Ball",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.139.dual_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 140,
+      "id": "140",
+      "number": "140/165",
+      "name": "Energy Removal 2",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.140.energy_removal_2.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 141,
+      "id": "141",
+      "number": "141/165",
+      "name": "Energy Restore",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.141.energy_restore.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 142,
+      "id": "142",
+      "number": "142/165",
+      "name": "Mary’s Impulse",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.142.marys_impulse.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 143,
+      "id": "143",
+      "number": "143/165",
+      "name": "Master Ball",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.143.master_ball.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 144,
+      "id": "144",
+      "number": "144/165",
+      "name": "Multi Technical Machine 01",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.144.multi_technical_machine_01.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 145,
+      "id": "145",
+      "number": "145/165",
+      "name": "Pokémon Nurse",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.145.pokemon_nurse.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 146,
+      "id": "146",
+      "number": "146/165",
+      "name": "Pokémon Reversal",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.146.pokemon_reversal.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 147,
+      "id": "147",
+      "number": "147/165",
+      "name": "Power Charge",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.147.power_charge.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 148,
+      "id": "148",
+      "number": "148/165",
+      "name": "Professor Elm’s Training Method",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.148.professor_elms_training_method.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 149,
+      "id": "149",
+      "number": "149/165",
+      "name": "Professor Oak’s Research",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.149.professor_oaks_research.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 150,
+      "id": "150",
+      "number": "150/165",
+      "name": "Strength Charm",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.150.strength_charm.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 151,
+      "id": "151",
+      "number": "151/165",
+      "name": "Super Scoop Up",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.151.super_scoop_up.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 152,
+      "id": "152",
+      "number": "152/165",
+      "name": "Warp Point",
+      "rarity": "uncommon",
+      "image": "images/expedition/ex.152.warp_point.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 153,
+      "id": "153",
+      "number": "153/165",
+      "name": "Energy Search",
+      "rarity": "common",
+      "image": "images/expedition/ex.153.energy_search.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 154,
+      "id": "154",
+      "number": "154/165",
+      "name": "Full Heal",
+      "rarity": "common",
+      "image": "images/expedition/ex.154.full_heal.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 155,
+      "id": "155",
+      "number": "155/165",
+      "name": "Moo-Moo Milk",
+      "rarity": "common",
+      "image": "images/expedition/ex.155.moo_moo_milk.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 156,
+      "id": "156",
+      "number": "156/165",
+      "name": "Potion",
+      "rarity": "common",
+      "image": "images/expedition/ex.156.potion.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 157,
+      "id": "157",
+      "number": "157/165",
+      "name": "Switch",
+      "rarity": "common",
+      "image": "images/expedition/ex.157.switch.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 158,
+      "id": "158",
+      "number": "158/165",
+      "name": "Darkness Energy",
+      "rarity": "rare",
+      "image": "images/expedition/ex.158.darkness_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 159,
+      "id": "159",
+      "number": "159/165",
+      "name": "Metal Energy",
+      "rarity": "rare",
+      "image": "images/expedition/ex.159.metal_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 160,
+      "id": "160",
+      "number": "160/165",
+      "name": "Fighting Energy",
+      "rarity": "common",
+      "image": "images/expedition/ex.160.fighting_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 161,
+      "id": "161",
+      "number": "161/165",
+      "name": "Fire Energy",
+      "rarity": "common",
+      "image": "images/expedition/ex.161.fire_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 162,
+      "id": "162",
+      "number": "162/165",
+      "name": "Grass Energy",
+      "rarity": "common",
+      "image": "images/expedition/ex.162.grass_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 163,
+      "id": "163",
+      "number": "163/165",
+      "name": "Lightning Energy",
+      "rarity": "common",
+      "image": "images/expedition/ex.163.lightning_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 164,
+      "id": "164",
+      "number": "164/165",
+      "name": "Psychic Energy",
+      "rarity": "common",
+      "image": "images/expedition/ex.164.psychic_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 165,
+      "id": "165",
+      "number": "165/165",
+      "name": "Water Energy",
+      "rarity": "common",
+      "image": "images/expedition/ex.165.water_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1205 @@
+{
+  "id": "legend-maker",
+  "name": "Legend Maker",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.55,
+          "holo": 0.3,
+          "ex": 0.12,
+          "secret": 0.02,
+          "star": 0.01
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    },
+    "ex": {
+      "name": "Rare Holo ex",
+      "short": "E",
+      "value": 20,
+      "color": "#4fb3a9"
+    },
+    "secret": {
+      "name": "Secret Rare",
+      "short": "S",
+      "value": 40,
+      "color": "#b36fd1"
+    },
+    "star": {
+      "name": "Gold Star",
+      "short": "★",
+      "value": 60,
+      "color": "#d1607a"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/92",
+      "name": "Aerodactyl",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.001.aerodactyl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 142
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/92",
+      "name": "Aggron",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.002.aggron.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 306
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/92",
+      "name": "Cradily",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.003.cradily.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 346
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/92",
+      "name": "Delcatty",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.004.delcatty.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 301
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/92",
+      "name": "Gengar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.005.gengar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 94
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/92",
+      "name": "Golem",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.006.golem_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 76
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/92",
+      "name": "Kabutops",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.007.kabutops.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 141
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/92",
+      "name": "Lapras",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.008.lapras.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 131
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/92",
+      "name": "Machamp",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.009.machamp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 68
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/92",
+      "name": "Mew",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.010.mew_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 151
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/92",
+      "name": "Muk",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.011.muk_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 89
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/92",
+      "name": "Shiftry",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.012.shiftry.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 275
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/92",
+      "name": "Victreebel",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.013.victreebel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 71
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/92",
+      "name": "Wailord",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/legend-maker/lm.014.wailord.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 321
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/92",
+      "name": "Absol",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.015.absol_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 359
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/92",
+      "name": "Girafarig",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.016.girafarig.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 203
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/92",
+      "name": "Gorebyss",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.017.gorebyss.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 368
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/92",
+      "name": "Huntail",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.018.huntail.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 367
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/92",
+      "name": "Lanturn",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.019.lanturn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 171
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/92",
+      "name": "Lunatone",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.020.lunatone.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 337
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/92",
+      "name": "Magmar",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.021.magmar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 126
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/92",
+      "name": "Magneton",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.022.magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/92",
+      "name": "Omastar",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.023.omastar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 139
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/92",
+      "name": "Pinsir",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.024.pinsir.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 127
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/92",
+      "name": "Solrock",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.025.solrock.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 338
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/92",
+      "name": "Spinda",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.026.spinda.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 327
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/92",
+      "name": "Torkoal",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.027.torkoal.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 324
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/92",
+      "name": "Wobbuffet",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.028.wobbuffet.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 202
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/92",
+      "name": "Anorith",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.029.anorith.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 347
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/92",
+      "name": "Cascoon",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.030.cascoon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 268
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/92",
+      "name": "Dunsparce",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.031.dunsparce.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 206
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/92",
+      "name": "Electrode",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.032.electrode.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 101
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/92",
+      "name": "Furret",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.033.furret.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 162
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/92",
+      "name": "Graveler",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.034.graveler.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 75
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/92",
+      "name": "Haunter",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.035.haunter.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 93
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/92",
+      "name": "Kabuto",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.036.kabuto.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 140
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/92",
+      "name": "Kecleon",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.037.kecleon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 352
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/92",
+      "name": "Lairon",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.038.lairon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 305
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/92",
+      "name": "Machoke",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.039.machoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 67
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/92",
+      "name": "Misdreavus",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.040.misdreavus.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 200
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/92",
+      "name": "Nuzleaf",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.041.nuzleaf.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 274
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/92",
+      "name": "Roselia",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.042.roselia.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 315
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/92",
+      "name": "Sealeo",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.043.sealeo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 364
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/92",
+      "name": "Tangela",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.044.tangela.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 114
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/92",
+      "name": "Tentacruel",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.045.tentacruel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 73
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/92",
+      "name": "Vibrava",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.046.vibrava.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 329
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/92",
+      "name": "Weepinbell",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.047.weepinbell.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 70
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/92",
+      "name": "Aron",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.048.aron_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 304
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/92",
+      "name": "Bellsprout",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.049.bellsprout.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 69
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/92",
+      "name": "Chinchou",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.050.chinchou.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 170
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/92",
+      "name": "Clamperl",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.051.clamperl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 366
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/92",
+      "name": "Gastly",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.052.gastly.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 92
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/92",
+      "name": "Geodude",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.053.geodude.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 74
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/92",
+      "name": "Grimer",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.054.grimer.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 88
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/92",
+      "name": "Growlithe",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.055.growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/92",
+      "name": "Lileep",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.056.lileep.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 345
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/92",
+      "name": "Machop",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.057.machop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 66
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/92",
+      "name": "Magby",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.058.magby_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 240
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/92",
+      "name": "Magnemite",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.059.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/92",
+      "name": "Omanyte",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.060.omanyte.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 138
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/92",
+      "name": "Seedot",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.061.seedot.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 273
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/92",
+      "name": "Sentret",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.062.sentret.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 161
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/92",
+      "name": "Shuppet",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.063.shuppet.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 353
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/92",
+      "name": "Skitty",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.064.skitty.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 300
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/92",
+      "name": "Spheal",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.065.spheal.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 363
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/92",
+      "name": "Tentacool",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.066.tentacool.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 72
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/92",
+      "name": "Trapinch",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.067.trapinch.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 328
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/92",
+      "name": "Voltorb",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.068.voltorb.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 100
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/92",
+      "name": "Wailmer",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.069.wailmer.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 320
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/92",
+      "name": "Wurmple",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.070.wurmple.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 265
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/92",
+      "name": "Wynaut",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.071.wynaut.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 360
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/92",
+      "name": "Cursed Stone",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.072.cursed_stone.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/92",
+      "name": "Fieldworker",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.073.fieldworker.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/92",
+      "name": "Full Flame",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.074.full_flame.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/92",
+      "name": "Giant Stump",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.075.giant_stump.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/92",
+      "name": "Power Tree",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.076.power_tree.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/92",
+      "name": "Strange Cave",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.077.strange_cave.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/92",
+      "name": "Claw Fossil",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.078.claw_fossil.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/92",
+      "name": "Mysterious Fossil",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.079.mysterious_fossil.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/92",
+      "name": "Root Fossil",
+      "rarity": "common",
+      "image": "images/legend-maker/lm.080.root_fossil.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/92",
+      "name": "Rainbow Energy",
+      "rarity": "rare",
+      "image": "images/legend-maker/lm.081.rainbow_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/92",
+      "name": "React Energy",
+      "rarity": "uncommon",
+      "image": "images/legend-maker/lm.082.react_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/92",
+      "name": "Arcanine ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.083.arcanine_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 59
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/92",
+      "name": "Armaldo ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.084.armaldo_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 348
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/92",
+      "name": "Banette ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.085.banette_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 354
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/92",
+      "name": "Dustox ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.086.dustox_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 269
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/92",
+      "name": "Flygon ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.087.flygon_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 330
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/92",
+      "name": "Mew ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.088.mew_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 151
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/92",
+      "name": "Walrein ex",
+      "rarity": "ex",
+      "foil": true,
+      "image": "images/legend-maker/lm.089.walrein_ex.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 365
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/92",
+      "name": "Regice Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/legend-maker/lm.090.regice_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 378
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/92",
+      "name": "Regirock Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/legend-maker/lm.091.regirock_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 377
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/92",
+      "name": "Registeel Star",
+      "rarity": "star",
+      "foil": true,
+      "image": "images/legend-maker/lm.092.registeel_star.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 379
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/92",
+      "name": "Pikachu",
+      "rarity": "secret",
+      "image": "images/legend-maker/lm.093.pikachu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 25
+      }
+    }
+  ]
+}
