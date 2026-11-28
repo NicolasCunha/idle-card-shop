@@ -1,5 +1,5 @@
 {
-  "revision": 9,
+  "revision": 10,
   "steps": [
     { "id": "buy", "text": "Buy a booster.", "target": "[data-action='buy'][data-n='1']", "tab": "shop", "done": "boostersBought" },
     { "id": "open", "text": "Open it.", "target": "[data-action='open'][data-n='1']", "tab": "shop", "done": "boostersOpened" },
@@ -17,7 +17,7 @@
     { "id": "storage", "text": "Sell sealed boosters, boxes and accessories from Storage.", "target": "[data-tab='storage']", "when": "storageUnlocked", "done": "visitedStorage" },
     { "id": "shelf", "text": "Set a price and list goods on the shelf. Customers buy them too.", "target": ".goods", "tab": "storage", "when": "visitedStorage", "done": "listedGood" },
     { "id": "marketing", "text": "Run a campaign for more customers for a few days.", "target": "[data-tab='marketing']", "when": "marketingUnlocked", "done": "visitedMarketing" },
-    { "id": "properties", "text": "Warehouses hold far more goods, restock the shop and take what your buyer buys once the shop is full.", "target": "[data-tab='properties']", "when": "propertiesUnlocked", "done": "visitedProperties" },
+    { "id": "properties", "text": "Warehouses hold far more goods, restock the shop and take what you and your buyer buy once the shop is full.", "target": "[data-tab='properties']", "when": "propertiesUnlocked", "done": "visitedProperties" },
     { "id": "nextset", "text": "A new collection is out. Some customers come only for it, so put a few in the showcase.", "target": "[data-action='shop-set']", "tab": "shop", "when": "nextSetOpen", "done": "boughtNextSet" }
   ]
 }

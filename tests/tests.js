@@ -360,6 +360,15 @@ async function run() {
     bw.stock.base = G.stockCapacity(bw);
     G.tick(bw, sets, 600, T0 + 600000);
     const inWh = G.warehouseOwned(bw, 'b:base');
+    const mw = fresh(sets, order);
+    mw.firstDay = mw.day = M.dayNumber(T0);
+    mw.money = 100000;
+    mw.stock.base = G.stockCapacity(mw);
+    ok(!G.buyBooster(mw, sets.base), 'a full shop without a warehouse cannot buy');
+    G.buyWarehouse(mw);
+    const before = G.storageUsed(mw);
+    ok(G.buyBoosters(mw, sets.base, 5) === 5 && G.warehouseOwned(mw, 'b:base') === 5 && G.storageUsed(mw) === before && G.buyBox(mw, sets.base) && G.warehouseOwned(mw, 'x:base') === 1,
+      'with the shop full, purchases go to the warehouses');
     ok(inWh > 0 && bw.stock.base + inWh <= 60 && bw.stock.base === G.stockCapacity(bw), 'a full shop sends the buyer to the warehouses, up to the stock target', `${inWh} in the warehouse`);
   }
 

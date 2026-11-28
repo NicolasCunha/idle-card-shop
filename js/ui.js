@@ -458,7 +458,7 @@ PANELS.shop = {
     const price = G.boosterPrice(S, st);
     const sup = G.supply(S, st);
     const out = G.soldOut(S, st);
-    const full = G.storageFree(S) < 1 || !G.setUnlocked(S, st) || out;
+    const full = !G.roomFor(S) || !G.setUnlocked(S, st) || out;
     const next = G.nextRelease(S, SETS);
     const days = next ? SU.releaseDay(S, next) - S.day : 0;
     const keep = Number(ui.priceKeep) || 0;
@@ -469,7 +469,7 @@ PANELS.shop = {
       bprice: fmtMoney(price),
       left: out ? 'sold out' : fmtNum(sup.left),
       nextin: days > 1 ? `${days} days` : days === 1 ? 'tomorrow' : 'soon',
-      stock: `${fmtNum(G.storageUsed(S))} / ${fmtNum(G.stockCapacity(S))}`,
+      stock: `${fmtNum(G.storageUsed(S))} / ${fmtNum(G.stockCapacity(S))}${G.roomFor(S) === 'warehouse' ? ' · to warehouse' : ''}`,
       sealed: fmtNum(S.stock[st.id] || 0),
       avail: fmtNum(avail),
       showcase: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,

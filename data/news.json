@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-overflow",
+      "date": "2026-11-28",
+      "version": "1.9.4",
+      "title": "Full shop, no problem",
+      "text": "With the shop full, what you buy goes straight to your warehouses."
+    },
+    {
       "id": "2026-11-28-market-speed",
       "date": "2026-11-28",
       "version": "1.9.3",

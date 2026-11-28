@@ -370,8 +370,19 @@ function saleMultiplier(state, setId) {
 // ---------- Actions: buy ----------
 export const soldOut = (state, set) => supply(state, set).left < 1;
 
+// Where a purchase of `space` goes: the shop, or the warehouses once the shop
+// is full (Nicolas, 2026-11-28). null: no room anywhere.
+export function roomFor(state, space = 1) {
+  if (storageFree(state) >= space) return 'shop';
+  if (warehouseFree(state) >= space) return 'warehouse';
+  return null;
+}
+function receive(state, g, n, where) {
+  if (where === 'warehouse') addWarehouse(state, g, n); else addGoods(state, g, n);
+}
+
 export function canBuyBooster(state, set, reserve = 0) {
-  return setUnlocked(state, set) && !soldOut(state, set) && storageFree(state) >= 1
+  return setUnlocked(state, set) && !soldOut(state, set) && !!roomFor(state)
     && state.money - boosterPrice(state, set) >= reserve - 1e-9;
 }
 
@@ -379,7 +390,7 @@ export function buyBooster(state, set, reserve = 0) {
   if (!canBuyBooster(state, set, reserve)) return false;
   spend(state, boosterPrice(state, set), 'boosters');
   supply(state, set).left--;
-  state.stock[set.id] = (state.stock[set.id] || 0) + 1;
+  receive(state, `b:${set.id}`, 1, roomFor(state));
   state.stats.boostersBought++;
   return true;
 }
@@ -389,7 +400,7 @@ export function buyBooster(state, set, reserve = 0) {
 // rivals' stock, not back to the distributor, so buy-and-flip cannot loop
 // forever: each distributor buy uses up supply and raises its price.
 export function canBuyMarketBooster(state, set) {
-  return setUnlocked(state, set) && supply(state, set).held >= 1 && storageFree(state) >= 1
+  return setUnlocked(state, set) && supply(state, set).held >= 1 && !!roomFor(state)
     && state.money >= marketBoosterBuyPrice(state, set) - 1e-9;
 }
 
@@ -397,7 +408,7 @@ export function buyMarketBooster(state, set) {
   if (!canBuyMarketBooster(state, set)) return false;
   spend(state, marketBoosterBuyPrice(state, set), 'market');
   supply(state, set).held--;
-  state.stock[set.id] = (state.stock[set.id] || 0) + 1;
+  receive(state, `b:${set.id}`, 1, roomFor(state));
   state.stats.boostersBoughtMarket++;
   return true;
 }
@@ -1020,14 +1031,14 @@ export function recallShelf(state) {
 
 export const boxPrice = (state, set) => BOX_SIZE * boosterPrice(state, set) * BOX_DISCOUNT;
 export function canBuyBox(state, set) {
-  return setUnlocked(state, set) && supply(state, set).left >= BOX_SIZE && storageFree(state) >= BOX_SPACE
+  return setUnlocked(state, set) && supply(state, set).left >= BOX_SIZE && !!roomFor(state, BOX_SPACE)
     && state.money >= boxPrice(state, set) - 1e-9;
 }
 export function buyBox(state, set) {
   if (!canBuyBox(state, set)) return false;
   spend(state, boxPrice(state, set), 'goods');
   supply(state, set).left -= BOX_SIZE;
-  addGoods(state, `x:${set.id}`, 1);
+  receive(state, `x:${set.id}`, 1, roomFor(state, BOX_SPACE));
   state.stats.boxesBought++;
   return true;
 }
@@ -1045,9 +1056,9 @@ export function buyAccessory(state, id, n = 1) {
   const a = ACCESSORIES[id];
   if (!a) return 0;
   let k = 0;
-  while (k < n && state.money >= a.cost - 1e-9 && storageFree(state) >= 1) {
+  while (k < n && state.money >= a.cost - 1e-9 && roomFor(state)) {
     spend(state, a.cost, 'goods');
-    addGoods(state, `a:${id}`, 1);
+    receive(state, `a:${id}`, 1, roomFor(state));
     k++;
   }
   state.stats.accessoriesBought += k;
