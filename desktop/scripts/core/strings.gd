@@ -58,7 +58,20 @@ const UPGRADE_TEXT := {
 	"fame": {"name": "Fame", "effect": "Richer customers, +3% customers"},
 }
 
+## Staff routines (Routines, docs/sdd/staff-routines.md).
+const STEP_NAMES := {"buy": "Buy", "open": "Open", "price": "Price", "bulk": "Bulk", "if": "If", "else": "Else", "end": "End"}
+const PICKER_NAMES := {"@same": "Same set", "@least": "Least complete", "@next": "Next incomplete", "@newest": "Newest", "@any": "Any"}
+const COND_NAMES := {"incomplete": "Incomplete", "complete": "Complete", "packs": "Has packs", "nopacks": "No packs", "room": "Showcase room", "money": "Money over"}
+const REPEAT_NAMES := {1: "x1", 5: "x5", 0: "All"}
+
 const TIPS := {
+	"routine": "Steps run top to bottom, then start again. A step that can't run is skipped.",
+	"routinePick": "Jobs, or a routine for this employee.",
+	"stepSet": "Same set: the collection of the step above. Least complete and Next incomplete: by cards in the binder.",
+	"stepRep": "All: repeat while it works, then go on.",
+	"stepKeep": "Copies of each card kept in the binder. Empty: shop rule.",
+	"stepBelow": "Sells only cards worth less. Empty: shop rule. 0: any card.",
+	"stepAdd": "Add a step below.",
 	"buy": "Sealed boosters from the distributor. Less supply left, higher price.",
 	"buyAll": "As many as your cash and storage allow.",
 	"supply": "Boosters left at the distributor, out of all ever printed. Rival shops buy every day; reprints add more.",

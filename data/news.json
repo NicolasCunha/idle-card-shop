@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-routines",
+      "date": "2026-11-28",
+      "version": "2.2.0",
+      "title": "Staff routines",
+      "text": "Build routines in the Staff tab: steps your staff repeat in order, with If and Else. Pick the least complete collection, keep new cards and sell the rest."
+    },
+    {
       "id": "2026-11-28-loading",
       "date": "2026-11-28",
       "version": "1.9.7",

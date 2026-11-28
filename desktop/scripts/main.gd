@@ -26,7 +26,7 @@ const TABS := {
 const TUT_TARGETS := {
 	"buy": "buy-1", "open": "open-1", "price-showcase": "price", "sale": "stage-price", "hire": "hire",
 	"task": "emp-job", "backup": "backup-job", "supply": "boosters", "news": "news-btn", "shelf": "goods",
-	"nextset": "shop-set",
+	"nextset": "shop-set", "routine": "new-routine", "routine-staff": "emp-routine",
 }
 
 var sets := {}
@@ -351,6 +351,29 @@ func _shots() -> void:
 	await snap.call("%02d-awards" % n)
 	n += 1
 	close_overlay()
+	var rt := Routines.create(state, "Complete sets")
+	rt.steps = [
+		{"do": "if", "cond": "incomplete", "set": "@next", "val": 0},
+		{"do": "buy", "set": "@same", "rep": 1},
+		{"do": "open", "set": "@same", "rep": 1},
+		{"do": "if", "cond": "room", "set": "@same", "val": 0},
+		{"do": "price", "set": "@same", "rep": 0, "keep": 1, "val": null},
+		{"do": "else"},
+		{"do": "bulk", "set": "@same", "rep": 0, "keep": 1, "val": 0.0},
+		{"do": "end"},
+		{"do": "end"},
+	]
+	Routines.changed(state, rt)
+	Routines.assign(state.staff[0], rt)
+	Routines.assign(state.staff[1], rt)
+	Routines.create(state, "Buy & open")
+	switch_tab("staff")
+	await snap.call("%02d-staff-routines" % n)
+	n += 1
+	RoutineEditor.open(rt)
+	await snap.call("%02d-routine-editor" % n)
+	n += 1
+	close_overlay()
 	prefs.theme = "dark"
 	apply_theme()
 	switch_tab("shop")
@@ -358,6 +381,10 @@ func _shots() -> void:
 	n += 1
 	switch_tab("market")
 	await snap.call("%02d-market-dark" % n)
+	n += 1
+	RoutineEditor.open(rt)
+	await snap.call("%02d-routine-editor-dark" % n)
+	close_overlay()
 	n += 1
 	print("shots: ", dir)
 	get_tree().quit()

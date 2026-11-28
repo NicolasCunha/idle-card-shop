@@ -288,6 +288,7 @@ static func new_state(sets: Dictionary, order: Array, now: int = -1) -> Dictiona
 		"seen": {},
 		"showcase": [],
 		"staff": [],
+		"routines": [],
 		"upgrades": {"storage": 0, "showcase": 0, "marketing": 0, "reputation": 0, "staffRoom": 0, "fame": 0},
 		"rules": {
 			"buySet": first,
@@ -729,13 +730,15 @@ static func sell_bulk(state: Dictionary, sets: Dictionary, keep: float = 0.0) ->
 
 
 ## One step of the pricing employee (see js/game.js staffPriceOne).
-static func _staff_price_one(state: Dictionary, sets: Dictionary, only_set = null) -> String:
-	var keep := maxf(0.0, floorf(JS.num(state.rules.keepCopies)))
+static func _staff_price_one(state: Dictionary, sets: Dictionary, only_set = null, keep_copies: float = -1.0) -> String:
+	var keep := maxf(0.0, floorf(JS.num(state.rules.keepCopies))) if keep_copies < 0 else keep_copies
 	var ver: int = state.get("_binderVer", 0)
 	if not state.has("_spares"):
 		state["_spares"] = {}
 	var cache: Dictionary = state._spares
 	var key: String = only_set if only_set != null else "*"
+	if keep_copies >= 0:
+		key += "|%s" % keep
 	var q = cache.get(key)
 	while true:
 		var stale: bool = q == null or q.day != state.day or q.keep != keep
@@ -831,7 +834,7 @@ static func hire(state: Dictionary):
 	var skills := {}
 	for k in SKILL_KEYS:
 		skills[k] = {"lvl": 1 + floori(_r() * 2), "xp": 0}
-	var emp := {"id": state.nextId, "name": name, "skills": skills, "task": null, "set": null, "task2": null, "set2": null,
+	var emp := {"id": state.nextId, "name": name, "skills": skills, "task": null, "set": null, "task2": null, "set2": null, "routine": null,
 		"progress": 0, "training": null, "status": "idle", "hiredDay": state.day}
 	state.nextId += 1
 	state.staff.append(emp)
@@ -1009,6 +1012,12 @@ static func _tick_employee(state: Dictionary, sets: Dictionary, emp: Dictionary,
 			emp.training = null
 			_level_up(state, emp, skill, "training")
 		return
+	if emp.get("routine") != null:
+		var r = Routines.find(state, emp.routine)
+		if r != null:
+			Routines.tick(state, sets, emp, r, dt)
+			return
+		emp.routine = null
 	var jobs := jobs_of(emp)
 	if jobs.is_empty():
 		emp.status = "idle"

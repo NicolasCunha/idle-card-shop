@@ -1,5 +1,5 @@
 {
-  "revision": 12,
+  "revision": 13,
   "steps": [
     { "id": "buy", "text": "Buy a booster.", "target": "[data-action='buy'][data-n='1']", "tab": "shop", "done": "boostersBought" },
     { "id": "open", "text": "Open it.", "target": "[data-action='open'][data-n='1']", "tab": "shop", "done": "boostersOpened" },
@@ -9,6 +9,8 @@
     { "id": "hire", "text": "Hire your first employee.", "target": "[data-action='hire']", "tab": "staff", "when": "staffUnlocked", "done": "hasStaff" },
     { "id": "task", "text": "Pick a job for them.", "target": ".emp select", "tab": "staff", "when": "hasStaff", "done": "staffHasTask" },
     { "id": "backup", "text": "Give them a backup job for when the main one runs out.", "target": ".job select[data-slot='2']", "tab": "staff", "when": "twoStaff", "done": "hasBackupJob" },
+    { "id": "routine", "text": "Build a routine: steps your staff repeat in order.", "target": "[data-action='new-routine']", "tab": "staff", "when": "twoStaff", "done": "hasRoutine" },
+    { "id": "routine-staff", "text": "Put an employee on it. They leave their jobs and run the routine.", "target": ".emp-routine", "tab": "staff", "when": "hasRoutine", "done": "staffOnRoutine" },
     { "id": "market", "text": "Card prices change every market day, every 10 minutes. Check the Market.", "target": "[data-tab='market']", "when": "marketUnlocked", "done": "visitedMarket" },
     { "id": "supply", "text": "Boosters have a limited supply. Less supply, higher price. Buy and sell them here.", "target": ".boosters", "tab": "market", "when": "visitedMarket", "done": "tradedBooster" },
     { "id": "settings", "text": "Theme, volume and save are in Settings.", "target": "[data-tab='settings']", "when": "hasStaff", "done": "visitedSettings" },
