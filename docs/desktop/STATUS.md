@@ -64,7 +64,7 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 
 ## S18 (build and release)
 
-- `.github/workflows/desktop.yml`: official Godot 4.7.2 and export templates, tests, Windows and Linux export, one card pack per collection, zips as run artifacts; a `desktop-v*` tag publishes the release with `desktop/RELEASE_NOTES.md`.
+- `.github/workflows/desktop.yml`: official Godot 4.7.2 and export templates, tests, Windows and Linux export, one card pack per collection, zips as run artifacts; a `desktop-v*` tag, or a manual run (Run workflow) with a version, publishes the release with `desktop/RELEASE_NOTES.md`.
 - The exported game mounts `packs/cards-*.pck` next to the executable (`GameData.mount_card_packs`). Checked in the container with a Linux export and the Base Set pack: 30 collections load and the scans decode.
 - Content root and pack mounting use the `template` feature (exported builds only).
 
