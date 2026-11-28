@@ -219,7 +219,7 @@ export function newState(sets, order, nowMs = Date.now()) {
     ledger: [],         // [{day, in: {cat: $}, out: {cat: $}}] Finances tab
     achievements: {},   // id -> market day earned
     market: {},         // setId -> booster supply (supply.js)
-    inbox: [],          // game notices for the News panel: [{id, day, kind, text}]
+    inbox: [],          // game notices for the News panel: [{id, day, kind, text, detail?}]
     inboxRead: 0,       // highest inbox id the player has seen
     newsSeen: [],       // ids of patch notes (data/news.json) the player has seen
     log: [],
@@ -309,8 +309,11 @@ function refreshBonus(state, sets, setId) {
 }
 
 // ---------- Notices (News panel) ----------
-export function notify(state, kind, text) {
-  state.inbox.unshift({ id: state.nextId++, day: state.day, kind, text });
+// A game notice: a short title and an optional one-line detail.
+export function notify(state, kind, text, detail) {
+  const n = { id: state.nextId++, day: state.day, kind, text };
+  if (detail) n.detail = detail;
+  state.inbox.unshift(n);
   if (state.inbox.length > INBOX_SIZE) state.inbox.length = INBOX_SIZE;
 }
 export const unreadNotices = state => state.inbox.filter(n => n.id > state.inboxRead).length;
@@ -982,7 +985,7 @@ export function earnAchievement(state, id, name, silent) {
   if (state.achievements[id] != null) return false;
   state.achievements[id] = state.day;
   if (!silent) {
-    notify(state, 'achievement', `Achievement: ${name}`);
+    notify(state, 'achievement', `Achievement: ${name}`, 'See all of them in Awards.');
     if (achievementListener && !quiet) achievementListener(name);
   }
   return true;
@@ -1050,28 +1053,49 @@ function advanceSupply(state, sets) {
       m.out = true;
       if (set.releaseIndex > 0) {
         log(state, 'release', `${set.name} is out`);
-        notify(state, 'release', `${set.name} is out. Boosters at the distributor.`);
+        notify(state, 'release', `${set.name} is out`, 'Boosters are at the distributor. Some customers will ask for it.');
       }
     }
     const age = state.day - SU.releaseDay(state, set);
     // Day the next collection comes out: until then this one is the newest.
     let next = Infinity;
     for (const o of Object.values(sets)) if (o.releaseIndex > set.releaseIndex) next = Math.min(next, SU.releaseDay(state, o));
+    // Big rival buys and reprints of the days stepped now become one notice
+    // each per collection (Nicolas, 2026-11-28: the News was flooded).
+    const left0 = m.left;
+    let bought = 0, reprinted = 0;
+    const names = new Set();
     while (m.age < age) {
       const latest = SU.releaseDay(state, set) + m.age + 1 < next;
       for (const n of SU.stepDay(set, m, latest)) {
-        if (n.kind === 'reprint') {
-          const text = `${set.name}: reprint of ${fmtCount(n.n)} boosters`;
-          log(state, 'reprint', text);
-          notify(state, 'reprint', text);
-        } else if (n.kind === 'rival') {
-          notify(state, 'rival', `${RIVAL_NAMES[n.rival] || 'A rival shop'} bought ${fmtCount(n.n)} ${set.name} boosters`);
-        }
+        if (n.kind === 'rival') { bought += n.n; names.add(RIVAL_NAMES[n.rival] || 'A rival shop'); }
+        else if (n.kind === 'reprint') reprinted += n.n;
       }
+    }
+    if (bought && bought >= RIVAL_NOTICE * left0) {
+      const list = [...names];
+      const who = list.length > 2 ? `${list.slice(0, 2).join(', ')} and ${list.length - 2} more` : list.join(' and ');
+      notify(state, 'rival', `${set.name}: rival shops stock up`,
+        `${who} bought ${fmtCount(bought)} boosters. Distributor supply ${pctChange(-bought, left0)}. Booster prices may rise.`);
+    }
+    if (reprinted) {
+      log(state, 'reprint', `${set.name}: reprint hits the market`);
+      notify(state, 'reprint', `${set.name}: reprint hits the market`,
+        `${fmtCount(reprinted)} new boosters. Distributor supply ${pctChange(reprinted, Math.max(1, m.left - reprinted))}. Booster prices may drop.`);
     }
   }
   refreshOpen(state, sets);
 }
+
+// Rival buys make a notice only when they take at least this share of the
+// distributor's supply.
+const RIVAL_NOTICE = 0.03;
+
+// Supply change for notices: +45% / −12%.
+const pctChange = (d, base) => {
+  const p = base > 0 ? Math.round((d / base) * 100) : 100;
+  return `${p >= 0 ? '+' : '−'}${Math.abs(p)}%`;
+};
 
 // Short count for notices: 12,400 -> 12.4K.
 function fmtCount(n) {

@@ -330,6 +330,11 @@ async function run() {
       reprinted = m.reprints > 0;
     }
     ok(reprinted && c.inbox.some(n => n.kind === 'reprint'), 'a reprint happens and shows in News', `lowest supply ${(minFrac * 100).toFixed(0)}%, top price ${fmtMoney(maxP)}`);
+    const rivalNotes = c.inbox.filter(n => n.kind === 'rival');
+    const keys = rivalNotes.map(n => `${n.day}|${n.text}`);
+    ok(new Set(keys).size === keys.length && rivalNotes.every(n => /stock up$/.test(n.text) && /Distributor supply −\d+%/.test(n.detail)), 'rival buys are grouped into one notice with the supply change', rivalNotes[0]?.detail || 'none above 3%');
+    const rep = c.inbox.find(n => n.kind === 'reprint');
+    ok(/reprint hits the market$/.test(rep.text) && /Distributor supply \+\d+%/.test(rep.detail), 'reprint notices say how much supply changed', rep.detail);
     {
       // Reprints: 32-64% of the first run, and never bigger than the last one once a newer set is out.
       const sizes = (latest) => {

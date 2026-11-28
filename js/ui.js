@@ -249,21 +249,37 @@ function updateHeader() {
 const visibleNotes = () => NEWS.filter(n => !n.requires || (SETS[n.requires] && G.setUnlocked(S, SETS[n.requires])));
 export const unreadCount = () => G.unreadNotices(S) + visibleNotes().filter(n => !S.newsSeen.includes(n.id)).length;
 
+// Each section shows its NEWS_SHOWN newest items, or every unread one if
+// there are more, and a Read more button for the rest (Nicolas, 2026-11-28).
+const NEWS_SHOWN = 5;
+let newsMore = { game: false, updates: false };
+export function setNewsMore(sec) { newsMore[sec] = true; }
+export function resetNewsMore() { newsMore = { game: false, updates: false }; }
+
+function newsSection(key, title, items, isUnread, itemHtml) {
+  if (!items.length) return '';
+  const unread = items.filter(isUnread).length;
+  const n = newsMore[key] ? items.length : Math.max(NEWS_SHOWN, unread);
+  return `<section class="news-sec"><h3>${title}</h3>${items.slice(0, n).map(it => itemHtml(it, isUnread(it))).join('')}
+    ${items.length > n ? `<button class="link more" data-action="news-more" data-sec="${key}">Read more</button>` : ''}</section>`;
+}
+
 export function newsHtml() {
-  const unread = new Set(visibleNotes().filter(n => !S.newsSeen.includes(n.id)).map(n => n.id));
   const notes = visibleNotes().slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  const notices = S.inbox.slice(0, 30);
+  const card = (title, meta, text, unread) => `
+      <article class="note ${unread ? 'unread' : ''}">
+        <div class="note-head"><b>${esc(title)}</b><span class="muted">${esc(meta)}</span></div>
+        ${text ? `<p>${esc(text)}</p>` : ''}
+      </article>`;
   return `
   <div class="modal news-panel">
     <button class="modal-x" data-action="close" aria-label="Close">×</button>
     <h2>News</h2>
-    ${notices.length ? `<section><h3>Shop</h3><ul class="notices">${notices.map(n =>
-      `<li class="${n.id > S.inboxRead ? 'unread' : ''} log-${esc(n.kind)}"><span>${esc(n.text)}</span> <span class="muted">${n.day ? esc(M.dayLabel(n.day, S.firstDay)) : ''}</span></li>`).join('')}</ul></section>` : ''}
-    <section><h3>Updates</h3>${notes.map(n => `
-      <article class="note ${unread.has(n.id) ? 'unread' : ''}">
-        <div class="note-head"><b>${esc(n.title)}</b><span class="muted">${esc(n.version ? `${n.version} · ` : '')}${esc(n.date || '')}</span></div>
-        <p>${esc(n.text)}</p>
-      </article>`).join('') || '<div class="muted">—</div>'}</section>
+    ${newsSection('game', 'Game news', S.inbox, n => n.id > S.inboxRead,
+      (n, u) => card(n.text, n.day ? M.dayLabel(n.day, S.firstDay) : '', n.detail, u))}
+    ${newsSection('updates', 'Updates', notes, n => !S.newsSeen.includes(n.id),
+      (n, u) => card(n.title, `${n.version ? `${n.version} · ` : ''}${n.date || ''}`, n.text, u))}
+    ${!S.inbox.length && !notes.length ? '<div class="muted">—</div>' : ''}
     <div class="btns end"><button class="primary" data-action="close">Done</button></div>
   </div>`;
 }

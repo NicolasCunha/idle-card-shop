@@ -265,9 +265,19 @@ function run(action, d) {
       if (sets[d.set] && G.repeat(G.sellMarketBooster, state, sets[d.set], Number(d.n) || 1)) Audio.sfx.coin();
       break;
     }
+    case 'news-more': {
+      UI.setNewsMore(d.sec);
+      const panel = document.querySelector('.news-panel');
+      const top = panel ? panel.scrollTop : 0;
+      overlayEl().innerHTML = UI.newsHtml();
+      const again = document.querySelector('.news-panel');
+      if (again) again.scrollTop = top;
+      return;
+    }
     case 'news': {
       const el = overlayEl();
       el.className = 'overlay';
+      UI.resetNewsMore();
       el.innerHTML = UI.newsHtml();
       el.hidden = false;
       UI.markNewsRead();

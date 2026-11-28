@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-news",
+      "date": "2026-11-28",
+      "version": "1.8.1",
+      "title": "Tidier News",
+      "text": "News now has two parts, Game news and Updates, each showing the latest five with Read more. Rival purchases are grouped into one notice per collection."
+    },
+    {
       "id": "set-gym-heroes",
       "date": "2026-11-28",
       "version": "1.8.0",

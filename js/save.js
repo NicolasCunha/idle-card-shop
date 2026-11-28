@@ -11,7 +11,7 @@ import { LEGACY_SEED } from './market.js';
 
 export const GAME_ID = 'idlecardshop';
 export const SAVE_VERSION = 5;
-export const GAME_VERSION = '1.8.0';
+export const GAME_VERSION = '1.8.1';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
@@ -120,6 +120,7 @@ export function sanitize(state, sets) {
     else if (!Array.isArray(m.hist)) m.hist = [];
   }
   state.inbox = state.inbox.filter(n => isPlainObject(n) && Number.isFinite(n.id) && typeof n.text === 'string');
+  for (const n of state.inbox) if ('detail' in n && typeof n.detail !== 'string') delete n.detail;
   if (typeof state.seed !== 'string' || !state.seed) state.seed = LEGACY_SEED;
   state.shelf = state.shelf.filter(it => isPlainObject(it) && typeof it.g === 'string' && goodInfo(sets, it.g)
     && Number.isFinite(it.p) && it.p > 0 && Number.isInteger(it.n) && it.n > 0);
