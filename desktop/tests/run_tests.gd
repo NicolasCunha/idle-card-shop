@@ -32,10 +32,15 @@ func _test_project_settings() -> void:
 	ok(ProjectSettings.get_setting("display/window/stretch/mode") == "canvas_items", "stretch mode canvas_items")
 	ok(ProjectSettings.get_setting("display/window/stretch/scale_mode") == "integer", "integer scaling")
 	ok(ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter") == 0, "nearest filter")
+	ok(ProjectSettings.get_setting("application/config/version") == SaveData.GAME_VERSION, "project version matches the save's game version",
+		"%s vs %s" % [ProjectSettings.get_setting("application/config/version"), SaveData.GAME_VERSION])
 
 
 func _test_main_scene() -> void:
-	var path: String = ProjectSettings.get_setting("application/run/main_scene")
+	ok(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/boot.tscn", "launcher is the first scene")
+	ok(load("res://scenes/boot.tscn") is PackedScene, "launcher scene loads")
+	ok(load("res://scripts/boot.gd").get_script_constant_map().has("API"), "launcher script compiles")
+	var path := "res://scenes/main.tscn"
 	var packed := load(path) as PackedScene
 	ok(packed != null, "main scene loads", path)
 	if packed:

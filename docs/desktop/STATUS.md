@@ -68,6 +68,16 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 - The exported game mounts `packs/cards-*.pck` next to the executable (`GameData.mount_card_packs`). Checked in the container with a Linux export and the Base Set pack: 30 collections load and the scans decode.
 - Content root and pack mounting use the `template` feature (exported builds only).
 
+## 2.1.0 (Nicolas's feedback on 2.0.0, 2026-11-28)
+
+- Staff: SmoothBar (bars move every frame); level, time and training cost update in place; only reaching max level rebuilds.
+- Market: rows, sort, page history and card news on a WorkerThreadPool task; Market caches locked by a mutex; card price caches made at load.
+- Card detail tilt (CardTilt + shaders/card_tilt.gdshader). Rarity foil comes from the foil thread on top of it.
+- Binder cards 50x70, thumbnails 150x210 (600 kept).
+- Settings: window mode and size (prefs windowMode, resolution; device prefs, not the save). Stretch aspect expand.
+- Shop: staff chips centered.
+- Launcher with delta updates from GitHub releases (README, "Launcher and updates"). Tested in the container with a local server and a fake 2.1.1: downloads the game pack and a changed card pack, skips the bundled one with the same checksum, restarts into the new game.
+
 ## Next step
 
 Released 2026-11-28: https://github.com/NicolasCunha/idle-card-shop/releases/tag/desktop-v2.0.0 (made by a manual run of the Desktop build workflow with version 2.0.0; tag pushes from the cloud container are refused). Next: fixes from Nicolas's tests, and new web fixes from PORT-FIXES.md.

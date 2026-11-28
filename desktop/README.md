@@ -47,3 +47,11 @@ Collection JSONs, `data/` and card images stay at the repo root and are shared w
 `.github/workflows/desktop.yml` builds Windows and Linux on every push to `desktop-port` (download them from the run's artifacts) and publishes a GitHub release for a `desktop-v*` tag or a manual run with a version (Actions > Desktop build > Run workflow). Each zip holds the game and a `packs/` folder with one card pack per collection (`cards-<id>.pck`, made by `tools/pack_cards.gd`). The game mounts every pack it finds there at start; a missing pack only means that collection's cards are drawn as generic cards.
 
 Local export: run `tools/sync_content.gd` first (copies collections and `data/` into `content/`), then `godot --headless --path desktop --export-release Linux build/linux/IdleCardShop.x86_64`.
+
+## Launcher and updates (2.1.0)
+
+The first scene, `scenes/boot.tscn` (`scripts/boot.gd`), is a small launcher. It reads `manifest.json` from the latest GitHub release and downloads only what changed into the user folder (`update/`): the game pack (`game.pck`, about 1 MB) when the version is newer, and each card pack whose SHA-256 differs from the installed or bundled one. A downloaded game runs from a copy of the executable in `update/run/` (export templates refuse `--main-pack`), started with `--launched --packs-dir=<bundled packs>`. A new engine version cannot be patched; the launcher then links to the full download. With no network it just starts the game. `--no-update` skips the check; `--update-api=<url>` points it at a test server.
+
+The workflow builds `manifest.json` (version, engine, game and pack checksums) and attaches it, `game.pck` and every `cards-*.pck` to the release.
+
+`--perf` (with Xvfb, like `--shots`) prints frame times and rebuilds per tab.

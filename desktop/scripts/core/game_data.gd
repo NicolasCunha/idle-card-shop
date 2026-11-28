@@ -19,14 +19,23 @@ static func content_root() -> String:
 static func mount_card_packs() -> int:
 	if not OS.has_feature("template"):
 		return 0
-	var dir := OS.get_executable_path().get_base_dir().path_join("packs")
+	# Packs the launcher downloaded (user://update/packs) win over the ones
+	# that came with the game.
+	var bundled := OS.get_executable_path().get_base_dir().path_join("packs")
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--packs-dir="):
+			bundled = a.trim_prefix("--packs-dir=") # game started by the launcher (boot.gd)
+	var dirs := [ProjectSettings.globalize_path("user://update/packs"), bundled]
+	var seen := {}
 	var n := 0
-	for f in DirAccess.get_files_at(dir):
-		if f.begins_with("cards-") and f.ends_with(".pck"):
-			if ProjectSettings.load_resource_pack(dir.path_join(f), false):
-				n += 1
-			else:
-				push_warning("Could not mount " + f)
+	for dir in dirs:
+		for f in DirAccess.get_files_at(dir):
+			if f.begins_with("cards-") and f.ends_with(".pck") and not seen.has(f):
+				seen[f] = true
+				if ProjectSettings.load_resource_pack(dir.path_join(f), false):
+					n += 1
+				else:
+					push_warning("Could not mount " + f)
 	print("card packs: %d mounted" % n)
 	return n
 

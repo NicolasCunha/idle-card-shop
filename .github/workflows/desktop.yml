@@ -53,7 +53,8 @@ jobs:
           mkdir -p desktop/build/windows desktop/build/linux
           godot --headless --path desktop --export-release Windows build/windows/IdleCardShop.exe
           godot --headless --path desktop --export-release Linux build/linux/IdleCardShop.x86_64
-          test -f desktop/build/windows/IdleCardShop.exe && test -f desktop/build/linux/IdleCardShop.x86_64
+          godot --headless --path desktop --export-pack Windows build/game.pck
+          test -f desktop/build/windows/IdleCardShop.exe && test -f desktop/build/linux/IdleCardShop.x86_64 && test -f desktop/build/game.pck
 
       - name: Card packs
         run: |
@@ -64,6 +65,32 @@ jobs:
             godot --headless --path desktop --script res://tools/pack_cards.gd -- "$PWD/$d" "$id" "$PWD/packs/cards-$id.pck"
           done
           ls -la packs
+
+      - name: Update manifest
+        # The launcher (desktop/scripts/boot.gd) reads manifest.json from the
+        # latest release and downloads only the files whose checksum changed.
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, re
+          def sha(p):
+              h = hashlib.sha256()
+              with open(p, 'rb') as f:
+                  for b in iter(lambda: f.read(1 << 20), b''):
+                      h.update(b)
+              return h.hexdigest()
+          version = re.search(r'config/version="([^"]+)"', open('desktop/project.godot').read()).group(1)
+          packs = []
+          for f in sorted(os.listdir('packs')):
+              cid = f[len('cards-'):-len('.pck')]
+              name = json.load(open(cid + '.json', encoding='utf-8')).get('name', cid)
+              packs.append({'file': f, 'name': name, 'sha256': sha('packs/' + f), 'size': os.path.getsize('packs/' + f)})
+          g = 'desktop/build/game.pck'
+          m = {'version': version, 'engine': os.environ['GODOT_VERSION'],
+               'game': {'file': 'game.pck', 'sha256': sha(g), 'size': os.path.getsize(g)}, 'packs': packs}
+          os.makedirs('dist', exist_ok=True)
+          json.dump(m, open('dist/manifest.json', 'w'), indent=1)
+          print(version, len(packs), 'packs')
+          PY
 
       - name: Zip
         run: |
@@ -79,7 +106,9 @@ jobs:
         if: ${{ !startsWith(github.ref, 'refs/tags/') && inputs.release == '' }}
         with:
           name: IdleCardShop-desktop
-          path: dist/*.zip
+          path: |
+            dist/*.zip
+            dist/manifest.json
           retention-days: 7
           compression-level: 0
 
@@ -92,4 +121,5 @@ jobs:
           tag="$GITHUB_REF_NAME"
           if [ -n "$VERSION" ]; then tag="desktop-v$VERSION"; fi
           gh release create "$tag" dist/IdleCardShop-windows.zip dist/IdleCardShop-linux.zip \
+            dist/manifest.json desktop/build/game.pck packs/*.pck \
             --target "$GITHUB_SHA" --title "IdleCardShop desktop ${tag#desktop-v}" --notes-file desktop/RELEASE_NOTES.md
