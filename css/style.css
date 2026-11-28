@@ -691,3 +691,7 @@ button, select, .tab, .binder-slot, .thumb { -webkit-tap-highlight-color: transp
 .badge-count[hidden] { display: none; }
 .news-tabs { position: static; margin-bottom: 0; }
 .news-tabs .news-count { margin-left: .35rem; }
+
+/* Browser version shutdown notice (1.9.8) */
+.sunset { background: var(--accent-soft); color: var(--text); border-bottom: 1px solid var(--border); padding: .5rem 1rem; text-align: center; font-size: .9rem; }
+.sunset a { color: inherit; font-weight: 600; }
