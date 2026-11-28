@@ -20,6 +20,7 @@ func _initialize() -> void:
 	_test_main_scene()
 	_test_collections()
 	_test_market()
+	_test_golden_sim()
 	print("%d passed, %d failed" % [_passed, _failed])
 	quit(1 if _failed > 0 else 0)
 
@@ -137,3 +138,11 @@ func _test_market() -> void:
 	ok(Market.day_number(1795800000000) == 2993000, "market day number")
 	ok(Market.day_label(2993004, 2993000) == "Day 5", "day label")
 	ok(Fmt.num(1234567) == "1,234,567", "thousands separator")
+
+
+func _test_golden_sim() -> void:
+	var acc = GameData.read_json(GameData.content_root() + "data/accessories.json")
+	var res := GoldenSim.run(_data.sets, _data.order, acc.items)
+	for t in res.keys():
+		var d: Array = res[t]
+		ok(d.is_empty(), "golden simulation matches JS at %ds" % t, "" if d.is_empty() else "\n    " + "\n    ".join(PackedStringArray(d)))

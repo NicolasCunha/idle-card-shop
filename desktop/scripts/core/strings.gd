@@ -13,3 +13,9 @@ const LOAD_STEPS := [
 	["goods", "Accessories"],
 	["save", "Save"],
 ]
+
+const RIVAL_NAMES := ["Northside Games", "Blue Harbor Cards", "Pixel Hobby", "Corner Collectibles",
+	"Red Oak Hobbies", "Card Castle", "Meteor Games", "Silver Sleeve", "Top Deck Corner", "Fox & Dice",
+	"Harbor Light Toys", "Paper Dragon", "Old Town Cards", "Rainy Day Games", "Little Vault",
+	"Comet Collectibles", "Maple Street Toys", "Cozy Corner Cards",
+	"Golden Deck", "Starlight Toys", "Mint Condition", "Lucky Pull"]
