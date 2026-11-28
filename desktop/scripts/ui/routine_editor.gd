@@ -80,7 +80,8 @@ static func _add_menu(r: Dictionary, at: int, text: String) -> OptionButton:
 
 
 static func _num_edit(value, cb: Callable, tip: String) -> LineEdit:
-	var e := U.edit("" if value == null else str(value), func(t):
+	var shown := "" if value == null else (str(int(value)) if float(value) == floorf(float(value)) else str(value))
+	var e := U.edit(shown, func(t):
 		var x := str(t).strip_edges()
 		if x == "":
 			cb.call(null)
