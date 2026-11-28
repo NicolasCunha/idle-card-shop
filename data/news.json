@@ -24,9 +24,9 @@
     {
       "id": "2026-11-28-buyer-warehouse",
       "date": "2026-11-28",
-      "version": "1.9.2",
+      "version": "1.9.6",
       "title": "Buyers fill your warehouses",
-      "text": "When the shop is full, staff buyers buy into your warehouses until the stock target is met in all."
+      "text": "Staff buyers keep the shop at the stock target, then fill your warehouses down to the cash reserve."
     },
     {
       "id": "2026-11-28-news-tabs",

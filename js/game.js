@@ -738,16 +738,16 @@ function doTask(state, sets, emp, job) {
       if (!set) { emp.status = 'no collection'; return false; }
       if (!setUnlocked(state, set)) { emp.status = 'locked'; return false; }
       if (soldOut(state, set)) { emp.status = 'sold out'; return false; }
-      // Shop first; when the shop is full, the warehouses (Nicolas, 2026-11-28).
-      // The stock target counts the shop, the warehouses and goods on the way.
-      const g = `b:${set.id}`, target = state.rules.stockTarget;
-      const total = (state.stock[set.id] || 0) + warehouseOwned(state, g) + inTransit(state, g);
-      if ((state.stock[set.id] || 0) < target && storageFree(state) >= 1) {
+      // The shop up to the stock target; with a warehouse, the rest goes there
+      // until it is full or the cash reserve is reached (Nicolas, 2026-11-28).
+      const g = `b:${set.id}`;
+      const shopWants = (state.stock[set.id] || 0) < state.rules.stockTarget;
+      if (shopWants && storageFree(state) >= 1) {
         if (!buyBooster(state, set, state.rules.cashReserve)) { emp.status = 'cash reserve'; return false; }
         return true;
       }
-      if (total >= target) { emp.status = 'stock target'; return false; }
-      if (warehouseFree(state) < 1) { emp.status = 'storage full'; return false; }
+      if (!warehouseCapacity(state)) { emp.status = shopWants ? 'storage full' : 'stock target'; return false; }
+      if (warehouseFree(state) < 1) { emp.status = 'warehouse full'; return false; }
       if (state.money - boosterPrice(state, set) < state.rules.cashReserve - 1e-9) { emp.status = 'cash reserve'; return false; }
       if (!buyToWarehouse(state, sets, g, 1)) { emp.status = 'cash reserve'; return false; }
       return true;

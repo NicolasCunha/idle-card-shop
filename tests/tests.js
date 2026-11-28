@@ -384,7 +384,10 @@ async function run() {
     const before = G.storageUsed(mw);
     ok(G.buyBoosters(mw, sets.base, 5) === 5 && G.warehouseOwned(mw, 'b:base') === 5 && G.storageUsed(mw) === before && G.buyBox(mw, sets.base) && G.warehouseOwned(mw, 'x:base') === 1,
       'with the shop full, purchases go to the warehouses');
-    ok(inWh > 0 && bw.stock.base + inWh <= 60 && bw.stock.base === G.stockCapacity(bw), 'a full shop sends the buyer to the warehouses, up to the stock target', `${inWh} in the warehouse`);
+    ok(inWh > 40 && bw.stock.base === G.stockCapacity(bw), 'past the shop, the buyer keeps filling the warehouses', `${inWh} in the warehouse`);
+    bw.rules.cashReserve = bw.money;
+    G.tick(bw, sets, 30, T0 + 630000);
+    ok(buyer.status === 'cash reserve' && G.warehouseOwned(bw, 'b:base') === inWh, 'the cash reserve stops warehouse buying');
   }
 
   section('Achievements');
