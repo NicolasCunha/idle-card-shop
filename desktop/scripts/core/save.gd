@@ -6,7 +6,7 @@ class_name SaveData
 
 const GAME_ID := "idlecardshop"
 const SAVE_VERSION := 6
-const GAME_VERSION := "2.0.0-dev"
+const GAME_VERSION := "2.0.0"
 const SAVE_PATH := "user://save.json"
 const BACKUPS := 3
 
