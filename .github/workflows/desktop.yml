@@ -34,11 +34,11 @@ jobs:
           mkdir -p "$dir" && unzip -q templates.tpz && mv templates/* "$dir/"
           godot --version
 
-      - name: Copy game data into the project
-        run: godot --headless --path desktop --script res://tools/sync_content.gd
-
       - name: Import assets
         run: godot --headless --path desktop --import
+
+      - name: Copy game data into the project
+        run: godot --headless --path desktop --script res://tools/sync_content.gd
 
       - name: Tests
         run: godot --headless --path desktop --script res://tests/run_tests.gd
