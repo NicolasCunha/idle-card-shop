@@ -26,7 +26,7 @@ const TABS := {
 const TUT_TARGETS := {
 	"buy": "buy-1", "open": "open-1", "price-showcase": "price", "sale": "stage-price", "hire": "hire",
 	"task": "emp-job", "backup": "backup-job", "supply": "boosters", "news": "news-btn", "shelf": "goods",
-	"nextset": "shop-set",
+	"nextset": "shop-set", "routine": "new-routine", "routine-staff": "emp-routine",
 }
 
 var sets := {}

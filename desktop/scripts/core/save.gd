@@ -5,8 +5,8 @@ class_name SaveData
 ## sanitized. Unknown cards and collections are skipped.
 
 const GAME_ID := "idlecardshop"
-const SAVE_VERSION := 6
-const GAME_VERSION := "2.1.0"
+const SAVE_VERSION := 7
+const GAME_VERSION := "2.2.0"
 const SAVE_PATH := "user://save.json"
 const BACKUPS := 3
 
@@ -59,6 +59,17 @@ static func _migrate_5(state):
 	return state
 
 
+## v7 (desktop 2.2.0): staff routines. Old saves keep their jobs as they are
+## and start with no routines (Nicolas, 2026-11-28).
+static func _migrate_6(state):
+	if state is Dictionary and state.size():
+		state["routines"] = []
+		for e in state.get("staff", []) if state.get("staff") is Array else []:
+			if e is Dictionary:
+				e["routine"] = null
+	return state
+
+
 ## Runs migrations vN -> SAVE_VERSION. Returns the state, or an error String.
 static func migrate(file):
 	if not file is Dictionary or not JS.truthy(file.get("state")):
@@ -76,6 +87,7 @@ static func migrate(file):
 			2, 3: state = {}
 			4: state = _migrate_4(state)
 			5: state = _migrate_5(state)
+			6: state = _migrate_6(state)
 			_: return "Missing migration v%d -> v%d" % [v, v + 1]
 		v += 1
 	return state
@@ -203,12 +215,14 @@ static func sanitize(state: Dictionary, sets: Dictionary) -> Dictionary:
 			"set": e["set"] if e.get("set") is String and sets.has(e["set"]) else null,
 			"task2": e.task2 if Game.SKILL_KEYS.has(e.get("task2")) else null,
 			"set2": e.set2 if e.get("set2") is String and sets.has(e.set2) else null,
+			"routine": int(e.routine) if _is_int(e.get("routine")) else null,
 			"progress": JS.num(e.get("progress")),
 			"training": tr if tr is Dictionary and Game.SKILL_KEYS.has(tr.get("skill")) else null,
 			"status": "idle",
 			"hiredDay": e.hiredDay if _finite(e.get("hiredDay")) else null,
 		})
 	state.staff = staff
+	Routines.sanitize(state, sets)
 	return state
 
 

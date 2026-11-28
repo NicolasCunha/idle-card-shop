@@ -64,7 +64,11 @@ static func run(sets: Dictionary, order: Array, accessories: Array) -> Dictionar
 			Game.tick(state, sets, 1, start + t * 1000)
 		if checkpoints.has(t):
 			var diffs := []
-			diff(JSON.parse_string(JSON.stringify(JS.strip(state))), ref.checkpoints[str(t)], "state", diffs)
+			var dump = JSON.parse_string(JSON.stringify(JS.strip(state)))
+			dump.erase("routines") # desktop-only fields (save v7)
+			for e in dump.staff:
+				e.erase("routine")
+			diff(dump, ref.checkpoints[str(t)], "state", diffs)
 			out[t] = diffs
 	Game.set_random()
 	return out

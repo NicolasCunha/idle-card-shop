@@ -22,6 +22,7 @@ func _initialize() -> void:
 	_test_market()
 	_test_golden_sim()
 	_test_ui_helpers()
+	_test_routines()
 	print("%d passed, %d failed" % [_passed, _failed])
 	quit(1 if _failed > 0 else 0)
 
@@ -188,3 +189,60 @@ func _test_ui_helpers() -> void:
 		Palette.use(t)
 	ok(Palette.c.has("accent") and Palette.dark, "11 themes load", str(Palette.THEMES.size()))
 	Palette.font = null
+
+
+## Staff routines (docs/sdd/staff-routines.md).
+func _test_routines() -> void:
+	var data := GameData.load_collections()
+	var sets: Dictionary = data.sets
+	var now := 1795800001000
+	var s := Game.new_state(sets, data.order, now)
+	s.setupDone = true
+	Game.tick(s, sets, 0, now)
+	var base: Dictionary = sets[data.order[0]]
+	ok(Routines.pick(s, sets, {}, "@least") == base.id and Routines.pick(s, sets, {}, "@next") == base.id, "pickers: only Base Set is out")
+	s.money = 100000.0
+	s.rules.cashReserve = 0
+	var emp = Game.hire(s)
+	for k in Game.SKILL_KEYS:
+		emp.skills[k].lvl = 10
+	var r := Routines.create(s, "Sets")
+	Routines.assign(emp, r)
+	ok(emp.routine == r.id and Routines.staff_on(s, r).size() == 1, "employee runs a routine")
+	var t := 0.0
+	while t < 600.0:
+		Game._tick_employee(s, sets, emp, 1.0)
+		t += 1.0
+	ok(s.stats.boostersBought > 0 and s.stats.boostersOpened > 0 and s.stats.cardsPriced > 0, "routine buys, opens and prices",
+		"%d bought, %d opened, %d priced" % [s.stats.boostersBought, s.stats.boostersOpened, s.stats.cardsPriced])
+	var over := 0
+	for cid in s.binder.get(base.id, {}):
+		if s.binder[base.id][cid] > 1:
+			over += 1
+	ok(over == 0 or s.showcase.size() >= Game.showcase_capacity(s), "Keep 1 sends duplicates to the showcase", "%d cards with spares" % over)
+	ok(emp.task == null, "jobs untouched while on a routine")
+	# Tree: If / Else / End jump forward; nesting and a missing End.
+	var r2 := {"id": 999, "name": "t", "steps": [
+		{"do": "if"}, {"do": "buy"}, {"do": "if"}, {"do": "open"}, {"do": "end"}, {"do": "else"}, {"do": "price"}, {"do": "end"}, {"do": "if"}, {"do": "bulk"}]}
+	var j := Routines.jumps(r2)
+	ok(j.jump[0] == 6 and j.jump[2] == 5 and j.jump[5] == 8 and j.jump[8] == 10, "If / Else / End jumps", str(j.jump))
+	ok(j.depth[3] == 2 and j.depth[5] == 0 and j.depth[6] == 1 and j.depth[9] == 1, "tree indent levels", str(j.depth))
+	# A routine that can't do anything waits and comes back.
+	var r3 := Routines.create(s, "Bulk")
+	r3.steps = [{"do": "if", "cond": "money", "val": 1e12, "set": "@same"}, {"do": "buy", "set": "@same", "rep": 1}, {"do": "end"}]
+	Routines.changed(s, r3)
+	Routines.assign(emp, r3)
+	var bought: int = s.stats.boostersBought
+	for i in 50:
+		Game._tick_employee(s, sets, emp, 1.0)
+	ok(s.stats.boostersBought == bought and emp.status == "waiting", "false If skips its block, employee waits", emp.status)
+	# Save: v6 saves keep jobs and get no routines; v7 round trip keeps routines.
+	var old := {"game": "idlecardshop", "saveVersion": 6, "state": {"money": 5, "staff": [{"id": 1, "name": "Ada", "task": "buy", "set": null, "task2": null, "set2": null, "skills": {}}]}}
+	var st = SaveData.restore(old, sets, data.order)
+	ok(st is Dictionary and st.routines.is_empty() and st.staff[0].task == "buy" and st.staff[0].routine == null, "v6 save: jobs kept, no routines")
+	var back = SaveData.restore(JSON.parse_string(SaveData.to_json(s)), sets, data.order)
+	ok(back is Dictionary and back.routines.size() == 2 and back.staff[0].routine == r3.id and back.routines[0].steps.size() == 3, "v7 save keeps routines")
+	Routines.remove(s, r3)
+	ok(emp.routine == null, "deleting a routine sends its staff back to jobs")
+	Tutorial.set_data(GameData.read_json(GameData.content_root() + "data/tutorial.json"))
+	ok(Tutorial.data.steps.any(func(x): return x.id == "routine"), "tutorial has the routine step")

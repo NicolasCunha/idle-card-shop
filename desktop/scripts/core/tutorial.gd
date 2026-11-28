@@ -49,6 +49,8 @@ static func check(cond, s: Dictionary) -> bool:
 		"staffHasTask": return s.staff.any(func(e): return JS.truthy(e.get("task")))
 		"twoStaff": return s.staff.size() >= 2
 		"hasBackupJob": return s.staff.any(func(e): return JS.truthy(e.get("task2")))
+		"hasRoutine": return s.get("routines", []).size() > 0
+		"staffOnRoutine": return s.staff.any(func(e): return e.get("routine") != null)
 		"listedGood": return s.shelf.size() > 0 or _grew(s, "sealedSold")
 		"tradedBooster": return _grew(s, "boostersSold") or _grew(s, "boostersBoughtMarket")
 		"nextSetOpen": return _any_open(s)

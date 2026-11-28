@@ -9,7 +9,9 @@ func sig() -> String:
 	for e in s.staff:
 		# Only reaching the top level changes the layout; level numbers are live.
 		var lv := ".".join(Game.SKILL_KEYS.map(func(k): return "m" if e.skills[k].lvl >= Game.MAX_SKILL else ""))
-		parts.append("%s/%s/%s/%s/%s/%s" % [e.task, e["set"], e.get("task2"), e.get("set2"), e.training.skill if e.training else "", lv])
+		parts.append("%s/%s/%s/%s/%s/%s/%s" % [e.task, e["set"], e.get("task2"), e.get("set2"), e.training.skill if e.training else "", lv, e.get("routine")])
+	for r in s.get("routines", []):
+		parts.append("r%s:%s" % [r.id, r.name])
 	return "|".join(parts.map(func(x): return str(x)))
 
 
@@ -43,8 +45,43 @@ func _job_row(e: Dictionary, slot: int) -> HBoxContainer:
 	return U.hbox([U.fixed(U.label("Backup" if slot == 2 else "Job", "Muted"), 30), job, cs])
 
 
+func _routine_row(e: Dictionary) -> HBoxContainer:
+	var items: Array = [["", "Jobs"]]
+	for r in App.state.routines:
+		items.append([r.id, r.name])
+	var o := U.option(items, e.get("routine") if e.get("routine") != null else "", func(v):
+		App.main.act(func(): Routines.assign(e, Routines.find(App.state, v) if str(v) != "" else null)), Strings.TIPS.routinePick)
+	if not U.tags.has("emp-routine"):
+		U.tag(o, "emp-routine")
+	var row := U.hbox([U.fixed(U.label("Work", "Muted"), 30), o])
+	var r = Routines.find(App.state, e.get("routine"))
+	if r != null:
+		row.add_child(live_text(U.label("", "Muted"), func(): return Routines.where(e, r)))
+		row.add_child(U.small("Edit", func(): RoutineEditor.open(r)))
+	return row
+
+
+func _routines_box() -> PanelContainer:
+	var s := App.state
+	var nb := U.small("New routine", func():
+		RoutineEditor.open(Routines.create(App.state))
+		App.main.redraw(), Strings.TIPS.routine)
+	U.tag(nb, "new-routine")
+	var bx := U.box([U.hbox([U.label("Routines", "Head", Strings.TIPS.routine), U.grow(), nb])])
+	var v := U.inner(bx)
+	var f := U.flow([])
+	for rr in s.routines:
+		var r: Dictionary = rr
+		var n: int = Routines.staff_on(s, r).size()
+		f.add_child(U.small("%s  %d" % [r.name, n], func(): RoutineEditor.open(r)))
+	if s.routines.size():
+		v.add_child(f)
+	return bx
+
+
 func build() -> void:
 	U.tags.erase("emp-job")
+	U.tags.erase("emp-routine")
 	var s := App.state
 	var cost := Game.hire_cost(s.staff.size())
 	var room: bool = s.staff.size() < Game.max_staff(s)
@@ -64,6 +101,8 @@ func build() -> void:
 
 	if s.staff.is_empty():
 		add_child(U.label("No staff yet", "Muted"))
+	if s.staff.size() >= 2 or s.routines.size():
+		add_child(_routines_box())
 	var emps := GridContainer.new()
 	emps.columns = 2
 	emps.add_theme_constant_override("h_separation", 4)
@@ -80,12 +119,22 @@ func build() -> void:
 		live_btn_text(fire, func(): return "Fire " + Fmt.money(Game.severance(App.state, e)))
 		live_dis(fire, func(): return not Game.can_fire(App.state, e))
 		v.add_child(U.hbox([U.label(e.name), status, U.grow(), sal, fire]))
-		v.add_child(_job_row(e, 1))
-		v.add_child(_job_row(e, 2))
+		if s.staff.size() >= 2 or s.routines.size():
+			v.add_child(_routine_row(e))
+		if e.get("routine") == null:
+			v.add_child(_job_row(e, 1))
+			v.add_child(_job_row(e, 2))
 		var pg := U.bar("", 2)
 		live_bar(pg, func():
 			if e.training:
 				return 1.0 - e.training.left / e.training.total
+			if e.get("routine") != null:
+				var rr = Routines.find(App.state, e.routine)
+				var pc := int(e.get("_pc", 0))
+				if rr and e.status == "working" and pc < rr.steps.size() and Routines.SKILL_OF.has(rr.steps[pc].do):
+					var sk: String = Routines.SKILL_OF[rr.steps[pc].do]
+					return minf(1.0, e.progress / Game.skill_duration(sk, e.skills[sk].lvl))
+				return 0.0
 			var j = _cur_job(e)
 			if j and (e.status == "working" or e.status == "backup job"):
 				return minf(1.0, e.progress / Game.skill_duration(j[0], e.skills[j[0]].lvl))

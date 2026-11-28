@@ -12,6 +12,28 @@ Today each employee has a primary and a backup job (one action + one collection 
 
 In game: **Routines** (tab name, button `New routine`). Short, plain English, fits the UI copy rule.
 
+## Decisions (Nicolas, 2026-11-28)
+
+1. Routines and jobs live side by side. An employee is on **either** its jobs (primary/backup) **or** one routine, never both.
+2. Old saves stay as they are: jobs kept, no routines (`state.routines = []`, `emp.routine = null`).
+3. "Send to the market" is the **Bulk** step.
+4. No fixed limit: the routine is a tree of nested If / Else / End blocks, built in a modal editor.
+
+## As built (desktop 2.2.0, save v7)
+
+- Core: `desktop/scripts/core/routines.gd`; hooked in `Game._tick_employee` (an employee with `routine` runs it instead of its jobs). `Game._staff_price_one` takes an optional keep override.
+- Steps are a flat list; `If`, `Else`, `End` rows make the tree (`Routines.jumps` gives indent levels and forward jumps). A missing `End` closes at the end of the list; a stray `Else`/`End` is ignored. Jumps only go forward, so one pass always ends and no loop guard is visible to the player.
+- Actions: Buy, Open, Price (showcase, keep N), Bulk (sell spares below a value; empty = shop rule, 0 = any card). Each costs its skill time (Bulk uses Price) and gives XP.
+- Pickers: Same set, Least complete, Next incomplete, Newest, Any (Price/Bulk), or a fixed collection. "Complete" counts distinct cards **in the binder now** (Nicolas's words: cards I have in my binder), not cards ever discovered.
+- Conditions (If): Incomplete, Complete, Has packs, No packs (with a collection picker), Showcase room, Money over X.
+- Repeat: x1, x5, All (while it works, at most 50 in a row).
+- A step that can't run is skipped; a full pass with no action makes the employee wait, showing the first reason, and try again next tick.
+- UI: Staff tab gets a Routines box (shows with 2+ staff) with `New routine` and one button per routine; each employee gets a `Work` picker (Jobs or a routine), and its job rows hide while on a routine. `RoutineEditor` (`desktop/scripts/ui/routine_editor.gd`) is the modal: name, staff on it, Delete, one row per step indented by depth, per row `+` (insert below), up, down, remove.
+- New routine template: Buy Least complete x1, Open Same set x1, Price Same set All Keep 1.
+- Tutorial rev 12 → 13: `routine` (New routine, when 2 staff) and `routine-staff` (Work picker).
+
+## Original draft
+
 ## Model
 
 A routine is:
