@@ -61,4 +61,4 @@ Revision 3 -> 4. New steps `supply` (Market booster table, done on the first boo
 ## Open questions
 
 - Storage caps sealed boosters at 20 + 10 per level (max 220), which limits speculation. Maybe a bigger storage upgrade later.
-- Customers still do not buy sealed boosters [PENDING GDD Q4].
+- Customers do not buy sealed boosters yet (decided 2026-11-28: sealed goods and a Storage tab, in progress).

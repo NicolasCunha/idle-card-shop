@@ -1,510 +1,496 @@
 # IdleCardShop — Game Design Document
 
-Nov 26, 2026 · @Nicolas
+Nov 26, 2026 · @Nicolas · translated to English and brought up to date with game 1.6.1 on Nov 28, 2026 (Nicolas: the whole project is in English)
 
-> Fonte: [Claude Doc do GDD](https://claude.ai/artifact/Qk7rreXjreA9rsB8n22A4i) (revisão 29). Status: **em uso, base do v1**. As perguntas em aberto estão na seção 12.
+> Source: [GDD Claude Doc](https://claude.ai/artifact/Qk7rreXjreA9rsB8n22A4i) (revision 29, Portuguese). This file is now the source of truth. Status: **in use**. Open items are in section 12.
 
-## 1. Visão geral
+## 1. Overview
 
-IdleCardShop é um jogo idle de navegador, calmo e baseado em menus, em que o jogador administra uma loja de cartas colecionáveis: compra boosters, abre, precifica, vende e aos poucos automatiza tudo com funcionários.
+IdleCardShop is a calm, menu-based idle browser game where the player runs a trading card shop: buy boosters, open them, price the cards, sell them, and slowly automate everything with staff.
 
-| Item | Decisão |
+| Item | Decision |
 | --- | --- |
-| Gênero | Idle / incremental, estilo Cookie Clicker (só menus, sem cenário gráfico) |
-| Plataforma | Navegador; site estático no GitHub Pages, depois em domínio próprio |
-| Modelo | Gratuito, sem fins lucrativos, fan game |
-| Jogos de cartas | Pokémon e Magic: The Gathering (coleções clássicas) |
-| Escopo da v1 | Somente a coleção Base Set de Pokémon (1999) |
-| Idioma | Inglês em toda a interface e nas cartas (por enquanto) |
-| Conteúdo de cartas | Dados e imagens fornecidos pelo Nicolas; o código só lê e renderiza |
-| Save | localStorage + exportar/importar JSON versionado |
+| Genre | Idle / incremental, Cookie Clicker style (menus, plus one small pixel-art shop scene) |
+| Platform | Browser; static site on GitHub Pages, later on its own domain |
+| Model | Free, non-profit fan game |
+| Card games | Pokémon and Magic: The Gathering (classic sets) |
+| Shipped collections | Pokémon Base Set, Jungle, Fossil, Base Set 2, Team Rocket |
+| Language | English everywhere: game, code and documents (Nicolas, 2026-11-28) |
+| Card content | Data and images supplied by Nicolas; the code only reads and renders them |
+| Save | localStorage plus versioned JSON export/import |
 
-**Pilares**
+**Pillars**
 
-1. **Tranquilo.** Não há relógio, loja que abre e fecha nem penalidade por estar ausente. O jogador nunca precisa ter pressa.
-2. **Do manual ao automático.** O começo é feito à mão; o meio é contratar e treinar; o fim é a loja rodando sozinha enquanto o jogador cuida do estoque e do mercado.
-3. **O prazer de abrir boosters.** A abertura é o momento especial do jogo, com animação e revelação da carta mais rara por último.
-4. **Mercado previsível, mas sem garantias.** Os preços mudam devagar, uma vez por dia; o jogador pode ler tendências e investir.
-5. **Idle de verdade.** Fechar o jogo não perde nada: ao voltar, todo o tempo ausente é simulado integralmente.
+1. **Calm.** No shop hours, no queues, no impatient customers, no penalty for being away. The player never has to hurry. Approved exceptions: new-set customers who leave when the newest collection is missing (section 7) and staff salaries (section 6, decided 2026-11-28).
+2. **Manual to automatic.** The start is done by hand; the middle is hiring and training; the end is the shop running on its own while the player handles stock and the market.
+3. **The joy of opening boosters.** Opening is the game's special moment, with an animation and the rarest card revealed last.
+4. **A readable market without guarantees.** Prices change once per market day; the player can read trends and invest.
+5. **True idle.** Closing the game loses nothing: on return, all the time away is simulated in full.
 
-**Fora do escopo da v1:** gráficos de cenário, multiplayer, contas online, monetização, Magic e outras coleções além do Base Set.
+**Out of scope for now:** multiplayer, online accounts, monetization, prestige (section 12), collections Nicolas has not asked for.
 
-## 2. Fundamentos de design
+## 2. Design foundations
 
-O jogo combina quatro ideias consagradas: o loop central com motor de progressão, a gangorra de custos exponenciais do gênero idle, o design aconchegante (cozy) e a coreografia de revelação de cartas.
+The game combines four well-known ideas: the core loop with a progression engine, the exponential cost seesaw of idle games, cozy design, and the choreography of card reveals.
 
-| Conceito | O que diz | Como aplicamos |
+| Concept | What it says | How we use it |
 | --- | --- | --- |
-| Loop central + motor de progressão ([Roblox](https://create.roblox.com/docs/production/game-design/core-loops)) | Um loop tem a ação de momento a momento, o conjunto mais repetido de ações e um motor de progressão; sem progressão o jogo fica repetitivo | Ação: abrir e precificar. Loop: comprar → abrir → precificar → expor → vender. Progressão: funcionários, níveis e melhorias |
-| Antecipação → ação → recompensa ([GameAnalytics](https://www.gameanalytics.com/blog/the-compulsion-loop-explained)) | Cada etapa do loop tem expectativa, ação e recompensa; recompensas de razão variável prendem mais | A raridade do booster é a recompensa variável; usamos sem dinheiro real e sem pressão, só como prazer de revelar |
-| Gangorra exponencial ([Pecorella, Math of Idle Games I](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-i)) | Custo cresce exponencialmente (custo_base × taxa^possuídos) e produção cresce linear; marcos de multiplicador empurram o jogador de volta | Contratação, treino e melhorias com custo exponencial; habilidades com ganho de velocidade por nível |
-| Relógios de reengajamento ([Eric Guan](https://ericguan.substack.com/p/idle-game-design-principles)) | Sistemas com ciclos de tempo bem diferentes atendem quem volta toda hora e quem volta uma vez por dia; aumentos de ~10–15% por nível são perceptíveis | Ciclo curto: vendas e aberturas. Médio: treinos. Longo: o dia de mercado e eventos de semanas |
-| Prestígio ([Pecorella, Math of Idle Games III](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-iii)) | Um reset voluntário com bônus permanente mantém os números manejáveis e cria "subir a escada" | Fora da v1; candidato natural para o longo prazo (ver perguntas em aberto) |
-| Cozy: segurança, abundância, suavidade ([Kitfox](https://medium.com/kitfox-games/designing-for-coziness-d33d2519a59e)) | Mecânicas aconchegantes são opcionais, seguras e relaxantes; risco e estímulos duros quebram o clima | Sem fila, sem cliente irritado, sem perda offline, sem salário que zere o caixa; paleta e música suaves; colecionar como atividade em si |
-| Coreografia da revelação ([N3TWORK](https://medium.com/n3twork/choreographed-emotion-6-steps-to-a-great-card-reveal-ux-a6e6bb8487dd)) | Seis passos: início por gesto, invocação curta, prévia de raridade, revelação, resumo, repetir; comuns rápidas, raras celebradas | Rasgar o pacote com gesto, comuns primeiro e rápidas, rara por último com brilho e som, resumo e "Open another" |
+| Core loop + progression engine ([Roblox](https://create.roblox.com/docs/production/game-design/core-loops)) | A loop has the moment-to-moment action, the most repeated set of actions, and a progression engine; without progression the game gets repetitive | Action: open and price. Loop: buy → open → price → display → sell. Progression: staff, levels and upgrades |
+| Anticipation → action → reward ([GameAnalytics](https://www.gameanalytics.com/blog/the-compulsion-loop-explained)) | Each loop step has expectation, action and reward; variable-ratio rewards hold attention | Booster rarity is the variable reward, used without real money and without pressure, only for the joy of the reveal |
+| Exponential seesaw ([Pecorella, Math of Idle Games I](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-i)) | Cost grows exponentially (base × rate^owned) while production grows linearly; multiplier milestones push the player back up | Hiring, training and upgrades have exponential costs; skills get faster per level |
+| Re-engagement clocks ([Eric Guan](https://ericguan.substack.com/p/idle-game-design-principles)) | Systems with very different time cycles serve both the player who checks in every hour and the one who visits once a day; ~10–15% gains per level are noticeable | Short cycle: sales and openings. Medium: training. Long: market days, releases and supply events |
+| Prestige ([Pecorella, Math of Idle Games III](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-iii)) | A voluntary reset with a permanent bonus keeps numbers manageable and creates a ladder to climb | Not now (Nicolas, 2026-11-28: think about it later) |
+| Cozy: safety, abundance, softness ([Kitfox](https://medium.com/kitfox-games/designing-for-coziness-d33d2519a59e)) | Cozy mechanics are optional, safe and relaxing; risk and harsh stimuli break the mood | No queues, no angry customers, no offline loss; soft palette and music; collecting as an activity in itself |
+| Reveal choreography ([N3TWORK](https://medium.com/n3twork/choreographed-emotion-6-steps-to-a-great-card-reveal-ux-a6e6bb8487dd)) | Six steps: gesture start, short summon, rarity preview, reveal, summary, repeat; commons fast, rares celebrated | Tear the pack with a gesture, commons first and fast, the rare last with glow and sound, a summary and "Open another" |
 
-**Limite que nos impomos:** a recompensa variável existe só dentro do jogo, com moeda do jogo. Nada de dinheiro real, anúncios, notificações insistentes ou punição por ausentar-se.
+**Self-imposed limit:** the variable reward exists only inside the game, with game money. No real money, ads, nagging notifications or punishment for leaving.
 
-## 3. Loop principal
+## 3. Core loop
 
-O jogador transforma dinheiro em boosters, boosters em cartas e cartas em dinheiro, com lucro, e reinveste. Cada etapa pode ser feita à mão ou por um funcionário.
+The player turns money into boosters, boosters into cards and cards into money, at a profit, and reinvests. Each step can be done by hand or by an employee.
 
 ```
 Buy → Open (binder) → Price (showcase) → Customers buy → (money back to Buy)
  each step: by hand or by an employee
 ```
 
-Os três limites (depósito, vitrine e demanda) são exatamente o que as melhorias aumentam.
+The three limits (storage, showcase and demand) are exactly what the upgrades raise.
 
-1. **Comprar** boosters lacrados na distribuidora (preço pela oferta restante, seção 8.1). Ficam no depósito, que tem capacidade limitada.
-2. **Abrir** boosters. Todas as cartas vão para o fichário (decidido 2026-11-27), e o jogador decide depois o que fazer com cada cópia.
-3. **Precificar** cartas do fichário: o jogador escolhe quantas e o preço (mercado do dia, ±5% ou ±10%, ou um valor digitado). Precificar já põe a carta na vitrine, que tem número limitado de lugares. Cartas abaixo de um valor mínimo podem ir para o *bulk*, vendidas ao atacadista por 30% do valor.
-4. **Clientes** chegam sozinhos, cada um com um orçamento, e compram da vitrine com uma chance que depende do preço (seção 7). O dinheiro volta para o passo 1.
+1. **Buy** sealed boosters from the distributor (price follows the supply left, section 8.1). They go to storage, which has limited room.
+2. **Open** boosters. Every card goes to the binder, and the player decides later what to do with each copy.
+3. **Price** binder cards: the player picks how many and the price (today's market, ±5% or ±10%, or a typed price). Pricing puts the card straight into the showcase, which has a limited number of slots. Cards under a minimum value can go to *bulk*, sold to a wholesaler at 30% of value.
+4. **Customers** arrive on their own, each with a budget, and buy from the showcase with a chance that depends on the price (section 7). The money goes back to step 1.
 
-**Progressão**
+**Progression**
 
-| Fase | O que o jogador faz | Gargalo típico |
+| Phase | What the player does | Typical bottleneck |
 | --- | --- | --- |
-| Início | Clica em todas as etapas | Tempo e cliques do jogador |
-| Meio | Contrata o 1º, 2º, 3º funcionário e escolhe a tarefa de cada um | Velocidade da etapa mais lenta |
-| Avançado | Treina habilidades, compra melhorias, ajusta as regras da loja | Demanda de clientes e tamanho da vitrine |
-| Idle | Loja 100% automatizada; o jogador cuida do mercado, do fichário e de investimentos | Escolhas de mercado |
+| Start | Clicks every step | The player's time and clicks |
+| Middle | Hires the 1st, 2nd, 3rd employee and picks each one's task | Speed of the slowest step |
+| Advanced | Trains skills, buys upgrades, tunes the shop rules | Customer demand and showcase size |
+| Idle | Shop 100% automated; the player handles the market, the binder and investments | Market choices |
 
-**Ritmos de reengajamento** (relógios de escalas diferentes, para quem joga a toda hora e para quem passa uma vez por dia)
+**Re-engagement rhythms**
 
-| Escala | O que acontece | Por que voltar |
+| Scale | What happens | Why come back |
 | --- | --- | --- |
-| Segundos | Clientes compram, funcionários agem | Ver o dinheiro entrar |
-| Minutos | Treinos terminam, dá para contratar ou comprar melhoria | Gastar o que juntou |
-| Horas | Pilhas e estoque se esgotam, níveis sobem com a prática | Reabastecer e ajustar regras |
-| Dias | Novo dia de mercado; lojas rivais compram boosters | Ver preços, oferta e notícias |
-| Semanas | Coleção nova a cada 7 dias; eventos de interesse sobem, fazem platô e caem | Abrir a coleção nova, vender no pico, comprar na baixa |
-| Meses | A oferta de boosters cai e às vezes vem uma reimpressão | Especular com boosters lacrados |
+| Seconds | Customers buy, staff work | Watch the money come in |
+| Minutes | Training ends, a hire or upgrade becomes affordable; a new market day every 10 minutes | Spend what you saved, check prices |
+| Hours | A new collection every 2 hours; stock runs out; skills level up with practice | Open the new set, restock, tune rules |
+| Days | Supply drops, rivals buy, reprints come | Speculate with sealed boosters |
 
-**Metas de ritmo** (alvos para balanceamento; conferidos por simulação antes de cada versão)
+**Pacing targets** (balancing goals, checked by simulation before each version)
 
-| Marco | Alvo |
+| Milestone | Target |
 | --- | --- |
-| Primeira venda | Menos de 1 minuto |
-| Primeiro funcionário ($50) | 3 a 5 minutos |
-| Loja toda automatizada (3 funcionários: Buy, Open, Price) | 45 a 90 minutos |
-| Primeira habilidade no nível 10 | Alguns dias de jogo idle |
-| Coleção Base Set completa (descoberta) | 1 a 2 semanas, ou antes comprando avulsas |
+| First sale | Under 1 minute |
+| First employee ($50) | 3 to 5 minutes |
+| Fully automated shop (3 staff: Buy, Open, Price) | 45 to 90 minutes (measured: about 2 hours; Nicolas, 2026-11-27: leave as is for now) |
+| First skill at level 10 | A few days of idle play |
+| Base Set complete (discovered) | 1 to 2 weeks, or sooner by buying singles |
 
-**Ações do jogador** (única tabela de preços e efeitos das ações manuais)
+**Player actions** (the single table of manual action prices and effects)
 
-| Ação | Onde | Efeito | Custo ou ganho |
+| Action | Where | Effect | Cost or gain |
 | --- | --- | --- | --- |
-| Buy booster (1 ou 5) | Shop | +1 booster lacrado, −1 na oferta | Preço base × (total impresso ÷ oferta restante)^0,25 |
-| Buy booster | Market | +1 booster lacrado, comprado das lojas rivais | 110% do valor de mercado do booster |
-| Sell booster (1 ou 10) | Market | −1 booster lacrado, vai para o estoque das rivais | Ganha 90% do valor de mercado do booster |
-| Open 1 / 10 / 100 / all | Shop | Cartas vão para o fichário | — |
-| Price (1 / 10 / 100 / all, nível de preço, Keep 0 ou 1) | Shop | As cópias mais valiosas do fichário vão para a vitrine | — |
-| Bulk | Shop | Vende as cópias abaixo do valor mínimo | Ganha 30% do mercado |
-| List (1 / 5 / 10 / Keep 1 / all, preço livre) | Binder | Cópias da carta vão para a vitrine; a última cópia pede confirmação | — |
-| Recall showcase | Showcase | Vitrine volta para o fichário, para reprecificar | — |
-| Buy single | Market | +1 cópia no fichário | Paga 110% do mercado |
-| Hire, train, upgrade | Staff, Upgrades | Ver seções 6 e 7 | Custo exponencial |
+| Buy booster / 5 / 10 / 100 / all | Shop | +n sealed boosters, −n supply | Base price × (printed ÷ left)^0.25 each |
+| Buy booster | Market | +1 sealed booster, bought from rival shops | 110% of the booster's market value |
+| Sell booster | Market | −1 sealed booster, goes to the rivals' stock | 90% of the booster's market value |
+| Open 1 / 10 / 100 / all | Shop | Cards go to the binder | — |
+| Price (1 / 10 / 100 / all, price level, Keep 0 or 1) | Shop | The most valuable binder copies go to the showcase | — |
+| Bulk | Shop | Sells copies under the minimum value | 30% of market |
+| List (quantity and free price) | Binder card detail | Copies of the card go to the showcase; listing the last copy asks first | — |
+| Recall all | Showcase | The showcase goes back to the binder, to reprice | — |
+| Buy single | Market | +1 copy in the binder | 110% of market |
+| Hire, train, upgrade | Staff, Upgrades | See sections 6 and 7 | Exponential cost |
 
-O fichário registra todas as cartas já descobertas (progresso da coleção) e todas as cópias que o jogador tem. Carta descoberta sem cópia aparece escurecida.
+The binder records every card ever discovered (collection progress) and every copy the player owns. A discovered card with no copy is dimmed. Manual pricing and listing can sell any card, cheap ones included; only the staff pricer sends cheap copies to bulk.
 
-## 4. Coleções e cartas
+## 4. Collections and cards
 
-Cada coleção é um arquivo JSON na raiz do projeto, e `collections.json` lista quais o jogo carrega. Adicionar uma coleção = criar o JSON, colocar as imagens e acrescentar uma linha em `collections.json`, sem mexer no código.
+Each collection is a JSON file at the project root, and `collections.json` lists which ones the game loads, in release order. Adding a collection = create the JSON, add the images and add a line to `collections.json`, with no code change. Nicolas's crawler (`C:\DEV\pkmn-crawler`) emits this format.
 
-**Campos da coleção**
+**Collection fields**
 
-| Campo | Obrigatório | Uso |
+| Field | Required | Use |
 | --- | --- | --- |
-| `id` | sim | Identificador único e permanente (vai para o save) |
-| `name` | sim | Nome exibido |
-| `game` | não | `pokemon`, `magic`... |
-| `theme` | não | Estilo visual das cartas daquele jogo |
-| `releaseYear` | não | Ano de lançamento |
-| `boosterImage` | não | Imagem do pacote |
-| `booster.wholesalePrice` | sim | Preço base do booster na distribuidora |
-| `booster.slots` | sim | Montagem do booster por raridade (ex.: 6 comuns, 2 incomuns, 1 rara com chance de holo) |
-| `rarities` | sim | Raridades em ordem da mais comum para a mais rara, com nome, valor base e cor |
-| `reprintFactor` | não | Quanto vale uma reimpressão desta coleção em relação à original (padrão 0,5) |
-| `cards` | sim | Lista de cartas |
+| `id` | yes | Unique, permanent id (stored in the save) |
+| `name` | yes | Display name |
+| `game` | no | `pokemon`, `magic`... |
+| `theme` | no | Visual style of that game's cards |
+| `releaseYear` | no | Release year |
+| `boosterImage` | no | Pack image |
+| `booster.wholesalePrice` | yes | Base booster price at the distributor |
+| `booster.slots` | yes | Booster layout by rarity (e.g. 7 commons, 3 uncommons, 1 rare with a holo chance) |
+| `rarities` | yes | Rarities from most common to rarest, with name, base value and color |
+| `reprintFactor` | no | Value of a reprint of this collection relative to the original (default 0.5) |
+| `cards` | yes | Card list |
 
-**Campos da carta**
+**Card fields**
 
-| Campo | Obrigatório | Uso |
+| Field | Required | Use |
 | --- | --- | --- |
-| `index` | sim | Ordem no fichário |
-| `id` | sim | Identificador único e permanente na coleção |
-| `number` | não | Número impresso (ex.: 4/102) |
-| `name` | sim | Nome em inglês |
-| `rarity` | sim | Uma das chaves de `rarities` |
-| `foil` | não | Aplica efeito holográfico |
-| `image` | não | Caminho da imagem; se faltar, o jogo desenha uma carta genérica |
-| `value` | não | Valor base próprio (cartas famosas); senão usa o da raridade |
-| `reprintOf` | não | `idColeção:idCarta` da impressão original |
-| `extra` | não | Dados livres para o futuro (tipo, HP, artista) |
+| `index` | yes | Binder order |
+| `id` | yes | Unique, permanent id within the collection |
+| `number` | no | Printed number (e.g. 4/102) |
+| `name` | yes | English name |
+| `rarity` | yes | One of the `rarities` keys |
+| `foil` | no | Applies the holographic effect |
+| `image` | no | Image path; if missing, the game draws a generic card |
+| `value` | no | Own base value (famous cards); otherwise the rarity's |
+| `reprintOf` | no | `collectionId:cardId` of the original printing |
+| `extra` | no | Free data for the future (type, HP, artist) |
 
-**Regras**
+**Rules**
 
-- `id` de coleção e de carta nunca muda depois de publicado, porque o save guarda esses ids.
-- A ordem das chaves em `rarities` define a ordem de revelação na abertura (comuns primeiro).
-- Imagens em proporção 5:7 (ex.: 500×700), PNG, JPG ou WEBP. Pasta sugerida: `images/<id da coleção>/`.
-- A v1 vem com um modelo do Base Set (102 cartas com nomes provisórios) para o Nicolas preencher.
-- **Desbloqueio em sequência (decidido 2026-11-27):** as coleções seguem a ordem de `collections.json`. Boosters e cartas avulsas de uma coleção só podem ser comprados quando o jogador já descobriu pelo menos 90% da coleção anterior. A primeira coleção começa liberada. Vender cópias não tira o desbloqueio, porque a descoberta fica.
+- Collection and card `id`s never change once published, because the save stores them.
+- The order of the `rarities` keys sets the reveal order when opening (commons first).
+- Images at 5:7 (e.g. 500×700), PNG, JPG or WEBP, in `images/<collection id>/`.
+- Rarities follow the crawler's source rarity. Team Rocket's Dark Raichu (83/82) has its own `secret` rarity, rarer than holo (2% of the rare slot).
+- Collections release one after another on a calendar (section 8.1); an unreleased collection is hidden everywhere.
 
-## 5. Abertura de boosters
+## 5. Opening boosters
 
-Abrir um booster por vez é uma cena animada que imita a abertura real; abrir em quantidade pula a animação e mostra o resultado numa lista com rolagem.
+Opening one booster at a time is an animated scene that imitates a real opening; opening in bulk skips the animation and shows the result in a scrolling list.
 
-| Botão | Comportamento |
+| Button | Behavior |
 | --- | --- |
-| Open 1 | Animação completa |
-| Open 10 | Sem animação; grade de resultados |
-| Open 100 | Sem animação; grade de resultados |
-| Open all | Sem animação; abre todos os lacrados da coleção |
+| Open 1 | Full animation |
+| Open 10 | No animation; results grid |
+| Open 100 | No animation; results grid |
+| Open all | No animation; opens every sealed booster of the collection |
 
-**Animação (Open 1)**
+**Animation (Open 1)**
 
-1. O pacote aparece em destaque no centro da tela.
-2. O jogador clica (ou arrasta) e o pacote rasga: a tira de cima se solta, com som de papel.
-3. As cartas saem como uma pilha virada para cima. A carta do topo é a mais comum.
-4. O jogador arrasta ou clica na carta do topo e ela desliza para o lado, revelando a de trás, com som de carta.
-5. A ordem é sempre das mais comuns para as mais raras; a última é a rara ou holo. Cartas raras e foil ganham brilho e um som especial.
-6. Ao fim, um resumo mostra as cartas do pacote com marcas "NEW" (inédita) e o valor estimado, com botões "Open another" e "Done".
-7. Um botão "Skip" mostra o resumo direto.
+1. The pack appears large in the center of the screen.
+2. The player clicks (or drags) and the pack tears: the top strip comes off, with a paper sound.
+3. The cards come out as a face-up stack. The top card is the most common.
+4. The player drags or clicks the top card and it slides aside, revealing the next, with a card sound.
+5. The order is always most common to rarest; the last is the rare or holo. Rare and foil cards get a glow and a special sound.
+6. At the end, a summary shows the pack's cards with "NEW" marks and the estimated value, with "Open another" and "Done".
+7. A "Skip" button goes straight to the summary.
 
-**Níveis de celebração** (o jogador não precisa decorar mais de 3 níveis; comuns passam rápido, raras ganham palco)
+**Celebration levels** (the player never has to learn more than 3; commons pass fast, rares get the stage)
 
-| Nível | Raridades no Base Set | Revelação |
+| Level | Rarities | Reveal |
 | --- | --- | --- |
-| Quieto | Comum, incomum | Desliza rápido, som curto de carta |
-| Destaque | Rara | Pausa breve, brilho na borda, nota musical |
-| Grande | Rara holo / foil | Prévia antes de virar (a carta de trás brilha), brilho holográfico, acorde especial |
+| Quiet | Common, uncommon | Fast slide, short card sound |
+| Highlight | Rare | Short pause, edge glow, musical note |
+| Big | Holo / foil / secret | Preview before the flip (the card behind glows), holographic shine, special chord |
 
-Carta inédita ganha o selo NEW em qualquer nível. Cada passo da animação pode ser acelerado com um toque; se o jogador sempre pula, a animação está longa demais.
+A new card gets the NEW badge at any level. Each animation step can be sped up with a tap.
 
-**Resultado em quantidade (10 / 100 / todos):** as cartas iguais são agrupadas com contador, ordenadas da mais rara para a mais comum, com marca "NEW" e valor total. Se houver muitas, a lista rola.
+**Bulk results (10 / 100 / all):** identical cards are grouped with a count, sorted rarest first, with "NEW" marks and the total value.
 
-**Tamanhos de renderização da carta**
+**Card render sizes**
 
-| Contexto | Tamanho |
+| Context | Size |
 | --- | --- |
-| Abertura (carta em foco) | Grande, ocupando boa parte da altura da tela |
-| Resumo da abertura e vitrine | Médio |
-| Fichário | Pequeno, em grade |
-| Tabela do mercado | Miniatura |
+| Opening (card in focus) | Large, most of the screen height |
+| Opening summary and showcase | Medium |
+| Binder | Small, in a grid |
+| Market and showcase tables | Thumbnail |
 
-O mesmo arquivo de imagem serve para todos os tamanhos. Carta ainda não descoberta aparece escurecida no fichário.
+**Booster layout:** set in each collection's `booster.slots`. Base Set (Nicolas, 2026-11-27, following the real rarities): 11 cards, 7 common, 3 uncommon and 1 rare (67% rare, 33% holo rare). The 6 basic energies count as commons, so the set has 38 commons, 32 uncommons, 16 rares and 16 holo rares. Jungle, Fossil, Base Set 2 and Team Rocket use the same layout and a $4 wholesale price.
 
-**Montagem do booster:** definida em `booster.slots` de cada coleção. Para o Base Set (decidido pelo Nicolas em 27/11/2026, seguindo as raridades reais): 11 cartas, sendo 7 comuns, 3 incomuns e 1 rara (67% rara, 33% rara holo). As 6 energias básicas contam como comuns, então a coleção tem 38 comuns, 32 incomuns, 16 raras e 16 raras holo.
+## 6. Staff
 
-## 6. Funcionários
+Each employee has 3 independent skills, level 1 to 10, and does one task at a time chosen by the player. They improve on their own at the task they practice, or faster with paid training.
 
-Cada funcionário tem 3 habilidades independentes, do nível 1 ao 10, e faz uma tarefa por vez escolhida pelo jogador. Ele melhora sozinho na tarefa que pratica ou mais rápido com treino pago.
+| Skill | What it does | Time at level 1 |
+| --- | --- | --- |
+| Buy | Buys 1 booster from the distributor | 8 s per booster |
+| Open | Opens 1 booster | 10 s per booster |
+| Price | Prices 1 binder copy and puts it in the showcase (or bulk) | 3 s per card |
 
-| Habilidade | O que faz | Tempo no nível 1 | Efeito extra do nível |
-| --- | --- | --- | --- |
-| Buy | Compra 1 booster na distribuidora | 8 s por booster | — |
-| Open | Abre 1 booster | 10 s por booster | — |
-| Price | Precifica 1 cópia do fichário e a põe na vitrine (ou no bulk) | 3 s por carta | — |
+- **Speed:** each level makes the action 22% faster; at level 10 it is about 9× faster.
+- **Experience:** each action gives 1 XP in that skill. XP to the next level = 25 × level^2.3 (level 1→2: 25 actions; level 9→10: about 3,900).
+- **Training:** costs 40 × 2^level and takes 20 s × level; the employee does not work while training. +1 level.
+- **Hiring:** costs 50 × 2.2^(current staff). Slots: 1 + the Staff room upgrade. Each new employee starts at level 1 or 2 in each skill, at random.
+- **Visible status:** working, idle, training, or the reason for waiting (no packs, showcase full, cash reserve...).
 
-- **Velocidade:** cada nível deixa a ação 22% mais rápida; no nível 10 ela é cerca de 9x mais rápida.
-- **Experiência:** cada ação feita dá 1 XP naquela habilidade. XP para o próximo nível = 25 × nível^2,3 (nv 1→2: 25 ações; nv 9→10: cerca de 4.400).
-- **Treino:** custa 40 × 2^nível e leva 20 s × nível; durante o treino o funcionário não trabalha. Sobe 1 nível.
-- **Contratação:** custo 50 × 2,2^(funcionários atuais). Vagas: 1 + melhoria "Staff room". Cada novo funcionário começa com nível 1 ou 2 em cada habilidade, aleatório.
-- **Status visível:** working, idle, training ou o motivo da espera (no packs, showcase full, cash reserve...).
+**Shop rules** (for staff; some also for the player)
 
-**Regras da loja** (valem para os funcionários; algumas também para o jogador)
-
-| Regra | Padrão |
+| Rule | Default |
 | --- | --- |
-| Coleção que o comprador compra | Primeira coleção |
-| Coleção que o abridor abre | Primeira coleção |
-| Meta de estoque (comprador para ao atingir) | 10 boosters |
-| Saldo mínimo (comprador não gasta abaixo) | $20 |
-| Valor mínimo para ir à vitrine (abaixo vira bulk) | $0,25 |
-| Cópias que o precificador deixa no fichário (Keep copies) | 1 |
-| Preço do precificador (mercado, ±5% ou ±10%) | Mercado |
+| Collection the buyer buys | First collection |
+| Collection the opener opens | First collection |
+| Stock target (buyer stops when reached) | 10 boosters |
+| Cash reserve (buyer does not spend below it) | $20 |
+| Minimum value for the showcase (below goes to bulk) | $0.25 |
+| Copies the pricer leaves in the binder (Keep copies) | 1 |
+| Pricer's price (market, ±5% or ±10%) | Market |
 
-**Contrapressão:** o precificador espera quando a vitrine está cheia.
+**Back pressure:** the pricer waits when the showcase is full.
 
-**Sem salário na v1** (decisão provisória, ver perguntas em aberto).
+**Salaries (decided 2026-11-28, in progress):** employees earn a salary that grows with their skill levels and/or time at the shop. Formula, what happens when cash runs out, and whether salaries are charged offline are being settled with Nicolas (section 12).
 
-## 7. Clientes e economia
+## 7. Customers and economy
 
-O dinheiro entra quando clientes compram cartas da vitrine; a demanda é o limite natural da loja e as melhorias aumentam esse limite.
+Money comes in when customers buy from the showcase; demand is the shop's natural limit and upgrades raise it.
 
-**Clientes**
+**Customers**
 
-- Chegam em média a cada 6 s (÷ 1 + 25% por nível de Marketing). Cada um tem um orçamento (entre $2 e $120, distribuição log-uniforme) e olha até 3 cartas que cabem no orçamento.
-- Cartas mais caras chamam mais atenção: a chance de uma carta ser olhada é proporcional à raiz do seu preço de mercado.
-- Para cada carta olhada, a chance de compra depende da etiqueta comparada ao mercado do dia (decidido 2026-11-27; faixas acima do mercado propostas por nós):
+- One arrives on average every 6 s, divided by (1 + 25% per Marketing level) × (1 + 3% per Fame level).
+- Budget: $2 to $120, log-uniform. From Fame level 2, 10% of customers are "rich", with a budget from $120 up to a cap that grows with Fame to $1,000 at level 20.
+- Each looks at up to 3 cards that fit the budget. Pricier cards draw more attention: a card's chance of being looked at is proportional to the square root of its market price.
+- For each card looked at, the chance of buying depends on the tag compared to today's market:
 
-| Etiqueta / mercado | Chance de compra |
+| Tag / market | Buy chance |
 | --- | --- |
-| Mais de 10% abaixo | 70% |
-| Até 10% abaixo | 60% |
-| No mercado | 50% |
-| Até +5% | 35% |
-| Até +10% | 20% |
-| Até +25% | 8% |
-| Até +50% | 3% |
-| Até 2× | 1% |
-| 2× ou mais | 0,5% |
+| More than 10% below | 70% |
+| Up to 10% below | 60% |
+| At market | 50% |
+| Up to +5% | 35% |
+| Up to +10% | 20% |
+| Up to +25% | 8% |
+| Up to +50% | 3% |
+| Up to 2× | 1% |
+| 2× or more | 0.5% |
 
-- O cliente paga o preço da etiqueta × bônus de Reputação.
-- Não há fila nem paciência: ninguém vai embora irritado (pilar "tranquilo").
+- The customer pays the tag × the Reputation bonus × the collection milestone bonus.
+- **Feelings:** each look is judged cheap (≤ 99.5% of market), fair (≤ 105%), pricey (≤ 125%) or steep. The Showcase tab shows how customers feel about each card and a summary.
+- **New-set customers (Nicolas, 2026-11-27):** on a release day 30% of customers come only for the newest collection, fading to 0 over 6 market days. With none of it in the showcase they leave without buying.
+- No queue and no patience: nobody leaves angry.
 
-**Melhorias**
+**Upgrades**
 
-| Melhoria | Efeito por nível | Custo inicial | Crescimento | Máx. |
+| Upgrade | Effect per level | Starting cost | Growth | Max |
 | --- | --- | --- | --- | --- |
-| Bigger storage | +10 boosters lacrados (base 20) | $40 | ×1,6 | 20 |
-| Bigger showcase | +20 lugares na vitrine (base 40) | $60 | ×1,6 | 20 |
-| Marketing | +25% clientes | $80 | ×1,75 | 20 |
-| Reputation | +6% no preço pago | $120 | ×1,85 | 15 |
-| Staff room | +1 vaga de funcionário | $150 | ×2,2 | 8 |
+| Bigger storage | +10 sealed boosters (base 20) | $40 | ×1.6 | 20 |
+| Bigger showcase | +20 showcase slots (base 40) | $60 | ×1.6 | 20 |
+| Marketing | +25% customers | $80 | ×1.75 | 20 |
+| Reputation | +6% price paid | $120 | ×1.85 | 15 |
+| Staff room | +1 staff slot | $150 | ×2.2 | 8 |
+| Fame | Richer customers, +3% customers, shop decor | $200 | ×1.5 | Lv 1–20 |
 
-**Números iniciais (provisórios, testados em simulação)**
+**Starting numbers**
 
-- Dinheiro inicial: $20. Booster do Base Set: $4.
-- Valor base por raridade: comum $0,15 · incomum $0,40 · rara $3 · rara holo $12.
-- Simulação do protótipo: 30 min jogando à mão ≈ $390; 8 h com 4 funcionários de nível 1 ≈ $8.000 de lucro.
-- O valor das cartas famosas (ex.: a holo mais cobiçada) é definido no JSON pelo campo `value`.
+- Starting cash: $20. Booster: $4.
+- Base value by rarity (Base Set): common $0.15 · uncommon $0.40 · rare $3 · holo rare $12. Famous cards set their own `value`.
 
-**Fórmulas de custo** (padrão do gênero: custo = base × taxa^nível)
+**Cost formulas** (genre standard: cost = base × rate^level)
 
-| Item | Base | Taxa | Observação |
+| Item | Base | Rate | Note |
 | --- | --- | --- | --- |
-| Contratar | $50 | 2,2 | n = funcionários atuais |
-| Treinar | $40 | 2 | n = nível atual da habilidade |
-| Melhorias | Ver tabela acima | 1,6 a 2,2 | Cada uma com teto de nível |
+| Hire | $50 | 2.2 | n = current staff |
+| Train | $40 | 2 | n = current skill level |
+| Upgrades | See table above | 1.5 to 2.2 | Each with a level cap |
 
-Comprar vários de uma vez usa a soma da série geométrica: custo de n itens a partir do nível k = base × taxa^k × (taxa^n − 1) / (taxa − 1).
+Buying several at once uses the geometric series: the cost of n items from level k = base × rate^k × (rate^n − 1) / (rate − 1).
 
-**Marcos de coleção** (meta de longo prazo com recompensa calma, sem perda)
+**Collection milestones** (approved by Nicolas, 2026-11-28)
 
-| Descoberta da coleção | Recompensa |
+| Collection discovered | Reward |
 | --- | --- |
-| 25% | +2% no preço pago por cartas dessa coleção |
+| 25% | +2% price paid for that collection's cards |
 | 50% | +4% |
 | 75% | +6% |
-| 100% | +10% e um selo no fichário |
+| 100% | +10% and a badge in the binder |
 
-Os números dos marcos são proposta e entram no balanceamento. O prestígio (reset voluntário com bônus permanente) fica para depois da v1.
+## 8. Market
 
-## 8. Mercado diário
+Card prices change once per market day by a deterministic calculation: the same day gives the same price, nothing about card prices is saved, and no change is permanent.
 
-Os preços mudam uma vez por dia real, à meia-noite no fuso do jogador, por um cálculo determinístico: o mesmo dia dá o mesmo preço para todo mundo, nada é salvo no save e nenhuma variação é permanente.
+**Market day (Nicolas, 2026-11-27)**
 
-**Dia de mercado**
+- A market day lasts 10 real minutes. Day number = floor(time / 10 min), the same for everyone; there are no time zones.
+- The header shows "Day N" (counted from the save's first day) and the time to the next market day.
 
-- O fuso vem do navegador na criação do save, e o jogador pode trocar (ex.: UTC) na tela inicial e nas configurações.
-- Dia = número de dias desde 01/01/1970 na data local daquele fuso.
-- A tela mostra a data e quanto falta para o próximo dia de mercado.
+**Today's price = the card's base value × the day's multiplier.** The multiplier comes from a hash of (seed, card, day) and sums three components:
 
-**Preço do dia = valor base da carta × multiplicador do dia.** O multiplicador vem de um hash de (semente fixa, carta, dia) e soma três componentes em escala percentual:
-
-| Componente | O que simula | Amplitude | Ritmo |
+| Component | What it models | Range | Rhythm |
 | --- | --- | --- | --- |
-| Ruído da carta | Oscilação normal do dia a dia | ±~7% | Ondas de 9 e 23 dias |
-| Tendência da coleção | A coleção toda esquenta ou esfria | ±~8% | Ondas de 35 dias |
-| Eventos de interesse | Uma notícia faz a procura subir ou cair | +15% a +100% ou −10% a −40% | Semanas a meses |
+| Card noise | Normal day-to-day movement | ±~7% | Waves of 9 and 23 days |
+| Collection trend | The whole collection heats up or cools down | ±~8% | Waves of 35 days |
+| Interest events | News makes demand rise or fall | +15% to +100% or −10% to −40% | Weeks to months of market days |
 
-**Eventos de interesse**
+**Interest events**
 
-- Cada carta tem 22% de chance de um evento a cada janela de 40 dias, com uma notícia ("appeared on a TV show", "a famous streamer opened one"...).
-- Forma: subida gradual → platô opcional (0 a 25 dias) → queda gradual → resíduo de 0 a 50% que também some devagar (2 a 6 meses).
-- A subida e a queda duram mais quanto maior a variação (no mínimo 7 e 10 dias), sempre em curva suave.
-- Eventos sobrepostos têm teto suave de ~3× e piso de ~1/3 do valor base.
+- Each card has a 22% chance of an event per 40-day window, with a news line ("{card} went viral online", "A famous streamer opened a {card}"...).
+- Shape: gradual rise → optional plateau (0 to 25 days) → gradual fall → a 0 to 50% remainder that also fades slowly.
+- Overlapping events have a soft cap of ~3× and a floor of ~1/3 of the base value.
 
-**Garantia anti-pico:** testado em 4.000 dias × 102 cartas, a maior variação de um dia para o outro foi +6,1% / −5,5%.
+**No spikes:** tested over 4,000 days × 102 cards, the largest day-to-day change was +6.1% / −5.5%.
 
-**Reimpressões:** a carta com `reprintOf` sente os mesmos eventos da original, mas só 60% do efeito, e vale por padrão metade da original (`reprintFactor`).
+**Reprints:** a card with `reprintOf` feels the original's events at 60% strength and is worth half the original by default (`reprintFactor`).
 
-**O que o jogador faz com isso**
+**Seed:** one global seed today. **Decided 2026-11-28, in progress:** each save gets its own seed (a UUID) when it starts; what happens to existing saves is being settled with Nicolas.
 
-- A aba Market lista cada carta com preço de hoje, variação de 1 e 7 dias e gráfico de 30 dias, mais as notícias dos últimos 3 dias.
-- O jogador especula com as ações da seção 3: comprar avulsas ou boosters em alta, segurar no fichário, recolher a vitrine para reprecificar.
-- O preço etiquetado não muda sozinho: cartas antigas na vitrine ficam baratas quando o mercado sobe e encalham quando ele cai.
-- A tabela de cartas mostra o número da carta na coleção (ex.: 1/102). Uma busca filtra por nome, por número ou pelos dois ("Alakazam 1" acha só o Alakazam 1/102), em uma coleção ou em todas ("All collections").
+**What the player does with it**
 
-### 8.1 Tiragem de boosters e calendário (Nicolas, 2026-11-27)
+- The Market tab searches every released collection by name, number or collection name, with Collection and number columns, today's price, 1- and 7-day change and a 30-day chart, plus recent news.
+- The player speculates with the section 3 actions: buy singles or boosters on the rise, hold in the binder, recall the showcase to reprice.
+- A tag never changes on its own: old showcase cards become cheap when the market rises and stall when it falls.
 
-Os boosters não são infinitos. Cada coleção tem uma tiragem, e o preço do booster sobe conforme a oferta acaba, como na vida real.
+### 8.1 Booster supply and release calendar (Nicolas, 2026-11-27)
 
-**Calendário de lançamentos**
+Boosters are not infinite. Each collection has a print run, and the booster price rises as supply runs out, as in real life.
 
-- O jogo começa só com o Base Set (fichário, mercado, distribuidora). Cada coleção seguinte sai 7 dias de mercado depois da anterior, na ordem do `collections.json`: Jungle, Fossil, Base Set 2, Team Rocket.
-- Uma coleção que ainda não saiu não aparece em lugar nenhum. A regra antiga de 90% da coleção anterior foi removida.
-- Os 7 dias são um parâmetro (`RELEASE_EVERY_DAYS`) e podem diminuir depois.
+**Release calendar**
 
-**Tiragem**
+- The game starts with the Base Set only. Each next collection comes out 12 market days (2 real hours) after the previous one, counted from the save's first day, in `collections.json` order: Jungle, Fossil, Base Set 2, Team Rocket (`RELEASE_EVERY_DAYS`).
+- An unreleased collection does not appear anywhere.
 
-- O Base Set tem 1.000.000 de boosters. Cada coleção nova imprime 25% a mais que a anterior, até o teto de 2× o Base Set (Jungle 1,25M, Fossil 1,56M, Base Set 2 1,95M, Team Rocket 2M).
-- Preço na distribuidora = preço base × (total impresso ÷ oferta restante)^0,25. Começa no preço base; com metade da oferta vale ~1,19×; com 10% vale ~1,8×.
-- Valor no Market (mercado de segunda mão) = preço base × (total impresso ÷ oferta restante)^0,5 × oscilação diária (ondas de 5 e 13 dias, ~±12%). Com metade da oferta vale ~1,4×; com 10% vale ~3,2×. O Market é mais volátil que a distribuidora (Nicolas, 2026-11-27).
-- Abaixo de 2% de oferta os preços param de subir.
+**Print run**
 
-**Eventos diários** (por coleção, calculados a cada dia de mercado; os dados vêm de um hash de semente, coleção e dias desde o lançamento)
+- The Base Set has 1,000,000 boosters. Each newer collection prints 25% more than the previous one, up to 2× the Base Set.
+- Distributor price = base price × (printed ÷ left)^0.25.
+- Market value (second hand) = base price × (printed ÷ left)^0.5 × a daily swing (~±12%). The Market is more volatile than the distributor.
+- Below 2% left, prices stop rising.
 
-| Evento | Regra |
+**Daily world events** (per collection, every market day, from a hash of seed, collection and days since release)
+
+| Event | Rule |
 | --- | --- |
-| Lojas rivais compram | 8 lojas simuladas de tamanhos diferentes. Cada uma compra em 60% dos dias; a procura começa alta e cai para 20% em alguns meses. Sempre deixam 10% da tiragem para o jogador. Compras grandes viram notícia. |
-| Devolução | 12% de chance por dia: uma loja devolve até 0,4% da tiragem à oferta. |
-| Reimpressão | Quando a oferta fica abaixo de 35% do total impresso: 2% de chance por dia de imprimir mais 40% a 80% da tiragem original. O preço cai. Vira notícia. |
+| Rival shops buy | 20 simulated shops of different sizes, together about 5.2% of the print run on a busy day. Each buys on 60% of days; demand fades to 20% over 66 days. They always leave 10% of the print run for the player. Big buys make news. |
+| Returns | 12% chance per day: a shop returns up to 0.8% of the print run. |
+| Reprint | Below 35% left: 3% chance per day of printing another 40% to 80% of the original run. The price drops. Makes news. |
 
-Resultado medido: em 120 dias o Base Set vai de $4,00 para ~$4,90 na distribuidora e ~$5,90 no Market; a oferta mais baixa vista antes da primeira reimpressão foi ~25%.
+**What the player can do**
 
-**O que o jogador pode fazer**
+- Buy from the distributor while there is supply; each purchase takes 1 off the supply and raises the price a little.
+- On the Market: buy sealed boosters from rivals at 110% of market value (works even when the distributor is sold out) and sell at 90%.
+- Hold boosters in storage waiting for the price to rise. Nothing guarantees a profit, because returns and reprints are random.
 
-- Comprar da distribuidora enquanto houver oferta; cada compra tira 1 da oferta e sobe o preço um pouco.
-- No Market: comprar boosters lacrados das lojas rivais por 110% do valor de mercado (funciona mesmo com a distribuidora esgotada) e vender por 90%. O booster vendido vai para o estoque das rivais.
-- Comprar na distribuidora e revender no Market dá lucro quando a oferta está baixa, mas isso esgota a distribuidora e sobe o preço dela, então não é infinito.
-- Guardar boosters no depósito esperando o preço subir. Nada garante o lucro, porque devoluções e reimpressões são aleatórias.
+**Determinism:** the world (rivals, returns, reprints) is the same for anyone making the same choices, but the player's buys and sells change supply, so each collection's supply is saved. This is the approved exception to "no market state in the save"; single card prices are still computed from the day.
 
-**Determinismo:** o mundo (rivais, devoluções, reimpressões) é igual para todos que fizerem as mesmas escolhas, mas as compras e vendas do jogador mudam a oferta, então a oferta de cada coleção fica salva no save. Isso é uma exceção aprovada à regra "nada do mercado vai no save"; os preços das cartas avulsas continuam 100% calculados do dia.
+### 8.2 News
 
-### 8.2 Central de notícias (News)
+- A News button in the header with the unread count.
+- Two parts: game notices (new collection out, reprints, big rival buys) and patch notes, kept in `data/news.json`.
+- A note can require a released collection (`requires`).
 
-- Botão News no topo, com o número de itens não lidos.
-- Duas partes: avisos do jogo (coleção nova lançada, reimpressões, compras grandes de rivais) e notas de atualização do jogo (patch notes), que ficam em `data/news.json`.
-- Uma nota pode exigir que uma coleção já tenha saído (`requires`), para avisos como "agora você também pode completar a coleção X".
+### 8.3 Storage tab (decided 2026-11-28, in progress)
 
-## 9. Progresso offline e save
+Customers will also buy sealed products and accessories: sealed boosters, booster boxes, and TCG accessories (sleeves, deck boxes, playmats) themed after Pokémon. A separate **Storage** tab lets the player set the price of everything and put up for sale whatever they want at whatever price, following the Market's percentages. Box size, prices, accessory content and the share of customers who want sealed goods are being settled with Nicolas (section 12).
 
-Ao carregar o save, o jogo simula 100% do tempo que passou desde o último salvamento, sem limite e sem penalidade, mostrando uma barra de progresso; o save fica no localStorage e pode ser exportado e importado como JSON versionado.
+## 9. Offline progress and save
 
-**Simulação offline**
+On load, the game simulates 100% of the time since the last save, with no cap and no penalty, behind a progress bar; the save lives in localStorage and can be exported and imported as versioned JSON.
 
-- Usa exatamente as mesmas regras do jogo aberto (mesma função de tick), em passos de 1 s (2 s quando passou mais de 1 dia).
-- O relógio simulado avança junto, então os dias de mercado mudam no meio da simulação como mudariam ao vivo.
-- Roda em blocos para não travar a página; a barra mostra a porcentagem e o tempo simulado. Uma semana de ausência deve levar algumas dezenas de segundos.
-- Ao fim, um resumo: tempo fora, saldo ganho, boosters comprados e abertos, cartas vendidas, níveis ganhos.
-- Com a aba aberta em segundo plano, o jogo continua; se o navegador pausar a aba, o mesmo cálculo cobre o intervalo ao voltar.
+**Offline simulation**
+
+- Uses exactly the same rules as live play (the same tick function), in 1 s steps (2 s after more than a day).
+- The simulated clock moves along, so market days and releases change mid-simulation as they would live.
+- Runs in chunks so the page never freezes; a week away takes some tens of seconds.
+- At the end, a summary: time away, money earned, boosters bought and opened, cards sold, levels gained.
+- With the tab open in the background the game keeps running; if the browser pauses the tab, the same catch-up covers the gap on return.
 
 **Save**
 
-- Salvamento automático a cada 10 s, ao esconder a aba e ao fechar.
-- Menu System: Save now, Export (baixa um arquivo .json), Import (carrega um .json), Reset.
-- Formato do arquivo: `{ game, saveVersion, gameVersion, exportedAt, state }`.
-- `saveVersion` é um número inteiro. A cada mudança de esquema existe uma migração `vN → vN+1`, aplicada em sequência ao carregar ou importar.
-- Depois das migrações, o estado é mesclado com os valores padrão: campo que falta recebe o padrão, campo desconhecido é ignorado. Um save antigo nunca quebra o jogo.
-- Ids de cartas ou coleções que não existem mais são ignorados sem apagar o resto.
-- **Regra do projeto:** toda mudança que afete o esquema do save é levada ao Nicolas antes, com a pergunta "o que acontece com esse campo em saves antigos?".
+- Autosave every 10 s, when the tab is hidden and on close.
+- System menu: Save now, Export (.json download), Import, Reset.
+- File format: `{ game, saveVersion, gameVersion, exportedAt, state }`.
+- `saveVersion` is an integer. Each schema change adds a migration `vN → vN+1`, applied in order on load or import.
+- After migrations, the state is merged with defaults: a missing field gets the default, an unknown field is ignored. An old save never breaks the game.
+- Card or collection ids that no longer exist are skipped without touching the rest.
+- **Project rule:** every change to the save schema goes to Nicolas first, with the question "what happens to this field in old saves?".
 
-**Preferências do aparelho** (tema e volumes) ficam fora do save, numa chave separada do localStorage, para não viajarem junto com um save importado.
+**Device preferences** (theme, volumes, reduce motion, debug unlock and debug clock) live outside the save, in a separate localStorage key.
 
-## 10. Interface, áudio e configurações
+## 10. Interface, audio and settings
 
-A interface é só menus e painéis, em inglês, com paleta pastéis puxada para marrom e amarelo escuro, modo claro e escuro, e música calma gerada no próprio navegador.
+The interface is menus and panels, in English, with a pastel palette leaning to brown and dark yellow, light and dark modes, generated calm music, and a small pixel-art shop scene.
 
-**Celular (decidido 2026-11-27):** o jogo roda no celular. Em telas estreitas as abas viram uma barra fixa embaixo, os painéis ficam em uma coluna e os botões têm tamanho de toque. Também é um PWA: dá para instalar na tela inicial e jogar sem internet depois da primeira visita.
+**Mobile:** the game runs on phones. On narrow screens the tabs become a fixed bottom bar, panels go to one column and buttons are touch-sized. It is also a PWA: installable and playable offline after the first visit.
 
-**Telas (abas)**
+**Tabs**
 
-| Aba | Conteúdo |
+| Tab | Content |
 | --- | --- |
-| Shop | As 3 etapas do loop lado a lado (Distributor, Open, Price), resumo da equipe, últimos acontecimentos |
-| Binder | Fichário por coleção, progresso de descoberta |
-| Showcase | Cartas à venda com preço, recolher para reprecificar |
-| Market | Preços do dia, tendências, notícias |
-| Staff | Funcionários, habilidades, treino, regras da loja |
-| Upgrades | Melhorias da loja |
-| Settings | Tema, volumes, fuso, save (System), tutorial |
+| Shop | Shop floor scene; the 3 loop steps side by side (Distributor, Open, Price); staff summary; recent events |
+| Binder | Binder per collection, discovery progress, List screen per card |
+| Showcase | Cards for sale with number, collection, tag, market and customer feeling; Customers panel; Recall all |
+| Market | Search, prices, trends, sealed boosters, news |
+| Staff | Employees, skills, training, shop rules |
+| Upgrades | Shop upgrades |
+| Settings | Theme, motion, volumes, tutorial, save (System), Code (debug menu) |
 
-No topo, sempre visíveis: dinheiro, data de mercado e tempo até o próximo dia.
+The header always shows money, the market day and the time to the next day, and the News button.
+
+**Shop floor** (details in `docs/sdd/shop-floor.md`)
+
+- A pixel-art view of the shop at the top of the Shop tab: customers (16×32 sprites, 4 directions) walk in, browse the showcase together at their own pace, say what they think of the prices in speech bubbles, show a happy or sad emote, and buyers show what they paid.
+- The showcase case fills as cards are listed and grows with the showcase upgrade; decor grows with Fame.
+- The floor keeps running on other tabs and with the browser hidden or minimized.
+- **Decided 2026-11-28, in progress:** more customer sprites and more decor at high Fame levels.
 
 **Visual**
 
-- Paleta neutra pastéis: fundos creme/areia no claro, marrom café no escuro; destaque em amarelo mostarda/âmbar; cores de raridade suaves.
-- Tema claro, escuro ou seguir o sistema.
-- Cartas com borda na cor da raridade; foil com brilho animado sutil.
+- Neutral pastel palette: cream/sand backgrounds in light mode, coffee brown in dark; mustard/amber accent; soft rarity colors.
+- Light, dark or follow the system.
+- Cards with a rarity-colored border; foil with a subtle animated shine.
 
-**Áudio (Web Audio API, sem arquivos de som)**
+**Audio (Web Audio API, no sound files)**
 
-- Música: ambiente calmo e generativo, acordes longos e suaves com notas soltas de escala pentatônica, sem batida marcada.
-- Efeitos: clique, compra (moeda), rasgar o pacote, deslizar carta, revelação rara (brilho), venda (moeda suave, no máximo uma a cada poucos segundos para não cansar).
-- Volumes: Master, Music e Effects, cada um com slider de 0 a 100 e botão de mudo. Master multiplica os outros dois.
-- O áudio só começa após o primeiro clique do jogador (regra dos navegadores).
+- Music: calm generative ambient, long soft chords with loose pentatonic notes, no beat.
+- Effects: click, purchase (coin), pack tear, card slide, rare reveal (shine), sale (soft coin, at most one every few seconds).
+- Volumes: Master, Music and Effects, each with a 0–100 slider and mute. Master scales the other two.
+- Audio starts only after the player's first click (browser rule).
 
-**Textos**
+**Copy**
 
-- Curtos e diretos: "Buy booster", "Open 10", "Price 3". Nada de explicar o óbvio.
-- Explicações de mecânica ficam no tutorial e em tooltips, não nos botões.
-- Status em poucas palavras: "no packs", "showcase full", "training".
+- Short and direct: "Buy booster", "Open 10", "Price 3". Never explain the obvious.
+- Mechanic explanations live in the tutorial and tooltips, not on buttons.
+- Status in a few words: "no packs", "showcase full", "training".
 
-**Retorno visual e acessibilidade**
+**Feedback and accessibility**
 
-- Cada ação tem resposta imediata e suave: número subindo no saldo, "+$" discreto nas vendas, contadores que animam.
-- Raridade nunca depende só de cor: a borda tem cor e um símbolo ou letra (C, U, R, H), para daltônicos.
-- Opção "Reduce motion" em Settings: tira o balanço das cartas e o brilho animado e encurta a abertura.
-- Tamanho mínimo de texto legível e contraste adequado nos dois temas.
+- Every action gets an immediate, soft response: money ticking up, a small "+$" on sales, animated counters, a toast when the showcase is full.
+- Rarity never depends on color alone: the border has a color and the rarity's short code from the collection JSON (C, U, R, H...).
+- "Reduce motion" in Settings: no card sway, no animated shine, a shorter opening, no walking on the shop floor.
+- Readable minimum text size and good contrast in both themes.
+
+**Debug menu** (Nicolas, 2026-11-27; `docs/sdd/debug-menu.md`): a code in Settings unlocks tools to skip time, set money, add boosters, set upgrade levels and boost staff, for testing.
 
 ## 11. Tutorial
 
-O tutorial ensina o loop na primeira partida, passo a passo, e é atualizado junto com toda mudança de mecânica, em qualquer versão.
+The tutorial teaches the loop in the first game, step by step, and is updated with every mechanic change, in any version.
 
-**Formato**
+**Format**
 
-- Passos curtos que destacam o botão certo e esperam o jogador fazer a ação (ex.: "Buy a booster" só avança depois da compra).
-- Pode ser pulado e reaberto em Settings.
-- O conteúdo fica num único arquivo de dados (lista de passos), separado do código da interface.
-- Cada mecânica nova ganha seu passo ou dica quando for desbloqueada pela primeira vez (ex.: ao poder contratar o primeiro funcionário).
+- Short steps that highlight the right button and wait for the player to act (e.g. "Buy a booster" only moves on after the purchase).
+- Can be skipped and restarted in Settings.
+- The content is one data file (`data/tutorial.json`), separate from the UI code, with a revision number. Players on an older revision see only the new or changed steps.
+- Each new mechanic gets a step or tip the first time it unlocks.
 
-**Revelação progressiva da interface** (como no Cookie Clicker, a tela cresce junto com o jogador)
+**Progressive reveal** (as in Cookie Clicker, the screen grows with the player)
 
-| Aparece quando | O quê |
+| Appears when | What |
 | --- | --- |
-| Início | Shop (só Buy e Open), Settings |
-| Primeira carta aberta | Etapa Price, aba Binder |
-| Primeira venda | Aba Showcase |
-| Saldo chega a $40 | Aba Upgrades |
-| Saldo chega a $50 | Aba Staff (passo do tutorial "Hire") |
-| Primeiro dia de mercado novo, ou primeira carta acima de $5 | Aba Market (passo do tutorial "Market") |
-| Primeira visita ao Market | Passo "supply": boosters têm oferta limitada, comprar e vender aqui |
-| Primeiro funcionário | Passo "news": botão News |
-| 7 dias de mercado depois da coleção anterior | Próxima coleção em todo o jogo (passo do tutorial "nextset") |
+| Start | Shop (Buy and Open only), Settings |
+| First card opened | Price step, Binder tab |
+| First sale | Showcase tab |
+| Cash reaches $40 | Upgrades tab |
+| Cash reaches $50 | Staff tab ("hire" tutorial step) |
+| First new market day, or first card above $5 | Market tab ("market" step) |
+| First Market visit | "supply" step: boosters have limited supply, buy and sell here |
+| First employee | "news" step: News button |
+| 12 market days after the previous collection | The next collection, everywhere ("nextset" step) |
 
-Uma aba que já apareceu nunca some. Saves antigos começam com tudo visível.
+A tab that has appeared never disappears.
 
-**Roteiro inicial**
+**Rule:** no delivery is done until the tutorial reflects it.
 
-1. Choose your time zone.
-2. Buy a booster.
-3. Open it (animação).
-4. Your cards are in the binder. Price them for the showcase.
-5. Customers buy on their own. Cheaper tags sell faster.
-7. Hire your first employee (quando tiver dinheiro).
-8. Pick a task for them.
-9. Card prices change once a day. Check the Market.
-10. Boosters have a limited supply. Less supply, higher price. Buy and sell them here.
-11. Settings: theme, volume, save.
-12. New collections, reprints and updates show up in News.
-13. A new collection is out. Pick it at the distributor (quando a próxima coleção sai).
+## 12. Next steps and open items
 
-**Regra de atualização:** o tutorial tem um número de revisão. Toda mudança de mecânica atualiza o tutorial e sobe esse número; jogadores com revisão antiga veem só os passos novos. Nenhuma entrega é considerada pronta sem o tutorial atualizado.
+**Decided by Nicolas on 2026-11-28, in progress**
 
-## 12. Próximos passos e perguntas em aberto
+- **Salaries:** grow with skill levels and/or time at the shop. Still open: formula; tenure start in old saves; what happens when cash runs out; whether salaries are charged offline (needs an explicit exception to the calm pillar).
+- **Seed per save:** a UUID generated when the save starts. Still open: what existing saves get.
+- **Customers buy sealed goods and accessories; Storage tab** (section 8.3). Still open: accessory content (Nicolas supplies it or approves placeholders), booster box size and price, share of customers who want sealed goods, defaults in old saves.
+- **Collection milestones:** approved as in section 7.
+- **Prestige:** not now; revisit later.
+- **Language:** the whole project in English, this GDD included.
+- **More customer sprites and more decor at high Fame.**
+- **Achievements:** completing collections and milestones along the way (hire 1 employee, hire everyone, own every upgrade...). Still open: what old saves get, and whether achievements give a reward.
 
-Este GDD é a base dos SDDs, das diretivas em `.claude/` e das skills. O desenvolvimento segue sem esperar aprovação formal; as perguntas abaixo usam as respostas propostas até o Nicolas decidir.
+**Balancing left as is (Nicolas, 2026-11-27)**
 
-**Entregáveis seguintes**
+- Full automation takes about 2 hours against the 45–90 minute target.
 
-- [ ] SDDs (um por sistema: coleções, loop, funcionários, economia, mercado, save/offline, abertura, interface/áudio, tutorial)
-- [ ] `CLAUDE.md` + regras em `.claude/` (idioma, estilo de texto, save versionado, tutorial sempre atualizado, determinismo do mercado)
-- [ ] Skills: adicionar uma coleção de cartas; desenvolver uma feature a partir de um SDD; mudar o esquema do save
-
-**Perguntas para o Nicolas**
-
-- [x] Montagem do booster do Base Set: 7 comuns, 3 incomuns, 1 rara (33% holo); energias são comuns (seção 5).
-- [ ] Funcionários têm salário? Proposta: não, para não punir ausência (pilar cozy).
-- [ ] Semente do mercado global (todos veem o mesmo mercado e podem comparar) ou por save? Proposta: global.
-- [ ] Clientes compram também boosters lacrados, além de avulsas? Proposta: não na v1.
-- [ ] Marcos de coleção (25/50/75/100%) e seus bônus: aprovar a ideia e os números.
-- [ ] Prestígio (reset voluntário com bônus) no longo prazo: entra no roadmap?
-- [ ] O GDD, os SDDs e as diretivas ficam em português ou inglês? Proposta: GDD em português para você; SDDs, diretivas e skills em inglês, como o código e o jogo.
-
-## Fontes
+## Sources
 
 - [The Math of Idle Games, Part I](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-i), Anthony Pecorella, 2016
 - [The Math of Idle Games, Part III](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-iii), Anthony Pecorella, 2017

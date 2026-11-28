@@ -79,7 +79,7 @@ export const FAME_CUSTOMERS = 0.03;
 export const WANT_SHARE = 0.30;           // share on release day...
 export const WANT_DAYS = 6;               // ...fading to 0 over this many days
 
-// ASSUMPTION [GDD Q5]: collection milestones as proposed (bonus on sale price).
+// Collection milestones (approved by Nicolas, 2026-11-28): bonus on sale price.
 export const MILESTONES = [
   { at: 0.25, bonus: 0.02 },
   { at: 0.5, bonus: 0.04 },

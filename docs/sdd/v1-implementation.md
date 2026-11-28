@@ -58,12 +58,12 @@ Status: implemented 2026-11-26. Covers every system in the GDD at v1 scope; per-
 | GDD question | Used in v1 |
 | --- | --- |
 | Q1 Base Set booster | **Answered 2026-11-27:** 7 common, 3 uncommon, 1 rare slot (67% rare, 33% holo). Rarities follow Nicolas's crawler data: 38 common (6 basic energies count as common), 32 uncommon, 16 rare, 16 holo |
-| Q2 Staff salaries | None |
-| Q3 Market seed | One global seed for everyone |
-| Q4 Customers buy sealed | No |
-| Q5 Collection milestones | 25/50/75/100% give +2/+4/+6/+10% sale price for that collection |
-| Q6 Prestige | Not implemented |
-| Q7 Document language | GDD in Portuguese; code, SDDs, rules and skills in English |
+| Q2 Staff salaries | None yet. **Decided 2026-11-28:** salaries, in progress |
+| Q3 Market seed | One global seed for everyone. **Decided 2026-11-28:** per save, in progress |
+| Q4 Customers buy sealed | Not yet. **Decided 2026-11-28:** sealed boosters, boxes and accessories via a Storage tab, in progress |
+| Q5 Collection milestones | 25/50/75/100% give +2/+4/+6/+10% sale price for that collection. **Approved 2026-11-28** |
+| Q6 Prestige | Not implemented. **Nicolas 2026-11-28: not now** |
+| Q7 Document language | **Answered 2026-11-28:** everything in English, the GDD included |
 
 ## Additions and deviations to confirm with Nicolas
 

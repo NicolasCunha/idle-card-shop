@@ -1,6 +1,6 @@
 # IdleCardShop — agent guide
 
-A calm, menu-based (Cookie Clicker style) idle browser game about running a trading card shop. Static site for GitHub Pages. The design source of truth is [docs/GDD.md](docs/GDD.md) (written in Portuguese).
+A calm, menu-based (Cookie Clicker style) idle browser game about running a trading card shop. Static site for GitHub Pages. The design source of truth is [docs/GDD.md](docs/GDD.md).
 
 ## Current phase
 
@@ -8,7 +8,7 @@ A calm, menu-based (Cookie Clicker style) idle browser game about running a trad
 
 ## Owner
 
-Nicolas owns the design and all card content. He writes in Portuguese; reply to him in Portuguese. Everything that ships in the game, and all code, is in English.
+Nicolas owns the design and all card content. He writes in Portuguese; reply to him in Portuguese. Everything in the project is in English: the game, the code and every document, the GDD included (Nicolas, 2026-11-28).
 
 ## Directives (always apply)
 
@@ -27,17 +27,17 @@ Read these before any change. Each one is short.
 - `.claude/skills/develop-feature/` — take a feature from GDD/SDD to a finished, tested change
 - `.claude/skills/change-save-schema/` — change the save format safely, with a migration
 
-## Open GDD questions
+## GDD questions
 
-These are unanswered (GDD section 12). v1 uses the GDD's proposed answer for each (see the SDD). Anything that depends on them is marked **[PENDING GDD Q#]** in rules and skills and `ASSUMPTION [GDD Q#]` in code. Do not settle them yourself; when Nicolas answers one, update the GDD, the SDD, the code and remove the marks.
+Nicolas answered all of them on 2026-11-27/28 (GDD section 12). Code still built on the old provisional answer is marked `ASSUMPTION [GDD Q#]` until the decided version ships; details still being settled are listed in GDD section 12. Do not settle those yourself.
 
-1. Base Set booster layout (commons/uncommons/rares, holo chance)
-2. Staff salaries (proposal: none)
-3. Market seed global or per save (proposal: global)
-4. Customers buy sealed boosters too (proposal: not in v1)
-5. Collection milestones and their bonuses
-6. Prestige on the roadmap
-7. Document language (proposal: GDD in Portuguese; SDDs, directives and skills in English — this scaffolding follows the proposal)
+1. Base Set booster layout: 7 common, 3 uncommon, 1 rare slot (33% holo). Done.
+2. Staff salaries: **yes**, growing with skill levels and/or tenure. In progress.
+3. Market seed: **per save** (UUID at save start). In progress.
+4. Customers buy sealed boosters, boxes and accessories, with a Storage tab. In progress.
+5. Collection milestones: approved as proposed. Done.
+6. Prestige: not now.
+7. Document language: everything in English. Done.
 
 ## Tech stack
 
