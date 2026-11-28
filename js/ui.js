@@ -255,6 +255,7 @@ export function newsHtml() {
   const notices = S.inbox.slice(0, 30);
   return `
   <div class="modal news-panel">
+    <button class="modal-x" data-action="close" aria-label="Close">×</button>
     <h2>News</h2>
     ${notices.length ? `<section><h3>Shop</h3><ul class="notices">${notices.map(n =>
       `<li class="${n.id > S.inboxRead ? 'unread' : ''} log-${esc(n.kind)}"><span>${esc(n.text)}</span> <span class="muted">${n.day ? esc(M.dayLabel(n.day, S.firstDay)) : ''}</span></li>`).join('')}</ul></section>` : ''}
@@ -273,6 +274,7 @@ export function awardsHtml() {
   const got = all.filter(a => S.achievements[a.id] != null).length;
   return `
   <div class="modal awards-panel">
+    <button class="modal-x" data-action="close" aria-label="Close">×</button>
     <h2>Awards <span class="muted">${got} / ${all.length}</span></h2>
     <ul class="awards">${all.map(a => {
       const day = S.achievements[a.id];
@@ -791,29 +793,33 @@ function patchGoodPct(input) {
 }
 export function goodPriceFor(g) { return goodPrice(g); }
 
-function goodRow(g) {
+function goodTile(g) {
   const info = G.goodInfo(SETS, g);
   const k = esc(g);
-  const extra = info.kind === 'x'
+  const buy = info.kind === 'x'
     ? `<button class="small" data-action="box-buy" data-set="${esc(info.set.id)}" data-d="xb-${k}" title="${esc(TIPS.box)}">Buy <span data-k="xbp-${k}"></span></button>
        <button class="small" data-action="box-open" data-set="${esc(info.set.id)}" data-d="xo-${k}" title="${esc(TIPS.openBox)}">Open</button>`
     : info.kind === 'a'
       ? `<button class="small" data-action="acc-buy" data-id="${esc(info.acc.id)}" data-n="1" data-cost="${info.acc.cost}">Buy ${fmtMoney(info.acc.cost)}</button>
          <button class="small" data-action="acc-buy" data-id="${esc(info.acc.id)}" data-n="10" data-cost="${info.acc.cost * 10}">Buy 10</button>`
       : '';
-  return `<div class="tr">
-    <span>${esc(info.kind === 'a' ? info.name : info.set.name)}</span>
-    <span class="num" data-k="go-${k}"></span>
-    <span class="num" data-k="gv-${k}"></span>
-    <span><input type="number" min="0.01" step="0.01" class="gp" data-gp="${k}" value="${goodPrice(g).toFixed(2)}" aria-label="Price" title="${esc(TIPS.goodPrice)}"></span>
-    <span class="num muted" data-gpct="${k}">${pctText(goodPrice(g), G.goodValue(S, SETS, g))}</span>
-    <span class="btns tight">
+  return `<article class="good box">
+    <header><b>${esc(info.kind === 'a' ? info.name : info.set.name)}</b></header>
+    <dl class="good-stats">
+      <div><dt>Yours</dt><dd data-k="go-${k}"></dd></div>
+      <div><dt>Market</dt><dd data-k="gv-${k}"></dd></div>
+    </dl>
+    <div class="good-price">
+      <span class="money-in"><span>$</span><input type="number" min="0.01" step="0.01" class="gp" data-gp="${k}" value="${goodPrice(g).toFixed(2)}" aria-label="Price" title="${esc(TIPS.goodPrice)}"></span>
+      <span class="pct muted" data-gpct="${k}">${pctText(goodPrice(g), G.goodValue(S, SETS, g))}</span>
+    </div>
+    <div class="btns tight">
       <button class="small" data-action="good-list" data-g="${k}" data-n="1" data-d="gl-${k}">List</button>
       <button class="small" data-action="good-list" data-g="${k}" data-n="10" data-d="gl-${k}">List 10</button>
-      <button class="small" data-action="good-list" data-g="${k}" data-n="all" data-d="gl-${k}">All</button>
-      ${extra}
-    </span>
-  </div>`;
+      <button class="small" data-action="good-list" data-g="${k}" data-n="all" data-d="gl-${k}">List all</button>
+    </div>
+    ${buy ? `<div class="btns tight good-buy">${buy}</div>` : ''}
+  </article>`;
 }
 
 PANELS.storage = {
@@ -821,8 +827,7 @@ PANELS.storage = {
     S.shelf.map(it => `${it.g}@${it.p}`).join(';')].join('|'),
   html() {
     const keys = goodKeys();
-    const head = `<div class="tr th"><span>Item</span><span class="num">Yours</span><span class="num">Market</span><span>Price</span><span class="num">%</span><span></span></div>`;
-    const section = (title, list) => list.length ? `<section class="box goods"><h3>${title}</h3><div class="table goods-table">${head}${list.map(goodRow).join('')}</div></section>` : '';
+    const section = (title, list) => list.length ? `<section class="goods"><h3>${title}</h3><div class="goods-grid">${list.map(goodTile).join('')}</div></section>` : '';
     return `
     <div class="bar-head">
       <h2>Storage</h2>
@@ -832,13 +837,13 @@ PANELS.storage = {
     <section class="box shelf">
       <div class="bar-head"><h3 title="${esc(TIPS.shelf)}">Shelf <span data-k="shelf-n"></span></h3><span class="grow"></span>
         ${S.shelf.length ? '<button class="small" data-action="shelf-recall">Recall all</button>' : ''}</div>
-      <div class="table shelf-table">${S.shelf.map((it, i) => `<div class="tr">
-        <span>${esc(goodName(it.g))}</span>
-        <span class="num" data-k="sn-${i}"></span>
-        <span class="num">${fmtMoney(it.p)}</span>
-        <span class="num muted" data-k="sp-${i}"></span>
-        <span><button class="small" data-action="shelf-take" data-i="${i}">Recall</button></span>
-      </div>`).join('') || '<div class="empty muted">Empty</div>'}</div>
+      ${S.shelf.length ? `<div class="shelf-items">${S.shelf.map((it, i) => `<div class="shelf-item">
+        <span class="shelf-name">${esc(goodName(it.g))}</span>
+        <span class="muted">×<span data-k="sn-${i}"></span></span>
+        <b>${fmtMoney(it.p)}</b>
+        <span class="muted" data-k="sp-${i}"></span>
+        <button class="small" data-action="shelf-take" data-i="${i}" aria-label="Recall">Recall</button>
+      </div>`).join('')}</div>` : '<div class="empty muted">Empty</div>'}
     </section>
     ${section('Boosters', keys.filter(g => g.startsWith('b:')))}
     ${section('Booster boxes', keys.filter(g => g.startsWith('x:')))}

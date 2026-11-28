@@ -299,10 +299,26 @@ label.check { gap: .35rem; }
 .news-count { display: inline-flex; align-items: center; justify-content: center; min-width: 1.15rem; height: 1.15rem; margin-left: .4rem; background: var(--accent); color: var(--bg); border-radius: 99px; padding: 0 .35rem; font-size: .72rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
 .news-count[hidden] { display: none; }
 /* Storage */
-.goods-table .tr { grid-template-columns: 1fr 60px 90px 100px 64px 330px; }
-.shelf-table .tr { grid-template-columns: 1fr 60px 90px 64px 90px; }
-input.gp { width: 100%; padding: .3rem .5rem; }
 .shelf .bar-head { margin-bottom: .3rem; }
+.goods { margin-top: 1rem; }
+.goods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .7rem; }
+.good { display: grid; gap: .55rem; align-content: start; }
+.good header { display: flex; align-items: baseline; gap: .5rem; justify-content: space-between; }
+.good-stats { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; margin: 0; }
+.good-stats div { background: var(--surface-2); border-radius: 8px; padding: .3rem .5rem; }
+.good-stats dt { font-size: .72rem; color: var(--muted); }
+.good-stats dd { margin: 0; font-weight: 650; font-variant-numeric: tabular-nums; }
+.good-price { display: flex; align-items: center; gap: .6rem; }
+.money-in { display: inline-flex; align-items: center; gap: .25rem; flex: 1; border: 1px solid var(--border); border-radius: 8px; padding-left: .55rem; background: var(--surface); }
+.money-in span { color: var(--muted); }
+.money-in input.gp { border: 0; flex: 1; min-width: 0; padding: .35rem .4rem; background: transparent; }
+.good-price .pct { min-width: 3.5rem; text-align: right; font-variant-numeric: tabular-nums; }
+.good .btns { justify-content: flex-start; }
+.good-buy { border-top: 1px dashed var(--border); padding-top: .5rem; }
+.shelf-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .4rem; }
+.shelf-item { display: grid; grid-template-columns: 1fr auto auto auto auto; align-items: center; gap: .5rem; background: var(--surface-2); border-radius: 8px; padding: .3rem .3rem .3rem .6rem; font-variant-numeric: tabular-nums; }
+.shelf-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.modal-x { position: sticky; top: 0; justify-self: end; z-index: 1; margin-bottom: -2.7rem; width: 2rem; height: 2rem; padding: 0; font-size: 1.3rem; line-height: 1; border-radius: 50%; }
 /* Finances */
 .fin-today { display: grid; grid-template-columns: 1fr 1fr auto; gap: .8rem; margin-bottom: .8rem; }
 .fin-table .tr { grid-template-columns: 1fr auto; }
@@ -320,9 +336,6 @@ input.gp { width: 100%; padding: .3rem .5rem; }
 .aw-mark { color: var(--accent); }
 @media (max-width: 720px) {
   .fin-today { grid-template-columns: 1fr; }
-  .goods-table .tr { grid-template-columns: 1fr 50px 90px; }
-  .goods-table .tr > :nth-child(3), .goods-table .tr > :nth-child(5) { display: none; }
-  .goods-table .tr > :nth-child(6) { grid-column: 1 / -1; display: flex; flex-wrap: wrap; }
   .fin-days .tr { grid-template-columns: 1fr 90px 90px; }
   .fin-days .tr > :nth-child(2), .fin-days .tr > :nth-child(5) { display: none; }
 }

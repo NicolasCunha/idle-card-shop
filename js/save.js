@@ -11,7 +11,7 @@ import { LEGACY_SEED } from './market.js';
 
 export const GAME_ID = 'idlecardshop';
 export const SAVE_VERSION = 5;
-export const GAME_VERSION = '1.7.1';
+export const GAME_VERSION = '1.7.2';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 

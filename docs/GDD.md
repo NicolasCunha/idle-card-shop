@@ -234,22 +234,25 @@ Money comes in when customers buy from the showcase; demand is the shop's natura
 - One arrives on average every 6 s, divided by (1 + 25% per Marketing level) × (1 + 3% per Fame level).
 - Budget: $2 to $120, log-uniform; Fame raises that ceiling to $240 at level 20. From Fame level 2, 10% of customers are "rich" (35% at level 20), with a budget from that ceiling up to a cap that grows with Fame to $1,000 at level 20. Rich customers are collectors: they look at the priciest cards first.
 - Each looks at up to 3 cards that fit the budget. Pricier cards draw more attention: a card's chance of being looked at is proportional to the square root of its market price.
-- For each card looked at, the chance of buying depends on the tag compared to today's market:
+- For each card or good looked at, the chance of buying depends on the tag compared to today's market (Nicolas, 2026-11-28, after TCG Card Shop Simulator; linear between the points):
 
-| Tag / market | Buy chance |
+| Tag vs market | Buy chance |
 | --- | --- |
-| More than 10% below | 70% |
-| Up to 10% below | 60% |
-| At market | 50% |
-| Up to +5% | 35% |
-| Up to +10% | 20% |
-| Up to +25% | 8% |
-| Up to +50% | 3% |
-| Up to 2× | 1% |
-| 2× or more | 0.5% |
+| −20% or less | 100% |
+| −10% | 95% |
+| Market | 90% |
+| +10% | 75% |
+| +20% | 60% |
+| +30% | 45% |
+| +40% | 15% |
+| +50% | 5% |
+| +60% | 1% |
+| Above +60% | never |
+
+- Rich customers judge a tag 10 points closer to market (a +30% tag sells like +20%).
 
 - The customer pays the tag × the Reputation bonus × the collection milestone bonus.
-- **Feelings:** each look is judged cheap (≤ 99.5% of market), fair (≤ 105%), pricey (≤ 125%) or steep. The Showcase tab shows how customers feel about each card and a summary.
+- **Feelings:** each look is judged cheap (≤ 99.5% of market), fair (≤ 110%), pricey (≤ 130%) or steep. The Showcase tab shows how customers feel about each card and a summary.
 - **New-set customers (Nicolas, 2026-11-27):** on a release day 30% of customers come only for the newest collection, fading to 0 over 6 market days. With none of it in the showcase they leave without buying.
 - No queue and no patience: nobody leaves angry.
 
@@ -312,6 +315,8 @@ Card prices change once per market day by a deterministic calculation: the same 
 - Overlapping events have a soft cap of ~3× and a floor of ~1/3 of the base value.
 
 **No spikes:** tested over 4,000 days × 102 cards, the largest day-to-day change was +6.1% / −5.5%.
+
+**Booster reprints** (Nicolas, 2026-11-28): 32% to 64% of the first print run. Once a newer collection is out, a reprint is never bigger than the previous one.
 
 **Reprints:** a card with `reprintOf` feels the original's events at 60% strength and is worth half the original by default (`reprintFactor`).
 

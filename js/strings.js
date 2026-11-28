@@ -61,7 +61,7 @@ export const TIPS = {
   keepCopies: 'The pricer leaves this many copies of each card in the binder.',
   skillSpeed: 'Each level is 22% faster. Practice gives XP; training costs money and time.',
   feelings: 'What customers think of the tags they looked at.',
-  customers: 'Each customer has a budget. At market price they buy half the time; cheaper sells more often, pricier much less. Twice the market almost never sells.',
+  customers: 'Each customer has a budget. At market price 9 in 10 buy; 20% below always sells, 30% above sells less than half the time, 60% above never. Rich customers pay a bit more.',
   milestone: 'Discovery bonus on sale price for this collection.',
   day: 'A new market day every 10 minutes, the same for everyone.',
   salary: 'Per market day: $2 per skill level, +1% per day at the shop (up to +50%). Unpaid staff wait for cash.',

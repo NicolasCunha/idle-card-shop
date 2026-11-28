@@ -113,8 +113,10 @@ async function run() {
   ok(G.priceSpares(s, sets, 99, 0, 1) === 2 && s.binder.base['001'] === 1, 'Keep 1 leaves one copy in the binder');
   const one = base.byId['001'];
   ok(G.listCard(s, base, one, 1, 1.23) === 1 && s.showcase.at(-1).p === 1.23 && !s.binder.base['001'], 'a card can be listed at a manual price');
-  ok(G.buyChance(1, 1) === 0.5 && G.buyChance(0.95, 1) === 0.6 && G.buyChance(0.8, 1) === 0.7, 'customers buy 50% at market, 60% up to 10% below, 70% further below');
-  ok(G.buyChance(1.04, 1) < 0.5 && G.buyChance(1.2, 1) < G.buyChance(1.08, 1) && G.buyChance(2, 1) <= 0.005, 'the chance drops above market; 2x almost never sells');
+  const near = (a, b) => Math.abs(a - b) < 1e-9;
+  ok(near(G.buyChance(0.8, 1), 1) && near(G.buyChance(0.9, 1), 0.95) && near(G.buyChance(1, 1), 0.9) && near(G.buyChance(1.1, 1), 0.75) && near(G.buyChance(1.2, 1), 0.6), 'buy chance: -20% 100%, -10% 95%, market 90%, +10% 75%, +20% 60%');
+  ok(near(G.buyChance(1.3, 1), 0.45) && near(G.buyChance(1.4, 1), 0.15) && near(G.buyChance(1.5, 1), 0.05) && near(G.buyChance(1.6, 1), 0.01) && G.buyChance(1.7, 1) === 0, 'buy chance: +30% 45%, +40% 15%, +50% 5%, +60% 1%, above never');
+  ok(near(G.buyChance(1.3, 1, G.RICH_LENIENCE), 0.6), 'rich customers accept a +30% tag like a +20% one');
   for (let i = 0; i < 400 && s.showcase.length; i++) G.tick(s, sets, 1, T0 + i * 1000);
   ok(s.showcase.length === 0 && s.stats.cardsSold > 0, 'customers buy from the showcase');
   ok(G.feeling(0.8, 1) === 'cheap' && G.feeling(1, 1) === 'fair' && G.feeling(1.2, 1) === 'pricey' && G.feeling(2, 1) === 'steep', 'customers feel cheap, fair, pricey or too pricey by tag / market');
@@ -325,6 +327,23 @@ async function run() {
       reprinted = m.reprints > 0;
     }
     ok(reprinted && c.inbox.some(n => n.kind === 'reprint'), 'a reprint happens and shows in News', `lowest supply ${(minFrac * 100).toFixed(0)}%, top price ${fmtMoney(maxP)}`);
+    {
+      // Reprints: 32-64% of the first run, and never bigger than the last one once a newer set is out.
+      const sizes = (latest) => {
+        const m = { run: 1e6, printed: 1e6, left: 1e5, held: 0, reprints: 0, age: 0, hist: [], out: true };
+        const out = [];
+        for (let d = 0; d < 6000 && out.length < 6; d++) {
+          m.left = Math.min(m.left, m.printed * 0.1);
+          const before = m.printed;
+          SU.stepDay(base, m, latest);
+          if (m.printed > before) out.push((m.printed - before) / m.run);
+        }
+        return out;
+      };
+      const old = sizes(false), now = sizes(true);
+      ok(old.length >= 3 && old.every((f, i) => f >= 0.32 - 1e-6 && f <= 0.64 + 1e-6 && (!i || f <= old[i - 1] + 1e-9)), 'reprints of an older set never grow', old.map(f => Math.round(f * 100) + '%').join(' '));
+      ok(now.every(f => f >= 0.32 - 1e-6 && f <= 0.64 + 1e-6), 'reprints are 32-64% of the first run', now.map(f => Math.round(f * 100) + '%').join(' '));
+    }
     const t = fresh(sets, order);
     t.money = 1000;
     const before = t.market.base.left;
@@ -512,7 +531,8 @@ function pacing(sets, order) {
     if (s.staff.length < N && s.staff.length >= G.maxStaff(s) && G.buyUpgrade(s, 'staffRoom')) { busy = 1.5; continue; }
     // Demand is the shop's limit, so a sensible player also buys some Marketing.
     if (s.staff.length && s.upgrades.marketing < 2 * s.staff.length && G.buyUpgrade(s, 'marketing')) { busy = 1.5; continue; }
-    const doneByStaff = k => s.staff.some(e => e.task === k);
+    // An unpaid employee waits for cash, so the player does that step by hand.
+    const doneByStaff = k => s.staff.some(e => e.task === k && e.status !== 'unpaid');
     if (!doneByStaff('price') && owned() && G.freeSlots(s) && G.priceSpares(s, sets, 10, 0, 0)) { busy = 1.5; continue; }
     if (!doneByStaff('price') && G.bulkSpares(s, sets, 0).n > 20) { G.sellBulk(s, sets, 0); busy = 1.5; continue; }
     if (!doneByStaff('open') && s.stock.base > 0 && owned() < 30) { G.openBooster(s, sets, base); busy = 6; continue; }

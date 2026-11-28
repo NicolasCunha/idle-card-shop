@@ -38,7 +38,10 @@ const RETURN_CHANCE = 0.12;               // a rival returns some boosters
 const RETURN_MAX = 0.008;                 // up to 0.8% of the print run
 const REPRINT_BELOW = 0.35;               // reprints only happen below 35% left
 const REPRINT_CHANCE = 0.03;              // per day, when below
-const REPRINT_MIN = 0.4, REPRINT_MAX = 0.8; // size, share of the first print run
+// Size, share of the first print run (Nicolas, 2026-11-28: 20% smaller than
+// the first 0.4-0.8). Once a newer collection is out, a reprint is never bigger
+// than the one before: nobody keeps reprinting an old set at full size.
+const REPRINT_MIN = 0.32, REPRINT_MAX = 0.64;
 const BIG_BUY = 0.006;                    // a rival buy above 0.6% of the run makes news
 
 // ---------- Calendar ----------
@@ -94,7 +97,11 @@ export function marketValueAgo(set, m, day, back) {
 }
 
 // One market day for one collection. Returns news items [{kind, text}].
-export function stepDay(set, m) {
+// Reprint size for the k-th reprint (0-based), a share of the first run.
+// Fixed per (seed, collection, k), so later reprints can be compared to it.
+const reprintSize = (set, k) => REPRINT_MIN + (REPRINT_MAX - REPRINT_MIN) * hashRand('supply', set.id, 'reprint', k);
+
+export function stepDay(set, m, latest = true) {
   const age = ++m.age;
   const r = (...k) => hashRand('supply', set.id, age, ...k);
   const news = [];
@@ -114,7 +121,13 @@ export function stepDay(set, m) {
     if (n >= m.run * BIG_BUY) news.push({ kind: 'rival', rival: i, n });
   }
   if (m.left / m.printed < REPRINT_BELOW && r('rep') < REPRINT_CHANCE) {
-    const n = Math.round(m.run * (REPRINT_MIN + (REPRINT_MAX - REPRINT_MIN) * r('repn')));
+    let f = reprintSize(set, m.reprints);
+    if (!latest) {
+      for (let k = 0; k < m.reprints; k++) f = Math.min(f, reprintSize(set, k));
+      // Saves from before 1.7.1 drew reprint sizes differently: never above their average.
+      if (m.reprints) f = Math.min(f, (m.printed - m.run) / m.reprints / m.run);
+    }
+    const n = Math.round(m.run * f);
     m.printed += n; m.left += n; m.reprints++;
     news.push({ kind: 'reprint', n });
   }

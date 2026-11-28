@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-buy-chance",
+      "date": "2026-11-28",
+      "version": "1.7.2",
+      "title": "Happier customers",
+      "text": "Customers buy at market price 9 times in 10 and still take a card up to 30% above market about half the time. Rich customers are less strict. Reprints are smaller, and old collections get smaller reprints over time. Storage has a cleaner layout, and News and Awards close from the corner."
+    },
+    {
       "id": "2026-11-28-collectors",
       "date": "2026-11-28",
       "version": "1.7.1",

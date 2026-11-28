@@ -16,27 +16,20 @@ export const BULK_RATE = 0.3;
 export const MARKET_BUY_RATE = 1.1;
 // Price levels offered when pricing: offset from today's market.
 export const PRICE_LEVELS = [-0.1, -0.05, 0, 0.05, 0.1];
-// Chance that a customer buys a card they look at, by tag / market (Nicolas,
-// 2026-11-27: market 50%, up to 10% below 60%, more than 10% below 70%; the
-// bands above market are ours). First band whose `upTo` covers the ratio wins.
-export const BUY_BANDS = [
-  { upTo: 0.9 - 1e-9, chance: 0.70 },
-  { upTo: 0.995, chance: 0.60 },
-  { upTo: 1.005, chance: 0.50 },
-  { upTo: 1.05, chance: 0.35 },
-  { upTo: 1.10, chance: 0.20 },
-  { upTo: 1.25, chance: 0.08 },
-  { upTo: 1.5, chance: 0.03 },
-  { upTo: 2 - 1e-9, chance: 0.01 },
-  { upTo: Infinity, chance: 0.005 },
-];
+// Chance that a customer buys what they look at, by tag / market (Nicolas,
+// 2026-11-28, after TCG Card Shop Simulator): -20% 100%, -10% 95%, market 90%,
+// +10% 75%, +20% 60%, +30% 45%, +40% 15%, +50% 5%, +60% 1%, above that never.
+// Linear between the points.
+export const BUY_CURVE = [[0.8, 1], [0.9, 0.95], [1, 0.9], [1.1, 0.75], [1.2, 0.6], [1.3, 0.45], [1.4, 0.15], [1.5, 0.05], [1.6, 0.01]];
+// Rich customers judge a tag this much closer to market (a +30% tag feels like +20%).
+export const RICH_LENIENCE = 0.1;
 // How a customer feels about a tag, by tag / market. First band whose `upTo`
-// covers the ratio wins. Same edges as BUY_BANDS: cheap sells 60-70%, fair
-// 35-50%, pricey 8-20%, too pricey 3% or less.
+// covers the ratio wins: cheap sells 95-100%, fair 75-90%, pricey 45-60%,
+// too pricey 15% or less.
 export const FEELINGS = [
   { key: 'cheap', upTo: 0.995 },
-  { key: 'fair', upTo: 1.05 },
-  { key: 'pricey', upTo: 1.25 },
+  { key: 'fair', upTo: 1.105 },
+  { key: 'pricey', upTo: 1.305 },
   { key: 'steep', upTo: Infinity },
 ];
 export const FEEDBACK_SIZE = 200;         // customer looks kept for the Customers panel (runtime only)
@@ -153,8 +146,10 @@ export function customerBudget(state) {
   if (fame > 0 && rng() < richShare(fame)) return cap * Math.pow(richCap(fame) / cap, rng());
   return BUDGET_MIN * Math.pow(cap / BUDGET_MIN, rng());
 }
-// Rich customers (budget above the everyday ceiling) weigh cards by value.
-const lookWeight = (budget, state) => (budget > budgetCap(state.upgrades.fame || 0) ? v => v : Math.sqrt);
+// Rich customers (budget above the everyday ceiling) weigh cards by value
+// and accept higher tags (RICH_LENIENCE).
+const isRich = (budget, state) => budget > budgetCap(state.upgrades.fame || 0);
+const lookWeight = (budget, state) => (isRich(budget, state) ? v => v : Math.sqrt);
 
 // The newest released collection past the first, and the share of customers
 // who want it today (0 outside the window).
@@ -441,9 +436,16 @@ export const copies = (state, set, card) => state.binder[set.id]?.[card.id] || 0
 export const freeSlots = state => Math.max(0, showcaseCapacity(state) - state.showcase.length);
 export const tagPrice = (mv, level) => Math.max(0.01, Math.round(mv * (1 + level) * 100) / 100);
 
-export function buyChance(tag, mv) {
-  const r = mv > 0 ? tag / mv : Infinity;
-  for (const b of BUY_BANDS) if (r <= b.upTo) return b.chance;
+export function buyChance(tag, mv, lenience = 0) {
+  const r = (mv > 0 ? tag / mv : Infinity) - lenience;
+  const C = BUY_CURVE;
+  if (r <= C[0][0]) return 1;
+  for (let i = 1; i < C.length; i++) {
+    if (r <= C[i][0] + 1e-9) {
+      const [x0, y0] = C[i - 1], [x1, y1] = C[i];
+      return y0 + (y1 - y0) * Math.min(1, (r - x0) / (x1 - x0));
+    }
+  }
   return 0;
 }
 
@@ -765,7 +767,7 @@ let quiet = false; // true during offline catch-up: no sounds or floating text
 
 // A customer arrives with a budget and looks at up to CUSTOMER_LOOKS cards
 // they can afford (pricier cards draw more attention: weight = sqrt of market
-// price). Each look buys with the chance of the tag's price band (BUY_BANDS).
+// price). Each look buys with the chance from BUY_CURVE.
 function customerVisit(state, sets) {
   state.stats.customers++;
   if (state.shelf.length && rng() < SEALED_SHARE) { sealedVisit(state, sets); return; }
@@ -781,6 +783,7 @@ function customerVisit(state, sets) {
   const looks = [];
   let budget = customerBudget(state);
   const weigh = lookWeight(budget, state);
+  const lenience = isRich(budget, state) ? RICH_LENIENCE : 0;
   const looked = new Set();
   for (let i = 0; i < CUSTOMER_LOOKS && state.showcase.length; i++) {
     let total = 0;
@@ -799,7 +802,7 @@ function customerVisit(state, sets) {
     looked.add(it);
     const set = sets[it.s], card = set.byId[it.c];
     const mv = marketValue(state, set, card);
-    const bought = rng() < buyChance(it.p, mv);
+    const bought = rng() < buyChance(it.p, mv, lenience);
     const f = feeling(it.p, mv);
     remember(state, it, f, bought);
     const look = { s: it.s, c: it.c, p: it.p, f, b: bought, paid: 0 };
@@ -823,6 +826,7 @@ function sealedVisit(state, sets) {
   const looks = [];
   let budget = customerBudget(state);
   const weigh = lookWeight(budget, state);
+  const lenience = isRich(budget, state) ? RICH_LENIENCE : 0;
   const looked = new Set();
   for (let i = 0; i < SEALED_LOOKS && state.shelf.length; i++) {
     let total = 0;
@@ -837,7 +841,7 @@ function sealedVisit(state, sets) {
     const it = state.shelf[pick];
     looked.add(it);
     const mv = goodValue(state, sets, it.g);
-    const bought = rng() < buyChance(it.p, mv);
+    const bought = rng() < buyChance(it.p, mv, lenience);
     const look = { g: it.g, p: it.p, f: feeling(it.p, mv), b: bought, paid: 0 };
     looks.push(look);
     if (!bought) continue;
@@ -1042,8 +1046,12 @@ function advanceSupply(state, sets) {
       }
     }
     const age = state.day - SU.releaseDay(state, set);
+    // Day the next collection comes out: until then this one is the newest.
+    let next = Infinity;
+    for (const o of Object.values(sets)) if (o.releaseIndex > set.releaseIndex) next = Math.min(next, SU.releaseDay(state, o));
     while (m.age < age) {
-      for (const n of SU.stepDay(set, m)) {
+      const latest = SU.releaseDay(state, set) + m.age + 1 < next;
+      for (const n of SU.stepDay(set, m, latest)) {
         if (n.kind === 'reprint') {
           const text = `${set.name}: reprint of ${fmtCount(n.n)} boosters`;
           log(state, 'reprint', text);

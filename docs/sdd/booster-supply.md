@@ -20,6 +20,7 @@ All tunables are constants at the top of `js/supply.js`.
 | `MARKET_EXPONENT` / `MARKET_SWING` | 0.5 / 0.06 | Market value = wholesale x (printed / left)^0.5 x daily swing (5- and 13-day waves, about ±12%) |
 | `MIN_LEFT_FRAC` | 0.02 | Prices stop rising below 2% left (distributor ~2.7x, Market ~7x) |
 | `MARKET_BUY_RATE` / `MARKET_SELL_RATE` | 1.1 / 0.9 | Sealed boosters on the Market |
+| Reprints | Below 35% left, 3% chance a day; 32-64% of the first run (was 40-80%, Nicolas 2026-11-28). Once a newer collection is out, never bigger than the previous reprint (sizes are fixed per reprint number, so no new saved field) |
 | `RIVALS` | 20 appetites, 0.05% to 0.6% of the run per day (5.2% together) | Rival shops (Nicolas: many shops, scarcity should swing). A new set drops below 30% left in about 5 real hours; reprints refill it in cycles |
 | Rival buy chance | 60% per rival per day | Demand fades from 100% to 20% (`HYPE_DAYS` 66) |
 | Returns | 12% per day, up to 0.8% of the run | From what rivals hold |
