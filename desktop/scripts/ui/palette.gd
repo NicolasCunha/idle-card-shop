@@ -183,7 +183,7 @@ static func build_theme() -> Theme:
 	t.set_type_variation("Toast", "PanelContainer")
 	t.set_stylebox("panel", "Toast", box(c.text, c.text, 1, Vector4(6, 3, 6, 3)))
 	t.set_type_variation("Chip", "PanelContainer")
-	t.set_stylebox("panel", "Chip", box(c.accent_soft, c.accent_soft, 0, Vector4(3, 0, 3, 1)))
+	t.set_stylebox("panel", "Chip", box(c.accent_soft, c.accent_soft, 0, Vector4(4, 1, 3, 1)))
 	t.set_type_variation("Row", "PanelContainer")
 	t.set_stylebox("panel", "Row", box(c.surface2, c.surface2, 0, Vector4(2, 1, 2, 1)))
 

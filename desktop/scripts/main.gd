@@ -157,7 +157,7 @@ func _exit_tree() -> void:
 
 func _unhandled_key_input(ev: InputEvent) -> void:
 	if ev.pressed and ev.keycode == KEY_F11:
-		prefs.fullscreen = not prefs.get("fullscreen", false)
+		prefs.windowMode = "windowed" if prefs.windowMode == "fullscreen" else "fullscreen"
 		prefs_changed()
 		apply_window()
 	elif ev.pressed and ev.keycode == KEY_ESCAPE and _overlay and _overlay.visible and _overlay.get_child_count() and not App.catching_up:
@@ -270,6 +270,8 @@ func _on_loaded(ok: bool) -> void:
 	redraw(true)
 	if "--shots" in OS.get_cmdline_user_args():
 		_shots()
+	elif "--perf" in OS.get_cmdline_user_args():
+		_perf()
 	elif "--shot-later" in OS.get_cmdline_user_args():
 		await get_tree().create_timer(6.0).timeout
 		await RenderingServer.frame_post_draw
@@ -335,6 +337,10 @@ func _shots() -> void:
 	show_card(sets[order[0]], sets[order[0]].cards[0])
 	await snap.call("%02d-card" % n)
 	n += 1
+	var tilt_card: Control = _overlay.find_children("*", "CardTilt", true, false)[0]
+	get_viewport().warp_mouse(tilt_card.get_global_transform_with_canvas() * Vector2(tilt_card.size.x * 0.95, tilt_card.size.y * 0.1))
+	await snap.call("%02d-card-tilt" % n)
+	n += 1
 	show_list_form(sets[order[0]], sets[order[0]].cards[0])
 	await snap.call("%02d-list-form" % n)
 	n += 1
@@ -354,6 +360,39 @@ func _shots() -> void:
 	await snap.call("%02d-market-dark" % n)
 	n += 1
 	print("shots: ", dir)
+	get_tree().quit()
+
+
+## Frame times per tab with a busy shop (godot --path desktop -- --perf), for
+## tuning. Uses a throwaway save like --shots.
+func _perf() -> void:
+	state.setupDone = true
+	state.lastTick = Game.now_ms()
+	close_overlay()
+	DebugTools.set_money(state, 2e7)
+	DebugTools.release_all(state, sets, prefs)
+	DebugTools.unlock_all(state)
+	for i in 12:
+		var e = DebugTools.hire_free(state)
+		if e:
+			Game.set_job(state, e, 1, Game.SKILL_KEYS[i % Game.SKILL_KEYS.size()], null)
+	for id in order.slice(0, 6):
+		DebugTools.add_cards(state, sets, sets[id], 200)
+	for t in ["shop", "staff", "market", "binder"]:
+		switch_tab(t)
+		await get_tree().create_timer(0.5).timeout
+		rebuilds = 0
+		rebuild_ms = 0.0
+		var times: Array = []
+		var t0 := Time.get_ticks_usec()
+		for f in 1200:
+			var a := Time.get_ticks_usec()
+			await get_tree().process_frame
+			times.append((Time.get_ticks_usec() - a) / 1000.0)
+		times.sort()
+		var total := (Time.get_ticks_usec() - t0) / 1e6
+		printerr("perf %-7s fps %5.1f  median %5.1f ms  p95 %5.1f ms  max %5.1f ms" % [t, 1200 / total, times[600], times[1140], times[1199]])
+		printerr("   rebuilds %d (%.1f ms)" % [rebuilds, rebuild_ms])
 	get_tree().quit()
 
 
@@ -480,21 +519,33 @@ func apply_theme() -> void:
 		redraw(true)
 
 
+## Window mode and size (Settings > Display). The 640x360 canvas scales by
+## whole steps and the stretch aspect "expand" fills the rest, so 4:3 and
+## 16:10 sizes get more room instead of bars. Borderless covers the screen.
 func apply_window() -> void:
 	var win := get_window()
-	if prefs.get("fullscreen", false):
+	var mode: String = prefs.get("windowMode", "windowed")
+	if mode == "fullscreen":
+		win.borderless = false
 		win.mode = Window.MODE_FULLSCREEN
 		return
-	if win.mode == Window.MODE_FULLSCREEN:
+	if win.mode != Window.MODE_WINDOWED:
 		win.mode = Window.MODE_WINDOWED
-	var scr := DisplayServer.screen_get_usable_rect(win.current_screen).size
-	var s: int = int(prefs.get("scale", 0))
-	if s <= 0:
-		s = maxi(1, mini(int(scr.x * 0.9) / BASE.x, int(scr.y * 0.9) / BASE.y))
-	var want := BASE * s
-	if win.size != want and scr.x > 0:
+	var area := DisplayServer.screen_get_usable_rect(win.current_screen)
+	if mode == "borderless":
+		var full := Rect2i(DisplayServer.screen_get_position(win.current_screen), DisplayServer.screen_get_size(win.current_screen))
+		win.borderless = true
+		win.size = full.size
+		win.position = full.position
+		return
+	win.borderless = false
+	var parts: PackedStringArray = str(prefs.get("resolution", "1280x720")).split("x")
+	var want := Vector2i(int(parts[0]), int(parts[1])) if parts.size() == 2 else Vector2i(1280, 720)
+	want = want.clamp(BASE, area.size if area.size.x > 0 else want)
+	if win.size != want:
 		win.size = want
-		win.position = DisplayServer.screen_get_usable_rect(win.current_screen).position + (scr - want) / 2
+		if area.size.x > 0:
+			win.position = area.position + (area.size - want) / 2
 
 
 func tab_visible(tab: String) -> bool:
@@ -529,6 +580,10 @@ func _panel(tab: String) -> TabPanel:
 ## Re-renders the active tab when its signature changed (or when forced) and
 ## patches live numbers. `idle` is the 4 Hz loop's own refresh: heavy tabs
 ## rebuild at most every min_render_ms.
+var rebuilds := 0
+var rebuild_ms := 0.0
+
+
 func redraw(force := false, idle := false) -> void:
 	if state.is_empty() or _shell == null or App.catching_up:
 		return
@@ -552,7 +607,10 @@ func redraw(force := false, idle := false) -> void:
 				_panel_host.remove_child(_panel_host.get_child(0))
 			if p.get_parent() == null:
 				_panel_host.add_child(p)
+			var rb0 := Time.get_ticks_usec()
 			p.rebuild()
+			rebuilds += 1
+			rebuild_ms += (Time.get_ticks_usec() - rb0) / 1000.0
 			_last_sig = sig
 			_last_render = now
 	else:
@@ -1101,7 +1159,7 @@ func show_card(st: Dictionary, c: Dictionary) -> void:
 	btns.add_child(U.btn("Done", close_overlay))
 	info.add_child(U.gap(4))
 	info.add_child(btns)
-	var cv := CardView.new().setup(st, c, "lg")
+	var cv := CardTilt.new().setup(st, c)
 	_modal([U.hbox([cv, info], 8)])
 
 

@@ -7,7 +7,8 @@ func sig() -> String:
 	var s := App.state
 	var parts: Array = [s.staff.size(), Game.max_staff(s), App.order.size(), App.lock_sig()]
 	for e in s.staff:
-		var lv := ".".join(Game.SKILL_KEYS.map(func(k): return str(e.skills[k].lvl)))
+		# Only reaching the top level changes the layout; level numbers are live.
+		var lv := ".".join(Game.SKILL_KEYS.map(func(k): return "m" if e.skills[k].lvl >= Game.MAX_SKILL else ""))
 		parts.append("%s/%s/%s/%s/%s/%s" % [e.task, e["set"], e.get("task2"), e.get("set2"), e.training.skill if e.training else "", lv])
 	return "|".join(parts.map(func(x): return str(x)))
 
@@ -97,17 +98,18 @@ func build() -> void:
 			var lvl: int = e.skills[k].lvl
 			var on: bool = e.task == k or e.get("task2") == k
 			sk.add_child(U.label(Strings.SKILL_NAMES[k], "" if on else "Muted"))
-			sk.add_child(U.label("Lv %d" % lvl))
+			sk.add_child(live_text(U.label(""), func(): return "Lv %d" % e.skills[k].lvl))
 			var xp := U.bar("Up", 2, 30)
 			live_bar(xp, func():
 				var sv: Dictionary = e.skills[k]
 				return 1.0 if sv.lvl >= Game.MAX_SKILL else sv.xp / Game.xp_to_next(sv.lvl))
 			sk.add_child(xp)
-			sk.add_child(U.label(Fmt.sec(Game.skill_duration(k, lvl)), "Muted"))
+			sk.add_child(live_text(U.label("", "Muted"), func(): return Fmt.sec(Game.skill_duration(k, e.skills[k].lvl))))
 			if lvl >= Game.MAX_SKILL:
 				sk.add_child(U.label("Max", "Muted"))
 			else:
 				var tb := U.small("Train " + Fmt.money(Game.train_cost(lvl)), func(): App.main.act(func(): return Game.train(App.state, e, k), "coin"))
+				live_btn_text(tb, func(): return "Train " + Fmt.money(Game.train_cost(e.skills[k].lvl)))
 				live_dis(tb, func(): return not Game.can_train(App.state, e, k))
 				sk.add_child(tb)
 		v.add_child(sk)

@@ -306,15 +306,24 @@ const DEFAULT_PREFS := {
 	"debug": false,
 	"clockOffset": 0,
 	"releaseAll": null,
-	"scale": 0,
+	"resolution": "1280x720",
+	"windowMode": "", # windowed, borderless or fullscreen; "" = from the old fullscreen pref
 }
+
+
+const RESOLUTIONS := ["800x600", "1024x768", "1280x720", "1440x900", "1920x1080"]
 
 
 static func load_prefs() -> Dictionary:
 	var data = null
 	if FileAccess.file_exists(PREFS_PATH):
 		data = JSON.parse_string(FileAccess.get_file_as_string(PREFS_PATH))
-	return merge_defaults(DEFAULT_PREFS.duplicate(true), data if data is Dictionary else {})
+	var p: Dictionary = merge_defaults(DEFAULT_PREFS.duplicate(true), data if data is Dictionary else {})
+	if not p.windowMode in ["windowed", "borderless", "fullscreen"]:
+		p.windowMode = "fullscreen" if data is Dictionary and data.get("fullscreen", false) else "windowed"
+	if not p.resolution in RESOLUTIONS:
+		p.resolution = "1280x720"
+	return p
 
 
 static func save_prefs(prefs: Dictionary) -> void:

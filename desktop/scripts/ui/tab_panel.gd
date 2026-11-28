@@ -68,7 +68,10 @@ func cost_btn(b: BaseButton, cost: float) -> BaseButton:
 
 
 func live_bar(p: ProgressBar, f: Callable) -> ProgressBar:
-	_live.append(func(): p.value = clampf(float(f.call()), 0.0, 1.0))
+	if p is SmoothBar:
+		_live.append(func(): p.set_target(float(f.call())))
+	else:
+		_live.append(func(): p.value = clampf(float(f.call()), 0.0, 1.0))
 	return p
 
 

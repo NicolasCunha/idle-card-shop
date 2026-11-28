@@ -48,7 +48,7 @@ func build() -> void:
 		var n: int = int(binder.get(card.id, 0))
 		var cv := CardView.new()
 		cv.unseen = not was_seen
-		cv.setup(st, card, "sm")
+		cv.setup(st, card, "md")
 		cv.count = n
 		cv.dim = was_seen and n == 0
 		var b := Button.new()

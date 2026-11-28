@@ -28,7 +28,10 @@ func _chips(task: String) -> HFlowContainer:
 			var chip := PanelContainer.new()
 			chip.theme_type_variation = "Chip"
 			chip.tooltip_text = n[1]
-			chip.add_child(U.label(n[0]))
+			var l := U.label(n[0])
+			l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			chip.add_child(l)
 			f.add_child(chip))
 	return f
 

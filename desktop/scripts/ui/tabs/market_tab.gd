@@ -4,6 +4,14 @@ extends TabPanel
 
 var search: LineEdit
 var _timer: SceneTreeTimer
+# Card rows, sorting, the shown page's price lines and card news are computed
+# on a worker thread (thousands of cards); the tab shows the last result until
+# the new one is in.
+var _mutex := Mutex.new()
+var _job := -1
+var _job_key := ""
+var _done = null # result from the worker, picked up in _process
+var _result := {} # last finished result
 
 
 func _init() -> void:
@@ -57,16 +65,36 @@ func _page(p: int) -> void:
 	App.main.scroll_top()
 
 
-func build() -> void:
-	var ui := App.ui
-	var ids := App.released()
-	ui.marketSet = "all"
-	var day: int = App.state.day
-	var match := GameData.card_filter(ui.marketQuery)
+func _key(ids: Array) -> String:
+	var u := App.ui
+	return "%s|%s|%s|%s|%s|%s" % [App.state.day, u.marketSort, u.marketPage, u.marketQuery, App.prefs.marketPageSize, ids.size()]
+
+
+func _process(_d: float) -> void:
+	if _job == -1 or not WorkerThreadPool.is_task_completed(_job):
+		return
+	WorkerThreadPool.wait_for_task_completion(_job)
+	_job = -1
+	_mutex.lock()
+	_result = _done
+	_done = null
+	_mutex.unlock()
+	if is_visible_in_tree():
+		App.main.redraw(true)
+
+
+func _exit_tree() -> void:
+	if _job != -1:
+		WorkerThreadPool.wait_for_task_completion(_job)
+		_job = -1
+
+
+## Runs on a worker: reads only collection data and the Market caches (locked).
+static func _compute(key: String, ids: Array, sets: Dictionary, query: String, sort: String, day: int, page: int, size: int) -> Dictionary:
+	var match := GameData.card_filter(query)
 	var rows: Array = []
-	var sort: String = ui.marketSort
 	for id in ids:
-		var st: Dictionary = App.sets[id]
+		var st: Dictionary = sets[id]
 		for c in st.cards:
 			if not match.call(c, st):
 				continue
@@ -81,10 +109,52 @@ func build() -> void:
 		"price": rows.sort_custom(func(a, b): return a.now > b.now)
 		"d1": rows.sort_custom(func(a, b): return a.d1 > b.d1)
 		"d7": rows.sort_custom(func(a, b): return a.d7 > b.d7)
-	var size: int = App.prefs.marketPageSize if int(App.prefs.marketPageSize) in App.PAGE_SIZES else 25
 	var pages := maxi(1, ceili(rows.size() / float(size))) if size else 1
-	ui.marketPage = clampi(int(ui.marketPage), 0, pages - 1)
-	var shown: Array = rows.slice(ui.marketPage * size, (ui.marketPage + 1) * size) if size else rows
+	page = clampi(page, 0, pages - 1)
+	var shown: Array = rows.slice(page * size, (page + 1) * size) if size else rows
+	for r in shown:
+		r.hist = Market.history(r.st, r.c, day, 30)
+	var news: Array = []
+	for id in ids:
+		var st: Dictionary = sets[id]
+		for c in st.cards:
+			news.append_array(Market.news_for(st, c, day, 3))
+	news.sort_custom(func(a, b): return a.day > b.day)
+	return {"key": key, "shown": shown, "total": rows.size(), "pages": pages, "page": page, "news": news.slice(0, 8)}
+
+
+func _start(key: String, ids: Array, size: int) -> void:
+	if _job != -1:
+		if _job_key == key:
+			return
+		WorkerThreadPool.wait_for_task_completion(_job) # finishes quickly; keeps one job at a time
+		_job = -1
+	_job_key = key
+	var u := App.ui
+	var args := [key, ids.duplicate(), App.sets, str(u.marketQuery), str(u.marketSort), int(App.state.day), int(u.marketPage), size]
+	_job = WorkerThreadPool.add_task(func():
+		var r: Dictionary = _compute.callv(args)
+		_mutex.lock()
+		_done = r
+		_mutex.unlock(), false, "Market rows")
+
+
+func build() -> void:
+	var ui := App.ui
+	var ids := App.released()
+	ui.marketSet = "all"
+	var day: int = App.state.day
+	var sort: String = ui.marketSort
+	var size: int = App.prefs.marketPageSize if int(App.prefs.marketPageSize) in App.PAGE_SIZES else 25
+	var key := _key(ids)
+	var ready: bool = _result.get("key", "") == key
+	if not ready:
+		_start(key, ids, size)
+	var res: Dictionary = _result
+	var shown: Array = res.get("shown", [])
+	var pages: int = res.get("pages", 1)
+	if ready:
+		ui.marketPage = res.page
 
 	if search.get_parent():
 		search.get_parent().remove_child(search)
@@ -129,15 +199,10 @@ func build() -> void:
 	add_child(bx)
 
 	# Card news
-	var news: Array = []
-	for id in ids:
-		var st: Dictionary = App.sets[id]
-		for c in st.cards:
-			news.append_array(Market.news_for(st, c, day, 3))
-	news.sort_custom(func(a, b): return a.day > b.day)
+	var news: Array = res.get("news", [])
 	if news.size():
 		var nb := U.box([U.label("Card news", "Head")])
-		for n in news.slice(0, 8):
+		for n in news:
 			var parts: PackedStringArray = n.text.split("{card}")
 			var line := U.hbox([], 0)
 			for i in parts.size():
@@ -153,7 +218,8 @@ func build() -> void:
 			U.inner(nb).add_child(line)
 		add_child(nb)
 
-	var pager := _pager(ui.marketPage, pages, rows.size(), size)
+	var total: int = res.get("total", 0)
+	var pager := _pager(ui.marketPage, pages, total, size)
 	add_child(pager)
 	var table := U.grid(9, [], 6)
 	for h in ["", "#", "Card", "Collection", "Today", "1d", "7d", "30d", ""]:
@@ -161,7 +227,7 @@ func build() -> void:
 	for r in shown:
 		var st: Dictionary = r.st
 		var c: Dictionary = r.c
-		var hist := Market.history(st, c, day, 30)
+		var hist: Array = r.hist
 		var now: float = hist.back()
 		var d1: float = now / hist[hist.size() - 2] - 1.0
 		var d7: float = now / hist[hist.size() - 8] - 1.0
@@ -187,8 +253,11 @@ func build() -> void:
 		var b := U.small("Buy " + Fmt.money(cost), func(): App.main.act(func(): return Game.buy_single(App.state, App.sets, st, c), "coin"), Strings.TIPS.single)
 		cost_btn(b, cost)
 		table.add_child(b)
+	table.modulate.a = 1.0 if ready else 0.5
 	add_child(table)
-	if shown.is_empty():
+	if res.is_empty():
+		add_child(U.label("loading", "Muted"))
+	elif shown.is_empty():
 		add_child(U.label("No cards", "Muted"))
 	if pages > 1:
-		add_child(_pager(ui.marketPage, pages, rows.size(), size))
+		add_child(_pager(ui.marketPage, pages, total, size))

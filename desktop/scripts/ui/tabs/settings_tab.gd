@@ -6,7 +6,7 @@ extends TabPanel
 func sig() -> String:
 	var p := App.prefs
 	return "%s|%s|%s|%s|%s|%s|%s|%s|%d|%d|%s" % [p.theme, p.reduceMotion, p.muteMaster, p.muteMusic, p.muteEffects,
-		App.state.tutorial.done.size() == 0, p.debug, p.get("fullscreen", false), App.state.staff.size(), App.released().size(), p.get("scale", 0)]
+		App.state.tutorial.done.size() == 0, p.debug, p.windowMode, App.state.staff.size(), App.released().size(), p.resolution]
 
 
 func _toggle(text: String, on: bool, cb: Callable) -> Button:
@@ -43,25 +43,26 @@ func build() -> void:
 	cols.add_child(right_col)
 	add_child(cols)
 
-	var scales := [[0, "Auto"], [1, "1×"], [2, "2×"], [3, "3×"], [4, "4×"]]
+	var sizes: Array = SaveData.RESOLUTIONS.map(func(r): return [r, r.replace("x", "×")])
+	var res := U.option(sizes, p.resolution, func(v):
+		App.prefs.resolution = v
+		App.main.prefs_changed()
+		App.main.apply_window())
+	res.disabled = p.windowMode != "windowed"
 	left.add_child(U.box([U.label("Display", "Head"),
 		U.hbox([U.fixed(U.label("Theme"), 44), U.option(Strings.THEMES, p.theme, func(v):
 			App.prefs.theme = v
 			App.main.prefs_changed()
 			App.main.apply_theme())]),
-		U.hbox([U.fixed(U.label("Size"), 44), U.option(scales, p.get("scale", 0), func(v):
-			App.prefs.scale = int(v)
+		U.hbox([U.fixed(U.label("Window"), 44), U.option([["windowed", "Windowed"], ["borderless", "Borderless"], ["fullscreen", "Fullscreen"]], p.windowMode, func(v):
+			App.prefs.windowMode = v
 			App.main.prefs_changed()
 			App.main.apply_window()
 			App.main.redraw(true))]),
+		U.hbox([U.fixed(U.label("Size"), 44), res]),
 		U.flow([_toggle("Reduce motion", p.reduceMotion, func(v):
 			App.prefs.reduceMotion = v
 			App.main.prefs_changed()
-			App.main.redraw(true)),
-			_toggle("Fullscreen", p.get("fullscreen", false), func(v):
-			App.prefs.fullscreen = v
-			App.main.prefs_changed()
-			App.main.apply_window()
 			App.main.redraw(true))])]))
 	left.add_child(U.box([U.label("Sound", "Head"), _vol("master", "Master"), _vol("music", "Music"), _vol("effects", "Effects")]))
 	left.add_child(U.box([U.label("Tutorial", "Head"), U.hbox([U.btn("Restart tutorial", func(): App.main.restart_tutorial())])]))

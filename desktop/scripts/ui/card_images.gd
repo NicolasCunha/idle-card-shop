@@ -6,8 +6,8 @@ extends Node
 
 signal loaded(key: String)
 
-const THUMB := Vector2i(100, 140)
-const MAX_THUMBS := 900
+const THUMB := Vector2i(150, 210) # sharp up to 3x for the 50x70 binder card
+const MAX_THUMBS := 600
 const MAX_FULL := 24
 
 static var inst: CardImages

@@ -38,6 +38,9 @@ const _M32 := 0xFFFFFFFF
 static var _seed: String = LEGACY_SEED
 static var _gen := 0 # bumps when the seed changes; invalidates per-card caches
 static var _events: Dictionary = {}
+## Guards the caches (_events and every card's _mc) so the Market tab can
+## compute prices on a worker thread while the game ticks on the main one.
+static var _lock := Mutex.new()
 
 
 static func set_seed(seed) -> void:
@@ -126,12 +129,18 @@ static func ms_until_next_day(now_ms: int) -> int:
 
 static func _event_for_window(key: String, w: int):
 	var k := key + "|" + str(w)
-	if _events.has(k):
-		return _events[k]
+	_lock.lock()
+	var hit := _events.has(k)
+	var ev = _events.get(k)
+	_lock.unlock()
+	if hit:
+		return ev
+	ev = _make_event(key, w)
+	_lock.lock()
 	if _events.size() > 400000:
 		_events.clear()
-	var ev = _make_event(key, w)
 	_events[k] = ev
+	_lock.unlock()
 	return ev
 
 
@@ -199,19 +208,27 @@ static func card_log_multiplier(cset: Dictionary, card: Dictionary, day: int) ->
 
 ## Per-card cache of recent days (card._mc, runtime only; web 1.9.3).
 static func card_multiplier(cset: Dictionary, card: Dictionary, day: int) -> float:
-	var m: Dictionary
-	if not card.has("_mc") or card.get("_mc_gen", -1) != _gen:
-		m = {}
-		card["_mc"] = m
-		card["_mc_gen"] = _gen
-	else:
-		m = card["_mc"]
-	if m.has(day):
-		return m[day]
-	if m.size() >= CARD_CACHE_DAYS:
+	# card._mc is made once per card (GameData.build_collections), so a worker
+	# never adds keys to the card itself; the cache's own "gen" key tracks the seed.
+	if not card.has("_mc"):
+		card["_mc"] = {}
+	var m: Dictionary = card["_mc"]
+	_lock.lock()
+	if m.get("gen", -1) != _gen:
 		m.clear()
-	var v := exp(card_log_multiplier(cset, card, day))
+		m["gen"] = _gen
+	var hit := m.has(day)
+	var v: float = m.get(day, 0.0)
+	_lock.unlock()
+	if hit:
+		return v
+	v = exp(card_log_multiplier(cset, card, day))
+	_lock.lock()
+	if m.size() > CARD_CACHE_DAYS:
+		m.clear()
+		m["gen"] = _gen
 	m[day] = v
+	_lock.unlock()
 	return v
 
 

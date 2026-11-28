@@ -168,7 +168,7 @@ static func edit(text: String, cb: Callable, width := 40, placeholder := "") -> 
 
 
 static func bar(variation := "", h := 3, w := 0) -> ProgressBar:
-	var p := ProgressBar.new()
+	var p := SmoothBar.new()
 	p.show_percentage = false
 	p.min_value = 0
 	p.max_value = 1

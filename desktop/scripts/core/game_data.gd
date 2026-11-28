@@ -89,6 +89,8 @@ static func load_collections(root: String = "") -> Dictionary:
 static func link_order(sets: Dictionary, order: Array) -> void:
 	for i in order.size():
 		var s: Dictionary = sets[order[i]]
+		for c in s.cards:
+			c["_mc"] = {} # price cache (Market.card_multiplier), made here so workers never add keys
 		s.release_index = i
 		s.prev = sets[order[i - 1]] if i > 0 else null
 		s.next_id = order[i + 1] if i + 1 < order.size() else null
