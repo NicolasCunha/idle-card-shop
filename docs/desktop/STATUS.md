@@ -25,7 +25,7 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 | S11 | Shop floor from the hand-drawn sheet (`shop.txt`), Fame decor, showcase case | done |
 | S12 | Customers walking, browsing, speech bubbles, emotes, sale pop-ups (web sheets) | done |
 | S13-S17 | Every tab, News (two tabs), Awards, card detail and list form, opening scene, bulk results, tutorial (shared `data/tutorial.json`), debug menu, synthesised music and sounds | done (needs Nicolas's test) |
-| S18 | GitHub Actions export (Windows, Linux), card packs, release 2.0.0 | next |
+| S18 | GitHub Actions export (Windows, Linux), card packs, release 2.0.0 | built, release waits for Nicolas |
 
 ## Web baseline to match (main at 0a75710, 2026-11-28)
 
@@ -62,6 +62,12 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 - Music and sounds are synthesised once at start on a worker thread (port of `js/audio.js`), played on Music (low-pass, echo) and Effects buses.
 - `godot --path desktop -- --shots` writes a screenshot of every screen (see README).
 
+## S18 (build and release)
+
+- `.github/workflows/desktop.yml`: official Godot 4.7.2 and export templates, tests, Windows and Linux export, one card pack per collection, zips as run artifacts; a `desktop-v*` tag publishes the release with `desktop/RELEASE_NOTES.md`.
+- The exported game mounts `packs/cards-*.pck` next to the executable (`GameData.mount_card_packs`). Checked in the container with a Linux export and the Base Set pack: 30 collections load and the scans decode.
+- Content root and pack mounting use the `template` feature (exported builds only).
+
 ## Next step
 
-S18: GitHub Actions workflow that exports Windows and Linux builds with the official 4.7.2 templates, card packs per collection (`tools/pack_cards.gd`), and the 2.0.0 release. The Windows template cannot be built in the cloud container (no MinGW).
+Nicolas tests the Windows zip from the Actions run. Release 2.0.0 (tag `desktop-v2.0.0`) waits for his go.

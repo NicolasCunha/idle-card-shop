@@ -29,6 +29,7 @@ var _done := false
 func start(content_root: String = "") -> void:
 	root = content_root if content_root != "" else GameData.content_root()
 	step_changed.emit("code", "done", "")
+	GameData.mount_card_packs()
 	files = GameData.collection_files(root)
 	_raws.resize(files.size())
 	step_changed.emit("cards", "active", "0 / %d" % files.size())

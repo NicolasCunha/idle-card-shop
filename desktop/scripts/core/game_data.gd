@@ -8,9 +8,27 @@ class_name GameData
 
 
 static func content_root() -> String:
-	if not OS.has_feature("editor") and FileAccess.file_exists("res://content/collections.json"):
+	if OS.has_feature("template") and FileAccess.file_exists("res://content/collections.json"):
 		return "res://content/"
 	return ProjectSettings.globalize_path("res://").path_join("..").simplify_path() + "/"
+
+
+## Exported build: mounts every card pack (cards-<id>.pck, tools/pack_cards.gd)
+## found in the packs folder next to the executable. A missing pack only means
+## that collection's cards are drawn as generic cards. Returns how many mounted.
+static func mount_card_packs() -> int:
+	if not OS.has_feature("template"):
+		return 0
+	var dir := OS.get_executable_path().get_base_dir().path_join("packs")
+	var n := 0
+	for f in DirAccess.get_files_at(dir):
+		if f.begins_with("cards-") and f.ends_with(".pck"):
+			if ProjectSettings.load_resource_pack(dir.path_join(f), false):
+				n += 1
+			else:
+				push_warning("Could not mount " + f)
+	print("card packs: %d mounted" % n)
+	return n
 
 
 static func read_json(path: String):

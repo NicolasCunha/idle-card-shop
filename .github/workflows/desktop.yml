@@ -1,0 +1,87 @@
+name: Desktop build
+
+# Exports the Godot desktop port (desktop/) for Windows and Linux with the
+# official Godot export templates, packs the card images per collection and,
+# for a desktop-v* tag, publishes a GitHub release with both builds.
+
+on:
+  push:
+    branches: [desktop-port]
+    paths: ["desktop/**", ".github/workflows/desktop.yml"]
+    tags: ["desktop-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GODOT_VERSION: 4.7.2
+  GODOT_URL: https://github.com/godotengine/godot/releases/download/4.7.2-stable
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot and export templates
+        run: |
+          curl -sSL -o godot.zip "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl -sSL -o templates.tpz "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q godot.zip && mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          dir="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$dir" && unzip -q templates.tpz && mv templates/* "$dir/"
+          godot --version
+
+      - name: Copy game data into the project
+        run: godot --headless --path desktop --script res://tools/sync_content.gd
+
+      - name: Import assets
+        run: godot --headless --path desktop --import
+
+      - name: Tests
+        run: godot --headless --path desktop --script res://tests/run_tests.gd
+
+      - name: Export Windows and Linux
+        run: |
+          mkdir -p desktop/build/windows desktop/build/linux
+          godot --headless --path desktop --export-release Windows build/windows/IdleCardShop.exe
+          godot --headless --path desktop --export-release Linux build/linux/IdleCardShop.x86_64
+          test -f desktop/build/windows/IdleCardShop.exe && test -f desktop/build/linux/IdleCardShop.x86_64
+
+      - name: Card packs
+        run: |
+          mkdir -p packs
+          for d in images/*/; do
+            id=$(basename "$d")
+            grep -q "\"$id.json\"" collections.json || continue
+            godot --headless --path desktop --script res://tools/pack_cards.gd -- "$PWD/$d" "$id" "$PWD/packs/cards-$id.pck"
+          done
+          ls -la packs
+
+      - name: Zip
+        run: |
+          for os in windows linux; do
+            mkdir -p "dist/IdleCardShop" && rm -rf dist/IdleCardShop/*
+            cp desktop/build/$os/* dist/IdleCardShop/
+            cp -r packs dist/IdleCardShop/packs
+            (cd dist && zip -q -r "IdleCardShop-$os.zip" IdleCardShop)
+          done
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        with:
+          name: IdleCardShop-desktop
+          path: dist/*.zip
+          retention-days: 7
+          compression-level: 0
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/desktop-v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/IdleCardShop-windows.zip dist/IdleCardShop-linux.zip \
+            --title "IdleCardShop desktop ${GITHUB_REF_NAME#desktop-v}" --notes-file desktop/RELEASE_NOTES.md

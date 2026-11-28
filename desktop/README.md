@@ -41,3 +41,9 @@ The market checks compare against `tests/ref/market_ref.json`, made by the web b
 | `tests/` | Headless test runner and checks |
 
 Collection JSONs, `data/` and card images stay at the repo root and are shared with the browser game.
+
+## Builds
+
+`.github/workflows/desktop.yml` builds Windows and Linux on every push to `desktop-port` (download them from the run's artifacts) and publishes a GitHub release for a `desktop-v*` tag. Each zip holds the game and a `packs/` folder with one card pack per collection (`cards-<id>.pck`, made by `tools/pack_cards.gd`). The game mounts every pack it finds there at start; a missing pack only means that collection's cards are drawn as generic cards.
+
+Local export: run `tools/sync_content.gd` first (copies collections and `data/` into `content/`), then `godot --headless --path desktop --export-release Linux build/linux/IdleCardShop.x86_64`.
