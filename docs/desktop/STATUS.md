@@ -5,7 +5,7 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 ## Rules for this work
 
 - All work on branch `desktop-port`. Never push to `main`. Do not edit web files (`js/`, `css/`, `index.html`, `data/`, collection JSONs); rebase on `main` when the web game changes.
-- One stage per go-ahead from Nicolas. Each stage: build it, copy `desktop/` to Nicolas's PC (`C:\DEV\idle-card-shop\desktop`, untracked in his main checkout), he tests in Godot, then commit, update this file, report and wait.
+- Nicolas, 2026-11-28 14:19: migrate the whole game without waiting between stages. Commit each stage after the headless tests pass; copy `desktop/` to Nicolas's PC (`C:\DEV\idle-card-shop\desktop`, untracked in his main checkout) at milestones for him to test in Godot.
 - Every fix to the web game is listed in `docs/desktop/PORT-FIXES.md` on `main` (kept by the web threads; do not edit it on this branch). Check it at the start of each stage and port what applies to the stages already done. Port progress is tracked in the table below.
 - Godot 4.7.2 stable, GDScript only. Project in `desktop/`.
 - Game text in English; calm pastel brown and dark-yellow palette, light and dark modes; GBA-style 2D; hand-drawn PNG spritesheets (never generated at runtime); tutorial always updated.
@@ -17,17 +17,15 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 | S1 | Plan updated with the final web game state; this file | done (2026-11-28) |
 | S2 | Godot project skeleton in `desktop/`, 240×160 integer scaling, README | done (2026-11-28, Nicolas opened it in Godot) |
 | S3 | Collection loader, loading screen with steps (PORT-FIXES 1.9.7), market price hash in GDScript; JS reference price dump | done (2026-11-28; 20/20 checks, 114K prices match JS; Nicolas tested) |
-| S4 | Size test: export build and one card pack, JPG against WebP | next |
-| S5 | Boosters, opening, binder, showcase, sales | |
-| S6 | Staff (30, main and backup jobs, firing), salaries, customers, supply, release calendar | |
-| S7 | Storage, properties (warehouses, shipments), campaigns, Fame, achievements | |
-| S8 | Save port and v6 import (needs Nicolas's save answers) | |
-| S9 | Simulation thread, commands, snapshots, offline catch-up | |
-| S10 | Palette and UI sheets (light and dark), bitmap font | |
-| S11 | Shop tiles, Fame decor, shop floor scene | |
-| S12 | Customer and staff sheets and animations | |
-| S13-S17 | Tabs by group: Shop and Binder; Market and News; Staff; Storage, Properties, Marketing, Finances; Settings, tutorial, debug | |
-| S18 | GitHub Actions export, card packs, release 2.0.0 | |
+| S4 | Size test: export build and one card pack, JPG against WebP | done (Linux export: 67.6 MB binary + 1 MB pck, loads 30 collections in 65 ms; JPG kept, Nicolas 2026-11-28) |
+| S5-S7 | All rules of `js/game.js`, `supply.js`, `achievements.js` in GDScript | done (golden simulation matches JS over 9,000 s) |
+| S8 | Save port and v6 import/export (both ways), autosave every 10 s and on close, 3 backups | done |
+| S9 | Offline catch-up on a worker thread with progress, then "While you were away" | done |
+| S10 | 11 themes (4 dark) as a Godot Theme; hand-drawn pixel font (`art/src/font.txt`) and UI icons (`ui.txt`) | done |
+| S11 | Shop floor from the hand-drawn sheet (`shop.txt`), Fame decor, showcase case | done |
+| S12 | Customers walking, browsing, speech bubbles, emotes, sale pop-ups (web sheets) | done |
+| S13-S17 | Every tab, News (two tabs), Awards, card detail and list form, opening scene, bulk results, tutorial (shared `data/tutorial.json`), debug menu, synthesised music and sounds | done (needs Nicolas's test) |
+| S18 | GitHub Actions export (Windows, Linux), card packs, release 2.0.0 | next |
 
 ## Web baseline to match (main at 0a75710, 2026-11-28)
 
@@ -42,12 +40,12 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 
 | Web version | Change | Port |
 | --- | --- | --- |
-| 1.9.7 | Loading screen with steps, parallel loading | S3 (`Loader`, `main.gd`) |
-| 1.9.6 | Staff buyer fills warehouses past the stock target | S6/S7 |
-| 1.9.5 | Fire staff with severance | S6 |
-| 1.9.4 | Purchases overflow to warehouses | S7 |
-| 1.9.3 | Per-card price cache and event cache | S3 (`Market`) |
-| 1.9.1 | News in two tabs, debug Release all sets | S14, S17 |
+| 1.9.7 | Loading screen with steps, parallel loading | ported (S3, `Loader`, `main.gd`) |
+| 1.9.6 | Staff buyer fills warehouses past the stock target | ported (`Game._do_task`, golden sim) |
+| 1.9.5 | Fire staff with severance | ported (`Game.fire`, Staff tab with confirm box) |
+| 1.9.4 | Purchases overflow to warehouses | ported (`Game.room_for`, Shop shows `to warehouse`) |
+| 1.9.3 | Per-card price cache and event cache | ported (S3, `Market`) |
+| 1.9.1 | News in two tabs, debug Release all sets | ported (`main.gd` News, Settings debug) |
 | 1.9.0 | Card values from balance.py (data only) | nothing to do |
 
 ## Tooling
@@ -57,6 +55,13 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
   Then `godot --headless --path desktop --import` and `godot --headless --path desktop --script res://tests/run_tests.gd`.
 - Nicolas's PC: not installed yet (2026-11-28: auto mode blocked `winget install`). Nicolas runs `winget install --id GodotEngine.GodotEngine -e` in PowerShell himself.
 
+## Desktop layout (differs from the plan)
+
+- Canvas 640×360 instead of 240×160: the web game's tables (Market has 9 columns, Staff has skills and two jobs per employee) do not fit a GBA screen. Pixel art and the pixel font stay at 1:1 and the window scales by whole numbers (2× at 1280×720, 3× full screen on 1080p). Stretch mode `canvas_items`, so card scans keep their detail.
+- Card scans load on worker threads (`CardImages`), thumbnails 100×140 cached (900), full scans for the big views (24).
+- Music and sounds are synthesised once at start on a worker thread (port of `js/audio.js`), played on Music (low-pass, echo) and Effects buses.
+- `godot --path desktop -- --shots` writes a screenshot of every screen (see README).
+
 ## Next step
 
-S4: build Godot export templates (release, Linux and Windows), export the game, pack one collection's card images as a `.pck` with JPG and with WebP, record sizes and load times here.
+S18: GitHub Actions workflow that exports Windows and Linux builds with the official 4.7.2 templates, card packs per collection (`tools/pack_cards.gd`), and the 2.0.0 release. The Windows template cannot be built in the cloud container (no MinGW).

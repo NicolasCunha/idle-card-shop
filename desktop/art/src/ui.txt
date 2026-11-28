@@ -1,0 +1,52 @@
+# UI icons, drawn by hand. White parts take the theme's text colour
+# (Godot modulates them); see tools/build_art.py for the format.
+! w #ffffff
+! m #9c8466
+! o #2a1f1a
+! y #dcae4b
+! Y #f2c14e
+! c #f3ead8
+! t #7a5536
+= arrow_down
+wwwww
+.www.
+..w..
+= arrow_up
+..w..
+.www.
+wwwww
+= dot
+.mmm.
+mmmmm
+mmmmm
+mmmmm
+.mmm.
+= check
+......w
+.....ww
+w...ww.
+ww.ww..
+.www...
+..w....
+= pip
+ww
+ww
+= card_back
+otttttto
+tyyyyyyt
+tyttttyt
+tytYYtyt
+tytYYtyt
+tyttttyt
+tytYYtyt
+tytYYtyt
+tyttttyt
+tyyyyyyt
+otttttto
+= coin
+.oooo.
+oYYYyo
+oYyyYo
+oYYYyo
+oYyyYo
+.oooo.

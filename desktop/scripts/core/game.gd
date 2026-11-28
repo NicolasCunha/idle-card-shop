@@ -268,8 +268,12 @@ static func new_seed() -> String:
 	return "%s-%s-%s-%s-%s" % [h.substr(0, 8), h.substr(8, 4), h.substr(12, 4), h.substr(16, 4), h.substr(20, 12)]
 
 
+## Debug clock offset in ms (device preference, never saved; clock.js).
+static var clock_offset := 0
+
+
 static func now_ms() -> int:
-	return int(Time.get_unix_time_from_system() * 1000.0)
+	return int(Time.get_unix_time_from_system() * 1000.0) + clock_offset
 
 
 static func new_state(sets: Dictionary, order: Array, now: int = -1) -> Dictionary:

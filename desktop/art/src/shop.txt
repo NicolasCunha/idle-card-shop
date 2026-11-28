@@ -1,0 +1,527 @@
+# Shop floor sprites, drawn by hand as palette-indexed grids.
+# "! c #rrggbb[aa]" defines a palette letter; "= name" starts a sprite whose
+# rows follow; '.' is transparent. tools/build_art.py packs them into
+# art/sheets/shop.png with art/sheets/shop.json (name -> x, y, w, h).
+! w #c9a77c
+! W #b08e66
+! t #7a5536
+! T #5b3f2a
+! d #2e2219
+! g #4a6a7a
+! f #d9c19a
+! F #cfb48a
+! l #bda077
+! k #8a5a3a
+! K #a06c46
+! e #e9dcc0
+! c #f3ead8
+! b #a9d3e6
+! B #8fc0d6
+! s #282018
+! o #2a1f1a
+! y #dcae4b
+! Y #f2c14e
+! a #d9a53f
+! r #a8504a
+! R #e3907f
+! u #6f9fd1
+! p #5f9a4e
+! P #4c8040
+! q #b3643d
+! m #8cc285
+! n #4a3c31
+! h #d9534f
+! x #8a8f99
+! v #f7f1e3
+! z #8a6fb8
+! G #bee1eb59
+! S #28190f40
+! L #ffeca81a
+= wall
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+wwwwwwwwwwwWwwww
+= trim
+tttttttttttttttt
+KKKKKKKKKKKKKKKK
+tttttttttttttttt
+TTTTTTTTTTTTTTTT
+= floor
+llllllllllllllll
+ffffffffffffffFl
+fffffffffffffffl
+ffffffffffffffFl
+fffffffffffffffl
+ffffffffffffffFl
+fffffffffffffffl
+ffffffffffffffFl
+llllllllllllllll
+FfffffflFfffffff
+fffffffl.ffffff.
+Fffffffl.Ffffff.
+ffffffflfffffffF
+Ffffffflffffffff
+ffffffflFfffffff
+Ffffffflffffffff
+= door
+tttttttttttttttttttttttttt
+tKKKKKKKKKKKKKKKKKKKKKKKKt
+tKddddddddddddddddddddddKt
+tKdddggggggggggggggddddKKt
+tKdddgBBBBBgBBBBBBgddddKKt
+tKdddgBbbbBgBbbbbBgddddKKt
+tKdddgBbbbBgBbbbbBgddddKKt
+tKdddgBbbbBgBbbbbBgddddKKt
+tKdddgBBBBBgBBBBBBgddddKKt
+tKdddggggggggggggggddddKKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKdddddddddddddddddddyddKt
+tKdddddddddddddddddddyddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tKddddddddddddddddddddddKt
+tttttttttttttttttttttttttt
+= window
+cccccccccccccccccccccccccccccccccccccccccccc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbcbbbbbbbbbbbbbbbccbbbbcbbbbbbbbbbbbbbcc
+ccbbcbbbbbbbbbbbbbbbbccbbbcbbbbbbbbbbbbbbbcc
+ccbcbbbbbbbbbbbbbbbbbccbbcbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+cccccccccccccccccccccccccccccccccccccccccccc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbbbbbbbbbcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+ccBBBBBBBBBBBBBBBBBBBccBBBBBBBBBBBBBBBBBBBcc
+cccccccccccccccccccccccccccccccccccccccccccc
+tttttttttttttttttttttttttttttttttttttttttttt
+= register
+...........nnnnnnnnnnnnnnnnn............
+...........nmmmmmmmmmmmmmmmn............
+...........nmmmmmmmmmmmmmmmn............
+...........nmmmmmmmmmmmmmmmn............
+...........nnnnnnnnnnnnnnnnn............
+..........nnvnvnvnvnvnvnvnvnn...........
+..........nnnnnnnnnnnnnnnnnnn...........
+.........nnvnvnvnvnvnvnvnvnvnn..........
+.........nnnnnnnnnnnnnnnnnnnnn..........
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+tttttttttttttttttttttttttttttttttttttttt
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kkKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk
+kkKkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKkk
+kkKkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKkk
+kkKkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKkk
+kkKkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKkk
+kkKkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKkk
+kkKkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKkk
+kkKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+tttttttttttttttttttttttttttttttttttttttt
+= case_left
+.KKKKKKK
+KKKKKKKK
+kkkkkkkk
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkeeeeee
+kkKKKKKK
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+tttttttt
+= case_mid
+KKKKKKKK
+KKKKKKKK
+kkkkkkkk
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+eeeeeeee
+KKKKKKKK
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+tttttttt
+= case_right
+KKKKKKK.
+KKKKKKKK
+kkkkkkkk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+eeeeeekk
+KKKKKKkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+kkkkkkkk
+tttttttt
+= case_shelf
+KKKKKKKK
+= case_glass
+GGGGGGGG
+= case_glint
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+c
+= card
+vvvv
+vccv
+vccv
+vccv
+vvvv
+= card_mark
+cc
+cc
+cc
+= shadow
+.SSSSSSSS.
+SSSSSSSSSS
+.SSSSSSSS.
+= poster1
+cccccccccccccccc
+cyyyyyyyyyyyyyyc
+cyaaaaaaaaaaaayc
+cyaavvvvvvvvaayc
+cyaavaaaaaavaayc
+cyaavaYYYYavaayc
+cyaavaYYYYavaayc
+cyaavaaaaaavaayc
+cyaavvvvvvvvaayc
+cyaaaaaaaaaaaayc
+cyyyyyyyyyyyyyyc
+cccccccccccccccc
+cttttttttttttttc
+cccccccccccccccc
+ccttttttttttttcc
+cccccccccccccccc
+ccttttttttttttcc
+cccccccccccccccc
+cccccccccccccccc
+cccccccccccccccc
+cccccccccccccccc
+cccccccccccccccc
+= poster2
+RRRRRRRRRRRRRRRR
+RccccccccccccccR
+RcuuuuuuuuuuuucR
+RcuuuuYuuuuuuucR
+RcuuuYYYuuuuuucR
+RcuuuuYuuuuvuucR
+RcuuuuuuuuvvvucR
+RcuupppuuvvvvvcR
+RcuppppppppppucR
+RcuuuuuuuuuuuucR
+RccccccccccccccR
+RcttttttttttttcR
+RccccccccccccccR
+RcttttttcccccccR
+RccccccccccccccR
+RccccccccccccccR
+RccccccccccccccR
+RRRRRRRRRRRRRRRR
+= frame_art
+oooooooooooooooooooooo
+oyyyyyyyyyyyyyyyyyyyyo
+oyaaaaaaaaaaaaaaaaaayo
+oyabbbbbbbbbbbbbbbbayo
+oyabbbbbbbbbbbbbYbbayo
+oyabbbbbbbbbbbbbbbbayo
+oyabbbbbbbpbbbbbbbbayo
+oyabbbbbbpppbbbbbbbayo
+oyabbbbbpppppbbbbbbayo
+oyabpppppppppppppppayo
+oyaPPPPPPPPPPPPPPPPayo
+oyaaaaaaaaaaaaaaaaaayo
+oyyyyyyyyyyyyyyyyyyyyo
+oooooooooooooooooooooo
+= plant
+....pp........
+...pPpp..pp...
+..pPPpp.pPpp..
+.ppPpppppPPpp.
+.pPPpppPpppPp.
+ppPpPpPPpPpppp
+pPppPPppppPPpp
+.ppPpppPpPPpp.
+..pppPpppppp..
+...pppPppPp...
+.....pPpp.....
+......pp......
+.qqqqqqqqqqqq.
+qqqqqqqqqqqqqq
+.qqqqqqqqqqqq.
+..qqqqqqqqqq..
+..qqqqqqqqqq..
+..qqqqqqqqqq..
+...qqqqqqqq...
+...tttttttt...
+= rug_edge
+yyyy
+yrry
+yrry
+yyyy
+= rug
+yyyyyyyyyyyyyyyy
+yrrrrrrrrrrrrrry
+yrrYrrrrrrrrYrry
+yrrrrrrrrrrrrrry
+yrrrrrrrrrrrrrry
+yrrYrrrrrrrrYrry
+yrrrrrrrrrrrrrry
+yyyyyyyyyyyyyyyy
+= wall_shelf
+tttttttttt
+TTTTTTTTTT
+= box_y
+aaaaaaaa
+avvvvvva
+avvvvvva
+aaaaaaaa
+aaaaaaaa
+aaaYYaaa
+aaaaaaaa
+aaaaaaaa
+= box_b
+uuuuuuuu
+uvvvvvvu
+uvvvvvvu
+uuuuuuuu
+uuuuuuuu
+uuuYYuuu
+uuuuuuuu
+uuuuuuuu
+= box_g
+pppppppp
+pvvvvvvp
+pvvvvvvp
+pppppppp
+pppppppp
+pppYYppp
+pppppppp
+pppppppp
+= box_r
+rrrrrrrr
+rvvvvvvr
+rvvvvvvr
+rrrrrrrr
+rrrrrrrr
+rrrYYrrr
+rrrrrrrr
+rrrrrrrr
+= box_z
+zzzzzzzz
+zvvvvvvz
+zvvvvvvz
+zzzzzzzz
+zzzzzzzz
+zzzYYzzz
+zzzzzzzz
+zzzzzzzz
+= lights
+TT..TT..TT..TT..
+..TT..TT..TT..TT
+....Y.......R...
+....YY......RR..
+= sign
+tttttttttttttttttttttttttttt
+tyyyyyyyyyyyyyyyyyyyyyyyyyyt
+tyyyyytttytytytttytttyyyyyyt
+tyyyyytyyytytytytytytyyyyyyt
+tyyyyytttytttytytytttyyyyyyt
+tyyyyyyytytytytytytyyyyyyyyt
+tyyyyytttytytytttytyyyyyyyyt
+tyyyyyyyyyyyyyyyyyyyyyyyyyyt
+tttttttttttttttttttttttttttt
+= standee
+cccccccccccccc
+cRRRRRRRRRRRRc
+cRRRRRRRRRRRRc
+cRRRYYYYYYRRRc
+cRRYYYYYYYYRRc
+cRRYYoYYoYYRRc
+cRRYYYYYYYYRRc
+cRRYYoooYYYRRc
+cRRRYYYYYYRRRc
+cRRRRRYYRRRRRc
+cRRRRYYYYRRRRc
+cRRRYYYYYYRRRc
+cRRRYYYYYYRRRc
+cRRRYYYYYYRRRc
+cRRRRYRRYRRRRc
+cRRRRYRRYRRRRc
+cRRRRRRRRRRRRc
+cRvvvvvvvvvvRc
+cRRRRRRRRRRRRc
+cccccccccccccc
+...tttttttt...
+...tttttttt...
+= trophy
+YYYYYY
+YyYYyY
+.YYYY.
+..aa..
+..aa..
+.tttt.
+= heart
+hh.hh
+hhhhh
+hhhhh
+.hhh.
+..h..
+= cloud
+.xxxx..
+xxxxxxx
+xxxxxxx
+.......
+.u..u..
+..u..u.
+= warm
+LLLL
+LLLL
+LLLL
+LLLL
+= bubble
+ooooo
+ovvvo
+ovvvo
+ovvvo
+ooooo
+= bubble_tail
+ovvvo
+.ovo.
+..o..
+= pack
+.ooooooo.
+oyyyyyyyo
+oaaaaaaao
+ovvvvvvvo
+ovvvvvvvo
+ovaaaaavo
+ovaYYYavo
+ovaYYYavo
+ovaaaaavo
+ovvvvvvvo
+ovvvvvvvo
+oaaaaaaao
+oyyyyyyyo
+.ooooooo.

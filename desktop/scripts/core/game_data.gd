@@ -8,7 +8,7 @@ class_name GameData
 
 
 static func content_root() -> String:
-	if FileAccess.file_exists("res://content/collections.json"):
+	if not OS.has_feature("editor") and FileAccess.file_exists("res://content/collections.json"):
 		return "res://content/"
 	return ProjectSettings.globalize_path("res://").path_join("..").simplify_path() + "/"
 
@@ -186,3 +186,58 @@ static func resolve_reprints(sets: Dictionary) -> void:
 				continue
 			if card.own_value == null:
 				card.value = orig.value * cset.reprint_factor
+
+
+## Search filter (data.js cardFilter): words match the card or collection name,
+## numbers match the card number. Returns func(card, set) -> bool.
+static func card_filter(query: String) -> Callable:
+	var words := query.to_lower().split(" ", false)
+	if words.is_empty():
+		return func(_c, _s): return true
+	var nums: Array = []
+	var full: Array = []
+	var names: Array = []
+	var re_num := RegEx.create_from_string("^#?\\d+$")
+	var re_full := RegEx.create_from_string("^\\d+/\\d+$")
+	for w in words:
+		if re_num.search(w):
+			nums.append(int(w.replace("#", "")))
+		elif re_full.search(w):
+			full.append(w)
+		else:
+			names.append(w)
+	return func(card, cset):
+		var nm: String = card.name.to_lower()
+		var sn: String = cset.name.to_lower() if cset else ""
+		for w in names:
+			if not (w in nm or w in sn):
+				return false
+		var n: int = _lead_int(card.get("number", ""))
+		if n == 0:
+			n = int(card.index)
+		for x in nums:
+			if x != n:
+				return false
+		for x in full:
+			if String(card.get("number", "")).to_lower() != x:
+				return false
+		return true
+
+
+static func _lead_int(s) -> int:
+	var t := String(s)
+	var i := 0
+	while i < t.length() and t[i] >= "0" and t[i] <= "9":
+		i += 1
+	return t.substr(0, i).to_int() if i > 0 else 0
+
+
+## How much a pulled card is celebrated: "big", "highlight" or "quiet".
+static func celebration(cset: Dictionary, card: Dictionary) -> String:
+	var rank: int = cset.rarities[card.rarity].rank
+	var top: int = cset.rarity_order.size() - 1
+	if card.get("foil", false) or (rank == top and top >= 2):
+		return "big"
+	if rank >= maxi(2, top - 1):
+		return "highlight"
+	return "quiet"

@@ -21,14 +21,15 @@ func _initialize() -> void:
 	_test_collections()
 	_test_market()
 	_test_golden_sim()
+	_test_ui_helpers()
 	print("%d passed, %d failed" % [_passed, _failed])
 	quit(1 if _failed > 0 else 0)
 
 
 func _test_project_settings() -> void:
-	ok(ProjectSettings.get_setting("display/window/size/viewport_width") == 240, "base width 240")
-	ok(ProjectSettings.get_setting("display/window/size/viewport_height") == 160, "base height 160")
-	ok(ProjectSettings.get_setting("display/window/stretch/mode") == "viewport", "stretch mode viewport")
+	ok(ProjectSettings.get_setting("display/window/size/viewport_width") == 640, "base width 640")
+	ok(ProjectSettings.get_setting("display/window/size/viewport_height") == 360, "base height 360")
+	ok(ProjectSettings.get_setting("display/window/stretch/mode") == "canvas_items", "stretch mode canvas_items")
 	ok(ProjectSettings.get_setting("display/window/stretch/scale_mode") == "integer", "integer scaling")
 	ok(ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter") == 0, "nearest filter")
 
@@ -146,3 +147,39 @@ func _test_golden_sim() -> void:
 	for t in res.keys():
 		var d: Array = res[t]
 		ok(d.is_empty(), "golden simulation matches JS at %ds" % t, "" if d.is_empty() else "\n    " + "\n    ".join(PackedStringArray(d)))
+
+
+## Formatting, search, tutorial and debug helpers used by the UI (S13-S17).
+func _test_ui_helpers() -> void:
+	ok(Fmt.money(1234.5) == "$1,234.50" and Fmt.money(12400) == "$12.4K" and Fmt.money(-3) == "-$3.00" and Fmt.money(2.5e6) == "$2.50M",
+		"money format like format.js", "%s %s %s %s" % [Fmt.money(1234.5), Fmt.money(12400), Fmt.money(-3), Fmt.money(2.5e6)])
+	ok(Fmt.pct(0.123) == "+12.3%" and Fmt.pct(-0.05) == "-5.0%" and Fmt.pct(0) == "0.0%", "percent format", Fmt.pct(0.123))
+	ok(Fmt.duration(3700) == "1h 1m" and Fmt.duration(59) == "59s" and Fmt.duration(90061) == "1d 1h", "duration format")
+	ok(Fmt.clock(65000) == "1:05" and Fmt.clock(3725000) == "1:02:05", "clock format", Fmt.clock(3725000))
+	ok(Fmt.sec(0.5) == "500ms" and Fmt.sec(6.24) == "6.2s" and Fmt.sec(10) == "10s", "seconds format", Fmt.sec(6.24))
+	var data := GameData.load_collections()
+	var base: Dictionary = data.sets[data.order[0]]
+	var f := GameData.card_filter("alakazam 1")
+	var hits: Array = base.cards.filter(func(c): return f.call(c, base))
+	ok(hits.size() == 1 and hits[0].name == "Alakazam", "market search by name and number", str(hits.size()))
+	var g := GameData.card_filter(base.name.split(" ")[0])
+	ok(base.cards.all(func(c): return g.call(c, base)), "market search by collection name")
+	ok(GameData.celebration(base, base.cards[0]) == "big", "holo pull is a big reveal")
+	Tutorial.set_data(GameData.read_json(GameData.content_root() + "data/tutorial.json"))
+	var s := Game.new_state(data.sets, data.order, 1795800001000)
+	ok(Tutorial.current_step(s) == null, "no tutorial before the shop opens")
+	s.setupDone = true
+	var step = Tutorial.current_step(s)
+	ok(step != null and step.id == "buy", "tutorial starts at Buy a booster")
+	s.stats.boostersBought = 1
+	step = Tutorial.current_step(s)
+	ok(step != null and step.id == "open" and "buy" in s.tutorial.done, "tutorial moves on when the step is done")
+	Tutorial.skip(s)
+	ok(Tutorial.current_step(s) == null and s.tutorial.skipped, "skip tutorial")
+	ok(not DebugTools.check_code("") and not DebugTools.check_code("wrong code"), "debug code rejects wrong codes")
+	var p := Palette.pixel_font()
+	ok(p != null and p.get_string_size("Hello", HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x > 10, "pixel font builds from the sheet")
+	for t in Palette.THEMES:
+		Palette.use(t)
+	ok(Palette.c.has("accent") and Palette.dark, "11 themes load", str(Palette.THEMES.size()))
+	Palette.font = null
