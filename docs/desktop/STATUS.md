@@ -25,7 +25,7 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 | S11 | Shop floor from the hand-drawn sheet (`shop.txt`), Fame decor, showcase case | done |
 | S12 | Customers walking, browsing, speech bubbles, emotes, sale pop-ups (web sheets) | done |
 | S13-S17 | Every tab, News (two tabs), Awards, card detail and list form, opening scene, bulk results, tutorial (shared `data/tutorial.json`), debug menu, synthesised music and sounds | done (needs Nicolas's test) |
-| S18 | GitHub Actions export (Windows, Linux), card packs, release 2.0.0 | built, release waits for Nicolas |
+| S18 | GitHub Actions export (Windows, Linux), card packs, release 2.0.0 | done (release desktop-v2.0.0) |
 
 ## Web baseline to match (main at 0a75710, 2026-11-28)
 
@@ -70,4 +70,4 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 
 ## Next step
 
-Nicolas tests the Windows zip from the Actions run. Release 2.0.0 (tag `desktop-v2.0.0`) waits for his go.
+Released 2026-11-28: https://github.com/NicolasCunha/idle-card-shop/releases/tag/desktop-v2.0.0 (made by a manual run of the Desktop build workflow with version 2.0.0; tag pushes from the cloud container are refused). Next: fixes from Nicolas's tests, and new web fixes from PORT-FIXES.md.
