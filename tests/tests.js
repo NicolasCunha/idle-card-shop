@@ -54,7 +54,8 @@ async function run() {
   ok(base.booster.slots.reduce((a, s) => a + s.count, 0) === 11, 'booster has 11 cards (7C 3U 1R)');
   const count = r => base.cards.filter(c => c.rarity === r).length;
   ok(count('common') === 38 && count('uncommon') === 32 && count('rare') === 16 && count('holo') === 16, 'Base Set rarities: 38C 32U 16R 16H');
-  ok(order.join() === 'base,jungle,fossil,base-set-2,team-rocket', 'collections load in release order', order.join());
+  ok(order.join() === 'base,jungle,fossil,base-set-2,team-rocket,gym-heroes,gym-challenge,neo-genesis,neo-discovery,neo-revelation,neo-destiny', 'collections load in release order', order.join());
+  ok(sets['neo-destiny'].cards.filter(c => c.rarity === 'secret').length === 8 && sets['neo-revelation'].cards.filter(c => c.rarity === 'secret').length === 2, 'Shining cards are Secret Rares (2 in Neo Revelation, 8 in Neo Destiny)');
   const tr = sets['team-rocket'];
   const w = tr.booster.slots[2].weights;
   ok(tr.byId['083'].rarity === 'secret' && tr.rarities.secret.rank > tr.rarities.holo.rank && w.secret < w.holo, 'Team Rocket secret rare is rarer than holo');

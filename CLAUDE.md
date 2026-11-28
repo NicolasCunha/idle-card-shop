@@ -24,6 +24,7 @@ Read these before any change. Each one is short.
 ## Skills (reusable processes)
 
 - `.claude/skills/add-card-collection/` — add a new card set from data Nicolas supplies
+- `.claude/skills/pkmn-crawler/` — crawl a pkmncards.com set with Nicolas's crawler (`tools/pkmn-crawler/`), only when he asks for those sets
 - `.claude/skills/develop-feature/` — take a feature from GDD/SDD to a finished, tested change
 - `.claude/skills/change-save-schema/` — change the save format safely, with a migration
 

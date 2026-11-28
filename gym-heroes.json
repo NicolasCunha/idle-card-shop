@@ -1,0 +1,1617 @@
+{
+  "id": "gym-heroes",
+  "name": "Gym Heroes",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.67,
+          "holo": 0.33
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/132",
+      "name": "Blaine’s Moltres",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.001.blaines_moltres.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 146
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/132",
+      "name": "Brock’s Rhydon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.002.brocks_rhydon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 112
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/132",
+      "name": "Erika’s Clefable",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.003.erikas_clefable.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 36
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/132",
+      "name": "Erika’s Dragonair",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.004.erikas_dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/132",
+      "name": "Erika’s Vileplume",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.005.erikas_vileplume.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 45
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/132",
+      "name": "Lt. Surge’s Electabuzz",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.006.lt_surges_electabuzz.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 125
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/132",
+      "name": "Lt. Surge’s Fearow",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.007.lt_surges_fearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 22
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/132",
+      "name": "Lt. Surge’s Magneton",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.008.lt_surges_magneton.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 82
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/132",
+      "name": "Misty’s Seadra",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.009.mistys_seadra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 117
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/132",
+      "name": "Misty’s Tentacruel",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.010.mistys_tentacruel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 73
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/132",
+      "name": "Rocket’s Hitmonchan",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.011.rockets_hitmonchan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 107
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/132",
+      "name": "Rocket’s Moltres",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.012.rockets_moltres.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 146
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/132",
+      "name": "Rocket’s Scyther",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.013.rockets_scyther.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 123
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/132",
+      "name": "Sabrina’s Gengar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.014.sabrinas_gengar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 94
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/132",
+      "name": "Brock",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.015.brock_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/132",
+      "name": "Erika",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.016.erika_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/132",
+      "name": "Lt. Surge",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.017.lt_surge.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/132",
+      "name": "Misty",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.018.misty_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/132",
+      "name": "The Rocket’s Trap",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/gym-heroes/g1.019.the_rockets_trap.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/132",
+      "name": "Brock’s Golem",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.020.brocks_golem.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 76
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/132",
+      "name": "Brock’s Onix",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.021.brocks_onix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 95
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/132",
+      "name": "Brock’s Rhyhorn",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.022.brocks_rhyhorn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 111
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/132",
+      "name": "Brock’s Sandslash",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.023.brocks_sandslash.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 28
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/132",
+      "name": "Brock’s Zubat",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.024.brocks_zubat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 41
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/132",
+      "name": "Erika’s Clefairy",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.025.erikas_clefairy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 35
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/132",
+      "name": "Erika’s Victreebel",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.026.erikas_victreebel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 71
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/132",
+      "name": "Lt. Surge’s Electabuzz",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.027.lt_surges_electabuzz.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 125
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/132",
+      "name": "Lt. Surge’s Raichu",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.028.lt_surges_raichu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 26
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/132",
+      "name": "Misty’s Cloyster",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.029.mistys_cloyster.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 91
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/132",
+      "name": "Misty’s Goldeen",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.030.mistys_goldeen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 118
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/132",
+      "name": "Misty’s Poliwrath",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.031.mistys_poliwrath.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 62
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/132",
+      "name": "Misty’s Tentacool",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.032.mistys_tentacool.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 72
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/132",
+      "name": "Rocket’s Snorlax",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.033.rockets_snorlax.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 143
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/132",
+      "name": "Sabrina’s Venomoth",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.034.sabrinas_venomoth.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 49
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/132",
+      "name": "Blaine’s Growlithe",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.035.blaines_growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/132",
+      "name": "Blaine’s Kangaskhan",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.036.blaines_kangaskhan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 115
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/132",
+      "name": "Blaine’s Magmar",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.037.blaines_magmar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 126
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/132",
+      "name": "Brock’s Geodude",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.038.brocks_geodude.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 74
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/132",
+      "name": "Brock’s Golbat",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.039.brocks_golbat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 42
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/132",
+      "name": "Brock’s Graveler",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.040.brocks_graveler.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 75
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/132",
+      "name": "Brock’s Lickitung",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.041.brocks_lickitung.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 108
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/132",
+      "name": "Erika’s Dratini",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.042.erikas_dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/132",
+      "name": "Erika’s Exeggcute",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.043.erikas_exeggcute.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 102
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/132",
+      "name": "Erika’s Exeggutor",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.044.erikas_exeggutor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 103
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/132",
+      "name": "Erika’s Gloom",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.045.erikas_gloom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 44
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/132",
+      "name": "Erika’s Gloom",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.046.erikas_gloom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 44
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/132",
+      "name": "Erika’s Oddish",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.047.erikas_oddish.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 43
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/132",
+      "name": "Erika’s Weepinbell",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.048.erikas_weepinbell.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 70
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/132",
+      "name": "Erika’s Weepinbell",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.049.erikas_weepinbell.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 70
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/132",
+      "name": "Lt. Surge’s Magnemite",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.050.lt_surges_magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/132",
+      "name": "Lt. Surge’s Raticate",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.051.lt_surges_raticate.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 20
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/132",
+      "name": "Lt. Surge’s Spearow",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.052.lt_surges_spearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 21
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/132",
+      "name": "Misty’s Poliwhirl",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.053.mistys_poliwhirl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 61
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/132",
+      "name": "Misty’s Psyduck",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.054.mistys_psyduck.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 54
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/132",
+      "name": "Misty’s Seaking",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.055.mistys_seaking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 119
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/132",
+      "name": "Misty’s Starmie",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.056.mistys_starmie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 121
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/132",
+      "name": "Misty’s Tentacool",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.057.mistys_tentacool.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 72
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/132",
+      "name": "Sabrina’s Haunter",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.058.sabrinas_haunter.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 93
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/132",
+      "name": "Sabrina’s Jynx",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.059.sabrinas_jynx.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 124
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/132",
+      "name": "Sabrina’s Slowbro",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.060.sabrinas_slowbro.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 80
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/132",
+      "name": "Blaine’s Charmander",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.061.blaines_charmander.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 4
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/132",
+      "name": "Blaine’s Growlithe",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.062.blaines_growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/132",
+      "name": "Blaine’s Ponyta",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.063.blaines_ponyta.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 77
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/132",
+      "name": "Blaine’s Tauros",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.064.blaines_tauros.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 128
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/132",
+      "name": "Blaine’s Vulpix",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.065.blaines_vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/132",
+      "name": "Brock’s Geodude",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.066.brocks_geodude.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 74
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/132",
+      "name": "Brock’s Mankey",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.067.brocks_mankey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 56
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/132",
+      "name": "Brock’s Mankey",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.068.brocks_mankey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 56
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/132",
+      "name": "Brock’s Onix",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.069.brocks_onix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 95
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/132",
+      "name": "Brock’s Rhyhorn",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.070.brocks_rhyhorn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 111
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/132",
+      "name": "Brock’s Sandshrew",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.071.brocks_sandshrew.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 27
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/132",
+      "name": "Brock’s Sandshrew",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.072.brocks_sandshrew.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 27
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/132",
+      "name": "Brock’s Vulpix",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.073.brocks_vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/132",
+      "name": "Brock’s Zubat",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.074.brocks_zubat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 41
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/132",
+      "name": "Erika’s Bellsprout",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.075.erikas_bellsprout.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 69
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/132",
+      "name": "Erika’s Bellsprout",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.076.erikas_bellsprout.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 69
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/132",
+      "name": "Erika’s Exeggcute",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.077.erikas_exeggcute.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 102
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/132",
+      "name": "Erika’s Oddish",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.078.erikas_oddish.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 43
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/132",
+      "name": "Erika’s Tangela",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.079.erikas_tangela.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 114
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/132",
+      "name": "Lt. Surge’s Magnemite",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.080.lt_surges_magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/132",
+      "name": "Lt. Surge’s Pikachu",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.081.lt_surges_pikachu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 25
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/132",
+      "name": "Lt. Surge’s Rattata",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.082.lt_surges_rattata.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 19
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/132",
+      "name": "Lt. Surge’s Spearow",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.083.lt_surges_spearow.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 21
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/132",
+      "name": "Lt. Surge’s Voltorb",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.084.lt_surges_voltorb.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 100
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/132",
+      "name": "Misty’s Goldeen",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.085.mistys_goldeen.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 118
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/132",
+      "name": "Misty’s Horsea",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.086.mistys_horsea.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 116
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/132",
+      "name": "Misty’s Poliwag",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.087.mistys_poliwag.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 60
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/132",
+      "name": "Misty’s Seel",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.088.mistys_seel.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 86
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/132",
+      "name": "Misty’s Shellder",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.089.mistys_shellder.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 90
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/132",
+      "name": "Misty’s Staryu",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.090.mistys_staryu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 120
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/132",
+      "name": "Sabrina’s Abra",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.091.sabrinas_abra.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 63
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/132",
+      "name": "Sabrina’s Drowzee",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.092.sabrinas_drowzee.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 96
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/132",
+      "name": "Sabrina’s Gastly",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.093.sabrinas_gastly.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 92
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/132",
+      "name": "Sabrina’s Mr. Mime",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.094.sabrinas_mr_mime.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 122
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/132",
+      "name": "Sabrina’s Slowpoke",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.095.sabrinas_slowpoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 79
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/132",
+      "name": "Sabrina’s Venonat",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.096.sabrinas_venonat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 48
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/132",
+      "name": "Blaine’s Quiz #1",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.097.blaines_quiz_1.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/132",
+      "name": "Brock",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.098.brock_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/132",
+      "name": "Charity",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.099.charity.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/132",
+      "name": "Erika",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.100.erika_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/132",
+      "name": "Lt. Surge",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.101.lt_surge.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/132",
+      "name": "Misty",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.102.misty_.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 103,
+      "id": "103",
+      "number": "103/132",
+      "name": "No Removal Gym",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.103.no_removal_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 104,
+      "id": "104",
+      "number": "104/132",
+      "name": "The Rocket’s Training Gym",
+      "rarity": "rare",
+      "image": "images/gym-heroes/g1.104.the_rockets_training_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 105,
+      "id": "105",
+      "number": "105/132",
+      "name": "Blaine’s Last Resort",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.105.blaines_last_resort.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 106,
+      "id": "106",
+      "number": "106/132",
+      "name": "Brock’s Training Method",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.106.brocks_training_method.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 107,
+      "id": "107",
+      "number": "107/132",
+      "name": "Celadon City Gym",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.107.celadon_city_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 108,
+      "id": "108",
+      "number": "108/132",
+      "name": "Cerulean City Gym",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.108.cerulean_city_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 109,
+      "id": "109",
+      "number": "109/132",
+      "name": "Erika’s Maids",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.109.erikas_maids.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 110,
+      "id": "110",
+      "number": "110/132",
+      "name": "Erika’s Perfume",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.110.erikas_perfume.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 111,
+      "id": "111",
+      "number": "111/132",
+      "name": "Good Manners",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.111.good_manners.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 112,
+      "id": "112",
+      "number": "112/132",
+      "name": "Lt. Surge’s Treaty",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.112.lt_surges_treaty.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 113,
+      "id": "113",
+      "number": "113/132",
+      "name": "Minion of Team Rocket",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.113.minion_of_team_rocket.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 114,
+      "id": "114",
+      "number": "114/132",
+      "name": "Misty’s Wrath",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.114.mistys_wrath.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 115,
+      "id": "115",
+      "number": "115/132",
+      "name": "Pewter City Gym",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.115.pewter_city_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 116,
+      "id": "116",
+      "number": "116/132",
+      "name": "Recall",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.116.recall.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 117,
+      "id": "117",
+      "number": "117/132",
+      "name": "Sabrina’s ESP",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.117.sabrinas_esp.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 118,
+      "id": "118",
+      "number": "118/132",
+      "name": "Secret Mission",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.118.secret_mission.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 119,
+      "id": "119",
+      "number": "119/132",
+      "name": "Tickling Machine",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.119.tickling_machine.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 120,
+      "id": "120",
+      "number": "120/132",
+      "name": "Vermilion City Gym",
+      "rarity": "uncommon",
+      "image": "images/gym-heroes/g1.120.vermilion_city_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 121,
+      "id": "121",
+      "number": "121/132",
+      "name": "Blaine’s Gamble",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.121.blaines_gamble.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 122,
+      "id": "122",
+      "number": "122/132",
+      "name": "Energy Flow",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.122.energy_flow.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 123,
+      "id": "123",
+      "number": "123/132",
+      "name": "Misty’s Duel",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.123.mistys_duel.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 124,
+      "id": "124",
+      "number": "124/132",
+      "name": "Narrow Gym",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.124.narrow_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 125,
+      "id": "125",
+      "number": "125/132",
+      "name": "Sabrina’s Gaze",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.125.sabrinas_gaze.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 126,
+      "id": "126",
+      "number": "126/132",
+      "name": "Trash Exchange",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.126.trash_exchange.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 127,
+      "id": "127",
+      "number": "127/132",
+      "name": "Fighting Energy",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.127.fighting_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 128,
+      "id": "128",
+      "number": "128/132",
+      "name": "Fire Energy",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.128.fire_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 129,
+      "id": "129",
+      "number": "129/132",
+      "name": "Grass Energy",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.129.grass_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 130,
+      "id": "130",
+      "number": "130/132",
+      "name": "Lightning Energy",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.130.lightning_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 131,
+      "id": "131",
+      "number": "131/132",
+      "name": "Psychic Energy",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.131.psychic_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 132,
+      "id": "132",
+      "number": "132/132",
+      "name": "Water Energy",
+      "rarity": "common",
+      "image": "images/gym-heroes/g1.132.water_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    }
+  ]
+}

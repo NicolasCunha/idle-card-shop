@@ -1,0 +1,968 @@
+{
+  "id": "neo-discovery",
+  "name": "Neo Discovery",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.67,
+          "holo": 0.33
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/75",
+      "name": "Espeon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.001.espeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 196
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/75",
+      "name": "Forretress",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.002.forretress.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 205
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/75",
+      "name": "Hitmontop",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.003.hitmontop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 237
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/75",
+      "name": "Houndoom",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.004.houndoom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 229
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/75",
+      "name": "Houndour",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.005.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/75",
+      "name": "Kabutops",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.006.kabutops.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 141
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/75",
+      "name": "Magnemite",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.007.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/75",
+      "name": "Politoed",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.008.politoed.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 186
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/75",
+      "name": "Poliwrath",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.009.poliwrath.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 62
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/75",
+      "name": "Scizor",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.010.scizor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 212
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/75",
+      "name": "Smeargle",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.011.smeargle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 235
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/75",
+      "name": "Tyranitar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.012.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/75",
+      "name": "Umbreon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.013.umbreon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 197
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/75",
+      "name": "Unown A",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.014.unown_a.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/75",
+      "name": "Ursaring",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.015.ursaring.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 217
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/75",
+      "name": "Wobbuffet",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.016.wobbuffet.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 202
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/75",
+      "name": "Yanma",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-discovery/n2.017.yanma_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 193
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/75",
+      "name": "Beedrill",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.018.beedrill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 15
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/75",
+      "name": "Butterfree",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.019.butterfree.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 12
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/75",
+      "name": "Espeon",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.020.espeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 196
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/75",
+      "name": "Forretress",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.021.forretress.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 205
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/75",
+      "name": "Hitmontop",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.022.hitmontop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 237
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/75",
+      "name": "Houndoom",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.023.houndoom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 229
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/75",
+      "name": "Houndour",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.024.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/75",
+      "name": "Kabutops",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.025.kabutops.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 141
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/75",
+      "name": "Magnemite",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.026.magnemite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 81
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/75",
+      "name": "Politoed",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.027.politoed.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 186
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/75",
+      "name": "Poliwrath",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.028.poliwrath.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 62
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/75",
+      "name": "Scizor",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.029.scizor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 212
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/75",
+      "name": "Smeargle",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.030.smeargle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 235
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/75",
+      "name": "Tyranitar",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.031.tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/75",
+      "name": "Umbreon",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.032.umbreon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 197
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/75",
+      "name": "Unown A",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.033.unown_a.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/75",
+      "name": "Ursaring",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.034.ursaring.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 217
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/75",
+      "name": "Wobbuffet",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.035.wobbuffet.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 202
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/75",
+      "name": "Yanma",
+      "rarity": "rare",
+      "image": "images/neo-discovery/n2.036.yanma_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 193
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/75",
+      "name": "Corsola",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.037.corsola.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 222
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/75",
+      "name": "Eevee",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.038.eevee_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 133
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/75",
+      "name": "Houndour",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.039.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/75",
+      "name": "Igglybuff",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.040.igglybuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 174
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/75",
+      "name": "Kakuna",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.041.kakuna.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 14
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/75",
+      "name": "Metapod",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.042.metapod.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 11
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/75",
+      "name": "Omastar",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.043.omastar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 139
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/75",
+      "name": "Poliwhirl",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.044.poliwhirl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 61
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/75",
+      "name": "Pupitar",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.045.pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/75",
+      "name": "Scyther",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.046.scyther.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 123
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/75",
+      "name": "Unown D",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.047.unown_d.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/75",
+      "name": "Unown F",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.048.unown_f.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/75",
+      "name": "Unown M",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.049.unown_m.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/75",
+      "name": "Unown N",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.050.unown_n.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/75",
+      "name": "Unown U",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.051.unown_u.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/75",
+      "name": "Xatu",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.052.xatu_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 178
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/75",
+      "name": "Caterpie",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.053.caterpie.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 10
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/75",
+      "name": "Dunsparce",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.054.dunsparce.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 206
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/75",
+      "name": "Hoppip",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.055.hoppip.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 187
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/75",
+      "name": "Kabuto",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.056.kabuto.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 140
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/75",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.057.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/75",
+      "name": "Mareep",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.058.mareep.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 179
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/75",
+      "name": "Natu",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.059.natu_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 177
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/75",
+      "name": "Omanyte",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.060.omanyte.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 138
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/75",
+      "name": "Pineco",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.061.pineco.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 204
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/75",
+      "name": "Poliwag",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.062.poliwag.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 60
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/75",
+      "name": "Sentret",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.063.sentret.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 161
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/75",
+      "name": "Spinarak",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.064.spinarak.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 167
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/75",
+      "name": "Teddiursa",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.065.teddiursa.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 216
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/75",
+      "name": "Tyrogue",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.066.tyrogue.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 236
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/75",
+      "name": "Unown E",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.067.unown_e.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/75",
+      "name": "Unown I",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.068.unown_i.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/75",
+      "name": "Unown O",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.069.unown_o.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/75",
+      "name": "Weedle",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.070.weedle.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 13
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/75",
+      "name": "Wooper",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.071.wooper.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 194
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/75",
+      "name": "Fossil Egg",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.072.fossil_egg.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/75",
+      "name": "Hyper Devolution Spray",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.073.hyper_devolution_spray.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/75",
+      "name": "Ruin Wall",
+      "rarity": "uncommon",
+      "image": "images/neo-discovery/n2.074.ruin_wall.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/75",
+      "name": "Energy Ark",
+      "rarity": "common",
+      "image": "images/neo-discovery/n2.075.energy_ark.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    }
+  ]
+}

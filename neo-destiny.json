@@ -1,0 +1,1419 @@
+{
+  "id": "neo-destiny",
+  "name": "Neo Destiny",
+  "game": "pokemon",
+  "theme": "pokemon",
+  "booster": {
+    "wholesalePrice": 4,
+    "slots": [
+      {
+        "count": 7,
+        "rarity": "common"
+      },
+      {
+        "count": 3,
+        "rarity": "uncommon"
+      },
+      {
+        "count": 1,
+        "weights": {
+          "rare": 0.66,
+          "holo": 0.32,
+          "secret": 0.02
+        }
+      }
+    ]
+  },
+  "rarities": {
+    "common": {
+      "name": "Common",
+      "short": "C",
+      "value": 0.15,
+      "color": "#a3a39a"
+    },
+    "uncommon": {
+      "name": "Uncommon",
+      "short": "U",
+      "value": 0.4,
+      "color": "#7fae7a"
+    },
+    "rare": {
+      "name": "Rare",
+      "short": "R",
+      "value": 3,
+      "color": "#6f9fd1"
+    },
+    "holo": {
+      "name": "Rare Holo",
+      "short": "H",
+      "value": 12,
+      "color": "#d9a53f"
+    },
+    "secret": {
+      "name": "Secret Rare",
+      "short": "S",
+      "value": 40,
+      "color": "#b36fd1"
+    }
+  },
+  "reprintFactor": 0.5,
+  "cards": [
+    {
+      "index": 1,
+      "id": "001",
+      "number": "1/105",
+      "name": "Dark Ampharos",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.001.dark_ampharos.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 181
+      }
+    },
+    {
+      "index": 2,
+      "id": "002",
+      "number": "2/105",
+      "name": "Dark Crobat",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.002.dark_crobat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 169
+      }
+    },
+    {
+      "index": 3,
+      "id": "003",
+      "number": "3/105",
+      "name": "Dark Donphan",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.003.dark_donphan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 232
+      }
+    },
+    {
+      "index": 4,
+      "id": "004",
+      "number": "4/105",
+      "name": "Dark Espeon",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.004.dark_espeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 196
+      }
+    },
+    {
+      "index": 5,
+      "id": "005",
+      "number": "5/105",
+      "name": "Dark Feraligatr",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.005.dark_feraligatr.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 160
+      }
+    },
+    {
+      "index": 6,
+      "id": "006",
+      "number": "6/105",
+      "name": "Dark Gengar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.006.dark_gengar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 94
+      }
+    },
+    {
+      "index": 7,
+      "id": "007",
+      "number": "7/105",
+      "name": "Dark Houndoom",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.007.dark_houndoom.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 229
+      }
+    },
+    {
+      "index": 8,
+      "id": "008",
+      "number": "8/105",
+      "name": "Dark Porygon2",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.008.dark_porygon2.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 233
+      }
+    },
+    {
+      "index": 9,
+      "id": "009",
+      "number": "9/105",
+      "name": "Dark Scizor",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.009.dark_scizor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 212
+      }
+    },
+    {
+      "index": 10,
+      "id": "010",
+      "number": "10/105",
+      "name": "Dark Typhlosion",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.010.dark_typhlosion.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 157
+      }
+    },
+    {
+      "index": 11,
+      "id": "011",
+      "number": "11/105",
+      "name": "Dark Tyranitar",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.011.dark_tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    },
+    {
+      "index": 12,
+      "id": "012",
+      "number": "12/105",
+      "name": "Light Arcanine",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.012.light_arcanine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 59
+      }
+    },
+    {
+      "index": 13,
+      "id": "013",
+      "number": "13/105",
+      "name": "Light Azumarill",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.013.light_azumarill.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 184
+      }
+    },
+    {
+      "index": 14,
+      "id": "014",
+      "number": "14/105",
+      "name": "Light Dragonite",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.014.light_dragonite.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 149
+      }
+    },
+    {
+      "index": 15,
+      "id": "015",
+      "number": "15/105",
+      "name": "Light Togetic",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.015.light_togetic.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 176
+      }
+    },
+    {
+      "index": 16,
+      "id": "016",
+      "number": "16/105",
+      "name": "Miracle Energy",
+      "rarity": "holo",
+      "foil": true,
+      "image": "images/neo-destiny/n4.016.miracle_energy.jpg",
+      "extra": {
+        "type": "Energy"
+      }
+    },
+    {
+      "index": 17,
+      "id": "017",
+      "number": "17/105",
+      "name": "Dark Ariados",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.017.dark_ariados.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 168
+      }
+    },
+    {
+      "index": 18,
+      "id": "018",
+      "number": "18/105",
+      "name": "Dark Magcargo",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.018.dark_magcargo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 219
+      }
+    },
+    {
+      "index": 19,
+      "id": "019",
+      "number": "19/105",
+      "name": "Dark Omastar",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.019.dark_omastar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 139
+      }
+    },
+    {
+      "index": 20,
+      "id": "020",
+      "number": "20/105",
+      "name": "Dark Slowking",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.020.dark_slowking.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 199
+      }
+    },
+    {
+      "index": 21,
+      "id": "021",
+      "number": "21/105",
+      "name": "Dark Ursaring",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.021.dark_ursaring.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 217
+      }
+    },
+    {
+      "index": 22,
+      "id": "022",
+      "number": "22/105",
+      "name": "Light Dragonair",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.022.light_dragonair.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 148
+      }
+    },
+    {
+      "index": 23,
+      "id": "023",
+      "number": "23/105",
+      "name": "Light Lanturn",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.023.light_lanturn.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 171
+      }
+    },
+    {
+      "index": 24,
+      "id": "024",
+      "number": "24/105",
+      "name": "Light Ledian",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.024.light_ledian.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 166
+      }
+    },
+    {
+      "index": 25,
+      "id": "025",
+      "number": "25/105",
+      "name": "Light Machamp",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.025.light_machamp.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 68
+      }
+    },
+    {
+      "index": 26,
+      "id": "026",
+      "number": "26/105",
+      "name": "Light Piloswine",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.026.light_piloswine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 221
+      }
+    },
+    {
+      "index": 27,
+      "id": "027",
+      "number": "27/105",
+      "name": "Unown G",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.027.unown_g.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 28,
+      "id": "028",
+      "number": "28/105",
+      "name": "Unown H",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.028.unown_h.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 29,
+      "id": "029",
+      "number": "29/105",
+      "name": "Unown W",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.029.unown_w.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 30,
+      "id": "030",
+      "number": "30/105",
+      "name": "Unown X",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.030.unown_x.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 31,
+      "id": "031",
+      "number": "31/105",
+      "name": "Chansey",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.031.chansey.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 113
+      }
+    },
+    {
+      "index": 32,
+      "id": "032",
+      "number": "32/105",
+      "name": "Dark Croconaw",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.032.dark_croconaw.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 159
+      }
+    },
+    {
+      "index": 33,
+      "id": "033",
+      "number": "33/105",
+      "name": "Dark Exeggutor",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.033.dark_exeggutor.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 103
+      }
+    },
+    {
+      "index": 34,
+      "id": "034",
+      "number": "34/105",
+      "name": "Dark Flaaffy",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.034.dark_flaaffy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 180
+      }
+    },
+    {
+      "index": 35,
+      "id": "035",
+      "number": "35/105",
+      "name": "Dark Forretress",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.035.dark_forretress.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 205
+      }
+    },
+    {
+      "index": 36,
+      "id": "036",
+      "number": "36/105",
+      "name": "Dark Haunter",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.036.dark_haunter.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 93
+      }
+    },
+    {
+      "index": 37,
+      "id": "037",
+      "number": "37/105",
+      "name": "Dark Omanyte",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.037.dark_omanyte.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 138
+      }
+    },
+    {
+      "index": 38,
+      "id": "038",
+      "number": "38/105",
+      "name": "Dark Pupitar",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.038.dark_pupitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 247
+      }
+    },
+    {
+      "index": 39,
+      "id": "039",
+      "number": "39/105",
+      "name": "Dark Quilava",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.039.dark_quilava.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 156
+      }
+    },
+    {
+      "index": 40,
+      "id": "040",
+      "number": "40/105",
+      "name": "Dark Wigglytuff",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.040.dark_wigglytuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 40
+      }
+    },
+    {
+      "index": 41,
+      "id": "041",
+      "number": "41/105",
+      "name": "Heracross",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.041.heracross.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 214
+      }
+    },
+    {
+      "index": 42,
+      "id": "042",
+      "number": "42/105",
+      "name": "Hitmonlee",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.042.hitmonlee.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 106
+      }
+    },
+    {
+      "index": 43,
+      "id": "043",
+      "number": "43/105",
+      "name": "Houndour",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.043.houndour.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 228
+      }
+    },
+    {
+      "index": 44,
+      "id": "044",
+      "number": "44/105",
+      "name": "Jigglypuff",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.044.jigglypuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 39
+      }
+    },
+    {
+      "index": 45,
+      "id": "045",
+      "number": "45/105",
+      "name": "Light Dewgong",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.045.light_dewgong.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 87
+      }
+    },
+    {
+      "index": 46,
+      "id": "046",
+      "number": "46/105",
+      "name": "Light Flareon",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.046.light_flareon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 136
+      }
+    },
+    {
+      "index": 47,
+      "id": "047",
+      "number": "47/105",
+      "name": "Light Golduck",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.047.light_golduck.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 55
+      }
+    },
+    {
+      "index": 48,
+      "id": "048",
+      "number": "48/105",
+      "name": "Light Jolteon",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.048.light_jolteon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 135
+      }
+    },
+    {
+      "index": 49,
+      "id": "049",
+      "number": "49/105",
+      "name": "Light Machoke",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.049.light_machoke.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 67
+      }
+    },
+    {
+      "index": 50,
+      "id": "050",
+      "number": "50/105",
+      "name": "Light Ninetales",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.050.light_ninetales.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 38
+      }
+    },
+    {
+      "index": 51,
+      "id": "051",
+      "number": "51/105",
+      "name": "Light Slowbro",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.051.light_slowbro.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 80
+      }
+    },
+    {
+      "index": 52,
+      "id": "052",
+      "number": "52/105",
+      "name": "Light Vaporeon",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.052.light_vaporeon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 134
+      }
+    },
+    {
+      "index": 53,
+      "id": "053",
+      "number": "53/105",
+      "name": "Light Venomoth",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.053.light_venomoth.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 49
+      }
+    },
+    {
+      "index": 54,
+      "id": "054",
+      "number": "54/105",
+      "name": "Light Wigglytuff",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.054.light_wigglytuff.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 40
+      }
+    },
+    {
+      "index": 55,
+      "id": "055",
+      "number": "55/105",
+      "name": "Scyther",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.055.scyther.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 123
+      }
+    },
+    {
+      "index": 56,
+      "id": "056",
+      "number": "56/105",
+      "name": "Togepi",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.056.togepi.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 175
+      }
+    },
+    {
+      "index": 57,
+      "id": "057",
+      "number": "57/105",
+      "name": "Unown C",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.057.unown_c.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 58,
+      "id": "058",
+      "number": "58/105",
+      "name": "Unown P",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.058.unown_p.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 59,
+      "id": "059",
+      "number": "59/105",
+      "name": "Unown Q",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.059.unown_q.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 60,
+      "id": "060",
+      "number": "60/105",
+      "name": "Unown Z",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.060.unown_z.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 61,
+      "id": "061",
+      "number": "61/105",
+      "name": "Cyndaquil",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.061.cyndaquil.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 155
+      }
+    },
+    {
+      "index": 62,
+      "id": "062",
+      "number": "62/105",
+      "name": "Dark Octillery",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.062.dark_octillery.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 224
+      }
+    },
+    {
+      "index": 63,
+      "id": "063",
+      "number": "63/105",
+      "name": "Dratini",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.063.dratini.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 147
+      }
+    },
+    {
+      "index": 64,
+      "id": "064",
+      "number": "64/105",
+      "name": "Exeggcute",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.064.exeggcute.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 102
+      }
+    },
+    {
+      "index": 65,
+      "id": "065",
+      "number": "65/105",
+      "name": "Gastly",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.065.gastly.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 92
+      }
+    },
+    {
+      "index": 66,
+      "id": "066",
+      "number": "66/105",
+      "name": "Girafarig",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.066.girafarig.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 203
+      }
+    },
+    {
+      "index": 67,
+      "id": "067",
+      "number": "67/105",
+      "name": "Gligar",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.067.gligar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 207
+      }
+    },
+    {
+      "index": 68,
+      "id": "068",
+      "number": "68/105",
+      "name": "Growlithe",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.068.growlithe.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 58
+      }
+    },
+    {
+      "index": 69,
+      "id": "069",
+      "number": "69/105",
+      "name": "Hitmonchan",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.069.hitmonchan.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 107
+      }
+    },
+    {
+      "index": 70,
+      "id": "070",
+      "number": "70/105",
+      "name": "Larvitar",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.070.larvitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 246
+      }
+    },
+    {
+      "index": 71,
+      "id": "071",
+      "number": "71/105",
+      "name": "Ledyba",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.071.ledyba.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 165
+      }
+    },
+    {
+      "index": 72,
+      "id": "072",
+      "number": "72/105",
+      "name": "Light Sunflora",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.072.light_sunflora.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 192
+      }
+    },
+    {
+      "index": 73,
+      "id": "073",
+      "number": "73/105",
+      "name": "Machop",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.073.machop.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 66
+      }
+    },
+    {
+      "index": 74,
+      "id": "074",
+      "number": "74/105",
+      "name": "Mantine",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.074.mantine.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 226
+      }
+    },
+    {
+      "index": 75,
+      "id": "075",
+      "number": "75/105",
+      "name": "Mareep",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.075.mareep.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 179
+      }
+    },
+    {
+      "index": 76,
+      "id": "076",
+      "number": "76/105",
+      "name": "Phanpy",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.076.phanpy.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 231
+      }
+    },
+    {
+      "index": 77,
+      "id": "077",
+      "number": "77/105",
+      "name": "Pineco",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.077.pineco.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 204
+      }
+    },
+    {
+      "index": 78,
+      "id": "078",
+      "number": "78/105",
+      "name": "Porygon",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.078.porygon.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 137
+      }
+    },
+    {
+      "index": 79,
+      "id": "079",
+      "number": "79/105",
+      "name": "Psyduck",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.079.psyduck.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 54
+      }
+    },
+    {
+      "index": 80,
+      "id": "080",
+      "number": "80/105",
+      "name": "Remoraid",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.080.remoraid.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 223
+      }
+    },
+    {
+      "index": 81,
+      "id": "081",
+      "number": "81/105",
+      "name": "Seel",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.081.seel_.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 86
+      }
+    },
+    {
+      "index": 82,
+      "id": "082",
+      "number": "82/105",
+      "name": "Slugma",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.082.slugma.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 218
+      }
+    },
+    {
+      "index": 83,
+      "id": "083",
+      "number": "83/105",
+      "name": "Sunkern",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.083.sunkern.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 191
+      }
+    },
+    {
+      "index": 84,
+      "id": "084",
+      "number": "84/105",
+      "name": "Swinub",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.084.swinub.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 220
+      }
+    },
+    {
+      "index": 85,
+      "id": "085",
+      "number": "85/105",
+      "name": "Totodile",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.085.totodile.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 158
+      }
+    },
+    {
+      "index": 86,
+      "id": "086",
+      "number": "86/105",
+      "name": "Unown L",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.086.unown_l.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 87,
+      "id": "087",
+      "number": "87/105",
+      "name": "Unown S",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.087.unown_s.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 88,
+      "id": "088",
+      "number": "88/105",
+      "name": "Unown T",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.088.unown_t.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 89,
+      "id": "089",
+      "number": "89/105",
+      "name": "Unown V",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.089.unown_v.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 201
+      }
+    },
+    {
+      "index": 90,
+      "id": "090",
+      "number": "90/105",
+      "name": "Venonat",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.090.venonat.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 48
+      }
+    },
+    {
+      "index": 91,
+      "id": "091",
+      "number": "91/105",
+      "name": "Vulpix",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.091.vulpix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 37
+      }
+    },
+    {
+      "index": 92,
+      "id": "092",
+      "number": "92/105",
+      "name": "Broken Ground Gym",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.092.broken_ground_gym.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 93,
+      "id": "093",
+      "number": "93/105",
+      "name": "EXP.ALL",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.093.exp_all.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 94,
+      "id": "094",
+      "number": "94/105",
+      "name": "Impostor Professor Oak’s Invention",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.094.impostor_professor_oaks_invention.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 95,
+      "id": "095",
+      "number": "95/105",
+      "name": "Radio Tower",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.095.radio_tower.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 96,
+      "id": "096",
+      "number": "96/105",
+      "name": "Thought Wave Machine",
+      "rarity": "rare",
+      "image": "images/neo-destiny/n4.096.thought_wave_machine.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 97,
+      "id": "097",
+      "number": "97/105",
+      "name": "Counterattack Claws",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.097.counterattack_claws.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 98,
+      "id": "098",
+      "number": "98/105",
+      "name": "Energy Amplifier",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.098.energy_amplifier.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 99,
+      "id": "099",
+      "number": "99/105",
+      "name": "Energy Stadium",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.099.energy_stadium.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 100,
+      "id": "100",
+      "number": "100/105",
+      "name": "Lucky Stadium",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.100.lucky_stadium.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 101,
+      "id": "101",
+      "number": "101/105",
+      "name": "Magnifier",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.101.magnifier.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 102,
+      "id": "102",
+      "number": "102/105",
+      "name": "Pokémon Personality Test",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.102.pokemon_personality_test.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 103,
+      "id": "103",
+      "number": "103/105",
+      "name": "Team Rocket’s Evil Deeds",
+      "rarity": "uncommon",
+      "image": "images/neo-destiny/n4.103.team_rockets_evil_deeds.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 104,
+      "id": "104",
+      "number": "104/105",
+      "name": "Heal Powder",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.104.heal_powder.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 105,
+      "id": "105",
+      "number": "105/105",
+      "name": "Mail from Bill",
+      "rarity": "common",
+      "image": "images/neo-destiny/n4.105.mail_from_bill.jpg",
+      "extra": {
+        "type": "Trainer"
+      }
+    },
+    {
+      "index": 106,
+      "id": "106",
+      "number": "106/105",
+      "name": "Shining Celebi",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.106.shining_celebi.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 251
+      }
+    },
+    {
+      "index": 107,
+      "id": "107",
+      "number": "107/105",
+      "name": "Shining Charizard",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.107.shining_charizard.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 6
+      }
+    },
+    {
+      "index": 108,
+      "id": "108",
+      "number": "108/105",
+      "name": "Shining Kabutops",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.108.shining_kabutops.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 141
+      }
+    },
+    {
+      "index": 109,
+      "id": "109",
+      "number": "109/105",
+      "name": "Shining Mewtwo",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.109.shining_mewtwo.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 150
+      }
+    },
+    {
+      "index": 110,
+      "id": "110",
+      "number": "110/105",
+      "name": "Shining Noctowl",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.110.shining_noctowl.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 164
+      }
+    },
+    {
+      "index": 111,
+      "id": "111",
+      "number": "111/105",
+      "name": "Shining Raichu",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.111.shining_raichu.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 26
+      }
+    },
+    {
+      "index": 112,
+      "id": "112",
+      "number": "112/105",
+      "name": "Shining Steelix",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.112.shining_steelix.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 208
+      }
+    },
+    {
+      "index": 113,
+      "id": "113",
+      "number": "113/105",
+      "name": "Shining Tyranitar",
+      "rarity": "secret",
+      "image": "images/neo-destiny/n4.113.shining_tyranitar.jpg",
+      "extra": {
+        "type": "Pokémon",
+        "pokedexNumber": 248
+      }
+    }
+  ]
+}

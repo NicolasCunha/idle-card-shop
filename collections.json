@@ -4,6 +4,12 @@
     "jungle.json",
     "fossil.json",
     "base-set-2.json",
-    "team-rocket.json"
+    "team-rocket.json",
+    "gym-heroes.json",
+    "gym-challenge.json",
+    "neo-genesis.json",
+    "neo-discovery.json",
+    "neo-revelation.json",
+    "neo-destiny.json"
   ]
 }

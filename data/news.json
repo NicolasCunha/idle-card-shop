@@ -1,6 +1,54 @@
 {
   "items": [
     {
+      "id": "set-gym-heroes",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "requires": "gym-heroes",
+      "title": "Gym Heroes is out",
+      "text": "132 cards. Gym Leaders and their Pokémon arrive in the shop."
+    },
+    {
+      "id": "set-gym-challenge",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "requires": "gym-challenge",
+      "title": "Gym Challenge is out",
+      "text": "132 cards. More Gym Leaders, and their strongest Pokémon."
+    },
+    {
+      "id": "set-neo-genesis",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "requires": "neo-genesis",
+      "title": "Neo Genesis is out",
+      "text": "111 cards. A new region, new Pokémon and baby Pokémon."
+    },
+    {
+      "id": "set-neo-discovery",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "requires": "neo-discovery",
+      "title": "Neo Discovery is out",
+      "text": "75 cards. Unown and more new Pokémon."
+    },
+    {
+      "id": "set-neo-revelation",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "requires": "neo-revelation",
+      "title": "Neo Revelation is out",
+      "text": "66 cards. Legendary birds and dogs, plus two Shining Secret Rares."
+    },
+    {
+      "id": "set-neo-destiny",
+      "date": "2026-11-28",
+      "version": "1.8.0",
+      "requires": "neo-destiny",
+      "title": "Neo Destiny is out",
+      "text": "113 cards. Light and Dark Pokémon, plus eight Shining Secret Rares."
+    },
+    {
       "id": "2026-11-28-storage",
       "date": "2026-11-28",
       "version": "1.7.3",

@@ -1,7 +1,7 @@
 // Service worker: lets the game install as an app and run offline.
 // Game files: network first (updates show up on the next load), cache as
 // fallback. Card images: cache first, kept across versions.
-const VERSION = 'v9';
+const VERSION = 'v10';
 const SHELL = `shell-${VERSION}`;
 const IMAGES = 'images-v1';
 const CORE = [
