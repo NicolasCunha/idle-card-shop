@@ -14,6 +14,7 @@ Decided by Nicolas on 2026-11-28 (he approved every recommended option). GDD sec
 - When cash cannot cover the next payment, the employee stops (status `unpaid`) until there is cash. No debt, no quitting. Training also waits.
 - `emp.hiredDay` (market day of hiring). Saves from v4: set on the first tick after loading, so tenure counts from that day.
 - Staff tab shows each employee's salary per day and the total payroll.
+- Firing (Nicolas, 2026-11-28, game 1.9.5): `Fire $N` on each employee. Severance = one day of their current salary per 6 market days at the shop (rounded up, at least one day), booked as `salaries`. Needs the cash; a confirm box shows the amount. Tutorial rev 11: the `salary` step mentions severance.
 
 ## Finances tab
 

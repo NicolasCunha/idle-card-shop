@@ -1,5 +1,5 @@
 {
-  "revision": 10,
+  "revision": 11,
   "steps": [
     { "id": "buy", "text": "Buy a booster.", "target": "[data-action='buy'][data-n='1']", "tab": "shop", "done": "boostersBought" },
     { "id": "open", "text": "Open it.", "target": "[data-action='open'][data-n='1']", "tab": "shop", "done": "boostersOpened" },
@@ -13,7 +13,7 @@
     { "id": "supply", "text": "Boosters have a limited supply. Less supply, higher price. Buy and sell them here.", "target": ".boosters", "tab": "market", "when": "visitedMarket", "done": "tradedBooster" },
     { "id": "settings", "text": "Theme, volume and save are in Settings.", "target": "[data-tab='settings']", "when": "hasStaff", "done": "visitedSettings" },
     { "id": "news", "text": "New collections, reprints and updates show up in News.", "target": "#news-btn", "when": "hasStaff", "done": "visitedNews" },
-    { "id": "salary", "text": "Staff earn a salary every market day. See income and costs in Finances.", "target": "[data-tab='finances']", "when": "hasStaff", "done": "visitedFinances" },
+    { "id": "salary", "text": "Staff earn a salary every market day, and severance if you fire them. See income and costs in Finances.", "target": "[data-tab='finances']", "when": "hasStaff", "done": "visitedFinances" },
     { "id": "storage", "text": "Sell sealed boosters, boxes and accessories from Storage.", "target": "[data-tab='storage']", "when": "storageUnlocked", "done": "visitedStorage" },
     { "id": "shelf", "text": "Set a price and list goods on the shelf. Customers buy them too.", "target": ".goods", "tab": "storage", "when": "visitedStorage", "done": "listedGood" },
     { "id": "marketing", "text": "Run a campaign for more customers for a few days.", "target": "[data-tab='marketing']", "when": "marketingUnlocked", "done": "visitedMarketing" },

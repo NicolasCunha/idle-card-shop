@@ -775,6 +775,25 @@ export function salaryPerDay(state, emp) {
 }
 export const payroll = state => state.staff.reduce((a, e) => a + salaryPerDay(state, e), 0);
 
+// Firing (Nicolas, 2026-11-28): severance of one day's salary per
+// SEVERANCE_DAYS market days at the shop (one real hour), at least one day.
+// Booked as salaries. No cash, no firing: nothing goes into debt.
+export const SEVERANCE_DAYS = 6;
+export function severance(state, emp) {
+  const days = emp.hiredDay == null ? 0 : Math.max(0, state.day - emp.hiredDay);
+  return salaryPerDay(state, emp) * Math.max(1, Math.ceil(days / SEVERANCE_DAYS));
+}
+export const canFire = (state, emp) => state.staff.includes(emp) && state.money >= severance(state, emp) - 1e-9;
+export function fire(state, emp) {
+  if (!canFire(state, emp)) return false;
+  const fee = severance(state, emp);
+  spend(state, fee, 'salaries');
+  state.stats.salariesPaid += fee;
+  state.staff.splice(state.staff.indexOf(emp), 1);
+  log(state, 'staff', `${emp.name} left the shop`);
+  return true;
+}
+
 function tickEmployee(state, sets, emp, dt) {
   if (emp.hiredDay == null) emp.hiredDay = state.day;
   const due = salaryPerDay(state, emp) * dt / DAY_SECONDS;

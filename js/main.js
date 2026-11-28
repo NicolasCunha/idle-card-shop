@@ -372,6 +372,12 @@ function run(action, d) {
     case 'wh-store': if (G.storeInWarehouse(state, d.g, Infinity)) Audio.sfx.click(); break;
     case 'wh-ship': if (G.shipToShop(state, d.g, 100)) Audio.sfx.click(); break;
     case 'wh-target': G.setTarget(state, d.g, d.value); break;
+    case 'fire': {
+      const emp = state.staff.find(e => String(e.id) === d.id);
+      if (!emp || !G.canFire(state, emp)) break;
+      confirmBox(`Fire ${emp.name} for ${fmtMoney(G.severance(state, emp))}?`, 'Fire', () => { G.fire(state, emp); UI.frame(); });
+      return;
+    }
     case 'train': {
       const emp = state.staff.find(e => String(e.id) === d.id);
       if (emp && G.train(state, emp, d.skill)) Audio.sfx.coin();

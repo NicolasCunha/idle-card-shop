@@ -765,6 +765,7 @@ PANELS.staff = {
           <span class="status" data-k="st-${e.id}"></span>
           <span class="grow"></span>
           <span class="muted small" title="${esc(TIPS.salary)}"><span data-k="sal-${e.id}"></span>/day</span>
+          <button class="small" data-action="fire" data-id="${e.id}" data-d="fi-${e.id}" title="${esc(TIPS.fire)}">Fire <span data-k="fi-${e.id}"></span></button>
         </div>
         <div class="jobs">${[1, 2].map(slot => jobRow(e, slot)).join('')}</div>
         <div class="progress thin"><i data-w="pg-${e.id}"></i></div>
@@ -800,6 +801,8 @@ PANELS.staff = {
     const v = { payroll: fmtMoney(G.payroll(S)) };
     for (const e of S.staff) {
       v[`sal-${e.id}`] = fmtMoney(G.salaryPerDay(S, e));
+      v[`fi-${e.id}`] = fmtMoney(G.severance(S, e));
+      v[`d:fi-${e.id}`] = !G.canFire(S, e);
       v[`st-${e.id}`] = e.training ? `training ${fmtDuration(e.training.left)}` : e.status;
       if (e.training) v[`pg-${e.id}`] = 1 - e.training.left / e.training.total;
       else if (curJob(e) && (e.status === 'working' || e.status === 'backup job')) v[`pg-${e.id}`] = Math.min(1, e.progress / G.skillDuration(curJob(e)[0], e.skills[curJob(e)[0]].lvl));

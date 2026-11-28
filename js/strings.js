@@ -73,6 +73,7 @@ export const TIPS = {
   customers: 'Each customer has a budget. At market price 9 in 10 buy; 20% below always sells, 30% above sells less than half the time, 60% above never. Rich customers pay a bit more.',
   milestone: 'Discovery bonus on sale price for this collection.',
   day: 'A new market day every 10 minutes, the same for everyone.',
+  fire: 'Severance: one day of salary per 6 market days at the shop, at least one day.',
   salary: 'Per market day: $2 per skill level, +1% per day at the shop (up to +50%). Unpaid staff wait for cash.',
   goodPrice: 'Price tag. Customers react to it like card tags.',
   box: '36 boosters. 10% off the distributor price.',

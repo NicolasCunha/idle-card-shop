@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-fire",
+      "date": "2026-11-28",
+      "version": "1.9.5",
+      "title": "Firing staff",
+      "text": "Each employee can now be fired. Severance is one day of salary for every 6 market days they worked at the shop."
+    },
+    {
       "id": "2026-11-28-overflow",
       "date": "2026-11-28",
       "version": "1.9.4",

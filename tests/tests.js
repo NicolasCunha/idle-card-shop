@@ -199,6 +199,21 @@ async function run() {
   s.money = 25;
   G.tick(s, sets, 20, T0 + 45000);
   ok(s.money >= s.rules.cashReserve - 1e-9 && emp.status === 'cash reserve', 'buyer respects the cash reserve');
+  {
+    const f = fresh(sets, order);
+    f.firstDay = f.day = M.dayNumber(T0);
+    f.money = 10000;
+    f.upgrades.staffRoom = 2;
+    const a = G.hire(f), b = G.hire(f);
+    const fee0 = G.severance(f, a);
+    f.day += 30;
+    const fee30 = G.severance(f, a);
+    ok(Math.abs(fee0 - G.salaryPerDay({ ...f, day: f.day - 30 }, a)) < 1e-9 && Math.abs(fee30 - G.salaryPerDay(f, a) * 5) < 1e-9, 'severance: one day of salary per 6 days at the shop', `${fmtMoney(fee0)} -> ${fmtMoney(fee30)}`);
+    const m0 = f.money;
+    ok(G.fire(f, a) && f.staff.length === 1 && f.staff[0] === b && Math.abs(m0 - f.money - fee30) < 1e-9, 'firing pays the severance and frees the slot');
+    f.money = 0;
+    ok(!G.fire(f, b) && f.staff.length === 1, 'no cash, no firing');
+  }
 
   // ---------- Economy v5 ----------
   section('Salaries and Finances');
