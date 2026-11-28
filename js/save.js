@@ -6,12 +6,12 @@
 // - After migrations, state is merged with defaults: missing fields get the
 //   default, unknown fields are dropped. Unknown cards and collections are skipped.
 
-import { newState, SKILL_KEYS, goodInfo } from './game.js';
+import { newState, SKILL_KEYS, goodInfo, CAMPAIGNS, WAREHOUSE } from './game.js';
 import { LEGACY_SEED } from './market.js';
 
 export const GAME_ID = 'idlecardshop';
-export const SAVE_VERSION = 5;
-export const GAME_VERSION = '1.8.1';
+export const SAVE_VERSION = 6;
+export const GAME_VERSION = '1.9.0';
 export const SAVE_KEY = 'idlecardshop.save';
 export const PREFS_KEY = 'idlecardshop.prefs';
 
@@ -56,6 +56,17 @@ export const MIGRATIONS = {
     if (state && typeof state === 'object' && Object.keys(state).length) {
       state.seed = LEGACY_SEED;
       for (const e of state.staff || []) if (e && typeof e === 'object') e.hiredDay = null;
+    }
+    return state;
+  },
+  // v6 (2026-11-28, docs/sdd/properties-v6.md; all choices Nicolas's): staff
+  // get a primary and a secondary job. The current task stays as the primary,
+  // for any collection (set null), and the secondary is empty (sanitize fills
+  // both). Warehouses, campaigns and notice details start from their defaults
+  // (none). Saves over the new storage limit keep their goods.
+  5: state => {
+    for (const e of state?.staff || []) {
+      if (e && typeof e === 'object') { e.set = null; e.task2 = null; e.set2 = null; }
     }
     return state;
   },
@@ -130,6 +141,17 @@ export function sanitize(state, sets) {
   state.ledger = state.ledger.filter(e => isPlainObject(e) && Number.isFinite(e.day) && isPlainObject(e.in) && isPlainObject(e.out));
   for (const [id, day] of Object.entries(state.achievements)) if (!Number.isFinite(day)) delete state.achievements[id];
   state.newsSeen = state.newsSeen.filter(id => typeof id === 'string');
+  const c = state.campaign;
+  if (!isPlainObject(c) || !CAMPAIGNS[c.kind] || !(c.left > 0)) state.campaign = null;
+  const p = state.properties;
+  p.warehouses = p.warehouses.filter(w => isPlainObject(w) && Number.isInteger(w.level))
+    .map(w => ({ id: Number.isFinite(w.id) ? w.id : state.nextId++, level: Math.min(WAREHOUSE.maxLevel, Math.max(1, w.level)) }));
+  const okCount = n => Number.isInteger(n) && n > 0;
+  for (const m of [p.goods, p.targets]) {
+    for (const [g, n] of Object.entries(m)) if (!goodInfo(sets, g) || !okCount(n)) delete m[g];
+  }
+  p.ships = p.ships.filter(sh => isPlainObject(sh) && typeof sh.g === 'string' && goodInfo(sets, sh.g)
+    && okCount(sh.n) && Number.isFinite(sh.arrive));
   for (const map of [state.stock, state.binder, state.seen]) {
     for (const sid of Object.keys(map)) if (!sets[sid]) delete map[sid];
   }
@@ -153,6 +175,9 @@ export function sanitize(state, sets) {
       name: String(e.name || 'Clerk'),
       skills,
       task: SKILL_KEYS.includes(e.task) ? e.task : null,
+      set: typeof e.set === 'string' && sets[e.set] ? e.set : null,
+      task2: SKILL_KEYS.includes(e.task2) ? e.task2 : null,
+      set2: typeof e.set2 === 'string' && sets[e.set2] ? e.set2 : null,
       progress: Number(e.progress) || 0,
       training: e.training && SKILL_KEYS.includes(e.training.skill) ? e.training : null,
       status: 'idle',

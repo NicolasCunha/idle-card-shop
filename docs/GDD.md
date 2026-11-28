@@ -195,7 +195,7 @@ A new card gets the NEW badge at any level. Each animation step can be sped up w
 
 ## 6. Staff
 
-Each employee has 3 independent skills, level 1 to 10, and does one task at a time chosen by the player. They improve on their own at the task they practice, or faster with paid training.
+Each employee has 3 independent skills, level 1 to 10, and works a main job and an optional backup job chosen by the player (Nicolas, 2026-11-28; 1.9.0): a job is an action and a collection, and the backup job runs only while the main one has nothing to do. They improve on their own at the task they practice, or faster with paid training.
 
 | Skill | What it does | Time at level 1 |
 | --- | --- | --- |
@@ -206,7 +206,7 @@ Each employee has 3 independent skills, level 1 to 10, and does one task at a ti
 - **Speed:** each level makes the action 22% faster; at level 10 it is about 9× faster.
 - **Experience:** each action gives 1 XP in that skill. XP to the next level = 25 × level^2.3 (level 1→2: 25 actions; level 9→10: about 3,900).
 - **Training:** costs 40 × 2^level and takes 20 s × level; the employee does not work while training. +1 level.
-- **Hiring:** costs 50 × 2.2^(current staff). Slots: 1 + the Staff room upgrade. Each new employee starts at level 1 or 2 in each skill, at random.
+- **Hiring:** costs 50 × 2.2^(current staff) up to the 9th hire, then ×1.35 per hire. Slots: 1 + the Staff room upgrade, up to 30. Each new employee starts at level 1 or 2 in each skill, at random.
 - **Visible status:** working, idle, training, or the reason for waiting (no packs, showcase full, cash reserve...).
 
 **Shop rules** (for staff; some also for the player)
@@ -264,7 +264,7 @@ Money comes in when customers buy from the showcase; demand is the shop's natura
 | Bigger showcase | +20 showcase slots (base 40) | $60 | ×1.6 | 20 |
 | Marketing | +25% customers | $80 | ×1.75 | 20 |
 | Reputation | +6% price paid | $120 | ×1.85 | 15 |
-| Staff room | +1 staff slot | $150 | ×2.2 | 8 |
+| Staff room | +1 staff slot | $150 | ×2.2 (×1.35 after level 8) | 29 |
 | Fame | Richer customers, +3% customers, shop decor | $200 | ×1.5 | Lv 1–20 |
 
 **Starting numbers**
@@ -375,6 +375,13 @@ Customers also buy sealed products and accessories: sealed boosters, booster box
 - **Shelf:** 20 goods, +10 per Bigger showcase level.
 - **Customers:** while the shelf has goods, 25% of visits look at the shelf instead of the cards and react to the tags with the same price bands as cards.
 
+- **Storage space (1.9.0):** boosters and accessories take 1 space, a booster box 10, all in the Bigger storage room.
+
+### 8.3.1 Properties and Marketing (Nicolas, 2026-11-28; 1.9.0, `docs/sdd/properties-v6.md`)
+
+- **Properties tab** (at $25K earned): warehouses bought for $50K, levels 1-10 at $50K × level, 100K space per level, fee $250 per level per market day (unpaid: shipments wait). Goods bought straight into them or moved from the shop, and shipped to the shop by hand or by a "keep in shop" target, arriving in 1 to 3 market days by size.
+- **Marketing tab** (at $1K earned): one campaign at a time. Flyers $500, 1 day, +25% customers. Radio $5K, 2 days, +50% customers, +10% budgets. TV $50K, 3 days, +100% customers, +25% budgets.
+
 ### 8.4 Finances tab (Nicolas, 2026-11-28; 1.7.0)
 
 Every money change is booked by category (card sales, bulk, Storage sales, Market, distributor, boxes and accessories, upgrades, hiring, training, salaries). The **Finances** tab (unlocks with the Showcase) shows today's income, expenses and net, and the previous 72 market days (12 hours) with a net bar.
@@ -422,7 +429,9 @@ The interface is menus and panels, in English, with a pastel palette leaning to 
 | Showcase | Cards for sale with number, collection, tag, market and customer feeling; Customers panel; Recall all |
 | Market | Search, prices, trends, sealed boosters, news |
 | Storage | Sealed boosters, booster boxes and accessories: stock, price, shelf |
-| Staff | Employees, skills, salaries, training, shop rules |
+| Properties | Warehouses, their goods, shipments to the shop |
+| Staff | Employees, jobs, skills, salaries, training, shop rules |
+| Marketing | Campaigns |
 | Upgrades | Shop upgrades |
 | Finances | Today's income and expenses by category, past days |
 | Settings | Theme (10 themes plus System), motion, volumes, tutorial, save (System), Code (debug menu) |
@@ -490,6 +499,9 @@ The tutorial teaches the loop in the first game, step by step, and is updated wi
 | First Market visit | "supply" step: boosters have limited supply, buy and sell here |
 | Market tab | Storage tab ("storage" and "shelf" steps) |
 | First employee | "news" step: News button; "salary" step: Finances |
+| Second employee | "backup" step: backup job |
+| Upgrades open and $1K earned | Marketing tab ("marketing" step) |
+| $25K earned | Properties tab ("properties" step) |
 | 12 market days after the previous collection | The next collection, everywhere ("nextset" step) |
 
 A tab that has appeared never disappears.

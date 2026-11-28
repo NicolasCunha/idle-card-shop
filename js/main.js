@@ -353,11 +353,23 @@ function run(action, d) {
     }
     case 'close': closeOverlay(); break;
     case 'hire': if (G.hire(state)) Audio.sfx.coin(); break;
-    case 'task': {
+    case 'job':
+    case 'job-set': {
       const emp = state.staff.find(e => String(e.id) === d.id);
-      if (emp) G.setTask(state, emp, d.value);
+      if (!emp) break;
+      const slot = Number(d.slot) === 2 ? 2 : 1;
+      const task = slot === 2 ? emp.task2 : emp.task, sid = slot === 2 ? emp.set2 : emp.set;
+      if (action === 'job') G.setJob(state, emp, slot, d.value, sid);
+      else G.setJob(state, emp, slot, task, d.value);
       break;
     }
+    case 'campaign': if (G.startCampaign(state, d.kind)) Audio.sfx.coin(); break;
+    case 'wh-buy': if (G.buyWarehouse(state)) Audio.sfx.coin(); break;
+    case 'wh-up': if (G.upgradeWarehouse(state, Number(d.id))) Audio.sfx.coin(); break;
+    case 'wh-stock': if (G.buyToWarehouse(state, sets, d.g, Number(d.n) || 0)) Audio.sfx.coin(); break;
+    case 'wh-store': if (G.storeInWarehouse(state, d.g, Infinity)) Audio.sfx.click(); break;
+    case 'wh-ship': if (G.shipToShop(state, d.g, 100)) Audio.sfx.click(); break;
+    case 'wh-target': G.setTarget(state, d.g, d.value); break;
     case 'train': {
       const emp = state.staff.find(e => String(e.id) === d.id);
       if (emp && G.train(state, emp, d.skill)) Audio.sfx.coin();

@@ -7,7 +7,9 @@ export const TABS = {
   showcase: 'Showcase',
   market: 'Market',
   storage: 'Storage',
+  properties: 'Properties',
   staff: 'Staff',
+  marketing: 'Marketing',
   upgrades: 'Upgrades',
   finances: 'Finances',
   settings: 'Settings',
@@ -18,6 +20,13 @@ export const LEDGER_CATS = {
   cards: 'Card sales', bulk: 'Bulk sales', sealed: 'Storage sales', market: 'Market',
   boosters: 'Distributor', goods: 'Boxes and accessories', upgrades: 'Upgrades',
   hires: 'Hiring', training: 'Training', salaries: 'Salaries',
+  properties: 'Properties', marketing: 'Marketing',
+};
+
+export const CAMPAIGN_TEXT = {
+  flyers: { name: 'Flyers', effect: '+25% customers' },
+  radio: { name: 'Radio ad', effect: '+50% customers, +10% budgets' },
+  tv: { name: 'TV ad', effect: '+100% customers, +25% budgets' },
 };
 
 export const THEMES = [
@@ -69,6 +78,15 @@ export const TIPS = {
   box: '36 boosters. 10% off the distributor price.',
   openBox: 'Needs room for 36 boosters.',
   shelf: 'Goods for sale. Room grows with Bigger showcase.',
+  space: 'Boosters and accessories take 1 space, booster boxes 10.',
+  jobMain: 'What this employee does first.',
+  jobBackup: 'Done while the main job has nothing to do.',
+  jobSet: 'Any: the shop rules collection for Buy and Open, every collection for Price.',
+  whFee: '$250 per warehouse level each market day. Unpaid, shipments wait.',
+  whTarget: 'Shipments keep this many in the shop.',
+  whBuy: 'Buy straight into the warehouses at distributor price.',
+  whStore: 'Move everything from the shop into the warehouses.',
+  whShip: 'Send to the shop: 1 day up to 1K space, 2 days up to 10K, 3 days above.',
 };
 
 // Simulated rival shops (supply.js RIVALS, same order: biggest first).

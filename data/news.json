@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-properties",
+      "date": "2026-11-28",
+      "version": "1.9.0",
+      "title": "Warehouses, campaigns and bigger teams",
+      "text": "Up to 30 staff, each with a main and a backup job for a chosen collection. Boxes and accessories now take storage space. New Properties tab with warehouses that restock the shop, and a Marketing tab with Flyers, Radio and TV campaigns."
+    },
+    {
       "id": "2026-11-28-news",
       "date": "2026-11-28",
       "version": "1.8.1",

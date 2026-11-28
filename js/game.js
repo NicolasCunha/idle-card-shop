@@ -54,7 +54,9 @@ export const UPGRADES = {
   showcase: { baseCost: 60, growth: 1.6, max: 20 },
   marketing: { baseCost: 80, growth: 1.75, max: 20 },
   reputation: { baseCost: 120, growth: 1.85, max: 15 },
-  staffRoom: { baseCost: 150, growth: 2.2, max: 8 },
+  // Up to 30 staff (Nicolas, 2026-11-28); past the old max of 8 the cost grows
+  // by `softGrowth` instead.
+  staffRoom: { baseCost: 150, growth: 2.2, max: 29, softFrom: 8, softGrowth: 1.35 },
   // Fame (Nicolas, 2026-11-27): shown as Lv 1-20; the saved value is 0-19.
   fame: { baseCost: 200, growth: 1.5, max: 19, start: 1 },
 };
@@ -91,7 +93,7 @@ export const MILESTONES = [
 export const SALARY_PER_LEVEL = 2;
 export const TENURE_BONUS = 0.01;
 export const TENURE_MAX = 0.5;
-const DAY_SECONDS = M.DAY_MS / 1000;
+export const DAY_SECONDS = M.DAY_MS / 1000;
 
 // Finances: one ledger entry per market day, this many kept.
 export const LEDGER_DAYS = 72;
@@ -106,7 +108,8 @@ export const SHELF_PER_LEVEL = 10;
 const ACC_SWING = 0.05;                   // accessories' daily value swing
 
 const NAMES = ['Ada', 'Ben', 'Cleo', 'Dev', 'Eli', 'Finn', 'Gus', 'Hana', 'Ivy', 'Jo', 'Kai', 'Lou',
-  'Mae', 'Nico', 'Otto', 'Pia', 'Rae', 'Sam', 'Theo', 'Uma', 'Vic', 'Wren'];
+  'Mae', 'Nico', 'Otto', 'Pia', 'Rae', 'Sam', 'Theo', 'Uma', 'Vic', 'Wren',
+  'Yara', 'Zed', 'Bea', 'Cal', 'Dot', 'Ezra', 'Faye', 'Gil', 'Iris', 'June', 'Lia', 'Max', 'Noor', 'Ruth'];
 
 // ---------- Randomness (swappable for tests) ----------
 let rng = Math.random;
@@ -127,8 +130,13 @@ export const skillDuration = (skill, lvl) => SKILLS[skill].base * Math.pow(SPEED
 export const xpToNext = lvl => Math.round(25 * Math.pow(lvl, 2.3));
 export const trainCost = lvl => Math.round(40 * Math.pow(2, lvl));
 export const trainTime = lvl => 20 * lvl;
-export const hireCost = n => Math.round(50 * Math.pow(2.2, n));
-export const upgradeCost = (key, lvl) => Math.round(UPGRADES[key].baseCost * Math.pow(UPGRADES[key].growth, lvl));
+// The 9 first hires as before; later ones grow by 1.35 each (30 staff).
+export const hireCost = n => Math.round(50 * Math.pow(2.2, Math.min(n, 8)) * Math.pow(1.35, Math.max(0, n - 8)));
+export function upgradeCost(key, lvl) {
+  const u = UPGRADES[key];
+  if (u.softFrom == null || lvl <= u.softFrom) return Math.round(u.baseCost * Math.pow(u.growth, lvl));
+  return Math.round(u.baseCost * Math.pow(u.growth, u.softFrom) * Math.pow(u.softGrowth, lvl - u.softFrom));
+}
 // Cost of n items starting at level k: base x rate^k x (rate^n - 1) / (rate - 1).
 export const seriesCost = (base, rate, k, n) => base * Math.pow(rate, k) * (Math.pow(rate, n) - 1) / (rate - 1);
 
@@ -143,7 +151,25 @@ export function storageAt(level) {
 export const stockCapacity = s => storageAt(s.upgrades.storage);
 export const showcaseCapacity = s => BASE_SHOWCASE + 20 * s.upgrades.showcase;
 export const maxStaff = s => 1 + s.upgrades.staffRoom;
-export const customerInterval = s => BASE_CUSTOMER_INTERVAL / ((1 + 0.25 * s.upgrades.marketing) * (1 + FAME_CUSTOMERS * (s.upgrades.fame || 0)));
+export const customerInterval = s => BASE_CUSTOMER_INTERVAL / ((1 + 0.25 * s.upgrades.marketing) * (1 + FAME_CUSTOMERS * (s.upgrades.fame || 0))
+  * (1 + (campaignOf(s)?.customers || 0)));
+
+// Marketing campaigns (Nicolas, 2026-11-28): one at a time, for some market
+// days; more customers and, for the bigger ones, bigger budgets.
+export const CAMPAIGNS = {
+  flyers: { cost: 500, days: 1, customers: 0.25, budget: 0 },
+  radio: { cost: 5000, days: 2, customers: 0.5, budget: 0.1 },
+  tv: { cost: 50000, days: 3, customers: 1, budget: 0.25 },
+};
+export const campaignOf = s => (s.campaign && CAMPAIGNS[s.campaign.kind] && s.campaign.left > 0 ? CAMPAIGNS[s.campaign.kind] : null);
+export function startCampaign(state, kind) {
+  const c = CAMPAIGNS[kind];
+  if (!c || campaignOf(state) || state.money < c.cost - 1e-9) return false;
+  spend(state, c.cost, 'marketing');
+  state.campaign = { kind, left: c.days * DAY_SECONDS };
+  state.stats.campaigns++;
+  return true;
+}
 // Budget ceiling of rich customers at a Fame value (0-19).
 export const richCap = fame => BUDGET_MAX * Math.pow(RICH_MAX / BUDGET_MAX, fame / UPGRADES.fame.max);
 export const budgetCap = fame => BUDGET_MAX * (1 + fame / UPGRADES.fame.max);
@@ -151,12 +177,13 @@ export const richShare = fame => (fame > 0 ? RICH_SHARE + (RICH_SHARE_MAX - RICH
 export function customerBudget(state) {
   const fame = state.upgrades.fame || 0;
   const cap = budgetCap(fame);
-  if (fame > 0 && rng() < richShare(fame)) return cap * Math.pow(richCap(fame) / cap, rng());
-  return BUDGET_MIN * Math.pow(cap / BUDGET_MIN, rng());
+  const boost = 1 + (campaignOf(state)?.budget || 0);
+  if (fame > 0 && rng() < richShare(fame)) return boost * cap * Math.pow(richCap(fame) / cap, rng());
+  return boost * BUDGET_MIN * Math.pow(cap / BUDGET_MIN, rng());
 }
 // Rich customers (budget above the everyday ceiling) weigh cards by value
 // and accept higher tags (RICH_LENIENCE).
-const isRich = (budget, state) => budget > budgetCap(state.upgrades.fame || 0);
+const isRich = (budget, state) => budget > budgetCap(state.upgrades.fame || 0) * (1 + (campaignOf(state)?.budget || 0));
 const lookWeight = (budget, state) => (isRich(budget, state) ? v => v : Math.sqrt);
 
 // The newest released collection past the first, and the share of customers
@@ -174,6 +201,16 @@ export function wantedSet(state, sets) {
 }
 export const reputationBonus = s => 1 + 0.06 * s.upgrades.reputation;
 export const totalStock = s => Object.values(s.stock).reduce((a, b) => a + b, 0);
+// Shop storage holds boosters (1 each), booster boxes (BOX_SPACE each) and
+// accessories (1 each) (Nicolas, 2026-11-28).
+export const BOX_SPACE = 10;
+export const goodSpace = g => (g.startsWith('x:') ? BOX_SPACE : 1);
+export function storageUsed(s) {
+  let n = totalStock(s);
+  for (const [g, k] of Object.entries(s.goods)) n += goodSpace(g) * k;
+  return n;
+}
+export const storageFree = s => Math.max(0, stockCapacity(s) - storageUsed(s));
 
 // ---------- State ----------
 export function newSeed() {
@@ -205,7 +242,7 @@ export function newState(sets, order, nowMs = Date.now()) {
     day: 0,
     firstDay: null,
     customerTimer: 3,
-    unlocked: { priceList: false, binder: false, showcase: false, upgrades: false, staff: false, market: false, storage: false, finances: false },
+    unlocked: { priceList: false, binder: false, showcase: false, upgrades: false, staff: false, market: false, storage: false, finances: false, marketing: false, properties: false },
     tutorial: { rev: 0, done: [], skipped: false, base: {} },
     flags: { visited: {} },
     stats: {
@@ -213,7 +250,12 @@ export function newState(sets, order, nowMs = Date.now()) {
       cardsSold: 0, bulkSold: 0, customers: 0, missedCustomers: 0, levelsGained: 0, playTime: 0,
       boostersSold: 0, boostersBoughtMarket: 0,
       sealedSold: 0, boxesBought: 0, boxesOpened: 0, accessoriesBought: 0, salariesPaid: 0,
+      campaigns: 0, feesPaid: 0, shipments: 0,
     },
+    campaign: null,     // {kind, left: seconds} running marketing campaign
+    // Warehouses (Properties tab): levels, pooled goods (same ids as Storage),
+    // shipments to the shop and the shop stock to keep for each good.
+    properties: { warehouses: [], goods: {}, ships: [], targets: {} },
     goods: {},          // 'x:<set>' boxes, 'a:<id>' accessories -> count
     shelf: [],          // [{g, p, n}] sealed goods for sale (Storage tab)
     ledger: [],         // [{day, in: {cat: $}, out: {cat: $}}] Finances tab
@@ -329,7 +371,7 @@ function saleMultiplier(state, setId) {
 export const soldOut = (state, set) => supply(state, set).left < 1;
 
 export function canBuyBooster(state, set, reserve = 0) {
-  return setUnlocked(state, set) && !soldOut(state, set) && totalStock(state) < stockCapacity(state)
+  return setUnlocked(state, set) && !soldOut(state, set) && storageFree(state) >= 1
     && state.money - boosterPrice(state, set) >= reserve - 1e-9;
 }
 
@@ -347,7 +389,7 @@ export function buyBooster(state, set, reserve = 0) {
 // rivals' stock, not back to the distributor, so buy-and-flip cannot loop
 // forever: each distributor buy uses up supply and raises its price.
 export function canBuyMarketBooster(state, set) {
-  return setUnlocked(state, set) && supply(state, set).held >= 1 && totalStock(state) < stockCapacity(state)
+  return setUnlocked(state, set) && supply(state, set).held >= 1 && storageFree(state) >= 1
     && state.money >= marketBoosterBuyPrice(state, set) - 1e-9;
 }
 
@@ -484,11 +526,11 @@ export function listCard(state, set, card, n, price) {
 
 // Spare copies: what is left after keeping `keep` copies of each card. Sorted
 // by today's value, priciest first.
-export function spares(state, sets, keep) {
+export function spares(state, sets, keep, onlySet = null) {
   const out = [];
   for (const [sid, cards] of Object.entries(state.binder)) {
     const set = sets[sid];
-    if (!set) continue;
+    if (!set || (onlySet && sid !== onlySet)) continue;
     for (const [cid, n] of Object.entries(cards)) {
       const card = set.byId[cid];
       if (card && n > keep) out.push({ set, card, n: n - keep, mv: marketValue(state, set, card) });
@@ -541,15 +583,17 @@ export function sellBulk(state, sets, keep = 0) {
 // is cached and walked one copy per card per pass; it is rebuilt when a pass
 // ends having done something or the binder gained cards (state._binderVer), or when the day
 // or the rule changes.
-function staffPriceOne(state, sets) {
+function staffPriceOne(state, sets, onlySet = null) {
   const keep = Math.max(0, Math.floor(state.rules.keepCopies) || 0);
   const ver = state._binderVer || 0;
-  let q = state._spares;
+  const cache = (state._spares ||= {});
+  const key = onlySet || '*';
+  let q = cache[key];
   for (;;) {
     const stale = !q || q.day !== state.day || q.keep !== keep;
     if (stale || q.i >= q.list.length) {
       if (!stale && q.ver === ver && !q.acted) return 'none';
-      q = state._spares = { day: state.day, keep, ver, i: 0, list: spares(state, sets, keep) };
+      q = cache[key] = { day: state.day, keep, ver, i: 0, list: spares(state, sets, keep, onlySet) };
       continue;
     }
     const sp = q.list[q.i];
@@ -620,7 +664,7 @@ export function hire(state) {
   const name = free.length ? free[Math.floor(rng() * free.length)] : `Clerk ${state.nextId}`;
   const skills = {};
   for (const k of SKILL_KEYS) skills[k] = { lvl: 1 + Math.floor(rng() * 2), xp: 0 };
-  const emp = { id: state.nextId++, name, skills, task: null, progress: 0, training: null, status: 'idle', hiredDay: state.day };
+  const emp = { id: state.nextId++, name, skills, task: null, set: null, task2: null, set2: null, progress: 0, training: null, status: 'idle', hiredDay: state.day };
   state.staff.push(emp);
   log(state, 'staff', `${name} joined the shop`);
   return emp;
@@ -630,6 +674,19 @@ export function setTask(state, emp, task) {
   emp.task = SKILLS[task] ? task : null;
   emp.progress = 0;
 }
+
+// Jobs (Nicolas, 2026-11-28): a primary and a secondary job, each an action
+// and a collection (null = the shop rules' collection, or any for Price). The
+// employee works the primary job and falls back to the secondary one while
+// the primary has nothing to do.
+export function setJob(state, emp, slot, task, set) {
+  const t = SKILLS[task] ? task : null;
+  const s = typeof set === 'string' && set ? set : null;
+  if (slot === 2) { emp.task2 = t; emp.set2 = s; } else { emp.task = t; emp.set = s; }
+  emp.progress = 0;
+  emp._job = 0;
+}
+export const jobsOf = emp => [[emp.task, emp.set], [emp.task2, emp.set2]].filter(j => j[0]);
 
 export function canTrain(state, emp, skill) {
   const sk = emp.skills[skill];
@@ -662,25 +719,26 @@ function gainXp(state, emp, skill) {
 
 // One action of the employee's task. Returns true if it happened; otherwise
 // sets emp.status to the reason it is waiting.
-function doTask(state, sets, emp) {
-  switch (emp.task) {
+function doTask(state, sets, emp, job) {
+  const [task, only] = job;
+  switch (task) {
     case 'buy': {
-      const set = sets[state.rules.buySet];
+      const set = sets[only] || sets[state.rules.buySet];
       if (!set) { emp.status = 'no collection'; return false; }
       if (!setUnlocked(state, set)) { emp.status = 'locked'; return false; }
       if (soldOut(state, set)) { emp.status = 'sold out'; return false; }
       if ((state.stock[set.id] || 0) >= state.rules.stockTarget) { emp.status = 'stock target'; return false; }
-      if (totalStock(state) >= stockCapacity(state)) { emp.status = 'storage full'; return false; }
+      if (storageFree(state) < 1) { emp.status = 'storage full'; return false; }
       if (!buyBooster(state, set, state.rules.cashReserve)) { emp.status = 'cash reserve'; return false; }
       return true;
     }
     case 'open': {
-      const set = sets[state.rules.openSet];
+      const set = sets[only] || sets[state.rules.openSet];
       if (!set || !openBooster(state, sets, set)) { emp.status = 'no packs'; return false; }
       return true;
     }
     case 'price': {
-      const r = staffPriceOne(state, sets);
+      const r = staffPriceOne(state, sets, sets[only] ? only : null);
       if (r === 'full') { emp.status = 'showcase full'; return false; }
       if (r === 'none') { emp.status = 'nothing to price'; return false; }
       return true;
@@ -713,16 +771,27 @@ function tickEmployee(state, sets, emp, dt) {
     }
     return;
   }
-  if (!emp.task) { emp.status = 'idle'; emp.progress = 0; return; }
-  const dur = skillDuration(emp.task, emp.skills[emp.task].lvl);
+  const jobs = jobsOf(emp);
+  if (!jobs.length) { emp.status = 'idle'; emp.progress = 0; return; }
+  // The step lasts as long as the job worked last; the primary is always tried first.
+  let cur = jobs[emp._job || 0] || jobs[0];
+  let dur = skillDuration(cur[0], emp.skills[cur[0]].lvl);
   emp.progress += dt;
   let guard = 0;
   while (emp.progress >= dur && guard++ < 2000) {
-    if (!doTask(state, sets, emp)) { emp.progress = dur; return; }
+    let done = -1, why = '';
+    for (let j = 0; j < jobs.length; j++) {
+      if (doTask(state, sets, emp, jobs[j])) { done = j; break; }
+      if (!j) why = emp.status;
+    }
+    if (done < 0) { emp.status = why; emp.progress = dur; return; }
     emp.progress -= dur;
-    gainXp(state, emp, emp.task);
+    emp._job = done;
+    gainXp(state, emp, jobs[done][0]);
+    cur = jobs[done];
+    dur = skillDuration(cur[0], emp.skills[cur[0]].lvl);
   }
-  emp.status = 'working';
+  emp.status = (emp._job || 0) > 0 ? 'backup job' : 'working';
 }
 
 // ---------- Customers ----------
@@ -942,7 +1011,8 @@ export function recallShelf(state) {
 
 export const boxPrice = (state, set) => BOX_SIZE * boosterPrice(state, set) * BOX_DISCOUNT;
 export function canBuyBox(state, set) {
-  return setUnlocked(state, set) && supply(state, set).left >= BOX_SIZE && state.money >= boxPrice(state, set) - 1e-9;
+  return setUnlocked(state, set) && supply(state, set).left >= BOX_SIZE && storageFree(state) >= BOX_SPACE
+    && state.money >= boxPrice(state, set) - 1e-9;
 }
 export function buyBox(state, set) {
   if (!canBuyBox(state, set)) return false;
@@ -953,7 +1023,7 @@ export function buyBox(state, set) {
   return true;
 }
 export function canOpenBox(state, set) {
-  return goodsOwned(state, `x:${set.id}`) > 0 && stockCapacity(state) - totalStock(state) >= BOX_SIZE;
+  return goodsOwned(state, `x:${set.id}`) > 0 && storageFree(state) >= BOX_SIZE - BOX_SPACE;
 }
 export function openBox(state, set) {
   if (!canOpenBox(state, set)) return false;
@@ -966,13 +1036,136 @@ export function buyAccessory(state, id, n = 1) {
   const a = ACCESSORIES[id];
   if (!a) return 0;
   let k = 0;
-  while (k < n && state.money >= a.cost - 1e-9) {
+  while (k < n && state.money >= a.cost - 1e-9 && storageFree(state) >= 1) {
     spend(state, a.cost, 'goods');
     addGoods(state, `a:${id}`, 1);
     k++;
   }
   state.stats.accessoriesBought += k;
   return k;
+}
+
+// ---------- Properties: warehouses (Nicolas, 2026-11-28) ----------
+// Any number of warehouses, levels 1-10: 100K space per level, a daily fee of
+// $250 per level (paid like salaries; unpaid, shipments wait). Goods are
+// pooled across warehouses. The shop is resupplied by shipments that take
+// 1 to 3 market days by size.
+export const WAREHOUSE = { cost: 50000, upgrade: 50000, fee: 250, space: 100000, maxLevel: 10 };
+export const SHIP_DAYS = [[1000, 1], [10000, 2], [Infinity, 3]];
+const P = s => s.properties;
+export const warehouseLevels = s => P(s).warehouses.reduce((a, w) => a + w.level, 0);
+export const warehouseCapacity = s => WAREHOUSE.space * warehouseLevels(s);
+export function warehouseUsed(s) {
+  let n = 0;
+  for (const [g, k] of Object.entries(P(s).goods)) n += goodSpace(g) * k;
+  return n;
+}
+export const warehouseFree = s => Math.max(0, warehouseCapacity(s) - warehouseUsed(s));
+export const warehouseFeePerDay = s => WAREHOUSE.fee * warehouseLevels(s);
+export const upgradeWarehouseCost = level => WAREHOUSE.upgrade * level;
+export const shipDays = space => SHIP_DAYS.find(([upTo]) => space <= upTo)[1];
+export const warehouseOwned = (s, g) => P(s).goods[g] || 0;
+export const inTransit = (s, g) => P(s).ships.reduce((a, sh) => a + (sh.g === g ? sh.n : 0), 0);
+const transitSpace = s => P(s).ships.reduce((a, sh) => a + goodSpace(sh.g) * sh.n, 0);
+
+export function buyWarehouse(state) {
+  if (state.money < WAREHOUSE.cost - 1e-9) return false;
+  spend(state, WAREHOUSE.cost, 'properties');
+  P(state).warehouses.push({ id: state.nextId++, level: 1 });
+  return true;
+}
+export function upgradeWarehouse(state, id) {
+  const w = P(state).warehouses.find(x => x.id === id);
+  if (!w || w.level >= WAREHOUSE.maxLevel) return false;
+  const cost = upgradeWarehouseCost(w.level);
+  if (state.money < cost - 1e-9) return false;
+  spend(state, cost, 'properties');
+  w.level++;
+  return true;
+}
+function addWarehouse(state, g, n) { P(state).goods[g] = (P(state).goods[g] || 0) + n; }
+
+// Buys straight into the warehouses: boosters and boxes from the distributor,
+// accessories from the wholesaler. Returns how many.
+export function buyToWarehouse(state, sets, g, n) {
+  const info = goodInfo(sets, g);
+  if (!info) return 0;
+  const room = Math.floor(warehouseFree(state) / goodSpace(g));
+  let want = Math.min(n, room), k = 0;
+  if (info.kind === 'a') {
+    while (k < want && state.money >= info.acc.cost - 1e-9) { spend(state, info.acc.cost, 'goods'); k++; }
+    state.stats.accessoriesBought += k;
+  } else {
+    const set = info.set, per = info.kind === 'x' ? BOX_SIZE : 1;
+    if (!setUnlocked(state, set)) return 0;
+    // Price follows supply, so buy in small lots.
+    while (k < want) {
+      const lot = Math.min(want - k, info.kind === 'x' ? 1 : 100, Math.floor(supply(state, set).left / per));
+      if (lot <= 0) break;
+      const unit = info.kind === 'x' ? boxPrice(state, set) : boosterPrice(state, set);
+      const afford = Math.min(lot, Math.floor((state.money + 1e-9) / unit));
+      if (afford <= 0) break;
+      spend(state, unit * afford, info.kind === 'x' ? 'goods' : 'boosters');
+      supply(state, set).left -= afford * per;
+      k += afford;
+      if (afford < lot) break;
+    }
+    if (info.kind === 'x') state.stats.boxesBought += k; else state.stats.boostersBought += k;
+  }
+  if (k) addWarehouse(state, g, k);
+  return k;
+}
+
+// Moves shop goods into the warehouses at once.
+export function storeInWarehouse(state, g, n) {
+  const room = Math.floor(warehouseFree(state) / goodSpace(g));
+  const k = takeGoods(state, g, Math.min(n, room));
+  if (k) addWarehouse(state, g, k);
+  return k;
+}
+
+// Sends goods to the shop; they arrive after shipDays market days. Shop room
+// is reserved for goods on the way.
+export function shipToShop(state, g, n) {
+  const free = Math.floor(Math.max(0, storageFree(state) - transitSpace(state)) / goodSpace(g));
+  const k = Math.min(n, warehouseOwned(state, g), free);
+  if (k <= 0) return 0;
+  P(state).goods[g] -= k;
+  if (!P(state).goods[g]) delete P(state).goods[g];
+  P(state).ships.push({ g, n: k, arrive: state.day + shipDays(k * goodSpace(g)) });
+  state.stats.shipments++;
+  return k;
+}
+
+export function setTarget(state, g, n) {
+  const v = Math.max(0, Math.floor(Number(n) || 0));
+  if (v) P(state).targets[g] = v; else delete P(state).targets[g];
+}
+
+// Pays the fees, delivers arrived shipments and sends what the targets ask for.
+function tickProperties(state, sets, dt) {
+  const p = P(state);
+  if (!p.warehouses.length && !p.ships.length) return;
+  const due = warehouseFeePerDay(state) * dt / DAY_SECONDS;
+  const paid = state.money >= due;
+  if (paid && due) { spend(state, due, 'properties'); state.stats.feesPaid += due; }
+  state._feesUnpaid = !paid;
+  if (p.ships.length) {
+    const keep = [];
+    for (const sh of p.ships) {
+      if (sh.arrive <= state.day && goodInfo(sets, sh.g)) addGoods(state, sh.g, sh.n);
+      else if (goodInfo(sets, sh.g)) keep.push(sh);
+    }
+    if (keep.length !== p.ships.length) p.ships = keep;
+  }
+  state._shipT = (state._shipT || 0) + dt;
+  if (!paid || state._shipT < 5) return;
+  state._shipT = 0;
+  for (const [g, target] of Object.entries(p.targets)) {
+    if (!goodInfo(sets, g)) continue;
+    const need = target - goodsOwned(state, g) - inTransit(state, g);
+    if (need > 0) shipToShop(state, g, need);
+  }
 }
 
 // ---------- Achievements ----------
@@ -998,6 +1191,8 @@ function checkUnlocks(state, sets) {
   if (!u.showcase && state.stats.cardsSold > 0) u.showcase = true;
   if (!u.finances && u.showcase) u.finances = true;
   if (!u.storage && u.market) u.storage = true;
+  if (!u.marketing && u.upgrades && state.stats.earned >= 1000) u.marketing = true;
+  if (!u.properties && state.stats.earned >= 25000) u.properties = true;
   if (!u.upgrades && state.money >= 40) u.upgrades = true;
   if (!u.staff && state.money >= 50) u.staff = true;
   if (!u.market) {
@@ -1037,6 +1232,11 @@ export function tick(state, sets, dt, nowMs) {
     state.customerTimer += customerInterval(state) * (0.5 + rng());
   }
   for (const emp of state.staff) tickEmployee(state, sets, emp, dt);
+  if (state.campaign) {
+    state.campaign.left -= dt;
+    if (state.campaign.left <= 0) state.campaign = null;
+  }
+  tickProperties(state, sets, dt);
   checkUnlocks(state, sets);
   state._achT = (state._achT || 0) + dt;
   if (state._achT >= 5 && achievementCheck) { state._achT = 0; achievementCheck(state, sets, false); }

@@ -234,6 +234,17 @@ async function run() {
   const m45 = Save.restore(v4, sets, order);
   ok(m45.seed === M.LEGACY_SEED && m45.money === 50, 'v4 saves keep the old global seed');
   ok(m45.staff[0].hiredDay === null && Array.isArray(m45.ledger) && !m45.ledger.length && !m45.shelf.length, 'v4 -> v5: tenure starts on load, empty ledger and shelf');
+  {
+    const v5 = JSON.parse(JSON.stringify(Save.serialize(fresh(sets, order))));
+    v5.saveVersion = 5;
+    v5.state.staff = [{ id: 7, name: 'Ada', task: 'open', skills: {}, progress: 0, status: 'idle', hiredDay: 3 }];
+    delete v5.state.properties;
+    delete v5.state.campaign;
+    const m56 = Save.restore(v5, sets, order);
+    const e = m56.staff[0];
+    ok(e.task === 'open' && e.set === null && e.task2 === null && e.set2 === null, 'v5 -> v6: the task becomes the main job, any collection, no backup');
+    ok(!m56.properties.warehouses.length && !m56.campaign, 'v5 -> v6: no warehouses, no campaign');
+  }
   const empty4 = Save.restore({ game: 'idlecardshop', saveVersion: 4, state: {} }, sets, order);
   ok(empty4.seed !== M.LEGACY_SEED, 'an empty v4 save starts with a new seed');
 
@@ -256,6 +267,78 @@ async function run() {
   for (let t = 1; t <= 1800 && s.shelf.length; t++) G.tick(s, sets, 1, T0 + 60000 + t * 1000);
   ok(!s.shelf.length && s.stats.sealedSold === 2 && s.ledger.at(-1).in.sealed > 0, 'customers buy shelf goods at a fair price', `${s.stats.sealedSold} sold`);
   ok(s.achievements['sealed-sale'] != null && s.achievements['box-break'] != null, 'achievements are earned during play');
+
+  section('Storage space');
+  {
+    const sp = fresh(sets, order);
+    sp.money = 1e6;
+    const cap = G.stockCapacity(sp);
+    sp.stock.base = cap - 15;
+    ok(G.storageUsed(sp) === cap - 15 && G.buyBox(sp, base) && G.storageUsed(sp) === cap - 5, 'a booster box takes 10 storage spaces');
+    ok(!G.canBuyBox(sp, base) && G.buyAccessory(sp, acc.id, 10) === 5 && G.storageFree(sp) === 0, 'accessories take 1 space and stop when storage is full');
+    ok(!G.canBuyBooster(sp, base) && !G.canOpenBox(sp, base), 'a full storage buys no boosters and opens no boxes');
+    sp.stock.base = cap + 50;
+    ok(G.storageUsed(sp) > cap && !G.canBuyBooster(sp, base), 'goods over the limit stay; nothing more comes in');
+  }
+
+  section('Staff jobs');
+  {
+    const sj = fresh(sets, order);
+    sj.money = 1e9;
+    sj.upgrades.staffRoom = G.UPGRADES.staffRoom.max;
+    ok(G.maxStaff(sj) === 30, 'the staff room holds up to 30 staff');
+    ok(G.upgradeCost('staffRoom', 9) < G.UPGRADES.staffRoom.baseCost * Math.pow(2.2, 9) && G.upgradeCost('staffRoom', 8) === Math.round(150 * Math.pow(2.2, 8)), 'staff room levels past 8 grow more slowly');
+    ok(G.hireCost(29) < 1e8 && G.hireCost(9) > G.hireCost(8), 'the 30th hire stays affordable', fmtMoney(G.hireCost(29)));
+    const e = G.hire(sj);
+    G.setJob(sj, e, 1, 'open', 'base');
+    G.setJob(sj, e, 2, 'buy', 'base');
+    sj.stock.base = 0;
+    G.tick(sj, sets, 30, T0 + 30000);
+    ok(sj.stock.base > 0 || sj.stats.boostersOpened > 0, 'with no packs to open the backup job buys some');
+    ok(sj.stats.boostersBought > 0 && e.status !== 'no packs', 'the backup job keeps the employee busy', e.status);
+    const before = sj.stats.boostersOpened;
+    sj.stock.base = 20;
+    G.tick(sj, sets, 30, T0 + 60000);
+    ok(sj.stats.boostersOpened > before, 'the main job comes first again once it has work');
+    const sp2 = G.spares(sj, sets, 0, 'jungle');
+    ok(sp2.every(x => x.set.id === 'jungle'), 'a job can be limited to one collection');
+  }
+
+  section('Marketing');
+  {
+    const mk = fresh(sets, order);
+    mk.money = 600;
+    const i0 = G.customerInterval(mk);
+    ok(G.startCampaign(mk, 'flyers') && Math.abs(i0 / G.customerInterval(mk) - 1.25) < 1e-9 && mk.money === 100, 'flyers bring 25% more customers for $500');
+    ok(!G.startCampaign(mk, 'flyers'), 'one campaign at a time');
+    G.tick(mk, sets, G.DAY_SECONDS + 1, T0 + 1000);
+    ok(!mk.campaign && Math.abs(G.customerInterval(mk) - i0) < 1e-9, 'a campaign ends after its days');
+    ok(mk.ledger.at(-1).out.marketing === 500, 'campaigns show in Finances');
+  }
+
+  section('Properties');
+  {
+    const wh = fresh(sets, order);
+    wh.money = 200000;
+    ok(G.buyWarehouse(wh) && G.warehouseCapacity(wh) === 100000 && wh.money === 150000, 'a warehouse costs $50K and holds 100K');
+    const id = wh.properties.warehouses[0].id;
+    ok(G.upgradeWarehouse(wh, id) && G.warehouseCapacity(wh) === 200000 && G.warehouseFeePerDay(wh) === 500, 'levels add 100K space and $250/day');
+    const k = G.buyToWarehouse(wh, sets, 'b:base', 1000);
+    ok(k === 1000 && G.warehouseOwned(wh, 'b:base') === 1000 && !wh.stock.base, 'boosters can be bought straight into the warehouse');
+    ok(G.shipDays(1000) === 1 && G.shipDays(1001) === 2 && G.shipDays(10000) === 2 && G.shipDays(10001) === 3, 'shipments take 1 to 3 days by size');
+    G.setTarget(wh, 'b:base', 10);
+    const d0 = wh.day;
+    G.tick(wh, sets, 6, T0 + 6000);
+    ok(G.inTransit(wh, 'b:base') === 10 && !wh.stock.base, 'the target sends a shipment');
+    G.tick(wh, sets, 1, T0 + 2 * M.DAY_MS);
+    ok(wh.day > d0 && wh.stock.base === 10 && !wh.properties.ships.length, 'the shipment arrives in the shop');
+    const fees = wh.stats.feesPaid;
+    ok(fees > 0 && wh.ledger.some(e => e.out.properties > 0), 'daily fees are paid and booked', fmtMoney(fees));
+    wh.money = 0;
+    wh.stock.base = 0;
+    G.tick(wh, sets, 6, T0 + 2 * M.DAY_MS + 6000);
+    ok(!G.inTransit(wh, 'b:base') && wh._feesUnpaid && wh.money === 0, 'unpaid fees pause shipments, no debt');
+  }
 
   section('Achievements');
   const aw = fresh(sets, order);

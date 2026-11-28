@@ -7,7 +7,7 @@ import * as M from './market.js';
 import * as SU from './supply.js';
 import { cardHtml, rarityTag } from './cards.js';
 import { fmtMoney, fmtNum, fmtPct, fmtSec, fmtDuration, fmtClock, esc } from './format.js';
-import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS, FEELING_TEXT, LEDGER_CATS, THEMES, DARK_THEMES } from './strings.js';
+import { TABS, SKILL_NAMES, UPGRADE_TEXT, TIPS, TOASTS, FEELING_TEXT, LEDGER_CATS, THEMES, DARK_THEMES, CAMPAIGN_TEXT } from './strings.js';
 import * as Achievements from './achievements.js';
 import { currentStep } from './tutorial.js';
 import { cardFilter } from './data.js';
@@ -350,8 +350,10 @@ const lockSig = () => released().length;
 const fmtCount = n => (n >= 995000 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e4 ? `${(n / 1e3).toFixed(0)}K` : fmtNum(Math.floor(n)));
 
 function staffOn(task) {
-  return S.staff.filter(e => e.task === task && !e.training);
+  return S.staff.filter(e => (e.task === task || e.task2 === task) && !e.training);
 }
+const curJob = e => G.jobsOf(e)[e._job || 0] || G.jobsOf(e)[0] || null;
+const jobText = e => G.jobsOf(e).map(([t, s]) => SKILL_NAMES[t] + (SETS[s] ? ` ${SETS[s].name}` : '')).join(' / ') || '—';
 
 function chips(task) {
   return staffOn(task).map(e => `<span class="chip" title="${esc(e.status)}">${esc(e.name)}</span>`).join('');
@@ -431,7 +433,7 @@ PANELS.shop = {
     const price = G.boosterPrice(S, st);
     const sup = G.supply(S, st);
     const out = G.soldOut(S, st);
-    const full = G.totalStock(S) >= G.stockCapacity(S) || !G.setUnlocked(S, st) || out;
+    const full = G.storageFree(S) < 1 || !G.setUnlocked(S, st) || out;
     const next = G.nextRelease(S, SETS);
     const days = next ? SU.releaseDay(S, next) - S.day : 0;
     const keep = Number(ui.priceKeep) || 0;
@@ -442,7 +444,7 @@ PANELS.shop = {
       bprice: fmtMoney(price),
       left: out ? 'sold out' : fmtNum(sup.left),
       nextin: days > 1 ? `${days} days` : days === 1 ? 'tomorrow' : 'soon',
-      stock: `${fmtNum(G.totalStock(S))} / ${fmtNum(G.stockCapacity(S))}`,
+      stock: `${fmtNum(G.storageUsed(S))} / ${fmtNum(G.stockCapacity(S))}`,
       sealed: fmtNum(S.stock[st.id] || 0),
       avail: fmtNum(avail),
       showcase: `${fmtNum(S.showcase.length)} / ${fmtNum(G.showcaseCapacity(S))}`,
@@ -453,7 +455,7 @@ PANELS.shop = {
       'd:bulk': !bulk.n,
       'c-buy': chips('buy'), 'c-open': chips('open'), 'c-price': chips('price'),
       log: logHtml(),
-      staffmini: S.staff.map(e => `<li><b>${esc(e.name)}</b> <span class="muted">${esc(e.task ? SKILL_NAMES[e.task] : '—')}</span> <span class="status st-${esc(e.status.replace(/\s/g, '-'))}">${esc(e.status)}</span></li>`).join(''),
+      staffmini: S.staff.map(e => `<li><b>${esc(e.name)}</b> <span class="muted">${esc(jobText(e))}</span> <span class="status st-${esc(e.status.replace(/\s/g, '-'))}">${esc(e.status)}</span></li>`).join(''),
     };
   },
 };
@@ -700,9 +702,26 @@ function marketSearch(input) {
     if (box) { box.focus(); const n = box.value.length; box.setSelectionRange(n, n); }
   }, 150);
 }
+// One job row: action and collection. "Any" follows the shop rules for Buy and
+// Open, and takes every collection for Price.
+function jobRow(e, slot) {
+  const task = slot === 2 ? e.task2 : e.task, sid = slot === 2 ? e.set2 : e.set;
+  return `<div class="job">
+    <span class="muted small" title="${esc(slot === 2 ? TIPS.jobBackup : TIPS.jobMain)}">${slot === 2 ? 'Backup' : 'Job'}</span>
+    <select data-action="job" data-id="${e.id}" data-slot="${slot}" aria-label="${slot === 2 ? 'Backup job' : 'Job'}">
+      <option value="" ${!task ? 'selected' : ''}>None</option>
+      ${G.SKILL_KEYS.map(k => `<option value="${k}" ${task === k ? 'selected' : ''}>${SKILL_NAMES[k]}</option>`).join('')}
+    </select>
+    <select data-action="job-set" data-id="${e.id}" data-slot="${slot}" aria-label="Collection" ${task ? '' : 'disabled'} title="${esc(TIPS.jobSet)}">
+      <option value="" ${!sid ? 'selected' : ''}>Any</option>
+      ${setOptions(sid)}
+    </select>
+  </div>`;
+}
+
 PANELS.staff = {
   sig: () => [S.staff.length, G.maxStaff(S), ORDER.length, lockSig(),
-    ...S.staff.map(e => `${e.task}/${e.training ? e.training.skill : ''}/${G.SKILL_KEYS.map(k => e.skills[k].lvl).join('.')}`)].join('|'),
+    ...S.staff.map(e => `${e.task}/${e.set}/${e.task2}/${e.set2}/${e.training ? e.training.skill : ''}/${G.SKILL_KEYS.map(k => e.skills[k].lvl).join('.')}`)].join('|'),
   html() {
     const cost = G.hireCost(S.staff.length);
     const room = S.staff.length < G.maxStaff(S);
@@ -721,17 +740,14 @@ PANELS.staff = {
           <span class="status" data-k="st-${e.id}"></span>
           <span class="grow"></span>
           <span class="muted small" title="${esc(TIPS.salary)}"><span data-k="sal-${e.id}"></span>/day</span>
-          <select data-action="task" data-id="${e.id}" aria-label="Task">
-            <option value="" ${!e.task ? 'selected' : ''}>No task</option>
-            ${G.SKILL_KEYS.map(k => `<option value="${k}" ${e.task === k ? 'selected' : ''}>${SKILL_NAMES[k]}</option>`).join('')}
-          </select>
         </div>
+        <div class="jobs">${[1, 2].map(slot => jobRow(e, slot)).join('')}</div>
         <div class="progress thin"><i data-w="pg-${e.id}"></i></div>
         <div class="skills" title="${esc(TIPS.skillSpeed)}">${G.SKILL_KEYS.map(k => {
           const sk = e.skills[k];
           const max = sk.lvl >= G.MAX_SKILL;
           const tc = G.trainCost(sk.lvl);
-          return `<div class="skill ${e.task === k ? 'on' : ''}">
+          return `<div class="skill ${e.task === k || e.task2 === k ? 'on' : ''}">
             <span class="sk-name">${SKILL_NAMES[k]}</span>
             <span class="sk-lvl">Lv ${sk.lvl}</span>
             <span class="progress thin sk-xp"><i data-w="xp-${e.id}-${k}"></i></span>
@@ -761,7 +777,7 @@ PANELS.staff = {
       v[`sal-${e.id}`] = fmtMoney(G.salaryPerDay(S, e));
       v[`st-${e.id}`] = e.training ? `training ${fmtDuration(e.training.left)}` : e.status;
       if (e.training) v[`pg-${e.id}`] = 1 - e.training.left / e.training.total;
-      else if (e.task && e.status === 'working') v[`pg-${e.id}`] = e.progress / G.skillDuration(e.task, e.skills[e.task].lvl);
+      else if (curJob(e) && (e.status === 'working' || e.status === 'backup job')) v[`pg-${e.id}`] = Math.min(1, e.progress / G.skillDuration(curJob(e)[0], e.skills[curJob(e)[0]].lvl));
       else v[`pg-${e.id}`] = 0;
       for (const k of G.SKILL_KEYS) {
         const sk = e.skills[k];
@@ -846,7 +862,7 @@ PANELS.storage = {
     const section = (title, list) => list.length ? `<section class="goods"><h3>${title}</h3><div class="goods-grid">${list.map(goodTile).join('')}</div></section>` : '';
     return `
     <div class="bar-head">
-      <h2>Storage</h2>
+      <h2>Storage <span class="muted" title="${esc(TIPS.space)}" data-k="space"></span></h2>
       <span class="grow"></span>
       <label class="inline">Price <select data-action="good-level">${levelOptions(ui.goodLevel)}</select></label>
     </div>
@@ -866,7 +882,7 @@ PANELS.storage = {
     ${section('Accessories', keys.filter(g => g.startsWith('a:')))}`;
   },
   vals() {
-    const v = { 'shelf-n': `${fmtNum(G.shelfCount(S))} / ${fmtNum(G.shelfCapacity(S))}` };
+    const v = { 'shelf-n': `${fmtNum(G.shelfCount(S))} / ${fmtNum(G.shelfCapacity(S))}`, space: `${fmtNum(G.storageUsed(S))} / ${fmtNum(G.stockCapacity(S))}` };
     const free = G.shelfFree(S) > 0;
     for (const g of goodKeys()) {
       const n = G.goodsOwned(S, g);
@@ -884,6 +900,109 @@ PANELS.storage = {
       v[`sn-${i}`] = fmtNum(it.n);
       v[`sp-${i}`] = pctText(it.p, G.goodValue(S, SETS, it.g));
     });
+    return v;
+  },
+};
+
+// ---------- Properties: warehouses ----------
+const WH_BUY = [100, 1000];
+PANELS.properties = {
+  sig: () => [lockSig(), G.accessories().length, S.properties.warehouses.map(w => w.level).join('.'),
+    S.properties.ships.length, Object.keys(S.properties.targets).join()].join('|'),
+  html() {
+    const p = S.properties;
+    const has = p.warehouses.length > 0;
+    return `
+    <div class="bar-head">
+      <h2>Properties ${has ? `<span class="muted" data-k="wh-space"></span>` : ''}</h2>
+      ${has ? `<span class="muted" title="${esc(TIPS.whFee)}">Fees <span data-k="wh-fee"></span>/day</span> <span class="status st-unpaid" data-k="wh-unpaid"></span>` : ''}
+      <span class="grow"></span>
+      <button class="primary" data-action="wh-buy" data-d="wh-buy">Buy warehouse ${fmtMoney(G.WAREHOUSE.cost)}</button>
+    </div>
+    ${has ? `<div class="whs">${p.warehouses.map((w, i) => `
+      <section class="box wh">
+        <b>Warehouse ${i + 1}</b>
+        <span class="muted">Lv ${w.level} / ${G.WAREHOUSE.maxLevel}</span>
+        <span class="muted">${fmtCount(G.WAREHOUSE.space * w.level)} space</span>
+        ${w.level >= G.WAREHOUSE.maxLevel ? '<span class="muted">Max</span>'
+          : `<button class="small" data-action="wh-up" data-id="${w.id}" data-d="whu-${w.id}">Upgrade ${fmtMoney(G.upgradeWarehouseCost(w.level))}</button>`}
+      </section>`).join('')}</div>
+    <section class="box">
+      <h3>Goods</h3>
+      <div class="table wh-goods">
+        <div class="tr th"><span>Good</span><span class="num">Warehouse</span><span class="num">Shop</span><span class="num">On the way</span><span title="${esc(TIPS.whTarget)}">Keep in shop</span><span></span></div>
+        ${goodKeys().map(g => { const k = esc(g); return `<div class="tr">
+          <span>${esc(goodName(g))}</span>
+          <span class="num" data-k="wo-${k}"></span>
+          <span class="num" data-k="ws-${k}"></span>
+          <span class="num" data-k="wt-${k}"></span>
+          <input type="number" min="0" step="1" data-action="wh-target" data-g="${k}" value="${p.targets[g] || 0}" aria-label="Keep in shop">
+          <span class="btns tight">
+            ${WH_BUY.map(n => `<button class="small" data-action="wh-stock" data-g="${k}" data-n="${n}" data-d="wb${n}-${k}" title="${esc(TIPS.whBuy)}">Buy ${fmtCount(n)}</button>`).join('')}
+            <button class="small" data-action="wh-store" data-g="${k}" data-d="wst-${k}" title="${esc(TIPS.whStore)}">Store all</button>
+            <button class="small" data-action="wh-ship" data-g="${k}" data-d="wsh-${k}" title="${esc(TIPS.whShip)}">Ship 100</button>
+          </span>
+        </div>`; }).join('')}
+      </div>
+    </section>
+    <section class="box">
+      <h3>Shipments</h3>
+      ${p.ships.length ? `<ul class="ships">${p.ships.map(sh => `<li><span>${esc(goodName(sh.g))} ×${fmtNum(sh.n)}</span>
+        <span class="muted">${esc(M.dayLabel(sh.arrive, S.firstDay))}</span></li>`).join('')}</ul>` : '<div class="empty muted">None</div>'}
+    </section>` : '<div class="empty muted">No warehouses</div>'}`;
+  },
+  vals() {
+    const v = {
+      'wh-space': `${fmtCount(G.warehouseUsed(S))} / ${fmtCount(G.warehouseCapacity(S))}`,
+      'wh-fee': fmtMoney(G.warehouseFeePerDay(S)),
+      'wh-unpaid': S._feesUnpaid ? 'unpaid' : '',
+      'd:wh-buy': S.money < G.WAREHOUSE.cost,
+    };
+    for (const w of S.properties.warehouses) v[`d:whu-${w.id}`] = S.money < G.upgradeWarehouseCost(w.level);
+    const free = G.warehouseFree(S);
+    for (const g of goodKeys()) {
+      const own = G.warehouseOwned(S, g);
+      v[`wo-${g}`] = fmtNum(own);
+      v[`ws-${g}`] = fmtNum(G.goodsOwned(S, g));
+      v[`wt-${g}`] = fmtNum(G.inTransit(S, g));
+      v[`d:wst-${g}`] = !(G.goodsOwned(S, g) > 0 && free >= G.goodSpace(g));
+      v[`d:wsh-${g}`] = !(own > 0 && G.storageFree(S) >= G.goodSpace(g));
+      for (const n of WH_BUY) v[`d:wb${n}-${g}`] = free < G.goodSpace(g);
+    }
+    return v;
+  },
+};
+
+// ---------- Marketing: campaigns ----------
+PANELS.marketing = {
+  sig: () => [S.campaign?.kind || ''].join(),
+  html() {
+    const c = S.campaign;
+    return `
+    <div class="bar-head"><h2>Marketing</h2></div>
+    ${c ? `<section class="box campaign-now">
+      <b>${esc(CAMPAIGN_TEXT[c.kind].name)}</b>
+      <span class="muted">${esc(CAMPAIGN_TEXT[c.kind].effect)}</span>
+      <span class="grow"></span>
+      <span data-k="camp-left"></span>
+      <div class="progress thin"><i data-w="camp-pg"></i></div>
+    </section>` : ''}
+    <div class="upgrades">${Object.entries(G.CAMPAIGNS).map(([k, def]) => `
+      <section class="upgrade box">
+        <div><b>${esc(CAMPAIGN_TEXT[k].name)}</b><div class="muted">${esc(CAMPAIGN_TEXT[k].effect)}</div></div>
+        <span class="muted">${def.days} ${def.days === 1 ? 'day' : 'days'}</span>
+        <button data-action="campaign" data-kind="${k}" data-d="camp-${k}">${fmtMoney(def.cost)}</button>
+      </section>`).join('')}</div>`;
+  },
+  vals() {
+    const v = {};
+    const c = S.campaign;
+    if (c) {
+      const total = G.CAMPAIGNS[c.kind].days * G.DAY_SECONDS;
+      v['camp-left'] = fmtDuration(c.left);
+      v['camp-pg'] = 1 - c.left / total;
+    }
+    for (const [k, def] of Object.entries(G.CAMPAIGNS)) v[`d:camp-${k}`] = !!c || S.money < def.cost;
     return v;
   },
 };
