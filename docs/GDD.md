@@ -232,7 +232,7 @@ Money comes in when customers buy from the showcase; demand is the shop's natura
 **Customers**
 
 - One arrives on average every 6 s, divided by (1 + 25% per Marketing level) × (1 + 3% per Fame level).
-- Budget: $2 to $120, log-uniform. From Fame level 2, 10% of customers are "rich", with a budget from $120 up to a cap that grows with Fame to $1,000 at level 20.
+- Budget: $2 to $120, log-uniform; Fame raises that ceiling to $240 at level 20. From Fame level 2, 10% of customers are "rich" (35% at level 20), with a budget from that ceiling up to a cap that grows with Fame to $1,000 at level 20. Rich customers are collectors: they look at the priciest cards first.
 - Each looks at up to 3 cards that fit the budget. Pricier cards draw more attention: a card's chance of being looked at is proportional to the square root of its market price.
 - For each card looked at, the chance of buying depends on the tag compared to today's market:
 

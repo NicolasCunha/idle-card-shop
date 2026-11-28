@@ -128,8 +128,20 @@ async function run() {
     const b1 = draw(0), b20 = draw(19);
     ok(Math.abs(G.richCap(0) - G.BUDGET_MAX) < 1e-9 && Math.abs(G.richCap(19) - G.RICH_MAX) < 1e-6, 'Fame ceiling grows from $120 to $1,000');
     ok(b1.every(x => x >= G.BUDGET_MIN && x <= G.BUDGET_MAX), 'Fame 1 keeps budgets between $2 and $120');
-    const rich = b20.filter(x => x > G.BUDGET_MAX).length / b20.length;
-    ok(b20.every(x => x <= G.RICH_MAX) && rich > 0.07 && rich < 0.13 && b20.some(x => x > 600), 'Fame 20: about 10% of customers bring up to $1,000', `${Math.round(rich * 100)}% rich`);
+    const rich = b20.filter(x => x > G.budgetCap(19)).length / b20.length;
+    ok(Math.abs(G.budgetCap(19) - 2 * G.BUDGET_MAX) < 1e-9 && b20.some(x => x > G.BUDGET_MAX && x <= G.budgetCap(19)), 'Fame 20 doubles the everyday budget ceiling ($240)');
+    ok(b20.every(x => x <= G.RICH_MAX) && rich > 0.31 && rich < 0.39 && b20.some(x => x > 600), 'Fame 20: about 35% of customers are rich, up to $1,000', `${Math.round(rich * 100)}% rich`);
+    // The priciest card in a full showcase of commons sells quickly at Fame 20.
+    const r = fresh(sets, order);
+    r.upgrades.fame = 19; r.upgrades.marketing = G.UPGRADES.marketing.max; r.upgrades.showcase = 20;
+    const cheap = base.cards.filter(c => c.rarity === 'common');
+    for (let k = 0; k < G.showcaseCapacity(r) - 1; k++) { const c = cheap[k % cheap.length]; r.showcase.push({ s: 'base', c: c.id, p: Math.round(G.marketValue(r, base, c) * 100) / 100 }); }
+    const star = base.cards.reduce((a, c) => (G.marketValue(r, base, c) > G.marketValue(r, base, a) ? c : a));
+    const starTag = { s: 'base', c: star.id, p: Math.round(G.marketValue(r, base, star) * 100) / 100 };
+    r.showcase.push(starTag);
+    let secs = 0;
+    while (r.showcase.includes(starTag) && secs < 1800) { secs++; G.tick(r, sets, 1, T0 + secs * 1000); while (r.showcase.length < G.showcaseCapacity(r) - 1) r.showcase.push({ ...r.showcase[0] }); }
+    ok(!r.showcase.includes(starTag) && secs < 120, 'Fame 20: the priciest card at market sells in about two minutes or less', `${fmtMoney(starTag.p)} in ${secs}s`);
     f.upgrades.fame = 0; const i0 = G.customerInterval(f);
     f.upgrades.fame = 10;
     ok(Math.abs(i0 / G.customerInterval(f) - 1.3) < 1e-9, 'each Fame level brings 3% more customers');

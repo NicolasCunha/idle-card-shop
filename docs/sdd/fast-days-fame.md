@@ -16,11 +16,13 @@ Requested by Nicolas on 2026-11-27. Save v4 (all older saves start over, his cal
 | Rule | Value |
 | --- | --- |
 | Fame 1 (saved 0) | Budgets log-uniform $2-$120, as before |
-| From Fame 2 | `RICH_SHARE` 10% of customers draw log-uniform $120 to `richCap(fame)` |
+| Everyday ceiling | `budgetCap(fame)` = $120 x (1 + fame/19): $240 at Fame 20 (1.7.1) |
+| From Fame 2 | `richShare(fame)`: 10% at Fame 2 up to 35% at Fame 20 (1.7.1) draw log-uniform from the everyday ceiling to `richCap(fame)` |
 | `richCap` | $120 x (1000/120)^(fame/19): $1,000 at Fame 20 |
+| Rich customers | Collectors: they weigh cards by market value (not its square root), so pricey cards get their looks (1.7.1) |
 | Customers | +3% per level (`FAME_CUSTOMERS`), on top of Marketing |
 
-At Fame 20 about 4% of customers can spend over $400.
+1.7.1 (Nicolas, 2026-11-28: a $70 card took too long to sell at Fame 20): with a full showcase of cheaper cards, a $70 card at market now sells in about 10 seconds on average at Fame 20, against about 5 minutes at Fame 1.
 
 ## New-set customers
 

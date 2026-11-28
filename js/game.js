@@ -66,10 +66,15 @@ export const UPGRADES = {
   fame: { baseCost: 200, growth: 1.5, max: 19, start: 1 },
 };
 
-// Fame: from level 2 a share of customers is rich, with a budget between
-// BUDGET_MAX and a ceiling that grows to RICH_MAX at level 20. Each level also
-// brings FAME_CUSTOMERS more customers.
+// Fame: every customer's budget ceiling grows from BUDGET_MAX to twice that at
+// level 20. From level 2 a share of customers is rich (10%, up to 35% at level
+// 20), with a budget between that ceiling and one that grows to RICH_MAX at
+// level 20; rich customers are collectors and look at the priciest cards first
+// (weight = market value, not its square root). Each level also brings
+// FAME_CUSTOMERS more customers. (1.7.1: Nicolas found $70 cards too slow at
+// Fame 20.)
 export const RICH_SHARE = 0.10;
+export const RICH_SHARE_MAX = 0.35;
 export const RICH_MAX = 1000;
 export const FAME_CUSTOMERS = 0.03;
 
@@ -140,11 +145,16 @@ export const maxStaff = s => 1 + s.upgrades.staffRoom;
 export const customerInterval = s => BASE_CUSTOMER_INTERVAL / ((1 + 0.25 * s.upgrades.marketing) * (1 + FAME_CUSTOMERS * (s.upgrades.fame || 0)));
 // Budget ceiling of rich customers at a Fame value (0-19).
 export const richCap = fame => BUDGET_MAX * Math.pow(RICH_MAX / BUDGET_MAX, fame / UPGRADES.fame.max);
+export const budgetCap = fame => BUDGET_MAX * (1 + fame / UPGRADES.fame.max);
+export const richShare = fame => (fame > 0 ? RICH_SHARE + (RICH_SHARE_MAX - RICH_SHARE) * (fame - 1) / (UPGRADES.fame.max - 1) : 0);
 export function customerBudget(state) {
   const fame = state.upgrades.fame || 0;
-  if (fame > 0 && rng() < RICH_SHARE) return BUDGET_MAX * Math.pow(richCap(fame) / BUDGET_MAX, rng());
-  return BUDGET_MIN * Math.pow(BUDGET_MAX / BUDGET_MIN, rng());
+  const cap = budgetCap(fame);
+  if (fame > 0 && rng() < richShare(fame)) return cap * Math.pow(richCap(fame) / cap, rng());
+  return BUDGET_MIN * Math.pow(cap / BUDGET_MIN, rng());
 }
+// Rich customers (budget above the everyday ceiling) weigh cards by value.
+const lookWeight = (budget, state) => (budget > budgetCap(state.upgrades.fame || 0) ? v => v : Math.sqrt);
 
 // The newest released collection past the first, and the share of customers
 // who want it today (0 outside the window).
@@ -770,6 +780,7 @@ function customerVisit(state, sets) {
   }
   const looks = [];
   let budget = customerBudget(state);
+  const weigh = lookWeight(budget, state);
   const looked = new Set();
   for (let i = 0; i < CUSTOMER_LOOKS && state.showcase.length; i++) {
     let total = 0;
@@ -777,7 +788,7 @@ function customerVisit(state, sets) {
     for (let j = 0; j < state.showcase.length; j++) {
       const it = state.showcase[j];
       const set = sets[it.s], card = set?.byId[it.c];
-      const w = card && it.p <= budget && !looked.has(it) && (!only || it.s === only) ? Math.sqrt(marketValue(state, set, card)) : 0;
+      const w = card && it.p <= budget && !looked.has(it) && (!only || it.s === only) ? weigh(marketValue(state, set, card)) : 0;
       weights[j] = w;
       total += w;
     }
@@ -811,11 +822,12 @@ function customerVisit(state, sets) {
 function sealedVisit(state, sets) {
   const looks = [];
   let budget = customerBudget(state);
+  const weigh = lookWeight(budget, state);
   const looked = new Set();
   for (let i = 0; i < SEALED_LOOKS && state.shelf.length; i++) {
     let total = 0;
     const weights = state.shelf.map(it => {
-      const w = it.p <= budget && !looked.has(it) ? Math.sqrt(Math.max(0.01, goodValue(state, sets, it.g))) : 0;
+      const w = it.p <= budget && !looked.has(it) ? weigh(Math.max(0.01, goodValue(state, sets, it.g))) : 0;
       total += w;
       return w;
     });

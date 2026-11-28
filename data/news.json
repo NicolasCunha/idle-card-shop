@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-collectors",
+      "date": "2026-11-28",
+      "version": "1.7.1",
+      "title": "Collectors",
+      "text": "Fame brings bigger budgets: at level 20 everyday customers spend up to $240 and over a third are collectors who go straight for your priciest cards."
+    },
+    {
       "id": "2026-11-28-economy",
       "date": "2026-11-28",
       "version": "1.7.0",
