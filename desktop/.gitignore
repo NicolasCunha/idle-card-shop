@@ -1,0 +1,5 @@
+# Godot editor cache and imports
+.godot/
+*.import
+export_presets.cfg
+build/

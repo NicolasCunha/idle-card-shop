@@ -5,7 +5,7 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 ## Rules for this work
 
 - All work on branch `desktop-port`. Never push to `main`. Do not edit web files (`js/`, `css/`, `index.html`, `data/`, collection JSONs); rebase on `main` when the web game changes.
-- One stage per go-ahead from Nicolas. Each stage ends with a commit and this file updated, then a report, then wait.
+- One stage per go-ahead from Nicolas. Each stage: build it, copy `desktop/` to Nicolas's PC (`C:\DEV\idle-card-shop\desktop`, untracked in his main checkout), he tests in Godot, then commit, update this file, report and wait.
 - Every fix to the web game is listed in `docs/desktop/PORT-FIXES.md` on `main` (kept by the web threads). Check it at the start of each stage and port what applies to the stages already done.
 - Godot 4.7.2 stable, GDScript only. Project in `desktop/`.
 - Game text in English; calm pastel brown and dark-yellow palette, light and dark modes; GBA-style 2D; hand-drawn PNG spritesheets (never generated at runtime); tutorial always updated.
@@ -15,8 +15,8 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 | Stage | Delivers | State |
 | --- | --- | --- |
 | S1 | Plan updated with the final web game state; this file | done (2026-11-28) |
-| S2 | Godot project skeleton in `desktop/`, 240×160 integer scaling, README | next |
-| S3 | Collection loader and market price hash in GDScript; JS reference price dump | |
+| S2 | Godot project skeleton in `desktop/`, 240×160 integer scaling, README | done (2026-11-28, Nicolas opened it in Godot) |
+| S3 | Collection loader, loading screen with steps (PORT-FIXES 1.9.7), market price hash in GDScript; JS reference price dump | next |
 | S4 | Size test: export build and one card pack, JPG against WebP | |
 | S5 | Boosters, opening, binder, showcase, sales | |
 | S6 | Staff (30, main and backup jobs, firing), salaries, customers, supply, release calendar | |
@@ -45,4 +45,4 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 
 ## Next step
 
-S2: create `desktop/` with `project.godot` (240×160 base viewport, integer scale, pixel snap, nearest filter), the folder layout from the plan, and a README on how to open and run it. Done when it opens in Godot with an empty screen and runs headless without errors.
+S3: GDScript loader for `collections.json` and the collection JSONs (read from the repo root in development), a loading screen listing each step (Game code, Card collections N / total, Tutorial, News, Accessories, Save) like web 1.9.7, and the market price hash ported from `js/market.js`. A reference dump of JS prices; done when every card matches over 30 days.
