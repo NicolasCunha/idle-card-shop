@@ -4,7 +4,7 @@ Every fix or change made to the web game must also be applied to the desktop (Go
 
 | Web version | Commit | Change | What the port needs | Port |
 | --- | --- | --- | --- | --- |
-| 1.9.7 | see git log | Loading screen with steps (Game code, Card collections N / total, Tutorial, News, Accessories, Save); collection files fetched in parallel instead of one by one. | A loading screen listing the same steps with progress, and parallel or threaded loading of collection files. | pending |
+| 1.9.7 | 50f1202 | Loading screen with steps (Game code, Card collections N / total, Tutorial, News, Accessories, Save); collection files fetched in parallel instead of one by one. | A loading screen listing the same steps with progress, and parallel or threaded loading of collection files. | pending |
 | 1.9.6 | 0a75710 | Staff buyer: stock target limits only the shop; with a warehouse, the buyer keeps buying into it until it is full or the cash reserve is reached. Status `warehouse full`. | Same buy-job rule (`doTask` buy in `js/game.js`). | pending |
 | 1.9.5 | b3603b7 | Fire staff: severance = current salary per day x ceil(days at shop / 6), at least one day; booked as salaries; needs the cash; confirm box. | Fire button per employee, same formula. | pending |
 | 1.9.4 | ea6af8f | With the shop full, every purchase (distributor and Market boosters, boxes, accessories) goes to the warehouses (`roomFor`). Shop shows `to warehouse`. | Same overflow rule. | pending |
