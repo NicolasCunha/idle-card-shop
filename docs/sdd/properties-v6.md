@@ -20,6 +20,7 @@ All rules and numbers below were proposed on 2026-11-28 and approved by Nicolas 
 - Buy $50K. Upgrade $50K × current level. Space 100K per level (1M at level 10). Fee $250 per level per market day, paid continuously by the tick (Finances: Properties). When cash cannot cover the fee, shipments wait; no debt.
 - Goods are pooled across warehouses, with the same ids as Storage (`b:`, `x:`, `a:`).
 - Fill: buy straight into the warehouses at distributor price (boosters in lots of 100, boxes one by one, so the price follows supply), or move everything from the shop (Store all).
+- Staff buyers (Nicolas, 2026-11-28, game 1.9.2): buy into the shop while it holds fewer boosters of that collection than the stock target and has room. When the shop is full, they buy into the warehouses (distributor price, cash reserve kept) until shop + warehouses + goods on the way reach the stock target.
 - Ship to the shop by hand (Ship 100) or by a per-good target (Keep in shop), checked every 5 s. Arrival by shipment size in space: up to 1K in 1 market day, up to 10K in 2, more in 3. Shop space is reserved for goods on the way.
 
 ## Marketing tab: campaigns
@@ -43,6 +44,6 @@ All rules and numbers below were proposed on 2026-11-28 and approved by Nicolas 
 | `unlocked.marketing`, `unlocked.properties` | Re-checked on load |
 | `inbox[].detail` (1.8.1) | Old notices keep only their title |
 
-## Tutorial (rev 8)
+## Tutorial (rev 8, rev 9 in 1.9.2)
 
-New steps: `backup` (second employee: give a backup job), `marketing` (tab unlocks), `properties` (tab unlocks). The `task` step now says "Pick a job for them."
+New steps: `backup` (second employee: give a backup job), `marketing` (tab unlocks), `properties` (tab unlocks; rev 9 adds that the buyer fills the warehouses once the shop is full). The `task` step now says "Pick a job for them."

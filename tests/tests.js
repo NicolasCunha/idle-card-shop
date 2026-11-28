@@ -348,6 +348,19 @@ async function run() {
     wh.stock.base = 0;
     G.tick(wh, sets, 6, T0 + 2 * M.DAY_MS + 6000);
     ok(!G.inTransit(wh, 'b:base') && wh._feesUnpaid && wh.money === 0, 'unpaid fees pause shipments, no debt');
+    const bw = fresh(sets, order);
+    bw.firstDay = bw.day = M.dayNumber(T0);
+    bw.money = 100000;
+    G.buyWarehouse(bw);
+    bw.upgrades.staffRoom = 1;
+    const buyer = G.hire(bw);
+    G.setTask(bw, buyer, 'buy');
+    bw.rules.stockTarget = 60;
+    bw.rules.cashReserve = 0;
+    bw.stock.base = G.stockCapacity(bw);
+    G.tick(bw, sets, 600, T0 + 600000);
+    const inWh = G.warehouseOwned(bw, 'b:base');
+    ok(inWh > 0 && bw.stock.base + inWh <= 60 && bw.stock.base === G.stockCapacity(bw), 'a full shop sends the buyer to the warehouses, up to the stock target', `${inWh} in the warehouse`);
   }
 
   section('Achievements');

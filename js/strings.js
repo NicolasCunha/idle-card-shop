@@ -64,7 +64,7 @@ export const TIPS = {
   single: 'Buy one copy for your binder at 110% of market.',
   list: 'Put copies in the showcase at your price.',
   locked: 'Not out yet.',
-  stockTarget: 'Buyer stops when the shop holds this many sealed boosters.',
+  stockTarget: 'Buyer stops at this many sealed boosters in the shop. With the shop full, it fills your warehouses up to this many in all.',
   cashReserve: 'Buyer never spends below this.',
   bulkBelow: 'Copies worth less go to the bulk buyer at 30%.',
   keepCopies: 'The pricer leaves this many copies of each card in the binder.',
