@@ -9,7 +9,7 @@ import { loadCollections } from './data.js';
 import { loadTutorial, skipTutorial, restartTutorial } from './tutorial.js';
 import { initOpening, playOpening, showBulkResult, closeOverlay } from './opening.js';
 import { fmtMoney, fmtNum, fmtDuration, esc } from './format.js';
-import { OFFLINE } from './strings.js';
+import { OFFLINE, LOAD_STEPS } from './strings.js';
 import * as Clock from './clock.js';
 import * as Debug from './debug.js';
 import * as Achievements from './achievements.js';
@@ -38,15 +38,38 @@ async function loadNews() {
 let catchingUp = false;
 let pendingSale = 0, saleTimer = null;
 
+// Loading screen: one line per step, marked active (…) then done (✓)
+// (Nicolas, 2026-11-28: a cold load felt long with no feedback).
+function loadStep(key, status, n = '') {
+  const ul = document.getElementById('load-steps');
+  if (!ul) return;
+  if (ul.children.length < LOAD_STEPS.length) {
+    ul.innerHTML = LOAD_STEPS.map(([k, label]) =>
+      `<li data-step="${k}"><span class="mark" aria-hidden="true">·</span>${esc(label)}<span class="n"></span></li>`).join('');
+  }
+  const li = ul.querySelector(`[data-step="${key}"]`);
+  if (!li) return;
+  li.className = status;
+  li.querySelector('.mark').textContent = status === 'done' ? '✓' : status === 'active' ? '…' : '·';
+  li.querySelector('.n').textContent = n ? ` ${n}` : '';
+}
+const step = (key, p) => { loadStep(key, 'active'); return p.then(v => { loadStep(key, 'done'); return v; }); };
+
 async function boot() {
+  loadStep('code', 'done');
   prefs = Save.loadPrefs();
   Clock.setOffset(prefs.clockOffset);
   Audio.setPrefs(prefs);
   try {
-    ({ sets, order } = await loadCollections());
-    await loadTutorial();
-    news = await loadNews();
-    G.setAccessories(await loadAccessories());
+    const [loaded, , notes, goods] = await Promise.all([
+      step('cards', loadCollections('', (k, total) => loadStep('cards', 'active', `${k} / ${total}`))),
+      step('tutorial', loadTutorial()),
+      step('news', loadNews()),
+      step('goods', loadAccessories()),
+    ]);
+    ({ sets, order } = loaded);
+    news = notes;
+    G.setAccessories(goods);
   } catch (err) {
     document.getElementById('app').innerHTML = `<p class="fatal">Could not load game data.</p>`;
     console.error(err);
@@ -57,9 +80,11 @@ async function boot() {
     return;
   }
   Achievements.register();
+  loadStep('save', 'active');
   state = Save.loadLocal(sets, order) || G.newState(sets, order, Clock.now());
   state._releaseAll = prefs.releaseAll;
   G.prepare(state, sets);
+  loadStep('save', 'done');
 
   initOpening({
     get state() { return state; }, sets, prefs,

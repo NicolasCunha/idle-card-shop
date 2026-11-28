@@ -1,14 +1,22 @@
 // Loads card collections (GDD section 4). Adding a collection = add its JSON at
 // the repo root and list it in collections.json. No code change.
 
-export async function loadCollections(base = '') {
+// All files are fetched at once (they were one by one, slow on a cold cache);
+// onProgress(done, total) after each one. Order still follows collections.json.
+export async function loadCollections(base = '', onProgress = null) {
   const list = await fetchJson(base + 'collections.json');
+  const files = list.collections || [];
   const sets = {};
   const order = [];
-  for (const file of list.collections || []) {
+  let done = 0;
+  onProgress?.(0, files.length);
+  const raws = await Promise.all(files.map(file => fetchJson(base + file)
+    .catch(err => err)
+    .finally(() => onProgress?.(++done, files.length))));
+  for (const [i, file] of files.entries()) {
     try {
-      const raw = await fetchJson(base + file);
-      const set = normalizeSet(raw);
+      if (raws[i] instanceof Error) throw raws[i];
+      const set = normalizeSet(raws[i]);
       if (sets[set.id]) { console.warn(`Duplicate collection id "${set.id}" in ${file}, skipped`); continue; }
       sets[set.id] = set;
       order.push(set.id);

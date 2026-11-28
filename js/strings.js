@@ -105,6 +105,16 @@ export const STATUS = {
 
 export const FEELING_TEXT = { cheap: 'cheap', fair: 'fair', pricey: 'pricey', steep: 'too pricey' };
 
+// Loading screen steps, in order (main.js boot).
+export const LOAD_STEPS = [
+  ['code', 'Game code'],
+  ['cards', 'Card collections'],
+  ['tutorial', 'Tutorial'],
+  ['news', 'News'],
+  ['goods', 'Accessories'],
+  ['save', 'Save'],
+];
+
 export const TOASTS = {
   showcaseFull: 'Showcase full',
   shelfFull: 'Shelf full',

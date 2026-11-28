@@ -12,6 +12,8 @@ Nicolas owns the design and all card content. He writes in Portuguese; reply to 
 
 ## Directives (always apply)
 
+- Every fix or change to the web game gets an entry in [docs/desktop/PORT-FIXES.md](docs/desktop/PORT-FIXES.md), so it is also applied to the Godot desktop port (Nicolas, 2026-11-28).
+
 Read these before any change. Each one is short.
 
 - @.claude/rules/language.md — the game is fully in English

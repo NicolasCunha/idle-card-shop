@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "id": "2026-11-28-loading",
+      "date": "2026-11-28",
+      "version": "1.9.7",
+      "title": "Faster loading",
+      "text": "The game loads its collections all at once and shows each loading step."
+    },
+    {
       "id": "2026-11-28-fire",
       "date": "2026-11-28",
       "version": "1.9.5",
