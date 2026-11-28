@@ -6,7 +6,7 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 
 - All work on branch `desktop-port`. Never push to `main`. Do not edit web files (`js/`, `css/`, `index.html`, `data/`, collection JSONs); rebase on `main` when the web game changes.
 - One stage per go-ahead from Nicolas. Each stage: build it, copy `desktop/` to Nicolas's PC (`C:\DEV\idle-card-shop\desktop`, untracked in his main checkout), he tests in Godot, then commit, update this file, report and wait.
-- Every fix to the web game is listed in `docs/desktop/PORT-FIXES.md` on `main` (kept by the web threads). Check it at the start of each stage and port what applies to the stages already done.
+- Every fix to the web game is listed in `docs/desktop/PORT-FIXES.md` on `main` (kept by the web threads; do not edit it on this branch). Check it at the start of each stage and port what applies to the stages already done. Port progress is tracked in the table below.
 - Godot 4.7.2 stable, GDScript only. Project in `desktop/`.
 - Game text in English; calm pastel brown and dark-yellow palette, light and dark modes; GBA-style 2D; hand-drawn PNG spritesheets (never generated at runtime); tutorial always updated.
 
@@ -16,8 +16,8 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 | --- | --- | --- |
 | S1 | Plan updated with the final web game state; this file | done (2026-11-28) |
 | S2 | Godot project skeleton in `desktop/`, 240×160 integer scaling, README | done (2026-11-28, Nicolas opened it in Godot) |
-| S3 | Collection loader, loading screen with steps (PORT-FIXES 1.9.7), market price hash in GDScript; JS reference price dump | next |
-| S4 | Size test: export build and one card pack, JPG against WebP | |
+| S3 | Collection loader, loading screen with steps (PORT-FIXES 1.9.7), market price hash in GDScript; JS reference price dump | done (2026-11-28; 20/20 checks, 114K prices match JS; Nicolas tested) |
+| S4 | Size test: export build and one card pack, JPG against WebP | next |
 | S5 | Boosters, opening, binder, showcase, sales | |
 | S6 | Staff (30, main and backup jobs, firing), salaries, customers, supply, release calendar | |
 | S7 | Storage, properties (warehouses, shipments), campaigns, Fame, achievements | |
@@ -38,11 +38,25 @@ Read this first when resuming the desktop port. Plan: [IdleCardShop: desktop app
 - Systems: 10-minute market days; per-save seed; booster supply with rival shops and reprints; Fame; new-set customers; customers buying singles, sealed goods and accessories; up to 30 staff with main and backup jobs (Buy, Open, Price, per collection), training, salaries, firing with severance by tenure; shop storage space; warehouses (levels 1-10, daily fees, shipments, Keep in shop targets, overflow from purchases and staff buyers); campaigns (Flyers, Radio, TV); Finances ledger; 19 achievements; collection milestones; 11 themes (4 dark); code-locked debug menu.
 - Tests: `tests/tests.js` (about 180 checks plus balancing targets).
 
+## PORT-FIXES progress
+
+| Web version | Change | Port |
+| --- | --- | --- |
+| 1.9.7 | Loading screen with steps, parallel loading | S3 (`Loader`, `main.gd`) |
+| 1.9.6 | Staff buyer fills warehouses past the stock target | S6/S7 |
+| 1.9.5 | Fire staff with severance | S6 |
+| 1.9.4 | Purchases overflow to warehouses | S7 |
+| 1.9.3 | Per-card price cache and event cache | S3 (`Market`) |
+| 1.9.1 | News in two tabs, debug Release all sets | S14, S17 |
+| 1.9.0 | Card values from balance.py (data only) | nothing to do |
+
 ## Tooling
 
-- Cloud container: Godot is built from source (tag `4.7.2-stable`, headless-capable editor, `/home/user/godot-src`), because release downloads are blocked by the network policy. A new container must rebuild it (about 1 hour on 4 cores) or reuse a cached binary.
+- Cloud container: Godot is built from source (tag `4.7.2-stable`, headless-capable editor, `/home/user/godot-src`), because release downloads are blocked by the network policy. A new container rebuilds it in about 20 minutes on 4 cores:
+  `git clone --depth 1 --branch 4.7.2-stable https://github.com/godotengine/godot src && pip install scons && cd src && scons platform=linuxbsd target=editor production=yes debug_symbols=no -j4 vulkan=no opengl3=yes x11=no wayland=no speechd=no fontconfig=no pulseaudio=no alsa=no dbus=no udev=no`
+  Then `godot --headless --path desktop --import` and `godot --headless --path desktop --script res://tests/run_tests.gd`.
 - Nicolas's PC: not installed yet (2026-11-28: auto mode blocked `winget install`). Nicolas runs `winget install --id GodotEngine.GodotEngine -e` in PowerShell himself.
 
 ## Next step
 
-S3: GDScript loader for `collections.json` and the collection JSONs (read from the repo root in development), a loading screen listing each step (Game code, Card collections N / total, Tutorial, News, Accessories, Save) like web 1.9.7, and the market price hash ported from `js/market.js`. A reference dump of JS prices; done when every card matches over 30 days.
+S4: build Godot export templates (release, Linux and Windows), export the game, pack one collection's card images as a `.pck` with JPG and with WebP, record sizes and load times here.
