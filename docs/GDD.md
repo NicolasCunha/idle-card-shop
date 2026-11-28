@@ -414,7 +414,7 @@ The header always shows money, the market day and the time to the next day, and 
 - A pixel-art view of the shop at the top of the Shop tab: customers (16×32 sprites, 4 directions) walk in, browse the showcase together at their own pace, say what they think of the prices in speech bubbles, show a happy or sad emote, and buyers show what they paid.
 - The showcase case fills as cards are listed and grows with the showcase upgrade; decor grows with Fame.
 - The floor keeps running on other tabs and with the browser hidden or minimized.
-- **Decided 2026-11-28, in progress:** more customer sprites and more decor at high Fame levels.
+- **Decided 2026-11-28, in progress:** more customer sprites and more decor at high Fame levels (done in 1.6.2: 12 customer looks, decor up to Fame 20).
 
 **Visual**
 
@@ -483,7 +483,7 @@ A tab that has appeared never disappears.
 - **Collection milestones:** approved as in section 7.
 - **Prestige:** not now; revisit later.
 - **Language:** the whole project in English, this GDD included.
-- **More customer sprites and more decor at high Fame.**
+- **More customer sprites and more decor at high Fame.** Done (1.6.2).
 - **Achievements:** completing collections and milestones along the way (hire 1 employee, hire everyone, own every upgrade...). Still open: what old saves get, and whether achievements give a reward.
 
 **Balancing left as is (Nicolas, 2026-11-27)**

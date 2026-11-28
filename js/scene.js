@@ -8,7 +8,7 @@ const MIN_W = 200, MAX_W = 400;          // native width range
 const TARGET_CSS_H = 230;                 // about this tall on screen
 let W = 240;
 const SPRITE_W = 16, SPRITE_H = 32;
-const SHEETS = 5;
+const SHEETS = 12;
 const SPEED = 42;                         // average px per second; each customer varies
 // Customers on the floor at once: 5 in a narrow room, up to 8 in a wide one.
 const maxOnFloor = () => Math.max(5, Math.min(8, Math.floor(W / 48)));
@@ -95,12 +95,14 @@ export function customer(ev) {
   const st = getState();
   const bought = ev.looks.filter(l => l.b);
   const paid = bought.reduce((a, l) => a + l.paid, 0);
-  // Buyers are always drawn; a full floor makes room by sending the oldest
-  // non-buyer away. Non-buyers wait their turn.
+  // A full floor makes room for a buyer by sending the oldest non-buyer
+  // away. When everyone there is buying (a busy shop), the visit is not
+  // drawn, but its sale still sounds and floats.
   if (people.length >= maxOnFloor()) {
     if (!bought.length) return false;
     const i = people.findIndex(p => !p.paid && p.phase !== 'out');
-    if (i >= 0) people.splice(i, 1);
+    if (i < 0) { if (onPaid) onPaid(paid); return false; }
+    people.splice(i, 1);
   }
   const lookAt = bought[0] || ev.looks[ev.looks.length - 1];
   let text, happy;
@@ -275,6 +277,49 @@ function drawRoom(st) {
   // register counter on the right
   const rx = W - 44;
   px(rx, 48, 40, 22, C.caseWood); px(rx, 46, 40, 3, C.caseTop); px(rx + 10, 38, 16, 9, '#4a3c31'); px(rx + 12, 40, 12, 4, '#8cc285');
+  drawFameDecor(fame, wx, rx);
+}
+
+// Higher Fame levels (saved value; the UI shows +1) dress up the shop.
+const BOX_COLORS = ['#d9a53f', '#6f9fd1', '#5f9a4e', '#a8504a', '#8a6fb8'];
+const LIGHTS = ['#f2c14e', '#e3907f', '#8cc285', '#6f9fd1'];
+function drawFameDecor(fame, wx, rx) {
+  if (fame >= 12) {
+    // Wall shelf with booster boxes, where the wall has room.
+    const x0 = 92, x1 = wx - 36;
+    if (x1 - x0 >= 24) {
+      px(x0, 40, x1 - x0, 2, C.trim);
+      for (let x = x0 + 2, i = 0; x + 8 <= x1 - 2; x += 10, i++) {
+        px(x, 32, 8, 8, BOX_COLORS[i % BOX_COLORS.length]); px(x + 1, 33, 6, 2, '#f7f1e3');
+      }
+    }
+  }
+  if (fame >= 14) {
+    // String lights along the top of the wall.
+    for (let x = 4; x < W - 4; x += 2) px(x, 3 + (Math.floor(x / 8) % 2), 2, 1, '#5b3f2a');
+    for (let x = 8, i = 0; x < W - 6; x += 16, i++) px(x, 5, 2, 2, LIGHTS[i % LIGHTS.length]);
+  }
+  if (fame >= 16) {
+    // A second plant by the register.
+    const x = rx - 14;
+    px(x + 2, 62, 10, 8, C.pot); px(x, 48, 14, 14, C.plant); px(x + 4, 44, 6, 6, C.plant);
+  }
+  if (fame >= 17) {
+    // Gold shop sign over the door.
+    px(7, 5, 28, 9, C.trim); px(8, 6, 26, 7, '#dcae4b');
+    for (let x = 11; x < 32; x += 4) px(x, 8, 2, 3, '#7a5536');
+  }
+  if (fame >= 18) {
+    // Cardboard standee in the front corner, by the register.
+    const x = W - 18, y = 76;
+    px(x, y, 14, 22, '#f3ead8'); px(x + 1, y + 1, 12, 20, '#e3907f'); px(x + 4, y + 4, 6, 6, '#f2c14e'); px(x + 3, y + 22, 8, 2, C.trim);
+  }
+  if (fame >= 19) {
+    // Top level: a trophy on the register and soft light over the floor.
+    px(rx + 30, 40, 6, 5, '#f2c14e'); px(rx + 32, 45, 2, 1, '#d9a53f'); px(rx + 30, 46, 6, 1, '#7a5536');
+    ctx.fillStyle = 'rgba(255, 236, 170, 0.10)';
+    ctx.fillRect(0, 56, W, H - 56);
+  }
 }
 
 function drawCase(st) {

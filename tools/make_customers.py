@@ -1,7 +1,7 @@
 """Draws the placeholder customer sprite sheets (original pixel art, GBA-like).
 
 Run from the repo root:  python tools/make_customers.py
-Writes images/sprites/customer-1.png ... customer-5.png.
+Writes images/sprites/customer-1.png ... customer-12.png.
 
 Sheet layout (docs/sdd/shop-floor.md): frames of 16x32 px, 4 columns x 5 rows.
   row 0 walk down, row 1 walk up, row 2 walk left, row 3 walk right
@@ -20,7 +20,7 @@ OUTLINE = (42, 31, 26, 255)
 EYE = (34, 28, 30, 255)
 WHITE = (250, 246, 236, 255)
 
-# Five customers: skin, hair, top, bottom, shoes, features.
+# Customers: skin, hair, top, bottom, shoes, features.
 CUSTOMERS = [
     # Kid with a cap
     dict(skin=(246, 204, 160), hair=(120, 72, 40), cap=(204, 64, 56), top=(240, 196, 64), bottom=(64, 104, 176),
@@ -37,6 +37,27 @@ CUSTOMERS = [
     # Woman with a ponytail and a skirt
     dict(skin=(250, 214, 178), hair=(236, 196, 92), top=(232, 128, 152), bottom=(56, 152, 148),
          shoes=(120, 64, 80), ponytail=True, skirt=True),
+    # Grandpa with a beard and a cardigan
+    dict(skin=(240, 200, 168), hair=(220, 220, 214), top=(176, 120, 72), bottom=(72, 72, 88),
+         shoes=(70, 50, 40), bald=True, beard=True),
+    # Teen in a beanie
+    dict(skin=(198, 140, 100), hair=(60, 40, 30), beanie=(52, 140, 96), top=(230, 230, 222), bottom=(48, 64, 110),
+         shoes=(240, 240, 240)),
+    # Woman with a bun
+    dict(skin=(120, 80, 58), hair=(30, 24, 26), top=(240, 176, 72), bottom=(92, 60, 120),
+         shoes=(200, 90, 70), bun=True),
+    # Curly-haired collector
+    dict(skin=(150, 100, 70), hair=(36, 26, 22), top=(196, 72, 72), bottom=(64, 80, 96),
+         shoes=(40, 40, 44), curly=True),
+    # Kid in a hoodie
+    dict(skin=(250, 220, 190), hair=(200, 120, 60), top=(110, 170, 220), bottom=(70, 70, 80),
+         shoes=(240, 200, 60), shorts=True, hood=True),
+    # Businessperson with a tie
+    dict(skin=(226, 180, 140), hair=(80, 56, 40), top=(56, 60, 76), bottom=(48, 50, 62),
+         shoes=(30, 28, 30), tie=(196, 56, 64)),
+    # Punk with a pink mohawk
+    dict(skin=(244, 206, 176), hair=(232, 96, 168), top=(40, 38, 44), bottom=(80, 90, 120),
+         shoes=(30, 30, 34), mohawk=True),
 ]
 
 
@@ -113,6 +134,11 @@ def body_front(f, p, arms='down', step=0):
     f.rect(4, 13, 11, 21, top)
     f.rect(5, 13, 10, 13, shade(top, 1.12))
     f.set(7, 13, p['skin']); f.set(8, 13, p['skin'])           # neckline
+    if p.get('tie'):
+        f.rect(6, 13, 9, 15, WHITE)  # shirt under the jacket
+        f.rect(7, 14, 8, 18, p['tie']); f.set(7, 13, WHITE); f.set(8, 13, WHITE)
+    if p.get('hood'):
+        f.rect(5, 12, 10, 13, shade(top, .85)); f.set(6, 15, WHITE); f.set(9, 15, WHITE)
     if arms == 'up':
         f.rect(2, 6, 3, 13, top); f.rect(12, 6, 13, 13, top)
         f.rect(2, 5, 3, 5, p['skin']); f.rect(12, 5, 13, 5, p['skin'])
@@ -137,6 +163,16 @@ def head_front(f, p, face='plain', back=False):
             f.rect(7, 12, 8, 16, hair)
         if p.get('bald'):
             f.rect(5, 3, 10, 6, shade(skin, .95))
+        if p.get('beanie'):
+            f.rect(4, 2, 11, 5, p['beanie'])
+        if p.get('bun'):
+            f.rect(6, 0, 9, 2, hair)
+        if p.get('curly'):
+            f.rect(3, 2, 12, 9, hair)
+        if p.get('hood'):
+            f.rect(4, 9, 11, 13, shade(p['top'], .85))
+        if p.get('mohawk'):
+            f.rect(4, 3, 11, 11, shade(skin, .95)); f.rect(7, 0, 8, 11, hair)
         return
     # hair
     if p.get('bald'):
@@ -154,6 +190,16 @@ def head_front(f, p, face='plain', back=False):
         f.set(12, 5, hair); f.set(12, 6, hair)
     if p.get('cap'):
         f.rect(4, 3, 11, 4, p['cap']); f.rect(3, 5, 12, 5, shade(p['cap'], .8))
+    if p.get('beanie'):
+        f.rect(4, 2, 11, 5, p['beanie']); f.rect(4, 5, 11, 5, shade(p['beanie'], .8)); f.set(7, 1, p['beanie']); f.set(8, 1, p['beanie'])
+    if p.get('bun'):
+        f.rect(6, 0, 9, 2, hair)
+    if p.get('curly'):
+        f.rect(3, 2, 12, 4, hair); f.rect(3, 5, 3, 9, hair); f.rect(12, 5, 12, 9, hair)
+        for x in (3, 6, 9, 12):
+            f.set(x, 1, hair)
+    if p.get('mohawk'):
+        f.rect(4, 3, 11, 5, shade(skin, .95)); f.rect(7, 0, 8, 4, hair)
     # face
     ey = 8 if face != 'down' else 9
     if face == 'closed':
@@ -173,6 +219,12 @@ def head_front(f, p, face='plain', back=False):
     else:
         f.set(7, 10, mouth); f.set(8, 10, mouth)
     f.set(5, 9, shade(skin, .92)); f.set(10, 9, shade(skin, .92))  # cheeks
+    if p.get('beard'):
+        f.rect(4, 9, 11, 12, hair); f.rect(5, 13, 10, 13, hair)
+        if face == 'happy':
+            f.set(6, 10, mouth); f.set(7, 11, mouth); f.set(8, 11, mouth); f.set(9, 10, mouth)
+        else:
+            f.set(7, 10, mouth); f.set(8, 10, mouth)
 
 
 def front(p, step=0, face='plain', arms='down', back=False):
@@ -231,7 +283,21 @@ def side(p, step=0):
         f.rect(3, 6, 4, 13, hair)
     if p.get('cap'):
         f.rect(5, 3, 10, 4, p['cap']); f.rect(9, 5, 13, 5, shade(p['cap'], .8))
+    if p.get('beanie'):
+        f.rect(5, 2, 11, 5, p['beanie']); f.rect(5, 5, 11, 5, shade(p['beanie'], .8))
+    if p.get('bun'):
+        f.rect(3, 3, 5, 5, hair)
+    if p.get('curly'):
+        f.rect(4, 2, 11, 4, hair); f.rect(3, 4, 6, 10, hair)
+    if p.get('mohawk'):
+        f.rect(5, 3, 10, 6, shade(skin, .95)); f.rect(5, 6, 6, 8, shade(skin, .95)); f.rect(4, 0, 9, 2, hair)
+    if p.get('hood'):
+        f.rect(4, 10, 6, 13, shade(top, .85))
+    if p.get('tie'):
+        f.rect(10, 14, 10, 18, p['tie'])
     f.set(9, 7, EYE); f.set(9, 8, EYE)
+    if p.get('beard'):
+        f.rect(8, 9, 11, 12, hair)
     if p.get('glasses'):
         f.rect(8, 7, 10, 7, (60, 60, 70)); f.set(8, 8, (60, 60, 70)); f.set(10, 8, (60, 60, 70)); f.set(7, 7, (60, 60, 70))
     f.set(11, 9, shade(skin, .9))

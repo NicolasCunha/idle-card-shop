@@ -56,7 +56,7 @@ async function boot() {
   });
   Scene.initScene({
     getState: () => state, sets,
-    onPaid: v => { Audio.sfx.sale(); UI.floatMoney(v); },
+    onPaid: v => saleFeedback(v),
   });
   Scene.setCapacity(st => G.showcaseCapacity(st));
   UI.initUI({ state, sets, order, prefs, news, actions: { run, click: () => Audio.sfx.click() } });
@@ -65,9 +65,7 @@ async function boot() {
 
   G.onSale(v => {
     if (Scene.showing()) return; // the buyer on the shop floor shows it
-    Audio.sfx.sale();
-    pendingSale += v;
-    if (!saleTimer) saleTimer = setTimeout(() => { UI.floatMoney(pendingSale); pendingSale = 0; saleTimer = null; }, 900);
+    saleFeedback(v);
   });
 
   // First gesture unlocks audio (browser rule).
@@ -91,6 +89,13 @@ async function boot() {
   });
   window.addEventListener('pagehide', save);
   window.addEventListener('beforeunload', save);
+}
+
+// Sale sound and header +$, batched so a busy shop floats one number at a time.
+function saleFeedback(v) {
+  Audio.sfx.sale();
+  pendingSale += v;
+  if (!saleTimer) saleTimer = setTimeout(() => { UI.floatMoney(pendingSale); pendingSale = 0; saleTimer = null; }, 900);
 }
 
 function save() {

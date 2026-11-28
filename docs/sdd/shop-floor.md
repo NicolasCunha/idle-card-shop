@@ -8,7 +8,7 @@ A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libra
 
 - Room: wall, door on the left, window, register on the right, wooden floor.
 - Showcase: a glass case whose width grows with the Bigger showcase upgrade (3 shelves from level 4). Mini cards fill it in proportion to showcase use, colored by the rarity of the listed cards.
-- Decor by Fame: poster at Fame 2, second poster and plant at 6, framed art at 11, rug at 16.
+- Decor by Fame (as shown in the UI): poster at Fame 2, second poster and plant at 6, framed art at 11, booster-box wall shelf at 13 (when the wall has room), string lights at 15, rug at 16, second plant by the register at 17, gold sign over the door at 18, cardboard standee at 19, trophy on the register and warm light at 20 (Nicolas, 2026-11-28: more decor at high Fame).
 - Customers: every live visit from the rules (`G.onCustomer`) sends a customer in through the door. They walk to a spot along the case, look at it, show a speech bubble, play a happy (heart) or sad (rain cloud) emote, and walk out.
 - Several customers browse at once, each at their own pace: a short random wait at the door (0-1.6 s), walking speed 75-120% of 42 px/s, browsing 1-3.5 s, a 45% chance to move to another spot along the case first, glances left and right. Spots are picked away from other customers, a little past each end of the case; when the front is crowded they stand in a second row just behind. A customer waits to speak while someone within 40 px is talking.
 
@@ -20,7 +20,7 @@ A pixel-art view at the top of the Shop tab (`js/scene.js`, `<canvas>`, no libra
 | `Nothing here...` | Empty showcase |
 | `No <set>?` | Wanted the newest collection and found none |
 
-At most 5 customers on the floor in a narrow room, up to 8 in a wide one (native width / 48). A buyer is always drawn: when the floor is full, the oldest non-buyer leaves to make room; non-buyers past the limit are not drawn. The money is credited by the rules when the visit happens; while the floor is on screen the sale sound and the header `+$` play when the buyer reacts (`onPaid`), otherwise on the sale itself (`G.onSale`). Offline catch-up sends nothing to the floor. "Reduce motion": customers appear at the case, show the bubble and emote without walking or bouncing, then vanish.
+At most 5 customers on the floor in a narrow room, up to 8 in a wide one (native width / 48). When the floor is full, a buyer makes the oldest non-buyer leave; if everyone there is buying, the visit is not drawn but its sale still plays. Non-buyers past the limit are not drawn. Sale sounds and the header `+$` are batched (one float per ~0.9 s). The money is credited by the rules when the visit happens; while the floor is on screen the sale sound and the header `+$` play when the buyer reacts (`onPaid`), otherwise on the sale itself (`G.onSale`). Offline catch-up sends nothing to the floor. "Reduce motion": customers appear at the case, show the bubble and emote without walking or bouncing, then vanish.
 
 ## Size
 
@@ -28,7 +28,7 @@ Native height 112 px; native width follows the panel (200 to 400 px) so the room
 
 ## Sprite format (for replacement art)
 
-`images/sprites/customer-1.png` ... `customer-5.png`. Each sheet is 64 x 160: frames of 16 x 32, 4 columns x 5 rows, transparent background. The feet sit on the bottom row of the frame.
+`images/sprites/customer-1.png` ... `customer-12.png` (12 looks since 2026-11-28; `tools/make_customers.py` draws them). Each sheet is 64 x 160: frames of 16 x 32, 4 columns x 5 rows, transparent background. The feet sit on the bottom row of the frame.
 
 | Row | Frames |
 | --- | --- |
