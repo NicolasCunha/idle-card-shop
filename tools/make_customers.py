@@ -129,15 +129,20 @@ def legs_front(f, p, step):
     f.rect(8, ry + 1, 11, ry + 2, shoes)
 
 
-def body_front(f, p, arms='down', step=0):
+def body_front(f, p, arms='down', step=0, back=False):
     top = p['top']
     f.rect(4, 13, 11, 21, top)
     f.rect(5, 13, 10, 13, shade(top, 1.12))
-    f.set(7, 13, p['skin']); f.set(8, 13, p['skin'])           # neckline
-    if p.get('tie'):
+    if back:
+        # From behind: no neckline, shirt, tie or hood strings.
+        if p.get('hood'):
+            f.rect(5, 12, 10, 14, shade(top, .85))
+    else:
+        f.set(7, 13, p['skin']); f.set(8, 13, p['skin'])       # neckline
+    if p.get('tie') and not back:
         f.rect(6, 13, 9, 15, WHITE)  # shirt under the jacket
         f.rect(7, 14, 8, 18, p['tie']); f.set(7, 13, WHITE); f.set(8, 13, WHITE)
-    if p.get('hood'):
+    if p.get('hood') and not back:
         f.rect(5, 12, 10, 13, shade(top, .85)); f.set(6, 15, WHITE); f.set(9, 15, WHITE)
     if arms == 'up':
         f.rect(2, 6, 3, 13, top); f.rect(12, 6, 13, 13, top)
@@ -230,7 +235,7 @@ def head_front(f, p, face='plain', back=False):
 def front(p, step=0, face='plain', arms='down', back=False):
     f = Frame()
     legs_front(f, p, step)
-    body_front(f, p, arms, step)
+    body_front(f, p, arms, step, back)
     head_front(f, p, face, back)
     f.outline()
     return f
